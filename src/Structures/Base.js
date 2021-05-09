@@ -12,7 +12,7 @@ const path = require('path');
 class Base extends Client {
     constructor() {
         super()
-        this.config = require('../../config.json');
+        this.config = require('../../config');
         this.dashboard = require('../Dashboard/server');
         this.permissionCheck = require('../Modules/permissionCheck');
         this.cooldownFunctions = require('../Modules/cooldownFunctions');
