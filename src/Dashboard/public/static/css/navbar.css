@@ -8,7 +8,7 @@
     color: #7289DA !important
 }
 
-.login_button {
+.loginButton {
     padding: 8px 8px 8px 8px;
     text-align: center;
     border: 2px solid #7289DA;
@@ -24,8 +24,12 @@
     z-index: 100
 }
 
-.login_button a {
+.loginButton a {
     text-decoration: none;
+    color: white
+}
+
+.loginButton a:hover {
     color: white
 }
 
@@ -34,13 +38,13 @@
     to {background-color: #7289DA }
 }
 
-.login_button:hover {
+.loginButton:hover {
     animation-name: login_button_anim;
     animation-duration: 250ms;
     animation-fill-mode: forwards;
 }
 
-.profile_part {
+.profilePart {
     font-weight: bold;
     font-size: 17px;
     margin-top: 15px;
@@ -51,11 +55,11 @@
     position: absolute
 }
 
-.profile_part a {
+.profilePart a {
     visibility: hidden
 }
 
-.profile_part img {
+.profilePart img {
     height: 35px;
     width: 35px;
     border-radius: 50%;
@@ -65,18 +69,18 @@
     vertical-align: middle
 }
 
-#profile_part_username {
+#profilePartUsername {
     margin-top: 2%;
     padding-top: 5px;
     float: left
 }
 
-#profile_part_discriminator {
+#profilePartDiscriminator {
     font-size: 13px !important;
     color: #9c9c9c !important
 }
 
-#profile_dropdown {
+#profileDropdown {
     background-color: #1d1d1d;
     width: 7rem;
     text-align: center;
@@ -90,13 +94,13 @@
     border-radius: 10px
 }
 
-#profile_dropdown {
+#profileDropdown {
     text-decoration: none;
     color: #d83434;
     font-weight: normal
 }
 
-#profile_dropdown:hover {
+#profileDropdown:hover {
     text-decoration: underline
 }
 
@@ -132,11 +136,11 @@
         display: none
     }
 
-    #login_button_collapsed {
+    #loginButtonCollapsed {
         visibility: visible !important;
     }
 
-    .profile_part {
+    .profilePart {
         padding: 20px 10px 15px 35px;
         background-color: #1a1a1a;
         margin-left: -3.5%;
@@ -147,27 +151,27 @@
         overflow: hidden;
     }
 
-    .profile_part img {
+    .profilePart img {
         margin-left: -15px
     }
 
-    .profile_part span {
+    .profilePart span {
         display: block
     }
 
-    .profile_part p {
+    .profilePart p {
         margin-top: -10px !important
     }
 
-    #profile_part_discriminator {
+    #profilePartDiscriminator {
         margin-top: -5px
     }
 
-    #profile_dropdown {
+    #profileDropdown {
         visibility: hidden
     }
 
-    .profile_part a {
+    .profilePart a {
         color: #d83434;
         font-weight: normal;
         text-decoration: none !important;
@@ -175,7 +179,7 @@
         visibility: visible
     }
 
-    .profile_part a {
+    .profilePart a {
         text-decoration: underline
     }
 

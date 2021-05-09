@@ -26,32 +26,32 @@ function getCookie(cname) {
 
 function userNotLoggedIn() {
 
-    $('.login_button').css('visibility', 'visible');
-    $('.profile_part').css('display', 'none');
+    $('.loginButton').css('visibility', 'visible');
+    $('.profilePart').css('display', 'none');
     return;
 }
 
 function userLoggedIn() {
 
-    $('.profile_part').css('visibility', 'visible');
-    $('#login_button_collapsed').css('display', 'none');
+    $('.profilePart').css('visibility', 'visible');
+    $('#loginButtonCollapsed').css('display', 'none');
     $('#support-link').css('margin-bottom', 112 + 'px');
     $('.navbar-brand').css('margin-top', -6.5 + 'rem')
   
       $(document).ready(function() {
-        $('.profile_part').click(() => {
-          const doc = document.getElementById("profile_dropdown");
-          if (doc.style.display === 'inline') return $('#profile_dropdown').fadeOut();
-          else return $('#profile_dropdown').fadeIn('medium');
+        $('.profilePart').click(() => {
+          const doc = document.getElementById("profileDropdown");
+          if (doc.style.display === 'inline') return $('#profileDropdown').fadeOut();
+          else return $('#profileDropdown').fadeIn('medium');
         })
       });
 }
 
 $(document).ready(function() {
-  $('#cookie_warn_close').click(() => {
-      $('.cookie_warning').fadeOut();
+  $('#cookieWarningButton').click(() => {
+      $('.cookieWarning').fadeOut();
       setCookie('readCookieWarn', true, 7);
   })
 
-  if (!getCookie('readCookieWarn')) return $('.cookie_warning').css('display', 'block');
+  if (!getCookie('readCookieWarn')) return $('.cookieWarning').css('display', 'block');
 })

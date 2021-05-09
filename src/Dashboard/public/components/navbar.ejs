@@ -25,19 +25,23 @@
               <li id="support-link" class="nav-item">
                 <a class="nav-link" href="/support">Support</a>
               </li>
-              <li style="visibility: hidden;" id="login_button_collapsed" class="nav-item">
+              <li style="visibility: hidden;" id="loginButtonCollapsed" class="nav-item">
                 <a class="nav-link" href="/oauth/login">Login</a>
               </li>
               <% if (userData) { %>
-                <div class="profile_part">
+                <div class="profilePart">
                   <img src="https://cdn.discordapp.com/avatars/<%= userData.id %>/<%= userData.avatar %>.png?size=4096">
-                  <p id="profile_part_username"><%= userData.username %><span id="profile_part_discriminator">#<%= userData.discriminator %> </span></p>
+                  <p id="profilePartUsername"><%= userData.username %><span id="profilePartDiscriminator">#<%= userData.discriminator %> </span></p>
                   <a href="/oauth/logout">Logout</a>
                 </div>
-                <a id="profile_dropdown" href="/oauth/logout">Logout</a>
+                <a id="profileDropdown" href="/oauth/logout">Logout</a>
               <% } %>  
             </ul>
           </div>
         </div>
       </nav>
+
+      <div onclick="window.location='/oauth/Login'" id="loginButton" class="loginButton">
+        <a href="/oauth/login">LOGIN</a>
+      </div>
 </html>
