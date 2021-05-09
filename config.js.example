@@ -1,0 +1,49 @@
+module.exports = {
+    bot: {
+        VERSION: "",
+        CLIENT_ID: "",
+        CLIENT_SECRET: "",
+        OWNER: "",
+        DATABASE: "", // Main URL: mongodb+srv://bot:qSQ1N3EwLnn6CQ2G@athenadb.md7cw.mongodb.net/Athena
+        TOKEN: ""
+    },
+
+    dashboard: {
+        REDIRECT_URI: "", // Main URL: https://athenabot.site/oauth/callback
+        LOGIN_URL: "" // Main URL: https://discord.com/api/oauth2/authorize?client_id=714109639301791804&redirect_uri=https%3A%2F%2Fathenabot.site%2Foauth%2Fcallback&response_type=code&scope=identify%20guilds
+    },
+
+    defaults: {
+        PREFIX: "at!",
+        ANGUAGE: "en-US"
+    },
+    
+    channels: {
+        COMMAND: "",
+        GUILD: "",
+        ERROR: "",
+        REPOR: ""
+    },
+
+    api: {
+        TOPGG: "",
+        BOTSFORDISCORD: "",
+        DISCORDBOTSGG: "",
+        DISCORDLISTSPACE: "",
+        BOATS: "",
+        DCBOTLISTCOM: "",
+        KSOFT: "",
+        OPENWEATHER: "",
+        MUSIXMATCH: "",
+        YOUTUBE: "",
+        HYPIXEL: "",
+        FORTSTAT: ""
+    },
+    
+    webhookTokens: {
+        TOPGG: "fAqHymFbGhea3aZ8dgf1iTR3F",
+        BOTSFORDISCORD: "WNStwGyz9ND0kfsZVFsAuZLfj",
+        DISCORDBOATS: "2kEoaiJWC1O3_KNWel2Co?Ma3",
+        DCBOTLISTCOM: "8YbEeuJ5Pwc-M?FM_G02kk9Zz"
+    }
+}
