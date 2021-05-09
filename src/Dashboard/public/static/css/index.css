@@ -8,7 +8,7 @@ body {
 
 
 ::-webkit-scrollbar {
-    width: 7px;
+    width: 5px;
 }
   
 
@@ -81,7 +81,7 @@ body {
 
 .botFeatures {
     width: 100%;
-    min-height: 1550px !important;
+    min-height: 1300px !important;
     height: auto;
     background-color: #1b1b1b;
     padding-top: 4%;
@@ -132,7 +132,8 @@ body {
 .inviteQuestion {
     margin-top: 4%;
     text-shadow: 2px 2px #7289DA;
-    text-align: center
+    text-align: center;
+    margin-bottom: 350px;
 }
 
 #inviteQuestionButton:hover {
