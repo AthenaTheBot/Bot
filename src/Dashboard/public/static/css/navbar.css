@@ -120,14 +120,14 @@
     }
 
     .navbar-toggler {
-        border: 0px solid transparent
+        border: none !important;
     }
 
     .nav-item {
         margin-left: 20%
     }
 
-    #profile_dropdown {
+    #profileDropdown {
         margin-top: 8%;
         margin-right: 8%
     }
@@ -138,6 +138,10 @@
 
     #loginButtonCollapsed {
         visibility: visible !important;
+    }
+
+    #loginButton {
+        display: none !important;
     }
 
     .profilePart {
