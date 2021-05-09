@@ -12,7 +12,7 @@ const run = async (client, message, args, locale, db) => {
 
     if (!str) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.INVALID_REPORT}`));
 
-    client.channels.cache.get(client.config.channels.REPORT).send(defaultEmbed.setDescription(`**Report Content**: \n ${str} \n \n **Reporter**: \n ${message.author.username}#${message.author.tag} | \`${message.author.id}\` `));
+    client.channels.cache.get(client.config.channels.REPORT).send(defaultEmbed.setDescription(`**Report Content**: \n ${str} \n \n **Reporter**: \n ${message.author.tag} | \`${message.author.id}\` `));
 
     return message.channel.send(successEmbed.setDescription(`${client.branding.emojis.success} ${locale.SUCCESS}`));
 }
