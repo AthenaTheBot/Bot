@@ -102,6 +102,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 45px;
 }
 
 .botFeature {
@@ -111,7 +112,7 @@ body {
     line-height: 1.5;
     padding: 15px;
     float: left;
-    margin: 35px;
+    margin: 55px;
     border-radius: 12px;
     -webkit-box-shadow: 0px 14px 52px -1px rgba(0,0,0,1);
     -moz-box-shadow: 0px 14px 52px -1px rgba(0,0,0,1);
@@ -140,50 +141,4 @@ body {
     box-shadow: 0px 14px 52px -1px rgba(0,0,0,1)
 }
 
-@media only screen and (max-width: 1540px) {
-
-    .feature {
-        margin-left: 5rem;
-    }
-
-    #feature_1 {
-        margin-left: 8rem
-    }
-
-    .bot_features {
-        min-height: 1250px !important;
-    }
-}
-
-@media only screen and (max-width: 500px) {
-
-    .cookie_warning {
-        font-size: 12px;
-    }
-
-    #cookie_warn_text {
-        margin-left: 5px;
-    }
-}
-
-@media only screen and (max-width: 826px) {
-
-    .bot_features {
-        min-height: 2150px !important;
-    }
-
-    .feature {
-        margin-left: 15%;
-    }
-
-    #feature_1 {
-        margin-left: 15% !important;
-    }
-}
-
-@media only screen and (max-width: 990px) {
-
-    #feature_1 {
-        margin-left: 10rem;
-    }
-}
+@media only screen and (max-width: 1540px) {}
