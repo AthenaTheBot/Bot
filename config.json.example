@@ -1,15 +1,15 @@
 {
     "bot": {
-        "VERSION": "v2.2.3",
-        "CLIENT_ID": "714109639301791804",
-        "CLIENT_SECRET": "hZH2hvoyGeRWriVOH9WryuGDPaGn8y14",
-        "OWNER": "319206863017082890",
-        "DATABASE": "mongodb://localhost:27017/Athena",
-        "TOKEN": "NzE0MTA5NjM5MzAxNzkxODA0.Xsp4bQ.m3vXPSJxS0xHZNpEJZYVsLDcv3A"
+        "VERSION": "",
+        "CLIENT_ID": "",
+        "CLIENT_SECRET": "",
+        "OWNER": "",
+        "DATABASE": "",
+        "TOKEN": ""
     },
 
     "dashboard": {
-        "REDIRECT_URI": "https://athenabot.site/oauth/callback"
+        "REDIRECT_URI": ""
     },
 
     "defaults": {
@@ -18,31 +18,31 @@
     },
     
     "channels": {
-        "COMMAND": "780691792692641822",
-        "GUILD": "820959588550967356",
-        "ERROR": "781415252214022186",
-        "REPORT": "793207822543224872"
+        "COMMAND": "",
+        "GUILD": "",
+        "ERROR": ""
+        "REPORT": ""
     },
 
     "api": {
-        "TOPGG": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxNDEwOTYzOTMwMTc5MTgwNCIsImJvdCI6dHJ1ZSwiaWF0IjoxNjA0ODQwMjk0fQ.s_anWcTSZxfzyTtS4puPjEX4Ofr0Hphdfy9gSpac7Ho",
-        "BOTSFORDISCORD": "cadfc59a64648eb9e4dbc7f1201e055755f191b7fe4a96fe5bcdaf8692078ba500493ef10eb6fb7fb0ffecfef180ffbbb6e9f514fa550406bd2ec19480033a03",
-        "DISCORDBOTSGG": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGkiOnRydWUsImlkIjoiMzE5MjA2ODYzMDE3MDgyODkwIiwiaWF0IjoxNjIwMDYzNzQ2fQ.bwtCS1MrheKV6tOrIvgaWZc_jEFdztVYbUj_TdNQ5G4",
-        "DISCORDLISTSPACE": "70763aa3e1d4658795457a4082951ba98154c4cce0d9a2bde0448f7887b97a541c613177a9d0b648c77ee986c9efd50f",
-        "BOATS": "Dt8iZ3nQiPmR5hCoH3Flx3kQfC0e0ShxUtKpgrt1iCYIX4jZgaymqjG9DoKIFWSLRousr0g3HGfTnvB3Qevn4V4EuLVrznfWOMNLJ8d0sjb4fTtRlmifq7jYqRSaPAaVmNUm4Atiqagcb5bQhryQTRPSekg",
-        "DCBOTLISTCOM": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0IjoxLCJpZCI6IjcxNDEwOTYzOTMwMTc5MTgwNCIsImlhdCI6MTYxMjcyNjc1OH0.mjQ9Bpw0hhH3cNA6l5jBRKNOu_PqvnNXggCl1jfkS_8",
-        "KSOFT": "3nY8KaKDRyLpFIAciMzD3fzsGUaKe03vtsnTF9ql",
-        "OPENWEATHER": "73091995b973d1817e403a448ad4a4ef",
-        "MUSIXMATCH": "e3f59a5e86a2c9f0cffb000489794d92",
-        "YOUTUBE": "AIzaSyB_Bn8iPuvErEXvQgs9aPd9ZPlwPkWI2Rw",
-        "HYPIXEL": "c9e342b8-5995-48bd-9b59-0a22ae9b952e",
-        "FORTSTAT": "5aa6129b-cd43-43af-b0ac-9fccdf146b19"
+        "TOPGG": "",
+        "BOTSFORDISCORD": "",
+        "DISCORDBOTSGG": "",
+        "DISCORDLISTSPACE": "",
+        "BOATS": "",
+        "DCBOTLISTCOM": "",
+        "KSOFT": "",
+        "OPENWEATHER": "",
+        "MUSIXMATCH": "",
+        "YOUTUBE": "",
+        "HYPIXEL": "",
+        "FORTSTAT": ""
     },
     
     "webhookTokens": {
-        "TOPGG": "fAqHymFbGhea3aZ8dgf1iTR3F",
-        "BOTSFORDISCORD": "WNStwGyz9ND0kfsZVFsAuZLfj",
-        "DISCORDBOATS": "2kEoaiJWC1O3_KNWel2Co?Ma3",
-        "DCBOTLISTCOM": "8YbEeuJ5Pwc-M?FM_G02kk9Zz"
+        "TOPGG": "",
+        "BOTSFORDISCORD": "",
+        "DISCORDBOATS": "?Ma3",
+        "DCBOTLISTCOM": ""
     }
 }
