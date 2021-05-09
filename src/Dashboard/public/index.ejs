@@ -17,43 +17,7 @@
 </head>
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
-    <div class="container-fluid">
-      <a style="margin-left: 2%;" class="navbar-brand" href="#">
-        <img src="https://i.imgur.com/YfKn5dP.png" alt="" width="50" height="50">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link disabled" aria-current="page" href="/"><span style="text-decoration: underline; color: #7289DA">Home</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#features">Features</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/dashboard">Dashboard</a>
-          </li>
-          <li id="support-link" class="nav-item">
-            <a class="nav-link" href="/support">Support</a>
-          </li>
-          <li style="visibility: hidden;" id="login_button_collapsed" class="nav-item">
-            <a class="nav-link" href="/oauth/login">Login</a>
-          </li>
-          <% if (userData) { %>
-            <div class="profile_part">
-              <img src="https://cdn.discordapp.com/avatars/<%= userData.id %>/<%= userData.avatar %>.png?size=4096">
-              <p id="profile_part_username"><%= userData.username %><span id="profile_part_discriminator">#<%= userData.discriminator %> </span></p>
-              <a href="/oauth/logout">Logout</a>
-            </div>
-            <a id="profile_dropdown" href="/oauth/logout">Logout</a>
-          <% } %>  
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <%- include('./components/navbar')  %> 
 
   <div onclick="window.location='/oauth/Login'" id="login_button" class="login_button">
     <a href="/oauth/login">LOGIN</a>
@@ -107,35 +71,7 @@
     <a id="bot_features_end_button" href="/invite" style="margin-top: 30px; background-color: #7289DA; border-color: #7289DA;" class="btn btn-primary btn-lg" tabindex="-1" role="button" aria-disabled="true">Invite Athena!</a>
   </div>
 
-  <div class="footer">
-    <div class="brand">
-      <img src="https://i.imgur.com/YfKn5dP.png" alt="Athena">
-      <p>Athena is a multi functional discord bot which aims to give many services as it can give.</p>
-    </div>
-
-    <div class="links">
-      <p style="font-weight: bold;">Athena</p>
-      <ul>
-        <li id="links_item"><a id="links_item" href="/commands">Commands</a></li>
-        <li id="links_item"><a id="links_item" href="/privacy">Privacy Policy</a></li>
-        <li id="links_item"><a id="links_item" href="/tos">Terms Of Service</a></li>
-        <li id="links_item"><a id="links_item" style="cursor: pointer;" onclick="window.location='mailto:mail@example.org';">Contact Us</a></li>
-      </ul>
-    </div>
-
-    <div id="links_right" class="links" style="margin-left: 70%;">
-      <p style="font-weight: bold;">Find Us</p>
-      <ul>
-        <li id="links_item"><a id="links_item" href="https://top.gg/bot/714109639301791804">Top.gg</a></li>
-        <li id="links_item"><a id="links_item" href="https://botsfordiscord.com/bot/714109639301791804">Bots For Discord</a></li> 
-        <li id="links_item"><a id="links_item" href="https://discord.bots.gg/bots/714109639301791804">Discord.bots.gg</a></li>
-      </ul>
-    </div>
-
-    <div class="tuna">
-      <p style="margin-right: 1rem; font-size: 12px;">Designed by <span onclick="window.location='http://tunas.fun'" style="color: #7289DA; font-family: Jura; cursor: pointer;">tuna</span></p>
-    </div>
-  </div>
+  <%- include('./components/footer') %> 
 
   <% if (!userData) { %>
     <script> userNotLoggedIn(); </script>
