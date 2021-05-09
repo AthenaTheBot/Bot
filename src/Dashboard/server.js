@@ -37,35 +37,11 @@ module.exports = (client) => {
     app.use(express.static(`${__dirname}/public`));
             
     app.get('/', async (req, res) => {
-    
-        if (req.cookies) {
-
-            if (req.cookies._ud) {
-                app.locals.userData = await encryptor.decrypt(req.cookies._ud);
-                app.locals.userLoggedIn = true;
-            }
-            else {
-                app.locals.userData = { id: null, username: null, discriminator: null, avatar: null };
-                app.locals.userLoggedIn = false;
-            }
-    
-            if (req.cookies._ug) {
-                app.locals.userGuilds = await encryptor.decrypt(req.cookies._ug);
-                app.locals.userLoggedIn = true;
-            }
-            else {
-                app.locals.userGuilds = { guilds: null };
-                app.locals.userLoggedIn = false;
-            }
-    
-        } else {
-    
-            app.locals.userData = {  id: null, username: null, discriminator: null, avatar: null };
-            app.locals.userGuilds = { guilds: null };
-            app.locals.userLoggedIn = false;
-        }
-    
-        return res.render('index');
+        
+        return res.render('index', {
+            userData: await encryptor.decrypt(req.cookies._ud),
+            userGuilds: await encryptor.decrypt(req.cookies._ug)
+        });
     })
     
     app.get('/invite', (req, res) => {

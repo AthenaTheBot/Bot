@@ -42,7 +42,7 @@
           <li style="visibility: hidden;" id="login_button_collapsed" class="nav-item">
             <a class="nav-link" href="/oauth/login">Login</a>
           </li>
-          <% if (userLoggedIn) { %>
+          <% if (userData) { %>
             <div class="profile_part">
               <img src="https://cdn.discordapp.com/avatars/<%= userData.id %>/<%= userData.avatar %>.png?size=4096">
               <p id="profile_part_username"><%= userData.username %><span id="profile_part_discriminator">#<%= userData.discriminator %> </span></p>
@@ -137,7 +137,7 @@
     </div>
   </div>
 
-  <% if (userLoggedIn === false) { %>
+  <% if (!userData) { %>
     <script> userNotLoggedIn(); </script>
   <% } else { %>
     <script> userLoggedIn(); </script>
