@@ -1,0 +1,5 @@
+{
+    "SPECIFY_SONG": "Please, specify a song to look at its lyrics.",
+    "NOT_FOUND": "Song lyrics not found on Musixmatch.",
+    "SPECIAL_CHAR": "You can't use special characters in this command!"
+}

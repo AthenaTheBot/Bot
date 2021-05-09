@@ -1,0 +1,15 @@
+{
+    "LANG": "en",
+    "NO_CITY": "Please, specify a city.",
+    "SPECIAL_CHAR": "You can't use special characters in this command!",
+    "TITLE": "Weather Forecast",
+    "WEATHER": "Weather",
+    "TEMP": "Temperature",
+    "FEELSLIKE": "Feels Like",
+    "HUMIDITY": "Humidity",
+    "WIND": "Wind",
+    "PRESSURE": "Pessure",
+    "CITY_NOT_FOUND": "City Not Found!",
+    "CITY_NOT_FOUND_DESC": "The city couldn't found on the list. Please specify a valid city. If you think this an error please report the error! \n \n **[[Athena Support Server](https://discord.gg/etsgB9J)]**",
+    "ERROR_MSG": "An error occured on our side, while trying to get the weather condition of the specified city. Please try again later. (If this problem keeps appearing please [report us](http://athenabot.site/support) the problem)"
+}

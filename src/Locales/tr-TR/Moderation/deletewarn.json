@@ -1,0 +1,5 @@
+{
+    "INVALID_USER": "Lütfen, uyarılarını silmek için bir kişi belirtin.",
+    "ERROR_MSG": "Uyarı sayısı alınırken, bizim tarafımızda bir hata meydana geldi. Lütfen daha sonra tekrar deneyin. (Eğer bu hata devam ederse lütfen [bize bu hatayı bildirin](http://athenabot.site/support))",
+    "REMOVED_WARNINGS": "**$user**'nın bütün uyarıları silindi."
+}

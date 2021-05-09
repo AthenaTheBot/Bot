@@ -1,0 +1,38 @@
+{
+  "name": "athena",
+  "version": "2.2.3",
+  "description": "Multi functional discord bot with lots of commands.",
+  "main": "src/athena.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "discord",
+    "athena",
+    "bot",
+    "multifunctional"
+  ],
+  "author": "Tuna",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/opus": "^0.5.0",
+    "canvacord": "^5.2.0",
+    "canvas": "^2.7.0",
+    "colors": "^1.4.0",
+    "cookie-parser": "^1.4.5",
+    "discord-oauth2": "^2.6.0",
+    "discord-ytdl-core": "^5.0.2",
+    "discord.js": "^12.5.3",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "ffmpeg-static": "^4.3.0",
+    "figlet": "^1.5.0",
+    "moment": "^2.29.1",
+    "mongoose": "^5.12.5",
+    "node-fetch": "^2.6.1",
+    "simple-encryptor": "^4.0.0",
+    "ytdl-core": "^4.5.0",
+    "ytdl-core-discord": "^1.3.0",
+    "ytsr": "^3.4.1"
+  }
+}

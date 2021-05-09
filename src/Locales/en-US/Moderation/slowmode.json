@@ -1,0 +1,11 @@
+{
+    "NEED_PERM": "You don't have enough permissions to use this command buddy.",
+    "BOT_NEED_PERM": "Athena needs `manage channels` permission to perform this action.",
+    "SPECIFY_ARG": "Please, specify a **valid** value to set slowmode in this channel. \n \n Examples: \n `!slowmode 10s` --> 10 Seconds per message \n `!slowmode 3m` --> 3 Minutes per message \n `!slowmode 2h` --> 2 Hour per message",
+    "ERROR_MSG": "An error occured while trying to change slowmode status.",
+    "SUCCESSFUL_ON": "Slowmode has been set to **$value** in this channel.",
+    "SUCCESSFUL_OFF": "Slowmode has been disabled in this channel.",
+    "SECONDS": "second(s)",
+    "MINUTES": "minute(s)",
+    "HOURS": "hour(s)"
+}

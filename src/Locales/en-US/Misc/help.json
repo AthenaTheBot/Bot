@@ -1,0 +1,14 @@
+{
+    "INVALID_COMMAND": "The specified command couldn't found on the Athena. You can get a command list by using `help`.",
+    "COMMAND_NAME": "Name",
+    "COMMAND_ALIASES": "Aliases",
+    "COMMAND_COOLDOWN": "Cooldown",
+    "COMMAND_DESCRIPTION": "Description",
+    "REQUIRED_PERMS": "Required Perms",
+    "COMMAND_USAGE": "Usage",
+    "NONE": "None",
+    "TITLE": "Information about, $command",
+    "MAIN_TITLE": "Athena - Help Menu",
+    "MAIN_DESC": "*In order to get information about specific command*: \n ➔ `!help [Command Name]`",
+    "LINKS": "Links"
+}

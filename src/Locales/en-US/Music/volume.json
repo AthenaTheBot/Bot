@@ -1,0 +1,6 @@
+{
+    "ALREADY_NOT_PLAYING": "Athena already not playing a song!",
+    "NOT_SAME_VC": "You have to be in a same voice channel with Athena to use this command!",
+    "INVALID_NUMBER": "Please specify a **valid number** between 0 and 100.",
+    "SET_VOLUME": "Volume has been set to **$volume**%."
+}

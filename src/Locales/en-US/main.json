@@ -1,0 +1,8 @@
+{
+    "NEED_PERM": "You don't have enough permissions to use this command buddy. \n **Required Perm(s)**: $RequiredPerms",
+    "BOT_NEED_PERM": "Athena needs some permission(s) to perform this action. \n **Required Perm(s)**: $RequiredBotPerms",
+    "LINKS_PORHIBITED": "Links are porhibited on this channel.",
+    "COOLDOWN_WARNING": "You are in cooldown! Please wait a while to use `$commandName` command again.",
+    "INSUFFICENT_PERM": "Athena cannot send message in that channel. Maybe try giving `send messages` and `embed links` permissions to Athena?",
+    "VOTE_MSG": "$emoji Thank you for voting, **$user**!"
+}

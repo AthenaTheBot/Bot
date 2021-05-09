@@ -1,0 +1,13 @@
+{
+    "NEED_PERM": "You don't have enough permissions to use this command buddy.",
+    "BOT_NEED_PERM": "Athena needs `kick members` permission to perform this action.",
+    "NO_MENTION": "Please, mention someone to kick him/her.",
+    "CANNOT_KICK_YOURSELF": "You cannot kick yourself!",
+    "CANNOT_KICK_MYSELF": "Athena cannot kick itself, you are rude!",
+    "NOT_ENOUGH_PERMS": "You don't have enough permissions to kick that person.",
+    "BOT_NOT_ENOUGH_PERMS": "Athena doesn't have enough permissions to kick that person.",
+    "ERROR_MSG": "An error occured while trying to kick that person.",
+    "NO_REASON": "Unspecified",
+    "SUCCESSFUL": "has been kicked from the server.",
+    "YOU_HAVE_BEEN_KICKED": "You have been kicked from **$guild**. \n \n Reason: $reason"
+}

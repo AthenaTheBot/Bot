@@ -1,0 +1,6 @@
+{
+    "NEED_PERM": "Bu komutu kullanmak için yeterkli yetkilere sahip değilsin dostum.",
+    "CURRENT_PREFIX": "Athena'nın **$guild**'deki ön eki: `$prefix`",
+    "SUCCESS": "Sunucu ön eki başarıyla değiştirildi. **Yeni önek**: `$new_prefix`",
+    "ERROR_MSG": "Sunucu ön eki ayarlanılırken bir hata meydana geldi, lütfen daha sonra tekrar deneyiniz. \n \n ```$error```"
+}

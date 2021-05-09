@@ -1,0 +1,9 @@
+{
+    "LANG1": "İngilizce",
+    "LANG2": "Türkçe",
+    "NEED_PERM": "Bu komutu kullanmak için yeterkli yetkilere sahip değilsin dostum.",
+    "CURRENT_LANGUAGE": "**$guild** sunucusundaki dilim: **$language**",
+    "INVALID_LANGUAGE": "Lütfen, geçerli bir dil belirtin. **Geçerli diller**: `$languages`",
+    "SUCCESS": "Sunucu dili başarıyla **Türkçe** olarak değiştirildi.",
+    "ERROR_MSG": "Sunucu dili ayarlanmaya çalışılırken bir hata meydana geldi, lütfen daha sonra tekrar deneyin. \n \n ```$error```"
+}

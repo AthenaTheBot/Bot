@@ -1,0 +1,15 @@
+{
+    "LANG": "tr",
+    "NO_CITY": "Lütfen, bir şehir belirtin.",
+    "SPECIAL_CHAR": "Bu komut içerisinde özel karakter kullanılamaz!",
+    "TITLE": "Hava Durumu",
+    "WEATHER": "Hava Durumu",
+    "TEMP": "Sıcaklık",
+    "FEELSLIKE": "Hissedilen",
+    "HUMIDITY": "Nem",
+    "WIND": "Rüzgar",
+    "PRESSURE": "Basınç",
+    "CITY_NOT_FOUND": "Şehir Bulunamadı!",
+    "CITY_NOT_FOUND_DESC": "Şehir, listede bulunamadı. Lütfen geçerli bir şehir belirtin. Eğer bunun bir hata olduğunu düşünüyorsanız lütfen hatayı bize bildirin! \n \n **[[Athena Destek Sunucu]( https://discord.gg/etsgB9J)]**",
+    "ERROR_MSG": "Belirtilen şehrin hava durumu alınırken bir hata meydana geldi. Lütfen daha sonra tekrar deneyin. (Eğer bu hata devam ederse lütfen [bize bu hatayı bildirin](http://athenabot.site/support))"
+}

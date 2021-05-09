@@ -1,0 +1,11 @@
+{
+    "NOT_IN_VC": "Şarkı çalabilmek için bir ses kanalında bulunmalısınız.",
+    "SPECIFY_SONG": "Lütfen çalmak için bir müzik ismi yada linki belirtin.",
+    "QUEUE_ENDED": "Sıra bitti.",
+    "ADDED_TO_THE_QUEUE": "Şarkı sıraya eklendi. Şarkı: ",
+    "NOW_PLAYING": "Şuanda çalıyor: ",
+    "SONG_NOT_FOUND": "Belirtilen şarkı YouTube üzeirnde bulunamadı, lütfen daha sonra tekrar deneyin.",
+    "INACTIVE_FOR_TOO_LONG": "Athena ses kanalında bulunan inaktif dolayısıyla ayrıldı",
+    "ERROR_MSG": "Müzik sıraya eklenirken, bizim tarafımızda beklenmedik bir hata meydana geldi. Lütfen daha sonra tekrar deneyin. Eğer bu hatayı almaya devam ederseniz lütfen bize bu hatayı bildirin. \n \n [Athena Destek Sunucusu](http://athenabot.site/support)",
+    "PERM_ERROR": "Athena'nın o kanala katılmak için yeterli yekisi yok."
+}

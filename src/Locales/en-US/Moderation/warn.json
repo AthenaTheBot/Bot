@@ -1,0 +1,15 @@
+{
+    "NEED_PERM": "You don't have enough permissions to use this command buddy.",
+    "BOT_NEED_PERM": "Athena needs `kick members` and `ban members` permissions to perform this action.",
+    "CANNOT_WARN_YOURSELF": "You cannot warn yourself!",
+    "CANNOT_WARN_MYSELF": "Athena cannot warn itself, you are rude what did he do ?",
+    "NOT_ENOUGH_PERMS": "You don't have enough permissions to warn that person.",
+    "BOT_NOT_ENOUGH_PERMS": "Athena doesn't have enough permissions to warn that person.",
+    "INVALID_MEMBER": "Please, specify a **valid** member.",
+    "ERROR_MSG": "An error occured on our side, while trying to set warning counts. Please try again later. (If this problem keeps appearing please [report us](http://athenabot.site/support) the problem)",
+    "KICK_ERROR": "An error occured while trying to kick that person.",
+    "BAN_ERROR": "An error occured while trying to ban that person.",
+    "KICKED": "**_user**, now has `_count` warning and kicked from the server.",
+    "BANNED": "**_user**, now has `_count` warning and banned from the server.",
+    "WARNED": "**_user**, has been warned, now he/she has `_count` warning."
+}

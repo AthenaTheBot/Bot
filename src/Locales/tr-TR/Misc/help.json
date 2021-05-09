@@ -1,0 +1,14 @@
+{
+    "INVALID_COMMAND": "Belirtilen komut Athena üzerinde bulunmadı. Komut listesini `yardım` komutunu kullanarak alabilirsiniz.",
+    "COMMAND_NAME": "İsim",
+    "COMMAND_ALIASES": "İkincil İsim",
+    "COMMAND_COOLDOWN": "Bekleme Süresi",
+    "COMMAND_DESCRIPTION": "Açıklama",
+    "REQUIRED_PERMS": "Gerekli Yetkiler",
+    "COMMAND_USAGE": "Kullanım",
+    "NONE": "Yok",
+    "TITLE": "$command, Hakkında bilgi",
+    "MAIN_TITLE": "Athena - Yardım Menüsü",
+    "MAIN_DESC": "*Bir komut hakkında bilgi almak için:* \n ➔ `help [Command Name]`",
+    "LINKS": "Linkler"
+}

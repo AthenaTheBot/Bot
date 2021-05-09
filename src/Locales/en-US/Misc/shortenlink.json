@@ -1,0 +1,5 @@
+{
+    "INVALID_LINK": "Please specify a valid link.",
+    "ERROR_MSG": "An unexpected error occured on our site, while trying to shorten the link. Please try again later. (If this problem keeps appearing please [report us](http://athenabot.site/support) the problem)",
+    "SUCCESS": "The link has been shortened successfully! \n Link: $link"
+}

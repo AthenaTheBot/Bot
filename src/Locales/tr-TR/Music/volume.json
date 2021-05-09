@@ -1,0 +1,6 @@
+{
+    "ALREADY_NOT_PLAYING": "Şuanda zaten Athena bir şarkı çalmıyor.",
+    "NOT_SAME_VC": "Bu komutu kullanmak için Athena ile aynı ses kanalında olmalısın!",
+    "INVALID_NUMBER": "Lütfen 0 ile 100 arasında **geçerli** bir **sayı** belirtin.",
+    "SET_VOLUME": "Şarkı sesi %**$volume** olarak ayarlandı."
+}

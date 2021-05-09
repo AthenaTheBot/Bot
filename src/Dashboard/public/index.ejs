@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/88e62b65ed.js" crossorigin="anonymous"></script>
+    <script src="scripts/jquery-min.js"></script>
+    <script src="static/scripts/jquery-3.5.1.min.js"></script>
+    <script src="static/scripts/bootstrap.min.js"></script>
+    <script src="static/scripts/script.js"></script>
+    <link rel="stylesheet" href="static/css/bootstrap-min.css">
+    <link rel="stylesheet" href="static/css/index.css">
+    <link rel="icon" type="image/png" href="./icon.ico">
+    <title>Athena - The Discord Bot</title>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+    <div class="container-fluid">
+      <a style="margin-left: 2%;" class="navbar-brand" href="#">
+        <img src="https://i.imgur.com/YfKn5dP.png" alt="" width="50" height="50">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link disabled" aria-current="page" href="/"><span style="text-decoration: underline; color: #7289DA">Home</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#features">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard">Dashboard</a>
+          </li>
+          <li id="support-link" class="nav-item">
+            <a class="nav-link" href="/support">Support</a>
+          </li>
+          <li style="visibility: hidden;" id="login_button_collapsed" class="nav-item">
+            <a class="nav-link" href="/oauth/login">Login</a>
+          </li>
+          <% if (userLoggedIn) { %>
+            <div class="profile_part">
+              <img src="https://cdn.discordapp.com/avatars/<%= userData.id %>/<%= userData.avatar %>.png?size=4096">
+              <p id="profile_part_username"><%= userData.username %><span id="profile_part_discriminator">#<%= userData.discriminator %> </span></p>
+              <a href="/oauth/logout">Logout</a>
+            </div>
+            <a id="profile_dropdown" href="/oauth/logout">Logout</a>
+          <% } %>  
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div onclick="window.location='/oauth/Login'" id="login_button" class="login_button">
+    <a href="/oauth/login">LOGIN</a>
+  </div>
+
+  <noscript>
+    <div class="warning_noscript">
+      <h3>Warning!</h3>
+      <p>You have to enable javascript to visit this page with full functionality.</p>
+    </div>
+  </noscript>
+
+  <div class="cookie_warning">
+    <p id="cookie_warn_text">🍪 We use cookies to ensure that we give the full functionality of our site. <a style="color: #7289DA; text-decoration: none;" href="/privacy">Learn more</a></p>
+    <i id="cookie_warn_close" class="fas fa-times"></i>
+  </div>
+
+  <div class="short_description">
+    <h3>A discord bot that can ful-fil your server needs...</h3>
+    <p>Athena is a multi functional discord bot with fortnite stats, minecraft server information, weather forecast and much more!</p>
+  </div>
+
+  <div id="features" class="bot_features">
+    <h3>Some Features of Athena</h3>
+    <p>Here you can find some of Athena's interesting features.</p>
+    <br/><br/>
+
+    <div id="feature_1" class="feature">
+      <h3 id="feature_title">Music</h3>
+      <p id="feature_description">Athena has a powerful music module which you can listen music from spotify and youtube. Sssh little tip: You can set the volume as well :)</p>
+    </div>
+
+    <div class="feature">
+      <h3 id="feature_title">Moderation</h3>
+      <p id="feature_description">With Athena's big range of moderation commands you can moderate your sever easily and fastly!</p>
+    </div>
+
+    <div class="feature">
+      <h3 id="feature_title">Fun</h3>
+      <p id="feature_description">Do you like fun commands such as magik ? Cause we do and we put some fun commands to Athena that you may love!</p>
+    </div>
+
+    <div class="feature">
+      <h3 id="feature_title">Misc</h3>
+      <p id="feature_description">Other commands that we couldn't put in a section such as minecraft <strong>server information</strong> or <strong>weather forecast</strong>.</p>
+    </div>
+  </div>
+
+  <div class="bot_features_end">
+    <h1>Ready to try Athena ?</h1>
+    <a id="bot_features_end_button" href="/invite" style="margin-top: 30px; background-color: #7289DA; border-color: #7289DA;" class="btn btn-primary btn-lg" tabindex="-1" role="button" aria-disabled="true">Invite Athena!</a>
+  </div>
+
+  <div class="footer">
+    <div class="brand">
+      <img src="https://i.imgur.com/YfKn5dP.png" alt="Athena">
+      <p>Athena is a multi functional discord bot which aims to give many services as it can give.</p>
+    </div>
+
+    <div class="links">
+      <p style="font-weight: bold;">Athena</p>
+      <ul>
+        <li id="links_item"><a id="links_item" href="/commands">Commands</a></li>
+        <li id="links_item"><a id="links_item" href="/privacy">Privacy Policy</a></li>
+        <li id="links_item"><a id="links_item" href="/tos">Terms Of Service</a></li>
+        <li id="links_item"><a id="links_item" style="cursor: pointer;" onclick="window.location='mailto:mail@example.org';">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <div id="links_right" class="links" style="margin-left: 70%;">
+      <p style="font-weight: bold;">Find Us</p>
+      <ul>
+        <li id="links_item"><a id="links_item" href="https://top.gg/bot/714109639301791804">Top.gg</a></li>
+        <li id="links_item"><a id="links_item" href="https://botsfordiscord.com/bot/714109639301791804">Bots For Discord</a></li> 
+        <li id="links_item"><a id="links_item" href="https://discord.bots.gg/bots/714109639301791804">Discord.bots.gg</a></li>
+      </ul>
+    </div>
+
+    <div class="tuna">
+      <p style="margin-right: 1rem; font-size: 12px;">Designed by <span onclick="window.location='http://tunas.fun'" style="color: #7289DA; font-family: Jura; cursor: pointer;">tuna</span></p>
+    </div>
+  </div>
+
+  <% if (userLoggedIn === false) { %>
+    <script> userNotLoggedIn(); </script>
+  <% } else { %>
+    <script> userLoggedIn(); </script>
+  <% } %>
+</body>
+</html>

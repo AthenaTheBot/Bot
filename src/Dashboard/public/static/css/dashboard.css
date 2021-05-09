@@ -1,0 +1,21 @@
+body {
+    background-color: #292929;
+    color: white;
+    text-align: center !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.main {
+    margin-top: 15%;
+    text-shadow: 2px 2px #7289DA;
+}
+
+.main a {
+    text-decoration: none;
+    color: #7289DA;
+    text-shadow: 1px 1px transparent;
+}
+
+.main a:hover {
+    text-decoration: underline;
+}

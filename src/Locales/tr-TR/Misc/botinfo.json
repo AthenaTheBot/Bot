@@ -1,0 +1,15 @@
+{
+    "PREFIX": "Sunucu Prefixi",
+    "RAM_USAGE": "Ram Kullanımı",
+    "PING": "Gecikme",
+    "UPTIME": "Çalışma Süresi",
+    "DISCORDJS": "Discord.JS Versionu",
+    "NODEJS": "Node.JS Versionu",
+    "DAY": "Gün",
+    "HOUR": "Saat",
+    "MINUTE": "Dakika",
+    "SECOND": "Saniye",
+    "GUILD_COUNT": "Sunucu Sayısı",
+    "USER_COUNT": "Kullanıcı Sayısı",
+    "SHARD_COUNT": "Shard Sayısı"
+}

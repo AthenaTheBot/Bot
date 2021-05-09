@@ -1,0 +1,8 @@
+{
+    "NEED_PERM": "Bu komutu kullanmak için yeterkli yetkilere sahip değilsin dostum. \n **Gerekli Yetkiler**: $RequiredPerms",
+    "BOT_NEED_PERM": "Athena'nın bu işlemi yerine getirmesi için bazı yetkilere sahip olması gerekiyor. \n **Gerkli Yetkiler**: $RequiredBotPerms",
+    "LINKS_PORHIBITED": "Linkler bu kanal üzerinde yasak!",
+    "COOLDOWN_WARNING": "Soğumadasınız! Lütfen `$commandName` komutunu tekrar kullanmak için biraz bekleyin!",
+    "INSUFFICENT_PERM": "Athena o kanalda mesaj gönderemiyor. Belkide Athena'ya `mesaj gönder` ve `embed linkler` yetkilerini vermeyi denemelisin?",
+    "VOTE_MSG": "$emoji Oy verdiğin için teşekkür ederiz **$user**!"
+}

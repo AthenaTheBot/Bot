@@ -1,0 +1,9 @@
+{
+    "LANG1": "English",
+    "LANG2": "Turkish",
+    "NEED_PERM": "You don't have enough permissions to use this command buddy.",
+    "CURRENT_LANGUAGE": "My current language on **$guild** is: **$language**",
+    "INVALID_LANGUAGE": "Please, specify a valid language. **Available languages**: `$languages`",
+    "SUCCESS": "Successfully changed the guild language to **English**.",
+    "ERROR_MSG": "An error occured while trying to set the server language, please try again later. \n \n ```$error```"
+}

@@ -1,0 +1,7 @@
+{
+    "ALREADY_NOT_PLAYING": "Athena already not playing a song!",
+    "NOT_SAME_VC": "You have to be in a same voice channel with Athena to use this command!",
+    "SKIPPED_SONG": "Song has been skipped.",
+    "NO_MUSIC_TO_SKIP": "There is no music(s) to skip.",
+    "QUEUE_ENDED": "Queue has been finished."
+}

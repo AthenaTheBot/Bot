@@ -1,0 +1,15 @@
+{
+    "PREFIX": "Server Prefix",
+    "RAM_USAGE": "Ram Usage",
+    "PING": "Ping",
+    "UPTIME": "Uptime",
+    "DISCORDJS": "Discord.JS Version",
+    "NODEJS": "Node.JS Version",
+    "DAY": "Day",
+    "HOUR": "Hour",
+    "MINUTE": "Minute",
+    "SECOND": "Second",
+    "GUILD_COUNT": "Guild Count",
+    "USER_COUNT": "User Count",
+    "SHARD_COUNT": "Shard Count"
+}

@@ -1,0 +1,14 @@
+{
+    "UNAVAILABLE": "This command is currently under maintaince, thank you for your patience!",
+    "NEED_PERM": "You don't have enough permissions to use this command buddy.",
+    "BOT_NEED_PERM": "Athena needs `manage roles` permission to perform this action.",
+    "AUTOROLE_CLOSED": "Auto role system is disabled here. Looks like quiet...",
+    "AUTOROLE_GENERAL": "**Auto role status**: \n `On` \n \n **Role**: \n $role",
+    "CANNOT_GIVE_THAT_ROLE": "Athena doesn't have enough permissions to give that role to anyone.",
+    "CANNOT_GIVE_SERVICE_ROLE": "Athena can't give a role that is managed by other bots/services.",
+    "SUCCESS": "Successfully enabled auto role system. **Role**: $new_role ", 
+    "ALREADY_OFF": "The auto role is already disabled on this server.",
+    "SAME_ROLE": "The mentioned role is the same as the current role.",
+    "CLOSED": "Successfully closed auto role system.",
+    "ERROR_MSG": "An unexpected error occured on our site, while trying to set auto role. Please try again later. (If this problem keeps appearing please [report us](http://athenabot.site/support) the problem)"
+}

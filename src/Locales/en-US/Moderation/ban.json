@@ -1,0 +1,13 @@
+{
+    "NEED_PERM": "You don't have enough permissions to use this command buddy.",
+    "BOT_NEED_PERM": "Athena needs `ban members` permission to perform this action.",
+    "NO_MENTION": "Please, mention someone to ban him/her.",
+    "CANNOT_BAN_YOURSELF": "You cannot ban yourself!",
+    "CANNOT_BAN_MYSELF": "Athena cannot ban itself, you are rude!",
+    "NOT_ENOUGH_PERMS": "You don't have enough permissions to ban that person.",
+    "BOT_NOT_ENOUGH_PERMS": "Athena doesn't have enough permissions to ban that person.",
+    "ERROR_MSG": "An error occured while trying to ban that person.",
+    "NO_REASON": "Unspecified",
+    "SUCCESSFUL": "has been banned from the server.",
+    "YOU_HAVE_BEEN_BANNED": "You have been banned from **$guild**. \n \n Reason: **$reason**"
+}

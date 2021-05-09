@@ -1,0 +1,7 @@
+{
+    "ALREADY_NOT_PLAYING": "Şuanda zaten Athena bir şarkı çalmıyor.",
+    "NOT_SAME_VC": "Bu komutu kullanmak için Athena ile aynı ses kanalında olmalısın!",
+    "SKIPPED_SONG": "Şarkı geçildi.",
+    "NO_MUSIC_TO_SKIP": "Geçilicek müzik bulunamadı.",
+    "QUEUE_ENDED": "Sıra bitti."
+}

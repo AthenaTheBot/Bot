@@ -1,0 +1,5 @@
+{
+    "ALREADY_BEING_USED": "Athena is already being used in this server.",
+    "NOT_IN_VC": "You have to be in a voice channel to use this command.",
+    "ERROR_MSG": "Athena cannot join your voice channel. Maybe check the perms of Athena?"
+}

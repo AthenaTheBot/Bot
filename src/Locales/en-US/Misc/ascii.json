@@ -1,0 +1,5 @@
+{
+    "INVALID_MSG": "Please specify a valid text.",
+    "TOO_LONG_TXT": "The length of text cannot be higher than `$limit`.",
+    "ERROR_MSG": "An error occured while trying to convert text into ascii format."
+}

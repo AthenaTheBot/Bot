@@ -1,0 +1,5 @@
+{
+    "ALREADY_NOT_PLAYING": "Athena already not playing a song!",
+    "NOT_SAME_VC": "You have to be in a same voice channel with Athena to use this command!",
+    "RESUMED": "Song is now playing!"
+}

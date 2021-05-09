@@ -1,0 +1,6 @@
+{
+    "NEED_PERM": "You don't have enough permissions to use this command buddy.",
+    "CURRENT_PREFIX": "Athena's current prefix in **$guild**: `$prefix`",
+    "SUCCESS": "Sucessfully changed the server prefix. **New prefix**: `$new_prefix`",
+    "ERROR_MSG": "An error occured while trying to set the server prefix, please try again later. Error code: \n \n  ```$error```"
+}

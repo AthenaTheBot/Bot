@@ -1,0 +1,5 @@
+{
+    "INVALID_USER": "Please specify a user to remove his/her warnings.",
+    "ERROR_MSG": "An error occured on our side, while trying to remove warning. Please try again later. (If this problem keeps appearing please [report us](http://athenabot.site/support) the problem)",
+    "REMOVED_WARNINGS": "Successfully removed all warnings of **$user**."
+}

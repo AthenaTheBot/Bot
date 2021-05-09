@@ -1,0 +1,5 @@
+{
+    "INVALID_MSG": "Lütfen, geçerli bir yazı belirtin.",
+    "TOO_LONG_TXT": "Yazının uzunluğu `$limit`'den fazla olamaz.",
+    "ERROR_MSG" : "Yazı, ascii formatına çevirilirken bir hata meydana geldi."
+}

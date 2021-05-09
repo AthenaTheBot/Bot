@@ -1,0 +1,15 @@
+{
+    "NEED_PERM": "Bu komutu kullanmak için yeterkli yetkilere sahip değilsin dostum.",
+    "BOT_NEED_PERM": "Athena'nın bu işlemi yerine getirmesi için `üyeleri at` ve `üyeleri yasakla` yetkilerine sahip olması gerekiyor.(Eğer bu hata devam ederse lütfen [bize bu hatayı bildirin](http://athenabot.site/support))",
+    "CANNOT_WARN_YOURSELF": "Kendini uyaramazsın!",
+    "CANNOT_WARN_MYSELF": "Athena kendini uyaramaz, çok kabasın ne yaptıki o ?",
+    "NOT_ENOUGH_PERMS": "O kişiyi uyarmak için yeterli yetkilere sahip değilsin.",
+    "BOT_NOT_ENOUGH_PERMS": "O kişiyi uyarabilmek için Athena yeterli yetkilere sahip değil.",
+    "INVALID_MEMBER": "Lütfen, **geçerli** bir üye belirtin.",
+    "ERROR_MSG": "Uyarı sayısı alınırken, bizim tarafımızda bir hata meydana geldi. Lütfen daha sonra tekrar deneyin. (Eğer bu hata devam ederse lütfen [bize bu hatayı bildirin](http://athenabot.site/support))",
+    "KICK_ERROR": "O kişi sunucudan atılırken bir hata meydana geldi.",
+    "BAN_ERROR": "O kişi sunucudan yasaklanırken bir hata meydana geldi.",
+    "KICKED": "**_user**'nın artık sunucuda `_count` uyarısı oldu ve sunucudan atıldı.",
+    "BANNED": "**_user**'nın artık sunucuda `_count` uyarısı oldu ve sunucudan yasaklandı.",
+    "WARNED": "**_user**, uyarıldı, şunda toplamda `_count` uyarısı var.`"
+}

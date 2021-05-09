@@ -1,0 +1,14 @@
+{
+    "UNAVAILABLE": "Bu komut şuanlık bakım altındadır, anlayışınız için teşekkürler!",
+    "NEED_PERM": "Bu komutu kullanmak için yeterkli yetkilere sahip değilsin dostum.",
+    "BOT_NEED_PERM": "Athena'nın bu işlemi yerine getirmesi için `rolleri yönet` yetkisine sahip olması gerekiyor.",
+    "AUTOROLE_CLOSED": "Oto rol sistemi burada deaktif. Wooh sessiz gözüküyor..",
+    "AUTOROLE_GENERAL": "**Oto rol statüsü**: \n `Açık` \n \n **Rol**: \n $role",
+    "CANNOT_GIVE_THAT_ROLE": "Athena belirtilen rolü herhangi bir kişiye verebilmek için yeterli yetkilere sahip değil.",
+    "CANNOT_GIVE_SERVICE_ROLE": "Athena başka bir bot/servis tarafından yönetilen bir rolü kimseye veremez.",
+    "SUCCESS": "Oto rol sistemi başarıyla açıldı. **Rol**: $new_role",
+    "ALREADY_OFF": "Oto rol sistemi zaten bu sunucuda kapalı.",
+    "SAME_ROLE": "Belirtilen rol şuandaki ayarlanılan role ile aynı.",
+    "CLOSED": "Oto rol sistemi başarıyla kapatıldı.",
+    "ERROR_MSG": "Oto rol ayarlanırken bizim tarafımızda bir hata meydana geldi. Lütfen daha sonra tekrar denetin. "
+}

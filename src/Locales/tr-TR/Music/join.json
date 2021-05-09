@@ -1,0 +1,5 @@
+{
+    "ALREADY_BEING_USED": "Athena zaten bu sunucu üzerinde kullanılıyor.",
+    "NOT_IN_VC": "Şarkı çalabilmek için bir ses kanalında bulunmalısınız.",
+    "ERROR_MSG": "Athena sesli kanalınıza katılamıyor. Belikide Athena'nın yetkilerini kontrol etmelisin ?"
+}
