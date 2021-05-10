@@ -1,11 +1,11 @@
 {
-    "NOT_IN_VC": "You have to be in a voice channel to play a song.",
-    "SPECIFY_SONG": "Please specify a song title or url to play.",
-    "QUEUE_ENDED": "Queue has been finished.",
-    "ADDED_TO_THE_QUEUE": "Song has been added to the queue. Song: ",
-    "NOW_PLAYING": "Now playing: ",
-    "SONG_NOT_FOUND": "Specified sonng cannot be found on the YouTube, please try again later.",
-    "INACTIVE_FOR_TOO_LONG": "Athena has left due to inactivity on voice channel.",
-    "ERROR_MSG": "An unexpected error occured on our site, while trying to add music to the queue. Please try again later. (If this problem keeps appearing please [report us](http://athenabot.site/support) the problem)",
-    "PERM_ERROR": "Athena doesn't have enough permission to join that channel."
+    "SPECIFY_SONG": "Please specify a song to play.",
+    "NOT_SAME_VC": "Athena is already playing song on this server. Please join same voice channel as Athena to add song to the song queue.",
+    "SONG_ADDED": "Song has been added to the queue. $song",
+    "CANNOT_JOIN_VC": "Athena couldn't join your voice channel.",
+    "ERROR_MSG": "An unexpected error occured while playing song.",
+    "NOW_PLAYING": "Now playing: $song",
+    "INACTIVE_FOR_TOO_LONG": "Athena has left from the voice channel due to inactivity on the voice channel.",
+    "QUEUE_FINISHED": "Queue has been finished.",
+    "SONG_FINISHED": "Song has been finished."
 }

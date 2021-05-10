@@ -18,26 +18,11 @@ const run = async (client, message, args, locale, db) => {
 
         message.guild.me.voice.channel.leave();
 
-        const guildMusicState = await client.guildQueues.get(message.guild.id);
+        const guildMusicState = await client.guildMusicStates.get(message.guild.id);
 
         if (!guildMusicState) return;
 
-        client.guildQueues.set(message.guild.id, {
-            playing: false,
-            queue: guildMusicState.queue
-        })
-
-        setTimeout(async () => {
-
-            const check = await client.guildQueues.get(message.guild.id);
-
-            if (check.playing) return;
-            else {
-
-                client.guildQueues.delete(message.guild.id);
-            }
-
-        }, 18000000);
+        client.guildMusicStates.delete(message.guild.id);
 
     } catch (err) {
         return client.handleError({ commandName: module.exports.Name, error: err, print: true });

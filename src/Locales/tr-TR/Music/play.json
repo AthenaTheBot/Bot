@@ -1,11 +1,11 @@
 {
-    "NOT_IN_VC": "Şarkı çalabilmek için bir ses kanalında bulunmalısınız.",
-    "SPECIFY_SONG": "Lütfen çalmak için bir müzik ismi yada linki belirtin.",
-    "QUEUE_ENDED": "Sıra bitti.",
-    "ADDED_TO_THE_QUEUE": "Şarkı sıraya eklendi. Şarkı: ",
-    "NOW_PLAYING": "Şuanda çalıyor: ",
-    "SONG_NOT_FOUND": "Belirtilen şarkı YouTube üzeirnde bulunamadı, lütfen daha sonra tekrar deneyin.",
-    "INACTIVE_FOR_TOO_LONG": "Athena ses kanalında bulunan inaktif dolayısıyla ayrıldı",
-    "ERROR_MSG": "Müzik sıraya eklenirken, bizim tarafımızda beklenmedik bir hata meydana geldi. Lütfen daha sonra tekrar deneyin. Eğer bu hatayı almaya devam ederseniz lütfen bize bu hatayı bildirin. \n \n [Athena Destek Sunucusu](http://athenabot.site/support)",
-    "PERM_ERROR": "Athena'nın o kanala katılmak için yeterli yekisi yok."
+    "SPECIFY_SONG": "Lütfen bir şarkı ismi belirtin.",
+    "NOT_SAME_VC": "Athena zaten bu sunucu üzerinde şarkı çalıyor. Lütfen şıraya şarkı eklemek için Athena ile aynı ses kanalına katılın.",
+    "SONG_ADDED": "Şarkı sıraya eklend. [$song]",
+    "CANNOT_JOIN_VC": "Athena sizin ses kanalınıza katılamıyor.",
+    "ERROR_MSG": "Şarkı çalınırken beklenmedik bir hata meydana geldi.",
+    "NOW_PLAYING": "Şuanda çalınıyor: $song",
+    "INACTIVE_FOR_TOO_LONG": "Athena, ses kanalındaki inaktiflikden dolayı ses kanalından ayrıldı.",
+    "QUEUE_FINISHED": "Sıra bitti.",
+    "SONG_FINISHED": "Şarkı bitti."
 }

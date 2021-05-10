@@ -8,7 +8,7 @@ const run = async (client, message, args, locale, db) => {
     const successEmbed = new MessageEmbed().setColor('GREEN');
     const defaultEmbed = new MessageEmbed().setColor(client.branding.colors.default);
 
-    const guildMusicState = client.guildQueues.get(message.guild.id);
+    const guildMusicState = client.guildMusicStates.get(message.guild.id);
 
     if (guildMusicState && guildMusicState.playing) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.ALREADY_PLAYING}`));
 

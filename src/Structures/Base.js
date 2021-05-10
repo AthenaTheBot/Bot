@@ -16,14 +16,13 @@ class Base extends Client {
         this.dashboard = require('../Dashboard/server');
         this.permissionCheck = require('../Modules/permissionCheck');
         this.cooldownFunctions = require('../Modules/cooldownFunctions');
-        //this.postStats = require('../Modules/postStats');
         this.musicPlayer = require('../Modules/musicPlayer.js');
         this.db = mongoose.connection;
         this.commands = new Collection();
         this.commandAliases = new Collection();
         this.userDatabaseCache = new Collection();
         this.serverDatabaseCache = new Collection();
-        this.guildQueues = new Collection();
+        this.guildMusicStates = new Collection();
         this.cooldowns = new Collection();
         this.branding = {
             colors: {

@@ -9,7 +9,7 @@ class dbFunctions {
 
     async createGuild(guild) {
 
-        if (!guild || guild === undefined || guild === null || typeof guild !== 'object') return { error: 'Guild variable must be a valid object.' };
+        if (!guild || typeof guild !== 'object') return { error: 'Guild variable must be a valid object.' };
 
         const guildSchema = {
             _id: guild.id,
@@ -52,7 +52,7 @@ class dbFunctions {
 
     async createUser(user) {
         
-        if (!user || user === undefined || user === null || typeof user !== 'object') return { error: 'User variable must be a valid object.' };
+        if (!user || typeof user !== 'object') return { error: 'User variable must be a valid object.' };
 
         const defaultUser = {
             _id: user.id,
@@ -76,13 +76,13 @@ class dbFunctions {
 
     async getGuild(guild) {
 
-        if (!guild || guild === undefined || guild === null || typeof guild !== 'object') return { error: 'Guild variable must be a valid object.' };
+        if (!guild || typeof guild !== 'object') return { error: 'Guild variable must be a valid object.' };
 
         if (!this.serverCache.get(guild.id)) {
 
             let result = await connection.collection('servers').findOne({ _id: guild.id });
 
-            if (!result || result === undefined || result === null) return await this.createGuild(guild);
+            if (!result || result === undefined || result === null) result =  await this.createGuild(guild);
             
             this.serverCache.set(guild.id, result);
 
@@ -97,13 +97,13 @@ class dbFunctions {
 
     async getUser(user) {
 
-        if (!user || user === undefined || user === null || typeof user !== 'object') return { error: 'User variable must be a valid object.' };
+        if (!user || typeof user !== 'object') return { error: 'User variable must be a valid object.' };
 
         if (!this.userCache.get(user.id)) {
 
             let result = await connection.collection('users').findOne({ _id: user.id });
 
-            if (!result || result === undefined || result === null) return await this.createUser(user);
+            if (!result || result === undefined || result === null) result = await this.createUser(user);
     
             this.userCache.set(user.id, result);
 

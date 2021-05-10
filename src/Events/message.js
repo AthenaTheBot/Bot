@@ -36,14 +36,16 @@ module.exports = {
             const guildData = await base.db.manager.getGuild(message.guild);
     
             let language;
-            if (userData.preferences.language === null) language = guildData.data.preferences.language;
+            if (userData.preferences.language == null) language = guildData.data.preferences.language;
             else language = userData.preferences.language;
-    
+
+            if (!language) language = base.config.defaults.LANGUAGE;
+            
             let prefix = guildData.data.preferences.prefix;
             let args = message.content.slice(prefix.length).trim().split(/ +/g);
             const cmd = args.shift().toLowerCase();
-            `${__dirname}/../Locales/${language}/main.json`
-            const mainLocale = JSON.parse(JSON.stringify(require(path.join(__dirname, '../Locales', language, 'main.json'))));
+
+            const mainLocale = JSON.parse(JSON.stringify(require(path.join(__dirname, '..', 'Locales', language, 'main.json'))));
 
             var expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
             var regex = new RegExp(expression);

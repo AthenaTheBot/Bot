@@ -11,7 +11,7 @@ const run = async (client, message, args, locale, db) => {
     const fetch = require('node-fetch');
     let song = args.slice(0).join(' ');
 
-    const guildMusicState = await client.guildQueues.get(message.guild.id);
+    const guildMusicState = await client.guildMusicStates.get(message.guild.id);
 
     if (!song) {
 

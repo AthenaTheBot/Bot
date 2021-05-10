@@ -8,7 +8,7 @@ const run = async (client, message, args, locale, db) => {
     const successEmbed = new MessageEmbed().setColor('GREEN');
     const defaultEmbed = new MessageEmbed().setColor(client.branding.colors.default);
 
-    const guildMusicState = await client.guildQueues.get(message.guild.id);
+    const guildMusicState = await client.guildMusicStates.get(message.guild.id);
 
     if (!guildMusicState || !guildMusicState.playing || guildMusicState.queue.length === 0) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.ALREADY_NOT_PLAYING}`));
 
@@ -16,9 +16,7 @@ const run = async (client, message, args, locale, db) => {
 
     if (message.guild.me.voice.channel.id !== message.member.voice.channel.id) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.NOT_SAME_VC}`));
 
-    const playCommand = client.commands.get('play');
-
-    playCommand.pauseSong();
+    guildMusicState.player.pause();
 
     return message.channel.send(defaultEmbed.setDescription(locale.PAUSED));
 }
