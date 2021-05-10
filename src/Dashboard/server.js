@@ -159,7 +159,7 @@ module.exports = (client) => {
         }
     })
 
-    app.use((req, res) => {
+    app.use('/*',(req, res) => {
         return res.render('errors/404');
     })
     
