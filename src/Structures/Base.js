@@ -166,7 +166,7 @@ class Base extends Client {
 
         this.user.setActivity(`at!help | athenabot.site`, { type: 'PLAYING' });
     
-        setInterval(() => { this.user.setActivity(`at!help | athenabot.site`, { type: 'PLAYING' }); }, 900000);
+        setInterval(() => { this.user.setActivity(`at!help | athenabot.site`, { type: 'PLAYING' }); }, 450000);
     }
 
     async handleError(data) {
