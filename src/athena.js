@@ -6,7 +6,7 @@ const base = new Athena();
 const dbFunctions = require('./Modules/dbFunctions');
 base.db.manager = new dbFunctions(base.config, base.userDatabaseCache, base.serverDatabaseCache);
 
-// Extra Modules We Require
+// Extra Modules
 const path = require('path');
 
 // Ready Event
@@ -22,6 +22,7 @@ base.once('ready', async() => {
 // Login
 base.login(base.config.bot.TOKEN);
 
+// Error handling
 process.on('unhandledRejection', (err) => { 
     base.handleError({ error: err, print: true }); 
 });

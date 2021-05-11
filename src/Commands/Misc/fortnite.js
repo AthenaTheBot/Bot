@@ -40,7 +40,7 @@ const run = async (client, message, args, locale, db) => {
 
             fetch(`https://api.fortnitetracker.com/v1/profile/${args[1]}/${name}`, {
                 headers: {
-                    'TRN-Api-Key': client.config.api.FORTSTAT,
+                    'TRN-Api-Key': client.config.apiKeys.FORTSTAT,
                 }
             })
             .then(res => res.json())

@@ -12,7 +12,7 @@ const run = async (client, message, args, locale, db) => {
 
     fetch('https://api.ksoft.si/images/random-meme', {
         headers: {
-            'Authorization': 'Bearer ' + client.config.api.KSOFT
+            'Authorization': 'Bearer ' + client.config.apiKeys.KSOFT
         }
     })
     .then(data => data.json())

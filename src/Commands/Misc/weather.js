@@ -18,7 +18,7 @@ const run = async (client, message, args, locale, db) => {
     var regex = /^[a-zA-Z\d\-_.,\s]+$/g
     if (!city.match(regex)) return message.channel.send(errorEmbed.setColor('RED').setDescription(`${client.branding.emojis.error} ${locale.SPECIAL_CHAR}`));
 
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=${locale.LANG}&units=metric&appid=${client.config.api.OPENWEATHER}`)
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=${locale.LANG}&units=metric&appid=${client.config.apiKeys.OPENWEATHER}`)
     .then(res => res.json())
     .then(json => {
 

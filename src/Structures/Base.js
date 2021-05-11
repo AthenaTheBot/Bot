@@ -17,6 +17,7 @@ class Base extends Client {
         this.permissionCheck = require('../Modules/permissionCheck');
         this.cooldownFunctions = require('../Modules/cooldownFunctions');
         this.musicPlayer = require('../Modules/musicPlayer.js');
+        this.postStats = require('../Modules/postStats');
         this.db = mongoose.connection;
         this.commands = new Collection();
         this.commandAliases = new Collection();
