@@ -15,7 +15,7 @@ const run = async (client, message, args, locale, db) => {
 
     if (!message.member.voice.channel || message.guild.me.voice.channel.id != message.member.voice.channel.id) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.NOT_SAME_VC}`));
 
-    if (guildMusicState.encoderArgs.length > 0 && !guildMusicState.encoderArgs.includes('aresample=48000,asetrate=48000*1.25')) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.ALREADY_APPLIED_FILTER}`));
+    if (guildMusicState.encoderArgs.length > 0 && !guildMusicState.encoderArgs.includes('bass=g=20,dynaudnorm=f=400')) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.ALREADY_APPLIED_FILTER}`));
 
     const guildData = await client.db.manager.getGuild(message.guild);
     const userData = await client.db.manager.getUser(message.author);

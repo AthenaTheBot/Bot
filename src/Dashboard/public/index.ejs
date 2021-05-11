@@ -7,8 +7,6 @@
     <meta name="description" content="Athena is a multi functional discord bot which aims to serve every function a discord bot that can serve.">
     <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/88e62b65ed.js" crossorigin="anonymous"></script>
-    <script src="static/scripts/jquery.min.js"></script>
-    <script src="static/scripts/bootstrap.min.js"></script>
     <script src="static/scripts/script.js"></script>
     <link rel="stylesheet" href="static/css/bootstrap-min.css">
     <link rel="stylesheet" href="static/css/index.css">
@@ -75,10 +73,5 @@
 
   <%- include('./components/footer') %> 
 
-  <% if (!userData) { %>
-    <script> userNotLoggedIn(); </script>
-  <% } else { %>
-    <script> userLoggedIn(); </script>
-  <% } %>
 </body>
 </html>

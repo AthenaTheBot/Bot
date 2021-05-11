@@ -11,6 +11,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    bottom: 0px !important;
 }
 
 .footer img {
@@ -42,6 +44,6 @@
     text-decoration: underline;
 }
 
-.content {
+.footerBody {
     width: 100%;
 }

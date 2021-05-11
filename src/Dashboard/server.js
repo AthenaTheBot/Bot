@@ -44,6 +44,22 @@ module.exports = (client) => {
         });
     })
     
+    app.get('/privacy', async (req, res) => {
+
+        return res.render('privacy', {
+            userData: await encryptor.decrypt(req.cookies._ud),
+            userGuilds: await encryptor.decrypt(req.cookies._ug)
+        });
+    });
+
+    app.get('/tos', async (req, res) => {
+
+        return res.render('tos', {
+            userData: await encryptor.decrypt(req.cookies._ud),
+            userGuilds: await encryptor.decrypt(req.cookies._ug)
+        });
+    });
+
     app.get('/invite', (req, res) => {
         return res.redirect('https://discord.com/api/oauth2/authorize?client_id=714109639301791804&permissions=8&redirect_uri=https%3A%2F%2Fathenabot.site%2Foauth%2Fcallback&scope=bot');
     })

@@ -85,7 +85,7 @@ module.exports = {
     Description: 'Simple music play command.',
     Cooldown: 4,
     Usage: 'song name',
-    RequiredPerms: ["sss"],
+    RequiredPerms: [],
     RequiredBotPerms: ["SEND_MESSAGES", "EMBED_LINKS", "CONNECT", "SPEAK"],
     Run: run
 }

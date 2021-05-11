@@ -2,6 +2,9 @@
     <head>
         <link rel="stylesheet" href="../static/css/navbar.css">
         <link rel="stylesheet" href="../static/css/bootstrap-min.css">
+        <script src="static/scripts/jquery.min.js"></script>
+        <script src="static/scripts/bootstrap.min.js"></script>
+        <script src="static/scripts/script.js"></script>
     </head>
     <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
         <div class="container-fluid">
@@ -14,16 +17,16 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link disabled" aria-current="page" href="/"><span style="text-decoration: underline; color: #7289DA">Home</span></a>
+                <a id="nav-buttom-home" class="nav-link" aria-current="page" href="/">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/dashboard">Dashboard</a>
+                <a id="nav-buttom-dashboard" class="nav-link" href="/dashboard">Dashboard</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/commands">Commands</a>
+                <a id="nav-buttom-commands" class="nav-link" href="/commands">Commands</a>
               </li>
               <li id="support-link" class="nav-item">
-                <a class="nav-link" href="/support">Support</a>
+                <a id="nav-buttom-support" class="nav-link" href="/support">Support</a>
               </li>
               <li style="visibility: hidden;" id="loginButtonCollapsed" class="nav-item">
                 <a class="nav-link" href="/oauth/login">Login</a>
@@ -44,4 +47,10 @@
       <div onclick="window.location='/oauth/Login'" id="loginButton" class="loginButton">
         <a href="/oauth/login">LOGIN</a>
       </div>
+
+      <% if (!userData) { %>
+        <script> userNotLoggedIn(); </script>
+      <% } else { %>
+        <script> userLoggedIn(); </script>
+      <% } %>
 </html>

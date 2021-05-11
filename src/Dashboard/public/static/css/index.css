@@ -27,6 +27,13 @@ body {
     background: #5c6fb1;
 }
 
+#nav-buttom-home {
+    text-decoration: underline;
+    color: #7289DA !important;
+    pointer-events: none;
+    cursor: default;
+}
+
 .noscriptWarn {
     width: 50%;
     margin-left: 25%;
