@@ -1,11 +1,14 @@
 {
     "SPECIFY_SONG": "Lütfen bir şarkı ismi belirtin.",
-    "NOT_SAME_VC": "Athena zaten bu sunucu üzerinde şarkı çalıyor. Lütfen şıraya şarkı eklemek için Athena ile aynı ses kanalına katılın.",
+    "NOT_SAME_VC": "Bu komutu kullanmak için Athena ile aynı ses kanalında bulunman gerekiyor.",
     "SONG_ADDED": "Şarkı sıraya eklend. [$song]",
     "CANNOT_JOIN_VC": "Athena sizin ses kanalınıza katılamıyor.",
     "ERROR_MSG": "Şarkı çalınırken beklenmedik bir hata meydana geldi.",
     "NOW_PLAYING": "Şuanda çalınıyor: $song",
     "INACTIVE_FOR_TOO_LONG": "Athena, ses kanalındaki inaktiflikden dolayı ses kanalından ayrıldı.",
     "QUEUE_FINISHED": "Sıra bitti.",
-    "SONG_FINISHED": "Şarkı bitti."
+    "SONG_FINISHED": "Şarkı bitti.",
+    "CANNOT_FIND_SONG": "Belirtilen parametrelere göre herhangi bir şarkı bulunamadı.",
+    "NOT_IN_VC": "Play komutunu kullanmak için bir sesli kanalda bulunmalısınız.",
+    "NO_SEARCH_QUERY": "Çalmak için bir şarkı ismi belirtmelisiniz."
 }

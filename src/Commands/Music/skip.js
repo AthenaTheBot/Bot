@@ -2,6 +2,7 @@ const run = async (client, message, args, locale, db) => {
 
     // Variables
     const { MessageEmbed } = require('discord.js');
+    const path = require('path');
     
     const errorEmbed = new MessageEmbed().setColor('RED');
     const alertEmbed = new MessageEmbed().setColor('YELLOW');
@@ -16,15 +17,9 @@ const run = async (client, message, args, locale, db) => {
 
     if (message.guild.me.voice.channel.id !== message.member.voice.channel.id) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.NOT_SAME_VC}`));
 
-    const playCommand = client.commands.get('play');
+    guildMusicState.queue.shift();
 
-    const newQueue = new Array();
-
-    guildMusicState.queue.forEach(song => { newQueue.push(song) });
-
-    newQueue.shift();
-
-    if (!newQueue || newQueue === undefined || newQueue === null || newQueue.length === 0) {
+    if (!guildMusicState.queue || guildMusicState.queue.length === 0) {
         if (!guildMusicState.playing) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.NO_MUSIC_TO_SKIP}`));
         
         client.guildMusicStates.delete(message.guild.id);
@@ -34,15 +29,20 @@ const run = async (client, message, args, locale, db) => {
         return message.channel.send(defaultEmbed.setDescription(locale.QUEUE_ENDED))
     }
 
-    client.guildMusicStates.set(message.guild.id, {
-        playing: false,
-        queue: newQueue
-    })
+    const guildData = await client.db.manager.getGuild(message.guild);
+    const userData = await client.db.manager.getUser(message.author);
 
-    message.channel.send(locale.SKIPPED_SONG);
+    let language;
+    if (userData.preferences.language) language = userData.preferences.language;
+    else language = guildData.data.preferences.language;
 
-    return playCommand.playSong();
+    if (!language) client.config.defaults.LANGUAGE;
 
+    const playCommand = client.commands.get('play');
+
+    client.musicPlayer.play(client, message.guild.id, require(path.join(__dirname, '..', '..', 'Locales', language, playCommand.Category, playCommand.Name + '.json')));
+
+    return message.channel.send(locale.SKIPPED_SONG);
 }
 
 module.exports = {

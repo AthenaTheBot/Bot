@@ -1,11 +1,14 @@
 {
     "SPECIFY_SONG": "Please specify a song to play.",
-    "NOT_SAME_VC": "Athena is already playing song on this server. Please join same voice channel as Athena to add song to the song queue.",
+    "NOT_SAME_VC": "You have to be in a same voice channel with Athena to use this command!",
     "SONG_ADDED": "Song has been added to the queue. $song",
     "CANNOT_JOIN_VC": "Athena couldn't join your voice channel.",
     "ERROR_MSG": "An unexpected error occured while playing song.",
     "NOW_PLAYING": "Now playing: $song",
     "INACTIVE_FOR_TOO_LONG": "Athena has left from the voice channel due to inactivity on the voice channel.",
     "QUEUE_FINISHED": "Queue has been finished.",
-    "SONG_FINISHED": "Song has been finished."
+    "SONG_FINISHED": "Song has been finished.",
+    "CANNOT_FIND_SONG": "Cannot find any song by the specified parameters.",
+    "NOT_IN_VC": "You have to be in a voice channel in order to use play command.",
+    "NO_SEARCH_QUERY": "You have to specify a song name to play."
 }

@@ -1,0 +1,7 @@
+{
+    "ALREADY_NOT_PLAYING": "Şuanda zaten Athena bir şarkı çalmıyor.",
+    "NOT_SAME_VC": "Bu komutu kullanmak için Athena ile aynı ses kanalında olmalısın!",
+    "ENABLED": "Başarıyla bass boost açıldı. (Bass boostu kapatmak için bu komutu bir kez daha kullanın))",
+    "DISABLED": "Başarıyla bass boost kapatıldı.",
+    "ALREADY_APPLIED_FILTER": "Üzgünüz, ancak şuanlık 2 tane şarkı filtresi aynı anda desteklemiyoruz."
+}

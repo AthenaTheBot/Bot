@@ -22,13 +22,12 @@ base.once('ready', async() => {
 // Login
 base.login(base.config.bot.TOKEN);
 
-
 process.on('unhandledRejection', (err) => { 
     base.handleError({ error: err, print: true }); 
 });
+
 process.on('uncaughtException', (err) => { 
     base.handleError({ error: err, print: true }); 
-})
-
+});
 
 

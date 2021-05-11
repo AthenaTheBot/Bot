@@ -11,10 +11,19 @@ module.exports.play = async (base, guild, locale) => {
 
     if (guildMusicState && guildMusicState.connection) {
 
+        let encoderArgs;
+        if (guildMusicState.encoderArgs.length > 0) encoderArgs = ['-af', ...guildMusicState.encoderArgs];
+
         let player;
         try {
 
-            player = await guildMusicState.connection.play(await ytdl(guildMusicState.queue[0].url), { type: 'opus' });
+            player = await guildMusicState.connection.play(await ytdl(guildMusicState.queue[0].url, {
+                filter: "audioonly",
+                opusEncoded: true,
+                encoderArgs: encoderArgs
+            }), 
+            { type: 'opus' });
+
         }
         catch (err) {
 
@@ -24,7 +33,6 @@ module.exports.play = async (base, guild, locale) => {
         if (player) {
 
             guildMusicState.player = player;
-            base.guildMusicStates.set(guild, guildMusicState);
         }
 
         const textChannel = base.channels.cache.get(guildMusicState.textChannel);
@@ -32,22 +40,19 @@ module.exports.play = async (base, guild, locale) => {
         player.on('start', async () => {
             textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.NOW_PLAYING.replace('$song', `[${guildMusicState.queue[0].title}](${guildMusicState.queue[0].url})`)));
             guildMusicState.playing = true;
-            base.guildMusicStates.set(guild, guildMusicState);
         });
 
         player.on('finish', async () => {
             textChannel.send(locale.SONG_FINISHED);
             guildMusicState.queue.shift();
             guildMusicState.playing = false;
-            base.guildMusicStates.set(guild, guildMusicState);
             if (guildMusicState.queue.length == 0) {
                 textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.QUEUE_FINISHED));
                 setTimeout(async () => {
                     const newGuildMusicState = await base.guildMusicStates.get(guild);
                     if (newGuildMusicState.playing) return;
                     else {
-                        const voiceChannel = base.channels.cache.get(guildMusicState.voiceChannel);
-                        if (voiceChannel) voiceChannel.leave();
+                        message.guild.me.voice.channel.leave();
                         textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.INACTIVE_FOR_TOO_LONG));
                         base.guildMusicStates.delete(guild);
                     }
@@ -60,18 +65,14 @@ module.exports.play = async (base, guild, locale) => {
         });
 
         guildMusicState.connection.on('disconnect', async () => {
-            const updatedGuildMusicState = await base.guildMusicStates.get(guild);
-            if (!updatedGuildMusicState) return;
-            else {
-                setTimeout(async () => {
-                    const updatedGuildMusicState = await base.guildMusicStates.get(guild);
-                    if (updatedGuildMusicState.playing) return;
-                    else {
-                        return base.guildMusicStates.delete(guild);
-                    }
-
-                }, 30 * 60 * 1000);
-            };
+            guildMusicState.playing = false;
+            setTimeout(async () => {
+                const updatedGuildMusicState = await base.guildMusicStates.get(guild);
+                if (updatedGuildMusicState.playing) return;
+                else {
+                    return base.guildMusicStates.delete(guild);
+                }
+            }, 30 * 60 * 1000);
         });
 
     }

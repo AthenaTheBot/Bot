@@ -18,20 +18,26 @@ const run = async (client, message, args, locale, db) => {
         const defaultGuildState = {
             playing: false,
             queue: [],
-            voiceChannel: null,
             textChannel: null,
             connection: null,
-            player: null
+            player: null,
+            encoderArgs: []
         };
 
         client.guildMusicStates.set(message.guild.id, defaultGuildState);
         guildMusicState = defaultGuildState;
     };
 
-    if (guildMusicState.playing && message.member.voice.channel.id != guildMusicState.voiceChannel) return message.channel.send(errorEmbed.setDescription(locale.NOT_SAME_VC));
-    else if (guildMusicState.playing && message.member.voice.channel.id == guildMusicState.voiceChannel) {
+    if (!message.member.voice.channel) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.NOT_IN_VC}`));
+
+    if (!songRequest) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.NO_SEARCH_QUERY}`))
+
+    if (guildMusicState.playing && message.member.voice.channel.id != message.guild.me.voice.channel.id) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.NOT_SAME_VC}`));
+    else if (guildMusicState.playing && message.member.voice.channel.id == message.guild.me.voice.channel.id) {
 
         const youtubeResult = await (await ytsr(songRequest, { pages: 1, limit: 1})).items.filter(x => x.type === 'video');
+
+        if (!youtubeResult[0]) return message.channel.send(errorEmbed.setColor('RED').setDescription(`${client.branding.emojis.error} ${locale.CANNOT_FIND_SONG}`));
 
         guildMusicState.queue.push({
             title: youtubeResult[0].title,
@@ -39,8 +45,6 @@ const run = async (client, message, args, locale, db) => {
             url: youtubeResult[0].url,
             duration: youtubeResult[0].duration    
         });
-
-        client.guildMusicStates.set(message.guild.id, guildMusicState);
 
         return message.channel.send(defaultEmbed.setDescription(locale.SONG_ADDED.replace('$song', `[${youtubeResult[0].title}](${youtubeResult[0].url})`)));
     }
@@ -51,10 +55,11 @@ const run = async (client, message, args, locale, db) => {
         if (!connection) return message.channel.send(errorEmbed.setDescription(locale.CANNOT_JOIN_VC));
 
         guildMusicState.connection = connection;
-        guildMusicState.voiceChannel = message.member.voice.channel.id;
         guildMusicState.textChannel = message.channel.id;
 
         const youtubeResult = await (await ytsr(songRequest, { pages: 1, limit: 1})).items.filter(x => x.type === 'video');
+
+        if (!youtubeResult[0]) return message.channel.send(errorEmbed.setColor('RED').setDescription(`${client.branding.emojis.error} ${locale.CANNOT_FIND_SONG}`));
 
         guildMusicState.queue.push({
             title: youtubeResult[0].title,
@@ -63,9 +68,12 @@ const run = async (client, message, args, locale, db) => {
             duration: youtubeResult[0].duration    
         });
 
-        client.guildMusicStates.set(message.guild.id, guildMusicState);
+        if (guildMusicState.queue.length > 1) message.channel.send(defaultEmbed.setDescription(locale.SONG_ADDED.replace('$song', `[${youtubeResult[0].title}](${youtubeResult[0].url})`)));
 
-        client.musicPlayer.play(client, message.guild.id, locale).catch(err => {});
+        client.musicPlayer.play(client, message.guild.id, locale).catch(err => {
+          
+            client.handleError({ commandName: module.exports.Name, channelID: message.channel.id, msg: locale.ERROR_MSG, error: err, print: true });
+        });
     };
 
 };

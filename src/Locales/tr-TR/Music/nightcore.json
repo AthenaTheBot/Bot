@@ -1,0 +1,7 @@
+{
+    "ALREADY_NOT_PLAYING": "Şuanda zaten Athena bir şarkı çalmıyor.",
+    "NOT_SAME_VC": "Bu komutu kullanmak için Athena ile aynı ses kanalında olmalısın!",
+    "ENABLED": "Başarıyla night core açıldı. (Night core u kapatmak için bu komutu bir kez daha kullanın)",
+    "DISABLED": "Başarıyla night core kapatıldı.",
+    "ALREADY_APPLIED_FILTER": "Üzgünüz, ancak şuanlık 2 tane şarkı filtresi aynı anda desteklemiyoruz."
+}
