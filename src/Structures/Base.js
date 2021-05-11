@@ -57,8 +57,8 @@ class Base extends Client {
             case 'error':
                 type = 'ERROR'.bgRed;
                 break;
-            case 'alert':
-                type = 'ALERT'.bgYellow;
+            case 'warn':
+                type = 'WARN'.bgYellow;
                 break;
             case 'success':
                 type = 'SUCCESS'.bgGreen;
@@ -85,9 +85,20 @@ class Base extends Client {
         
                     const command = require(path.join(dir, category, file));
     
-                    if (!command.Name || !command.Aliases) return this.log('error', `Found one file without command export or empty command name. (File: ${file})`);
+                    if (!command.Name || !command.Aliases) return this.log('warn', `Found one command without command export or empty command name. Ignoring command.. (File: ${file})`);
                     else {
-    
+
+                        if (command.RequiredPerms.length > 0 || command.RequiredBotPerms > 0) {
+                            let permsAreValid = true;
+                            command.RequiredPerms.forEach(perm => {
+                                if (!this.permissionCheck.allValidPerms.includes(perm)) permsAreValid = false;
+                            });
+                            command.RequiredBotPerms.forEach(perm => {
+                                if (!this.permissionCheck.allValidPerms.includes(perm)) permsAreValid = false;
+                            });
+                            if (!permsAreValid) return this.log('warn', `Found one command with invalid perms specified. Ignoring command.. (File: ${file})`);
+                        };
+                        
                         await this.commands.set(command.Name.toLowerCase(), command);
         
                         await command.Aliases.forEach(alias => { 
