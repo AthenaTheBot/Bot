@@ -26,17 +26,9 @@ module.exports = {
     },
 
     api: {
-        TOPGG: "",
-        BOTSFORDISCORD: "",
-        DISCORDBOTSGG: "",
-        DISCORDLISTSPACE: "",
-        BOATS: "",
-        DCBOTLISTCOM: "",
         KSOFT: "",
         OPENWEATHER: "",
         MUSIXMATCH: "",
-        YOUTUBE: "",
-        HYPIXEL: "",
         FORTSTAT: ""
     },
     
@@ -45,5 +37,9 @@ module.exports = {
         BOTSFORDISCORD: "WNStwGyz9ND0kfsZVFsAuZLfj",
         DISCORDBOATS: "2kEoaiJWC1O3_KNWel2Co?Ma3",
         DCBOTLISTCOM: "8YbEeuJ5Pwc-M?FM_G02kk9Zz"
-    }
+    },
+
+    "botlistingWebsites": [
+        { name: "", url: "", body: {}, token: "" },
+    ]
 }
