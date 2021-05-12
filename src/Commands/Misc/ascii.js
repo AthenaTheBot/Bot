@@ -30,7 +30,7 @@ module.exports = {
     Aliases: [],
     Category: 'Misc',
     Description: 'Converts normal text into ascii formated text.',
-    Cooldown: 2.5,
+    Cooldown: 2,
     Usage: 'text',
     RequiredPerms: [],
     RequiredBotPerms: ["SEND_MESSAGES"],

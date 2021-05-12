@@ -30,24 +30,39 @@
 
     <div class="container">
         <div class="categories">
-            <h5 class="categoryActive" id="category">All</h5>
-            <h5 id="category">Moderation</h5>
-            <h5 id="category">Music</h5>
-            <h5 id="category">Fun</h5>
-            <h5 id="category">Misc</h5>
-        </div>
-    
-        <div class="commands">
-            <% for (var i = 0; i < commands.all.length; i++) { %>
-                <div class="command" onclick="expandCommand('<%= commands.all[i].Name %>')">
-                    <h5 id="title">at!<%= commands.all[i].Name %> <code id="customCode"><%= commands.all[i].Usage %></code></h5>
-                    <p style="display: none;" class="description" id="description_<%= commands.all[i].Name  %>">Description: <%= commands.all[i].Description %> <br> Required Perms for Users: <code id="customCode"><%= commands.all[i].RequiredPerms %></code> <br> Required Perms for Bot: <code id="customCode"><%= commands.all[i].RequiredBotPerms %></code></p>
-                </div>
+            <% for (var i = 0; i < validCategories.length; i++) { %>
+                <h5 class="category_<%= validCategories[i]  %>" id="category"><%= validCategories[i] %></h5>
             <% } %>  
+        </div>
+
+        <div class="commands">
+            <% for (var i = 0; i < commands.All.length; i++) { %>
+                <div class="command" onclick="expandCommand('<%= commands.All[i].commandName %>')">
+                    <h5 id="title">at!<%= commands.All[i].commandName %> <code id="customCode"><%= commands.All[i].commandUsage %></code></h5>
+                    <p style="display: none;" class="description" id="description_<%= commands.All[i].commandName  %>">Description: <%= commands.All[i].commandDescription %> <br> Required Perms for Users: <code id="customCode"><%= commands.All[i].commandRequiredPerms %></code> <br> Required Perms for Bot: <code id="customCode"><%= commands.All[i].commandRequiredBotPerms %></code></p>
+                </div>
+            <% } %>
         </div>
     </div>
 
     <%- include('./components/footer') %>
 
+        <% for (var i = 0; i < validCategories.length; i++) { %>
+            <script>
+                let commands_<%= validCategories[i] %> = <%- JSON.stringify(commands[validCategories[i]]) %>;
+                $(".category_<%= validCategories[i]  %>").click(() => {
+                    $('.command').remove();
+                    commands_<%= validCategories[i] %>.forEach(command => {
+                        console.log(command);
+                        $('.commands').append(`
+                        <div class="command" onclick="expandCommand('${command.commandName}')">
+                            <h5 id="title">at! ${command.commandName} <code id="customCode">${command.commandUsage}</code></h5>
+                            <p style="display: none;" class="description" id="description_${command.commandName}">Description: ${command.commandDescription}<br> Required Perms for Users: <code id="customCode">${command.commandRequiredPerms}</code> <br> Required Perms for Bot: <code id="customCode">${command.commandRequiredBotPerms}</code></p>
+                        </div> 
+                    `);
+                    })
+                });
+            </script>
+        <% } %>
 </body>
 </html>

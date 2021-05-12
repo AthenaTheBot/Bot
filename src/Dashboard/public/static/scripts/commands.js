@@ -1,13 +1,16 @@
-let commandExpanded = false;
+let commandsExpanded = new Array();
+
 function expandCommand(commandName) {
-    if (commandExpanded) {
+    if (commandsExpanded.includes(commandName)) {
+
         $(`#description_${commandName}`).css('display', 'none');
-        commandExpanded = false;
+        commandsExpanded = commandsExpanded.filter(x => x != commandName);
         return;
     }
     else {
+
         $(`#description_${commandName}`).css('display', 'block');
-        commandExpanded = true;
+        commandsExpanded.push(commandName);
         return; 
     }
 }
