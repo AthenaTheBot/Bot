@@ -35,7 +35,7 @@
                 <div class="profilePart">
                   <img src="https://cdn.discordapp.com/avatars/<%= userData.id %>/<%= userData.avatar %>.png?size=4096">
                   <p id="profilePartUsername"><%= userData.username %><span id="profilePartDiscriminator">#<%= userData.discriminator %> </span></p>
-                  <a href="/oauth/logout">Logout</a>
+                  <a id="logoutButtonCollapsedVersion" href="/oauth/logout">Logout</a>
                 </div>
                 <a id="profileDropdown" href="/oauth/logout">Logout</a>
               <% } %>  
