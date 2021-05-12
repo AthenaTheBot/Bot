@@ -62,9 +62,45 @@ module.exports = (client) => {
 
     app.get('/commands', async (req, res) => {
 
+        const allCommands = new Array();
+        const moderationCommands = new Array();
+        const musicCommands = new Array();
+        const funCommands = new Array();
+        const miscCommands = new Array();
+
+        client.commands.forEach(async (command) => {
+            if (!command.Usage) command.Usage = 'None';
+            if (command.RequiredPerms.length == 0) command.RequiredPerms = 'None';
+            if (command.RequiredBotPerms.length == 0) command.RequiredBotPerms = 'None';
+            allCommands.push(command);
+            switch(command.Category) {
+                case 'Moderation':
+                    moderationCommands.push(command);
+                    break;
+                case 'Music':
+                    musicCommands.push(command);
+                    break;
+                case 'Fun':
+                    funCommands.push(command);
+                    break;
+                case 'Misc':
+                    miscCommands.push(command);
+                    break;
+                default:
+                    break;
+            }
+        })
+
         return res.render('commands', {
             userData: await encryptor.decrypt(req.cookies._ud),
-            userGuilds: await encryptor.decrypt(req.cookies._ug)
+            userGuilds: await encryptor.decrypt(req.cookies._ug),
+            commands: {
+                all: allCommands,
+                moderation: moderationCommands,
+                music: musicCommands,
+                fun: funCommands,
+                misc: miscCommands
+            }
         });
     });
 

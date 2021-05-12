@@ -111,6 +111,11 @@ body {
     background-color: #5d6faf;
 }
 
+.categoryActive {
+    background-color: #47568a !important;
+    cursor: default !important;
+}
+
 .commands {
     width: 60%;
     margin: 30px;
@@ -131,13 +136,15 @@ body {
     margin-top: 0px;
 }
 
-#usage {
+#customCode {
     font-size: 13px;
     background-color: #131212;
     color: #7289DA;
     padding: 3px
 }
 
-#description {
-    display: none;
+.description {
+    font-size: 14.5px;
+    line-height: 1.8;
+    margin-top: 15px
 }
