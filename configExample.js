@@ -10,7 +10,8 @@ module.exports = {
 
     dashboard: {
         REDIRECT_URI: "",
-        LOGIN_URL: "" //
+        LOGIN_URL: "",
+        INVITE_LINK: ""
     },
 
     defaults: {

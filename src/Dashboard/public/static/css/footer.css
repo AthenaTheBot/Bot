@@ -26,12 +26,14 @@
 }
 
 #footerLine {
-    max-width: 45%; 
+    position: relative;
+    bottom: 7px;
+    max-width: 50%; 
     height: 1px; 
     color: #7289DA; 
     background-color: #7289DA; 
     opacity: 1;
-    margin-left: 27%;
+    margin: auto
 }
 
 #footerLink {
@@ -45,5 +47,6 @@
 }
 
 .footerBody {
-    width: 100%;
+    width: 80%;
+    margin: auto;
 }

@@ -1,0 +1,136 @@
+body {
+    background-color: #292929 !important;
+    color: white !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+  
+
+::-webkit-scrollbar-track {
+    background-color: #1a1a1a;
+}
+  
+
+::-webkit-scrollbar-thumb {
+    background: #7289DA;
+    border-radius: 5px;
+}
+  
+
+::-webkit-scrollbar-thumb:hover {
+    background: #5c6fb1;
+}
+
+.cookieWarning {
+    width: 100%;
+    min-height: 50px;
+    height: auto;
+    z-index: 1000;
+    bottom: 0px;
+    background-color: #1b1b1bbd;
+    text-align: left;
+    position: fixed;
+    display: none;
+    border-top: 1px solid #7289DA;
+}
+
+#cookieWarningText {
+    float: left;
+    margin-top: 15px;
+    margin-left: 15px;
+    font-weight: bold;
+    padding: 3px 3px 3px 3px;
+    width: 60%;
+    overflow: hidden;
+}
+
+#cookieWarningButton {
+    float: right;
+    margin-right: 20px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.container {
+    width: 80%;
+    display: flex;
+    height: fit-content;
+    height: -moz-fit-content;
+}
+
+.header {
+    text-align: center;
+    text-shadow: 2px 2px #7289DA;
+    margin-bottom: 115px;
+}
+
+#topicLine {
+    background-color: #7289DA;
+    color: #7289DA;
+    opacity: 1;
+    width: 55%;
+    margin: auto;
+    margin-top: 40px
+}
+
+.categories {
+    width: 170px;
+    padding: 10px;
+    background-color: #1b1b1b;
+    border-radius: 12px;
+    height: fit-content;
+    height: -moz-fit-content;
+}
+
+#category {
+    background-color: #7289DA;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 6px;
+    margin-top: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#category:first-child {
+    margin-top: 0px;
+}
+
+#category:hover {
+    background-color: #5d6faf;
+}
+
+.commands {
+    width: 60%;
+    margin: 30px;
+    margin-top: 0px;
+    padding: 10px;
+}
+
+.command {
+    padding: 15px;
+    width: 100% !important;
+    background-color: #1b1b1b;
+    border-radius: 12px;
+    cursor: pointer;
+    margin: 25px;
+}
+
+.command:first-child {
+    margin-top: 0px;
+}
+
+#usage {
+    font-size: 13px;
+    background-color: #131212;
+    color: #7289DA;
+    padding: 3px
+}
+
+#description {
+    display: none;
+}

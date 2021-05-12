@@ -60,8 +60,21 @@ module.exports = (client) => {
         });
     });
 
+    app.get('/commands', async (req, res) => {
+
+        return res.render('commands', {
+            userData: await encryptor.decrypt(req.cookies._ud),
+            userGuilds: await encryptor.decrypt(req.cookies._ug)
+        });
+    });
+
+    app.get('/thanks', async (req, res) => {
+
+        return res.render('thanks');
+    });
+
     app.get('/invite', (req, res) => {
-        return res.redirect('https://discord.com/api/oauth2/authorize?client_id=714109639301791804&permissions=8&redirect_uri=https%3A%2F%2Fathenabot.site%2Foauth%2Fcallback&scope=bot');
+        return res.redirect(client.config.dashboard.INVITE_LINK);
     })
     
     app.get('/support', (req, res) => {

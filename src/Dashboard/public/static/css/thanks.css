@@ -1,0 +1,30 @@
+body {
+    background-color: #292929 !important;
+    color: white !important;
+}
+
+.content {
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    position: relative;
+    top: 180px;
+    margin-bottom: 25.7%;
+}
+
+.content h1 {
+    text-shadow: 2px 2px #7289DA;
+}
+
+#btn {
+    background-color: #7289DA !important;
+    border-color: #7289DA !important;
+    margin: 5px !important
+}
+
+#btn:hover {
+    background-color: #6073b8 !important;
+    -webkit-box-shadow: 0px 14px 52px -1px rgba(0,0,0,1);
+    -moz-box-shadow: 0px 14px 52px -1px rgba(0,0,0,1);
+    box-shadow: 0px 14px 52px -1px rgba(0,0,0,1)
+}

@@ -6,29 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Privacy policy of Athena.">
     <link rel="stylesheet" href="static/css/bootstrap-min.css">
-    <link rel="stylesheet" href="static/css/legal.css">
+    <link rel="stylesheet" href="static/css/thanks.css">
     <link rel="icon" type="image/png" href="./icon.ico">
-    <title>Privacy Policy - Athena</title>
+    <title>Thank you - Athena</title>
 </head>
 <body>
 
-    <%- include('./components/navbar') %> 
-
-    <div class="header">
-        <h2>Our Terms Of Service</h2>
-    </div>
     <div class="content">
-        <h3>Under maintaince</h3>
+        <div class="header">
+            <h1>You are awesome!</h1>
+            <p style="font-size: 20px;">Thank you for inviting Athena to your server. The links above may help you get started using Athena!</p>
+        </div>
+        <a id="btn" href="/commands" class="btn btn-primary btn-lg">Commands</a>
+        <a id="btn" href="/support" class="btn btn-primary btn-lg">Support Server</a>
     </div>
 
     <%- include('./components/footer') %> 
-
-    <style>
-        .footer {
-            position: fixed !important;
-            bottom: 0px !important;
-        }
-    </style>
 
 </body>
 </html>
