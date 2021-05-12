@@ -85,16 +85,18 @@ body {
 }
 
 .categories {
-    width: 170px;
+    width: 200px;
     padding: 10px;
     background-color: #1b1b1b;
     border-radius: 12px;
     height: fit-content;
     height: -moz-fit-content;
+    position: sticky !important;
+    top: 100px
 }
 
 #category {
-    background-color: #7289DA;
+    background-color: #303030;
     text-align: center;
     padding: 5px 10px;
     border-radius: 6px;

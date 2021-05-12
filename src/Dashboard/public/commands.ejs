@@ -25,7 +25,7 @@
 
     <div class="header">
         <h2>Commands</h2>
-        <hr id="topicLine">
+        <p>In the above you can find all commands that runs right now on Athena.</p>
     </div>
 
     <div class="container">
@@ -52,14 +52,14 @@
                 let commands_<%= validCategories[i] %> = <%- JSON.stringify(commands[validCategories[i]]) %>;
                 $(".category_<%= validCategories[i]  %>").click(() => {
                     $('.command').remove();
+                    $(".category_<%= validCategories[i]  %>").css('background-color', '#7289DA');
                     commands_<%= validCategories[i] %>.forEach(command => {
-                        console.log(command);
                         $('.commands').append(`
-                        <div class="command" onclick="expandCommand('${command.commandName}')">
-                            <h5 id="title">at! ${command.commandName} <code id="customCode">${command.commandUsage}</code></h5>
-                            <p style="display: none;" class="description" id="description_${command.commandName}">Description: ${command.commandDescription}<br> Required Perms for Users: <code id="customCode">${command.commandRequiredPerms}</code> <br> Required Perms for Bot: <code id="customCode">${command.commandRequiredBotPerms}</code></p>
-                        </div> 
-                    `);
+                            <div class="command" onclick="expandCommand('${command.commandName}')">
+                                <h5 id="title">at! ${command.commandName} <code id="customCode">${command.commandUsage}</code></h5>
+                                <p style="display: none;" class="description" id="description_${command.commandName}">Description: ${command.commandDescription}<br> Required Perms for Users: <code id="customCode">${command.commandRequiredPerms}</code> <br> Required Perms for Bot: <code id="customCode">${command.commandRequiredBotPerms}</code></p>
+                            </div> 
+                        `);
                     })
                 });
             </script>
