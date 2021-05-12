@@ -25,6 +25,13 @@ body {
     background: #5c6fb1;
 }
 
+#nav-buttom-commands {
+    cursor: default;
+    text-decoration: underline;
+    color: #7289DA !important;
+    pointer-events: none;
+}
+
 .cookieWarning {
     width: 100%;
     min-height: 50px;
