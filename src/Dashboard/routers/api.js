@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const config = require('../../../config');
+const Athena = require('../../Structures/Base');
+const base = new Athena();
 
 router.get('/vote', async (req, res) => {
 
@@ -9,16 +10,16 @@ router.get('/vote', async (req, res) => {
 
         let user;
         switch(req.header('Authorization')) {
-            case client.config.webhookTokens.TOPGG:
+            case base.webhookTokens.TOPGG:
                 user = req.body.user;
                 break;
-            case client.config.webhookTokens.BOTSFORDISCORD:
+            case base.webhookTokens.BOTSFORDISCORD:
                 user = req.body.user;
                 break;
-            case client.config.webhookTokens.DISCORDBOATS:
+            case base.webhookTokens.DISCORDBOATS:
                 user = req.body.user.id;
                 break;
-            case client.config.webhookTokens.DCBOTLISTCOM:
+            case base.webhookTokens.DCBOTLISTCOM:
                 user = req.body.id;
                 break;
             default:
@@ -31,12 +32,12 @@ router.get('/vote', async (req, res) => {
 
             res.status(200).json({ message: 'Successful' }).end();
 
-            let userDiscordData = await client.users.cache.get(user);
-            let userData = await client.db.manager.getUser(userDiscordData);
+            let userDiscordData = await base.users.cache.get(user);
+            let userData = await base.db.manager.getUser(userDiscordData);
 
             if (!userData || !userDiscordData) return;
             
-            client.log("log", `${userDiscordData.tag} is voted!`);
+            base.log("log", `${userDiscordData.tag} is voted!`);
             
             if (!userData.preferences.notifications) return;
             else {
