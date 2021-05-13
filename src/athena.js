@@ -15,6 +15,7 @@ base.once('ready', async() => {
     await base.loadCommands(path.join(__dirname, 'Commands'));
     await base.loadEvents(path.join(__dirname, 'Events'));
     await base.dashboard(base);
+    await base.postStats(base, true, 60);
     await base.setPresence();
     base.log('ready', `Athena is ready to use! (Profile: ${base.user.tag})`);
 });

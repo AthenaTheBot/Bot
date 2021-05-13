@@ -2,9 +2,11 @@ const fetch = require('node-fetch');
 
 module.exports = (base, sync, amount) => {
 
+    if (base.config.bot.CLIENT_ID != base.user.id) return base.log('warn', 'The client id specified in the config file isn\'t same as the logged in account. Ignoring situation..')
+
     base.config.botlistingWebsites.forEach(botlist => {
 
-        const url = botlist.url.replace('$botID', client.user.id);
+        const url = botlist.url.replace('$botID', base.user.id);
         const body = JSON.parse(JSON.stringify(botlist.body).replace('$botServerCount', base.guilds.cache.size));
 
         fetch(url, {
@@ -28,7 +30,7 @@ module.exports = (base, sync, amount) => {
 
             base.config.botlistingWebsites.forEach(botlist => {
 
-                const url = botlist.url.replace('$botID', client.user.id);
+                const url = botlist.url.replace('$botID', base.user.id);
                 const body = JSON.parse(JSON.stringify(botlist.body).replace('$botServerCount', base.guilds.cache.size));
         
                 fetch(url, {
