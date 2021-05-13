@@ -104,94 +104,22 @@
 }
 
 @media only screen and (max-width: 990px) {
+
+    #loginButton {
+        display: none;
+    }
+
     .navbar-collapse {
-        background-color: #1a1a1a;
-        margin-top: 23rem;
-        margin-left: -3.5%;
-        position: absolute;
-        z-index: 200;
-        border-top-right-radius: 12px;
-        border-bottom-right-radius: 12px;
-        border: 1px solid #7289DA;
-        width: 8rem;
-        height: auto;
-        overflow: hidden
-    }
-
-    .navbar-toggler {
-        border: none !important;
-    }
-
-    .nav-item {
-        margin-left: 20%
-    }
-
-    #profileDropdown {
-        margin-top: 8%;
-        margin-right: 8%
-    }
-
-    .login_button {
-        display: none
+        background-color: #222222;
+        position: fixed !important;
+        right: 0;
+        top: 85px;
+        text-align: right;
+        width: 20%;
     }
 
     #loginButtonCollapsed {
         visibility: visible !important;
-    }
-
-    #loginButton {
-        display: none !important;
-    }
-
-    .profilePart {
-        padding: 20px 10px 15px 35px;
-        background-color: #1a1a1a;
-        margin-left: -3.5%;
-        margin-top: 140%;
-        width: 8rem;
-        z-index: 100;
-        position: absolute;
-        overflow: hidden;
-    }
-
-    .profilePart img {
-        margin-left: -15px
-    }
-
-    .profilePart span {
-        display: block
-    }
-
-    .profilePart p {
-        margin-top: -10px !important
-    }
-
-    #profilePartDiscriminator {
-        margin-top: -5px
-    }
-
-    #profileDropdown {
-        visibility: hidden
-    }
-
-    .profilePart a {
-        color: #d83434;
-        font-weight: normal;
-        text-decoration: none !important;
-        margin-left: -5px;
-        visibility: visible
-    }
-
-    .profilePart a:hover {
-        color: #9b2626;
-    }
-
-    .profilePart a {
-        text-decoration: underline
-    }
-
-    .navbar-brand {
-        margin-top: 0px !important
     }
 
 }

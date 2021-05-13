@@ -137,14 +137,14 @@ module.exports = (client) => {
 
     // Oauth Routes
     const oauthRoute = require('./routers/oauth');
-    app.get('/oauth', oauthRoute);
+    app.use('/oauth', oauthRoute);
 
 
     const apiRoute = require('./routers/api');
-    app.get('/api', apiRoute);
+    app.use('/api', apiRoute);
 
     // 404 Error
-    app.use('/*',(req, res) => {
+    app.use((req, res) => {
         return res.status(404).render('pages/errors/404');
     })
     
