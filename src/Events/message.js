@@ -96,26 +96,40 @@ module.exports = {
                 // Bot Perm Checkup
                 let botCanRunCommand = true;
                 let botRequiredPerms = new Array();
-                command.RequiredBotPerms.forEach(permission => {
-                    let channel = message.channel;
-                    if (!base.permissionCheck.textBasedPerms.includes(permission)) channel = message.member.voice.channel;
-                    if (!base.permissionCheck(channel, message.guild.me, permission)) {
-                        botCanRunCommand = false;
-                        botRequiredPerms.push(permission);
-                    };
-                });
+                if (command.RequiredPerms && command.RequiredPerms.constructor == Array) {
+
+                    command.RequiredBotPerms.forEach(permission => {
+                        let channel = message.channel;
+                        if (!base.permissionCheck.textBasedPerms.includes(permission)) channel = message.member.voice.channel;
+                        if (!base.permissionCheck(channel, message.guild.me, permission)) {
+                            botCanRunCommand = false;
+                            botRequiredPerms.push(permission);
+                        };
+                    });
+                }
+                else {
+
+                    base.log('warn', `Command reqired perms property returned undefined or null. (Command: ${command.Name})`)
+                }
 
                 // User Perm Checkup
                 let canRunCommand = true;
                 let requiredPerms = new Array();
-                command.RequiredPerms.forEach(permission => {
-                    let channel = message.channel;
-                    if (!base.permissionCheck.textBasedPerms.includes(permission)) channel = message.member.voice.channel;
-                    if (!base.permissionCheck(channel, message.member, permission)) {
-                        canRunCommand = false;
-                        requiredPerms.push(permission);
-                    };
-                });
+                if (command.RequiredPerms && command.RequiredPerms.constructor == Array) {
+                    
+                    command.RequiredPerms.forEach(permission => {
+                        let channel = message.channel;
+                        if (!base.permissionCheck.textBasedPerms.includes(permission)) channel = message.member.voice.channel;
+                        if (!base.permissionCheck(channel, message.member, permission)) {
+                            canRunCommand = false;
+                            requiredPerms.push(permission);
+                        };
+                    });
+                }
+                else {
+
+                    base.log('warn', `Command reqired perms property returned undefined or null. (Command: ${command.Name})`)
+                }
 
                 try {
     
