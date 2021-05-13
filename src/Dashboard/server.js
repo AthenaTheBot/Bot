@@ -35,30 +35,20 @@ module.exports = (client) => {
     app.use(bodyParser.json())
     app.use(cookieParser())
     app.use(express.static(`${__dirname}/public`));
-            
+     
+    // Main Routes
     app.get('/', async (req, res) => {
         
-        return res.render('index', {
+        return res.status(200).render('index', {
             userData: await encryptor.decrypt(req.cookies._ud),
             userGuilds: await encryptor.decrypt(req.cookies._ug)
         });
     })
     
-    app.get('/privacy', async (req, res) => {
-
-        return res.render('privacy', {
-            userData: await encryptor.decrypt(req.cookies._ud),
-            userGuilds: await encryptor.decrypt(req.cookies._ug)
-        });
-    });
-
-    app.get('/tos', async (req, res) => {
-
-        return res.render('tos', {
-            userData: await encryptor.decrypt(req.cookies._ud),
-            userGuilds: await encryptor.decrypt(req.cookies._ug)
-        });
-    });
+    app.get('/dashboard', (req, res) => {
+    
+        return res.status(200).render('pages/dashboard');
+    })
 
     app.get('/commands', async (req, res) => {
 
@@ -122,7 +112,7 @@ module.exports = (client) => {
             }
         });
 
-        return res.render('commands', {
+        return res.status(200).render('pages/commands', {
             userData: await encryptor.decrypt(req.cookies._ud),
             userGuilds: await encryptor.decrypt(req.cookies._ug),
             validCategories: ['All', 'Moderation', 'Music', 'Fun', 'Misc'],
@@ -136,11 +126,28 @@ module.exports = (client) => {
         });
     });
 
-    app.get('/thanks', async (req, res) => {
+    app.get('/privacy', async (req, res) => {
 
-        return res.render('thanks');
+        return res.status(200).render('pages/privacy', {
+            userData: await encryptor.decrypt(req.cookies._ud),
+            userGuilds: await encryptor.decrypt(req.cookies._ug)
+        });
     });
 
+    app.get('/tos', async (req, res) => {
+
+        return res.status(200).render('pages/tos', {
+            userData: await encryptor.decrypt(req.cookies._ud),
+            userGuilds: await encryptor.decrypt(req.cookies._ug)
+        });
+    });
+
+    app.get('/thanks', async (req, res) => {
+
+        return res.status(200).render('pages/thanks');
+    });
+
+    // Redirect Routes
     app.get('/invite', (req, res) => {
         return res.redirect(client.config.dashboard.INVITE_LINK);
     })
@@ -148,116 +155,18 @@ module.exports = (client) => {
     app.get('/support', (req, res) => {
         return res.redirect('https://discord.gg/etsgB9J');
     })
-    
-    app.get('/oauth/login', (req, res) => {
-        return res.redirect(client.config.dashboard.LOGIN_URL);
-    })
-    
-    app.get('/oauth/logout', async(req, res) => {
-    
-        await res.clearCookie('_ud');
-        await res.clearCookie('_ug');
-    
-        return res.redirect('/');
-    })
-    
-    app.get('/oauth/callback', async (req, res) => {
-    
-        if (!req.query.code || req.query.code === undefined || req.query.code === null) return res.redirect('/');
-    
-        try {
 
-            const DiscordOauth2 = require("discord-oauth2");
-            const oauth = new DiscordOauth2();
-        
-            const data = await oauth.tokenRequest({ 
-                clientId: client.config.bot.CLIENT_ID, 
-                clientSecret: client.config.bot.CLIENT_SECRET, 
-                code: req.query.code, 
-                scope: "identify guilds", 
-                grantType: "authorization_code", 
-                redirectUri: client.config.dashboard.REDIRECT_URI
-            });
-        
-            if (!data) return res.render('errors/fetchError');
-        
-            const userData = await oauth.getUser(data.access_token);
-            const userGuilds = await oauth.getUserGuilds(data.access_token);
-        
-            const availabeGuilds = userGuilds.filter(x => x.owner === true);
-        
-            if (!userData || !userGuilds) return res.render('errors/fetchError');
-        
-            await res.cookie('_ud', await encryptor.encrypt(userData));
-            await res.cookie('_ug', await encryptor.encrypt(availabeGuilds));
-        
-            return res.redirect('/');
-        }
-        catch (err) {
+    // Oauth Routes
+    const oauthRoute = require('./routers/oauth');
+    app.get('/oauth', oauthRoute);
 
-            client.handleError({ error: err, print: true });
-            return res.render('errors/fetchError');
-        }
-    
-    })
 
-    app.get('/dashboard', (req, res) => {
-    
-        return res.render('dashboard');
-    })
-    
-    app.post('/api/vote', async (req, res) => {
+    const apiRoute = require('./routers/api');
+    app.get('/api', apiRoute);
 
-        if (req.header('Authorization')) {
-
-            let user;
-            switch(req.header('Authorization')) {
-                case client.config.webhookTokens.TOPGG:
-                    user = req.body.user;
-                    break;
-                case client.config.webhookTokens.BOTSFORDISCORD:
-                    user = req.body.user;
-                    break;
-                case client.config.webhookTokens.DISCORDBOATS:
-                    user = req.body.user.id;
-                    break;
-                case client.config.webhookTokens.DCBOTLISTCOM:
-                    user = req.body.id;
-                    break;
-                default:
-                    user = undefined;
-                    break;
-            }
-
-            if (!user) return res.status(403).json({ message: 'Unauthorized' }).end();
-            else {
-
-                res.status(200).json({ message: 'Successful' }).end();
-
-                let userDiscordData = await client.users.cache.get(user);
-                let userData = await client.db.manager.getUser(userDiscordData);
-
-                if (!userData || !userDiscordData) return;
-                
-                client.log("log", `${userDiscordData.tag} is voted!`);
-                
-                if (!userData.preferences.notifications) return;
-                else {
-    
-                    let language = userData.preferences.language;
-                    if (!userData.preferences.language) language = client.config.defaults.LANGUAGE;
-                            
-                    const mainLocale = require(`../Locales/${language}/main.json`);
-    
-                    return userDiscordData.send(mainLocale.VOTE_MSG.replace('$user', userDiscordData.username).replace('$emoji', '<a:tadaa:805507286402596894>')).catch(err => {});
-                }
-            }
-    
-        }
-    })
-
+    // 404 Error
     app.use('/*',(req, res) => {
-        return res.render('errors/404');
+        return res.status(404).render('pages/errors/404');
     })
     
     try {
