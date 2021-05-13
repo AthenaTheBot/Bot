@@ -52,77 +52,58 @@ module.exports = (client) => {
 
     app.get('/commands', async (req, res) => {
 
-        const allCommands = new Array();
-        const moderationCommands = new Array();
-        const musicCommands = new Array();
-        const funCommands = new Array();
-        const miscCommands = new Array();
+        const validCategories = ['all', 'moderation', 'music', 'fun', 'misc'];
+        let categoryChoosen = req.query.category;
+
+        if (!categoryChoosen || !validCategories.includes(categoryChoosen)) categoryChoosen = 'all';
+
+        const commands = new Array();
 
         client.commands.forEach(async (command) => {
+            
             if (!command.Description || command.Description.length == 0) command.Description = 'None';
             if (!command.Usage) command.Usage = 'None';
-            if (command.RequiredPerms.length == 0) command.RequiredPerms = 'None';
-            if (command.RequiredBotPerms.length == 0) command.RequiredBotPerms = 'None';
-            allCommands.push({
-                commandName: command.Name,
-                commandDescription: command.Description,
-                commandUsage: command.Usage,
-                commandRequiredPerms: command.RequiredPerms,
-                commandRequiredBotPerms : command.RequiredBotPerms
-            });
-            switch(command.Category) {
-                case 'Moderation':
-                    moderationCommands.push({
-                        commandName: command.Name,
-                        commandDescription: command.Description,
-                        commandUsage: command.Usage,
-                        commandRequiredPerms: command.RequiredPerms,
-                        commandRequiredBotPerms : command.RequiredBotPerms
-                    });
-                    break;
-                case 'Music':
-                    musicCommands.push({
-                        commandName: command.Name,
-                        commandDescription: command.Description,
-                        commandUsage: command.Usage,
-                        commandRequiredPerms: command.RequiredPerms,
-                        commandRequiredBotPerms : command.RequiredBotPerms
-                    });
-                    break;
-                case 'Fun':
-                    funCommands.push({
-                        commandName: command.Name,
-                        commandDescription: command.Description,
-                        commandUsage: command.Usage,
-                        commandRequiredPerms: command.RequiredPerms,
-                        commandRequiredBotPerms : command.RequiredBotPerms
-                    });
-                    break;
-                case 'Misc':
-                    miscCommands.push({
-                        commandName: command.Name,
-                        commandDescription: command.Description,
-                        commandUsage: command.Usage,
-                        commandRequiredPerms: command.RequiredPerms,
-                        commandRequiredBotPerms : command.RequiredBotPerms
-                    });
-                    break;
-                default:
-                    break;
+            if (!command.RequiredPerms || command.RequiredPerms.length == 0) command.RequiredPerms = 'None';
+            if (!command.RequiredBotPerms || command.RequiredBotPerms.length == 0) command.RequiredBotPerms = 'None';
+
+            if (categoryChoosen == 'all') {
+                
+                return commands.push({
+                    Name: command.Name,
+                    Description: command.Description,
+                    Usage: command.Usage,
+                    RequiredPerms: command.RequiredPerms,
+                    RequiredBotPerms : command.RequiredBotPerms
+                });
             }
+            else {
+
+                if (command.Category.toLowerCase() == categoryChoosen) {
+
+                    return commands.push({
+                        Name: command.Name,
+                        Description: command.Description,
+                        Usage: command.Usage,
+                        RequiredPerms: command.RequiredPerms,
+                        RequiredBotPerms : command.RequiredBotPerms
+                    });
+                }
+                else {
+
+                    return;
+                }
+                
+                return;
+            }
+
         });
 
         return res.status(200).render('pages/commands', {
             userData: await encryptor.decrypt(req.cookies._ud),
             userGuilds: await encryptor.decrypt(req.cookies._ug),
-            validCategories: ['All', 'Moderation', 'Music', 'Fun', 'Misc'],
-            commands: {
-                All: allCommands,
-                Moderation: moderationCommands,
-                Music: musicCommands,
-                Fun: funCommands,
-                Misc: miscCommands
-            },
+            categories: validCategories,
+            categoryChoosen: categoryChoosen,
+            commands: commands
         });
     });
 

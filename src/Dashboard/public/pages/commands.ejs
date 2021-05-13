@@ -5,12 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="All commands of Athena.">
-    <script src="static/scripts/jquery.min.js"></script>
-    <script src="static/scripts/bootstrap.min.js"></script>
-    <script src="static/scripts/cookie.js"></script>
-    <link rel="stylesheet" href="static/css/bootstrap-min.css">
-    <link rel="stylesheet" href="static/css/commands.css">
-    <link rel="icon" href="icon.ico">
+    <script src="../static/scripts/jquery.min.js"></script>
+    <script src="../static/scripts/bootstrap.min.js"></script>
+    <script src="../static/scripts/cookie.js"></script>
+    <script src="../static/scripts/commands.js"></script>
+    <link rel="stylesheet" href="../static/css/bootstrap-min.css">
+    <link rel="stylesheet" href="../static/css/commands.css">
+    <link rel="icon" type="image/png" href="https://i.imgur.com/YfKn5dP.png">
     <title>Commands - Athena</title>
 </head>
 <body>
@@ -29,86 +30,26 @@
 
     <div class="container">
         <div class="categories">
-            <% for (var i = 0; i < validCategories.length; i++) { %>
-                <h5 class="category_<%= validCategories[i]  %>" id="category"><%= validCategories[i] %></h5>
+            <% for (var i = 0; i < categories.length; i++) { %>
+                <% if (categoryChoosen == categories[i]) { %>
+                    <a href="?category=<%= categories[i] %>"><h5 style="background-color: #7289DA;" class="category"><%= categories[i] %></h5></a>
+                <% } else { %>  
+                    <a href="?category=<%= categories[i] %>"><h5 class="category"><%= categories[i] %></h5></a>
+                <% } %>  
             <% } %>  
         </div>
 
         <div class="commands">
-            <% for (var i = 0; i < commands.All.length; i++) { %>
-                <div class="command" onclick="expandCommand('<%= commands.All[i].commandName %>')">
-                    <h5 id="title">at!<%= commands.All[i].commandName %> <code id="customCode"><%= commands.All[i].commandUsage %></code></h5>
-                    <p style="display: none;" class="description" id="description_<%= commands.All[i].commandName  %>">Description: <%= commands.All[i].commandDescription %> <br> Required Perms for Users: <code id="customCode"><%= commands.All[i].commandRequiredPerms %></code> <br> Required Perms for Bot: <code id="customCode"><%= commands.All[i].commandRequiredBotPerms %></code></p>
-                </div>
-            <% } %>
+            <% for (var i = 0; i < commands.length; i++) { %>
+            <div class="command" onclick="expandCommand('<%= commands[i].Name %>')">
+                <h5 id="title">at! <%= commands[i].Name %> <code id="customCode"><%= commands[i].commandUsage %></code></h5>
+                <p style="display: none;" class="description" id="description_<%= commands[i].Name %>">Description: <%= commands[i].Description %><br> Required Perms for Users: <code id="customCode"><%= commands[i].RequiredPerms %></code> <br> Required Perms for Bot: <code id="customCode"><%= commands[i].RequiredBotPerms %></code></p>
+            </div> 
+            <% } %>  
         </div>
     </div>
 
     <%- include('../components/footer') %>
 
-        <% for (var i = 0; i < validCategories.length; i++) { %>
-            <script>
-                let commands_<%= validCategories[i] %> = <%- JSON.stringify(commands[validCategories[i]]) %>;
-                $(".category_<%= validCategories[i]  %>").click(() => {
-                    $('.command').remove();
-                    $(".category_<%= validCategories[i]  %>").css('background-color', '#7289DA');
-                    const arrayStr = "<%= validCategories %>";
-                    const array = arrayStr.split(',');
-                    const filteredArray = array.filter(x => x != "<%= validCategories[i] %>");
-                    filteredArray.forEach(category => {
-                        $(`.category_${category}`).css('background-color', '#303030');
-                    })
-                    commands_<%= validCategories[i] %>.forEach(command => {
-                        $('.commands').append(`
-                            <div class="command" onclick="expandCommand('${command.commandName}')">
-                                <h5 id="title">at! ${command.commandName} <code id="customCode">${command.commandUsage}</code></h5>
-                                <p style="display: none;" class="description" id="description_${command.commandName}">Description: ${command.commandDescription}<br> Required Perms for Users: <code id="customCode">${command.commandRequiredPerms}</code> <br> Required Perms for Bot: <code id="customCode">${command.commandRequiredBotPerms}</code></p>
-                            </div> 
-                        `);
-                    })
-                });
-            </script>
-        <% } %>
-
-        <script>
-            let commandsExpanded = new Array();
-
-            function expandCommand(commandName) {
-                if (commandsExpanded.includes(commandName)) {
-            
-                    $(`#description_${commandName}`).css('display', 'none');
-                    commandsExpanded = commandsExpanded.filter(x => x != commandName);
-                    return;
-                }
-                else {
-            
-                    $(`#description_${commandName}`).css('display', 'block');
-                    commandsExpanded.push(commandName);
-                    return; 
-                }
-            }
-
-        </script>
-
-        <script>
-            let showing = false;
-            $('.navbar-toggler').click(() => {
-
-                if (showing) {
-                    $('.navbar-collapse').css('visibility', 'hidden');
-                    $('.profilePart').css('visibility', 'hidden');
-                    $('#logoutButtonCollapsedVersion').css('visibility', 'hidden');
-                    showing = false;
-                    return;
-                }
-                else {
-                    $('.navbar-collapse').css('visibility', 'visible');
-                    $('.profilePart').css('visibility', 'visible');
-                    $('#logoutButtonCollapsedVersion').css('visibility', 'visible');
-                    showing = true;
-                    return;
-                }
-            })
-        </script>
 </body>
 </html>
