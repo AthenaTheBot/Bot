@@ -3,7 +3,7 @@ const router = express.Router();
 
 const config = require('../../../config');
 
-router.get('/vote', (req, res) => {
+router.get('/vote', async (req, res) => {
 
     if (req.header('Authorization')) {
 

@@ -3,10 +3,6 @@ const router = express.Router();
 
 const config = require('../../../config');
 
-router.get('/', (req, res) => {
-    res.send('Hi!');
-})
-
 router.get('/login', (req, res) => {
     return res.redirect(config.dashboard.LOGIN_URL);
 })

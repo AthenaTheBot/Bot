@@ -47,25 +47,25 @@ class Base extends Client {
                 type = 'READY'.rainbow;
                 break;
             case 'command':
-                type = `COMMAND`.bgCyan;
+                type = `COMMAND`.bgCyan.black;
                 break;
             case 'event':
-                type = 'EVENT'.bgBlue;
+                type = 'EVENT'.bgBlue.black;
                 break;
             case 'usage':
-                type = 'USAGE'.bgMagenta;
+                type = 'USAGE'.bgMagenta.black;
                 break;    
             case 'error':
-                type = 'ERROR'.bgRed;
+                type = 'ERROR'.bgRed.black;
                 break;
             case 'warn':
-                type = 'WARN'.bgYellow;
+                type = 'WARN'.bgYellow.black;
                 break;
             case 'success':
-                type = 'SUCCESS'.bgGreen;
+                type = 'SUCCESS'.bgGreen.black;
                 break;
             default:
-                type = 'LOG'.bgWhite.black;
+                type = 'LOG'.bgWhite.black.black;
                 break;
         }
 
