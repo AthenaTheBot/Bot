@@ -7,11 +7,11 @@ router.get('/', (req, res) => {
     res.send('Hi!');
 })
 
-app.get('/login', (req, res) => {
+router.get('/login', (req, res) => {
     return res.redirect(config.dashboard.LOGIN_URL);
 })
 
-app.get('/logout', async(req, res) => {
+router.get('/logout', async(req, res) => {
 
     await res.clearCookie('_ud');
     await res.clearCookie('_ug');
@@ -19,7 +19,7 @@ app.get('/logout', async(req, res) => {
     return res.redirect('/');
 })
 
-app.get('/callback', async (req, res) => {
+router.get('/callback', async (req, res) => {
 
     if (!req.query.code || req.query.code === undefined || req.query.code === null) return res.redirect('/');
 
