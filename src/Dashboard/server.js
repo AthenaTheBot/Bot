@@ -92,8 +92,6 @@ module.exports = (client) => {
 
                     return;
                 }
-                
-                return;
             }
 
         });

@@ -2,7 +2,6 @@ body {
     background-color: #292929 !important;
     color: white !important;
     font-family: Arial, Helvetica, sans-serif !important;
-
 }
 
 ::-webkit-scrollbar {
@@ -23,6 +22,31 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #5c6fb1;
+}
+
+
+noscript {
+    width: 100%;
+    text-align: center;
+    background-color: #131313cb;
+    position: fixed;
+    padding: 10px;
+    bottom: 0px;
+    z-index: 100000;
+    text-align: left;
+    border-top: 1px solid #7289DA;
+}
+
+noscript p {
+    color: white;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: 13.5px;
+}
+
+noscript p span {
+    font-size: 20px;
+    color: #7289DA
 }
 
 #nav-buttom-commands {
@@ -72,16 +96,8 @@ body {
 .header {
     text-align: center;
     text-shadow: 2px 2px #7289DA;
+    margin-top: 150px;
     margin-bottom: 115px;
-}
-
-#topicLine {
-    background-color: #7289DA;
-    color: #7289DA;
-    opacity: 1;
-    width: 55%;
-    margin: auto;
-    margin-top: 40px
 }
 
 .categories {
@@ -159,4 +175,31 @@ body {
     margin-top: 15px;
     display: none;
     height: fit-content;
+}
+
+@media (max-width: 550px) {
+    .categories {
+        width: 150px;
+    }
+
+    .commands {
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 450px) {
+    .categories {
+        width: 120px;
+    }
+
+    .category {
+        padding: 5px 10px;
+        overflow: hidden;
+    } 
+
+    .commands {
+        margin-left: 0px;
+        position: relative;
+        left: 0px
+    }
 }

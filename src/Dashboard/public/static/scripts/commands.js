@@ -1,4 +1,5 @@
 let commandsExpanded = new Array();
+let menuExpanded = false;
 
 const expandCommand = async (commandName) => {
     if (commandsExpanded.includes(commandName)) {
