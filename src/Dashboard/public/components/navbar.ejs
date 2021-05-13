@@ -2,13 +2,13 @@
     <head>
         <link rel="stylesheet" href="../static/css/navbar.css">
         <link rel="stylesheet" href="../static/css/bootstrap-min.css">
-        <script src="static/scripts/jquery.min.js"></script>
-        <script src="static/scripts/bootstrap.min.js"></script>
-        <script src="static/scripts/navbar.js"></script>
+        <script src="../static/scripts/jquery.min.js"></script>
+        <script src="../static/scripts/bootstrap.min.js"></script>
+        <script src="../static/scripts/navbar.js"></script>
     </head>
     <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
         <div class="container-fluid">
-          <a style="margin-left: 2%;" class="navbar-brand" href="/">
+          <a class="navbar-brand" href="/">
             <img src="https://i.imgur.com/YfKn5dP.png" alt="" width="50" height="50">
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,16 +17,16 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a id="nav-buttom-home" class="nav-link" aria-current="page" href="/">Home</a>
+                <a id="nav-button-home" class="nav-link" aria-current="page" href="/">Home</a>
               </li>
               <li class="nav-item">
-                <a id="nav-buttom-dashboard" class="nav-link" href="/dashboard">Dashboard</a>
+                <a id="nav-button-dashboard" class="nav-link" href="/dashboard">Dashboard</a>
               </li>
               <li class="nav-item">
-                <a id="nav-buttom-commands" class="nav-link" href="/commands">Commands</a>
+                <a id="nav-button-commands" class="nav-link" href="/commands">Commands</a>
               </li>
               <li id="support-link" class="nav-item">
-                <a id="nav-buttom-support" class="nav-link" href="/support">Support</a>
+                <a id="nav-button-support" class="nav-link" href="/support">Support</a>
               </li>
               <li style="visibility: hidden;" id="loginButtonCollapsed" class="nav-item">
                 <a class="nav-link" href="/oauth/login">Login</a>
@@ -34,10 +34,13 @@
               <% if (userData) { %>
                 <div class="profilePart">
                   <img src="https://cdn.discordapp.com/avatars/<%= userData.id %>/<%= userData.avatar %>.png?size=4096">
-                  <p id="profilePartUsername"><%= userData.username %><span id="profilePartDiscriminator">#<%= userData.discriminator %> </span></p>
-                  <a id="logoutButtonCollapsedVersion" href="/oauth/logout">Logout</a>
+                  <div class="username">
+                    <p id="Username"><%= userData.username %></p>
+                    <p id="Discriminator">#<%= userData.discriminator %> </p>
+                  </div>
+                  <a id="logoutButtonCollapsed" href="/oauth/logout">Logout</a>
                 </div>
-                <a id="profileDropdown" href="/oauth/logout">Logout</a>
+                <a id="logoutButton" href="/oauth/logout">Logout</a>
               <% } %>  
             </ul>
           </div>

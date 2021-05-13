@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const encryptor = require('simple-encryptor').createEncryptor('abcçdefgğhıijklmnoöprsştuüvyz123456789?_-*');
+const DiscordOauth2 = require("discord-oauth2");
+const oauth = new DiscordOauth2();
 
 const config = require('../../../config');
 
@@ -21,9 +24,6 @@ router.get('/callback', async (req, res) => {
 
     try {
 
-        const DiscordOauth2 = require("discord-oauth2");
-        const oauth = new DiscordOauth2();
-    
         const data = await oauth.tokenRequest({ 
             clientId: config.bot.CLIENT_ID, 
             clientSecret: config.bot.CLIENT_SECRET, 
