@@ -19,6 +19,7 @@ const run = async (client, message, args, locale, db) => {
             playing: false,
             queue: [],
             textChannel: null,
+            voiceChannel: null,
             connection: null,
             player: null,
             encoderArgs: []
@@ -56,6 +57,7 @@ const run = async (client, message, args, locale, db) => {
 
         guildMusicState.connection = connection;
         guildMusicState.textChannel = message.channel.id;
+        guildMusicState.voiceChannel = message.member.voice.channel.id;
 
         const youtubeResult = await (await ytsr(songRequest, { pages: 1, limit: 1})).items.filter(x => x.type === 'video');
 

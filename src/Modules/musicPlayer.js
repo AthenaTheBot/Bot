@@ -53,7 +53,7 @@ module.exports.play = async (base, guild, locale) => {
                     if (newGuildMusicState && newGuildMusicState.playing) return;
                     else {
                         if (!newGuildMusicState) return;
-                        message.guild.me.voice.channel.leave();
+                        base.channels.cache.get(newGuildMusicState.voiceChannel).leave();
                         textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.INACTIVE_FOR_TOO_LONG));
                         base.guildMusicStates.delete(guild);
                     }

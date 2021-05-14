@@ -31,7 +31,7 @@
     "mongoose": "^5.12.5",
     "node-fetch": "^2.6.1",
     "simple-encryptor": "^4.0.0",
-    "ytdl-core": "^4.7.0",
+    "ytdl-core": "^4.8.0",
     "ytdl-core-discord": "^1.3.0",
     "ytsr": "^3.4.1"
   }
