@@ -5,6 +5,8 @@ module.exports = {
     name: 'guildDelete',
     async run(base, guild) {
 
+        if (base.config.bot.CLIENT_ID != base.user.id) return;
+
         try {
             await base.db.collection('servers').deleteOne({ guild: guild.id });
         } catch (err) {

@@ -5,6 +5,8 @@ module.exports = {
     name: 'guildCreate',
     async run(base, guild) {
 
+        if (base.config.bot.CLIENT_ID != base.user.id) return;
+
         try {
             await base.db.manager.createGuild(guild.id);
         } catch (err) {
