@@ -44,6 +44,6 @@ module.exports = {
     Description: 'Hmm, maybe Athena can mimic someone, who knows...',
     Cooldown: 2.5,
     RequiredPerms: [],
-    RequiredBotPerms: ["MANAGE_WEBHOOKS", "SEND_MESSAGES"],
+    RequiredBotPerms: ["MANAGE_WEBHOOKS", "SEND_MESSAGES", "EMBED_LINKS"],
     Run: run
 }

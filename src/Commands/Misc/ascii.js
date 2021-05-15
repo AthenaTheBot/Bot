@@ -33,6 +33,6 @@ module.exports = {
     Cooldown: 2,
     Usage: 'text',
     RequiredPerms: [],
-    RequiredBotPerms: ["SEND_MESSAGES"],
+    RequiredBotPerms: ["SEND_MESSAGES", "EMBED_LINKS"],
     Run: run
 }

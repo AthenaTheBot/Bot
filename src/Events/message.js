@@ -67,7 +67,7 @@ module.exports = {
             let command;
             if (base.commands.has(cmd)) command = base.commands.get(cmd);
             else if (base.commandAliases.has(cmd)) command = base.commandAliases.get(cmd); 
-    
+
             if (command) {
 
                 if (command.Category == 'Owner') return;
