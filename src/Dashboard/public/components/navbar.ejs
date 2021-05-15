@@ -5,6 +5,7 @@
         <script src="../static/scripts/jquery.min.js"></script>
         <script src="../static/scripts/bootstrap.min.js"></script>
         <script src="../static/scripts/navbar.js"></script>
+        <script src="static/scripts/cookie.js"></script>
     </head>
     <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
         <div class="container-fluid">
@@ -56,4 +57,40 @@
       <% } else { %>
         <script> userLoggedIn(); </script>
       <% } %>
+
+      <div class="cookieWarning">
+        <p id="cookieWarningText">🍪 We use cookies to ensure that we give the full functionality of our site. <a style="color: #7289DA; text-decoration: none;" href="/privacy">Learn more</a></p>
+        <button id= "cookieWarningButton" type="button" class="btn-close btn-close-white" aria-label="Close"></button>
+      </div>
+      <style>
+        .cookieWarning {
+            width: 100%;
+            min-height: 50px;
+            height: auto;
+            z-index: 1000;
+            bottom: 0px;
+            background-color: #1b1b1bbd;
+            text-align: left;
+            position: fixed;
+            display: none;
+            border-top: 1px solid #7289DA;
+        }
+
+        #cookieWarningText {
+            float: left;
+            margin-top: 15px;
+            margin-left: 15px;
+            font-weight: bold;
+            padding: 3px 3px 3px 3px;
+            width: 60%;
+            overflow: hidden;
+        }
+
+        #cookieWarningButton {
+            float: right;
+            margin-right: 20px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+      </style>
 </html>

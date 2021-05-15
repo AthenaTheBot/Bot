@@ -6,7 +6,6 @@ function userNotLoggedIn() {
 }
 
 function userLoggedIn() {
-
     $('.profilePart').css('visibility', 'visible');
     $('#loginButtonCollapsed').css('display', 'none');
     $('.navbar-brand').css('margin-top', '6.rem');

@@ -31,5 +31,5 @@ $(document).ready(function() {
     })
   
     if (!getCookie('readCookieWarn')) return $('.cookieWarning').css('display', 'block');
-  })
+})
   
