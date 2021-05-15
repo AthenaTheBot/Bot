@@ -91,7 +91,7 @@ module.exports = {
                     }
                 }
 
-                const locale = require(path.join(__dirname, '../Locales', language, command.Category, command.Name));
+                const locale = command.locales.find(locale => locale.language == language);
 
                 // Bot Perm Checkup
                 let botCanRunCommand = true;

@@ -154,6 +154,48 @@ class Base extends Client {
     
     }
 
+    async loadLocales(dir) {
+
+        this.commands.forEach(command => {
+
+            if (command.Category == 'Owner') return;
+
+            try {
+
+                const availabeLocales = fs.readdirSync(path.join(dir));
+
+                command.locales = new Array();
+
+                availabeLocales.forEach(locale => {
+
+                    const commandLocale = require(path.join(dir, locale, command.Category, command.Name + '.json'));
+
+                    commandLocale.language = locale;
+
+                    command.locales.push(commandLocale);
+                })
+
+                this.commands.set(command.Name, command);
+            }
+            catch(err) {
+
+                if (err.code == 'MODULE_NOT_FOUND') {
+                    this.log('warn', `Found one command with missing locale. Disabling command for preventing bugs.. (Command: ${command.Name})`);
+                    this.commands.delete(command.Name);
+                    command.Aliases.forEach(alias => {
+                        this.commandAliases.delete(alias);
+                    });
+                }
+                else {
+
+                    return this.log('error', err);
+                }
+            };
+        });
+
+        return this.log('success', 'Successfully loaded all command locales.');
+    }
+
     async connectDB(url) {
 
         if (!url) return this.log('error', 'Invalid Mongo Database url.');

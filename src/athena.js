@@ -14,6 +14,7 @@ base.once('ready', async() => {
     await base.connectDB(base.config.bot.DATABASE);
     await base.loadCommands(path.join(__dirname, 'Commands'));
     await base.loadEvents(path.join(__dirname, 'Events'));
+    await base.loadLocales(path.join(__dirname, 'Locales'));
     await base.dashboard(base);
     await base.postStats(base, true, 60);
     await base.setPresence();

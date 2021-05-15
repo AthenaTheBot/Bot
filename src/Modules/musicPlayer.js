@@ -69,7 +69,7 @@ module.exports.play = async (base, guild, locale) => {
             guildMusicState.playing = false;
             setTimeout(async () => {
                 const updatedGuildMusicState = await base.guildMusicStates.get(guild);
-                if (updatedGuildMusicState.playing) return;
+                if (updatedGuildMusicState && updatedGuildMusicState.playing) return;
                 else {
                     return base.guildMusicStates.delete(guild);
                 }
