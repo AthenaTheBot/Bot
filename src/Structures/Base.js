@@ -184,7 +184,35 @@ class Base extends Client {
 
         if (!data.commandName) data.commandName = 'None';
 
-        if (data.print) this.log('error', `${data.error} (Command: ${data.commandName})`);
+        if (data.print && data.error) {
+
+            this.log('error', `${data.error} (Command: ${data.commandName})`);
+
+            try {
+
+                delete require.cache[require.resolve(path.join(__dirname, '..', '..', 'Errors.json'))];
+
+                const currentErrorFile = require(path.join(__dirname, '..', '..', 'Errors.json'));
+        
+                currentErrorFile.ERRORS.push({ code: data.error.code, name: data.error.name, message: data.error.code, stack: data.error.stack });
+        
+                fs.writeFileSync(path.join(__dirname, '..', '..', 'Errors.json'), JSON.stringify(currentErrorFile));
+                
+            }
+            catch(err) {
+
+                if (err.code == 'MODULE_NOT_FOUND') {
+
+                    this.log('warn', 'An error occured and error file not found! Creating error file..');
+
+                    fs.writeFileSync(path.join(__dirname, '..', '..', 'Errors.json'), JSON.stringify({ ERRORS: [ { code: data.error.code, name: data.error.name, message: data.error.code, stack: data.error.stack } ] }));
+                }
+                else {
+
+                    this.log('error', err);
+                }
+            }
+        }
     
         if (this.user.id != this.config.bot.CLIENT_ID) return;
 

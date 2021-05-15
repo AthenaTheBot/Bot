@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
+const encryptor = require('simple-encryptor').createEncryptor('abcçdefgğhıijklmnoöprsştuüvyz123456789?_-*');
+const path = require('path');
+
 const Athena = require('../../Structures/Base');
 const base = new Athena();
 
@@ -54,6 +57,35 @@ router.get('/vote', async (req, res) => {
     else {
 
         return res.status(403).json({ message: 'Unauthorized' }).end();
+    }
+});
+
+router.get('/errors', async (req, res) => {
+
+    const userData = await encryptor.decrypt(req.cookies._ud);
+
+    if (userData && userData.id == base.config.bot.OWNER) {
+
+        try {
+
+            delete require.cache[require.resolve(path.join(path.join(__dirname, '..', '..', '..', 'Errors.json')))];
+
+            let ErrorFile = require(path.join(__dirname, '..', '..', '..', 'Errors.json'));
+            ErrorFile.status = 200;
+
+            if (ErrorFile.ERRORS.length == 0) ErrorFile.ERRORS = 'No Errors Found';
+
+            return res.status(200).json({ status: 200, errors: ErrorFile.ERRORS }).end();
+
+        }
+        catch (err) {
+
+            return res.status(500).json({ status: 500, message: 'An unexpected error occured while trying to interact with error file.' }).end();
+        }
+    }
+    else {
+
+        res.status(403).json({ status: 403, mesasge: 'Unauthorized' }).end();
     }
 })
 

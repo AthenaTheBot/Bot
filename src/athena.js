@@ -24,10 +24,10 @@ base.once('ready', async() => {
 base.login(base.config.bot.TOKEN);
 
 // Error handling
-process.on('unhandledRejection', (err) => { 
+process.on('unhandledRejection', (err) => {
     base.handleError({ error: err, print: true }); 
 });
 
-process.on('uncaughtException', (err) => { 
+process.on('uncaughtException', (err) => {
     base.handleError({ error: err, print: true }); 
 });
