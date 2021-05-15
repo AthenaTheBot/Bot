@@ -1,5 +1,5 @@
 // Main Module
-const { Client, Collection, MessageEmbed } = require('discord.js');
+const { Client, Collection, MessageEmbed, Intents } = require('discord.js');
 
 // Extra Modules We Require
 const mongoose = require('mongoose');
@@ -11,7 +11,7 @@ const path = require('path');
 // Base Class
 class Base extends Client {
     constructor() {
-        super()
+        super({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
         this.config = require('../../config');
         this.dashboard = require('../Dashboard/server');
         this.permissionCheck = require('../Modules/permissionCheck');
@@ -116,7 +116,7 @@ class Base extends Client {
     
         } catch (err) {
     
-            return this.log('error', `${err}`);
+            return this.log('error', `${err} (Command: ${err})`);
         }
     
     };
