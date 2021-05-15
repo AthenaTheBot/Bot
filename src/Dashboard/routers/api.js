@@ -85,7 +85,7 @@ router.get('/errors', async (req, res) => {
     }
     else {
 
-        res.status(403).json({ status: 403, mesasge: 'Unauthorized' }).end();
+        res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
     }
 })
 
