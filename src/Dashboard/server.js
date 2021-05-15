@@ -121,11 +121,6 @@ module.exports = (client) => {
         });
     });
 
-    app.get('/thanks', async (req, res) => {
-
-        return res.status(200).render('pages/thanks');
-    });
-
     // Redirect Routes
     app.get('/invite', (req, res) => {
         return res.redirect(client.config.dashboard.INVITE_LINK);

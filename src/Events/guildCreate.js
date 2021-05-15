@@ -6,7 +6,7 @@ module.exports = {
     async run(base, guild) {
 
         try {
-            await db.manager.createGuild(guild.id);
+            await base.db.manager.createGuild(guild.id);
         } catch (err) {
             base.log('error', `${err} (Guild: ${guild.id})`.red);
         }

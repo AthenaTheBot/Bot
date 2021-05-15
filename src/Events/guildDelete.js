@@ -6,7 +6,7 @@ module.exports = {
     async run(base, guild) {
 
         try {
-            await db.collection('servers').deleteOne({ guild: guild.id });
+            await base.db.collection('servers').deleteOne({ guild: guild.id });
         } catch (err) {
             base.log('error', `${err} (Guild: ${guild.id})`);
         }
