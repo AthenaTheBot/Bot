@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /https://athenabot.site/
+Disallow: /https://athenabot.site/api/
+Disallow: /https://athenabot.site/oauth/
+
