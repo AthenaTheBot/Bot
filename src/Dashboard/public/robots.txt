@@ -1,5 +1,6 @@
 User-Agent: *
-Allow: /https://athenabot.site/
-Disallow: /https://athenabot.site/api/
-Disallow: /https://athenabot.site/oauth/
+Disallow: /api/
+Disallow: /oauth/
+Crawl-delay: 2
 
+Sitemap: https://athenabot.site/sitemap.xml
