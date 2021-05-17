@@ -80,7 +80,11 @@ router.get('/errors', async (req, res) => {
         }
         catch (err) {
 
-            return res.status(500).json({ status: 500, message: 'An unexpected error occured while trying to interact with error file.' }).end();
+            if (err.code == 'MODULE_NOT_FOUND') return res.status(200).json({ status: 200, errors: 'No Errors Found' }).end();
+            else {
+
+                return res.status(500).json({ status: 500, message: err }).end();
+            }
         }
     }
     else {

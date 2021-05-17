@@ -1,10 +1,6 @@
 const run = async (client, message, args, locale) => {
 
-    locale = JSON.parse(JSON.stringify(locale).replace('$ping', client.ws.ping));
-
-    console.log(locale);
-
-    message.channel.send(locale.MSG);
+    return message.channel.send(locale.MSG.replace('$ping', client.ws.ping));
 }
 
 module.exports = {
