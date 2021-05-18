@@ -58,9 +58,9 @@ body {
 .server {
     width: 300px;
     min-width: 185px;
-    height: 170px;
+    height: 285px;
     border: 1px solid #7289DA;
-    line-height: 1.5;
+    line-height: 1;
     padding: 15px;
     margin: 55px;
     border-radius: 12px;
@@ -71,6 +71,10 @@ body {
     box-shadow: 0px 14px 52px -1px rgba(0,0,0,1);
     cursor: pointer;
     animation: normalAnim 300ms forwards;
+}
+
+.details {
+    margin-top: 20px;
 }
 
 .server img {
@@ -85,6 +89,32 @@ body {
 
 .server:hover {
     animation: bounceAnim 300ms forwards;
+}
+
+.customCode {
+    font-size: 13px;
+    background-color: #131212;
+    color: #7289DA;
+    padding: 3px
+}
+
+#serverLine {
+    width: 90%;
+    opacity: 1;
+    background-color: #7289DA;
+    color: #7289DA;
+    position: relative;
+    left: 10px
+}
+
+#dashButton {
+    text-decoration: none;
+    color: #7289DA;
+    margin-top: 45px;
+}
+
+#dashButton:hover {
+    text-decoration: underline;
 }
 
 @keyframes bounceAnim {

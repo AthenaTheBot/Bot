@@ -12,7 +12,7 @@ const openMenu = () => {
     }
 };
 
-const selectLang = (language) => {
+const selectLang = (language, id) => {
 
     $('.languages').css('display', 'none');
     menuOpened = false;
@@ -25,7 +25,7 @@ const selectLang = (language) => {
             language = 'Türkçe';
             break;
         case 'defaultLang':
-            language = 'Select Language';
+            language = null;
             break;
         default:
             language = null;
@@ -35,6 +35,10 @@ const selectLang = (language) => {
     if (!language) return;
 
     $('#languageButton').text(language);
+
+    console.log(language);
+
+    return;
 }
 
 const setPrefix = (event, id) => {
@@ -74,5 +78,5 @@ const setPrefix = (event, id) => {
     else {
 
         return;
-    }
-}
+    };
+};

@@ -20,9 +20,19 @@
     <div class="containter">
         <div class="servers">
             <% for (var i = 0; i < userGuilds.length; i++) { %>
-                <div class="server" onclick="window.location.href='/dashboard/<%= userGuilds[i].id %>'">
+                <div class="server">
                     <img src="<%= userGuilds[i].icon %> " alt="<%= userGuilds[i].name %> ">
                     <h5><%= userGuilds[i].name %></h5>
+                    <hr id="serverLine">
+                    <div class="details">
+                        <p>Member Count: <span class="customCode"><%= userGuilds[i].memberCount %></span></p>
+                        <p>Channel Count: <span class="customCode"><%= userGuilds[i].channelCount %></span></p>
+                        <% if (userGuilds[i].available) { %>
+                            <a id="dashButton" href="<%= userGuilds[i].dashURL %>">Go To Dashboard</a>
+                        <% } else { %>
+                            <a id="dashButton" href="/invite">Invite Athena!</a>
+                        <% } %>   
+                    </div>
                 </div>
             <% } %>  
         </div>

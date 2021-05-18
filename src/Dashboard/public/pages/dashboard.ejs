@@ -20,6 +20,11 @@
         <div class="selectedServer">
             <img src="<%= selectedGuild.icon %> " alt="<%= selectedGuild.name %> ">
             <h5><%= selectedGuild.displayName %></h5>
+            <hr id="serverLine">
+            <div class="details">
+                <p>Member Count: <span class="customCode"><%= selectedGuild.memberCount %></span></p>
+                <p>Channel Count: <span class="customCode"><%= selectedGuild.channelCount %></span></p> 
+            </div>
         </div>
         <div class="controlPart">
             <div class="configuration">
@@ -34,9 +39,9 @@
                         <h3>Change Language</h3>
                         <p id="languageButton" onclick="openMenu()">Select Language</p>
                         <ul class="languages">
-                            <li onclick="selectLang('en-US')" class="language">English</li>
-                            <li onclick="selectLang('tr-TR')" class="language">Türkçe</li>
-                            <li onclick="selectLang('defaultLang')" class="language">Default</li>
+                            <li onclick="selectLang('en-US', '<%= selectedGuild.id %>')" class="language">English</li>
+                            <li onclick="selectLang('tr-TR', '<%= selectedGuild.id %>')" class="language">Türkçe</li>
+                            <li onclick="selectLang('defaultLang', '<%= selectedGuild.id %>')" class="language">Default</li>
                         </ul>
                     </div>
                 </div>
