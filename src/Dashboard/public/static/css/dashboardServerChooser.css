@@ -109,6 +109,21 @@ body {
     100% {
       -webkit-transform: translateY(0);
       transform: translateY(0);
+    } 
+}
+
+@media (max-width: 425px) {
+    .server {
+        margin: 25px !important;
     }
-  
+}
+
+@media (max-width: 375px) {
+    .server {
+        width: 240px !important;
+    }
+
+    .server:last-child {
+        margin-bottom: 120px !important;
+    }
 }

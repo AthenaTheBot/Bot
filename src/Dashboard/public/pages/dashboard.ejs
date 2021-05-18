@@ -8,6 +8,8 @@
     <script src="../static/scripts/jquery.min.js"></script>
     <link rel="stylesheet" href="../static/css/bootstrap-min.css">
     <link rel="stylesheet" href="../static/css/dashboard.css">
+    <script src="https://kit.fontawesome.com/88e62b65ed.js" crossorigin="anonymous"></script>
+    <script src="../static/scripts/dashboard.js"></script>
     <link rel="icon" type="image/png" href="https://i.imgur.com/YfKn5dP.png">
     <title>Dashboard - Athena</title>
 </head>
@@ -17,21 +19,27 @@
     <div class="containter">
         <div class="selectedServer">
             <img src="<%= selectedGuild.icon %> " alt="<%= selectedGuild.name %> ">
-            <h5><%= selectedGuild.name %></h5>
+            <h5><%= selectedGuild.displayName %></h5>
         </div>
         <div class="controlPart">
             <div class="configuration">
-                <div class="prefixPart">
-                    <h3>Prefix Setup</h3>
-                    <input id="prefixInput" type="text">
+                <h2 id="title">Configuration Settings</h2>
+                <div class="forms">
+                    <div class="prefixPart">
+                        <h3>Prefix Setup</h3>
+                        <input class="form-control" id="prefixInput" onkeydown="setPrefix(event)" type="text" placeholder="Write your own prefix!">
+                    </div>
+
+                    <div class="languagePart">
+                        <h3>Language Setup</h3>
+                        <p id="languageButton" onclick="openMenu()">Select Language</p>
+                        <ul class="languages">
+                            <li onclick="selectLang('en-US')" class="language">English</li>
+                            <li onclick="selectLang('tr-TR')" class="language">Türkçe</li>
+                            <li onclick="selectLang('defaultLang')" class="language">Default</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="language">
-
-                </div>
-            </div>
-
-            <div class="moderation">
-
             </div>
         </div>
     </div>

@@ -132,6 +132,30 @@ noscript p span {
     box-shadow: 0px 14px 52px -1px rgba(0,0,0,1)
 }
 
+@media (max-width: 1750px) {
+    .shortDescription {
+        height: 1200px;;
+    }
+}
+
+@media (max-width: 1750px) {
+    .shortDescription {
+        height: 1000px;;
+    }
+}
+
+@media (max-width: 1385px) {
+    .shortDescription {
+        height: 800px;;
+    }
+}
+
+@media (max-width: 1020px) {
+    .shortDescription {
+        height: 600px;;
+    }
+}
+
 @media (max-width: 850px) {
     .shortDescription {
         height: 500px;;

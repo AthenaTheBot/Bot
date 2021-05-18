@@ -25,7 +25,7 @@ module.exports = (client) => {
 
     app.use((req, res, next) => {
         if (req.protocol == 'http') {
-            res.redirect(301, `https://${req.headers.host}${req.url}`);
+            return res.redirect(301, `https://${req.headers.host}${req.url}`);
         }
         next();
     });
@@ -45,36 +45,6 @@ module.exports = (client) => {
         });
     })
     
-    app.get('/dashboard', async (req, res) => {
-    
-        if (!req.cookies || !req.cookies._ud || !req.cookies._ug) return res.redirect('/oauth/login');
-
-        return res.status(200).render('pages/dashboardServerChooser', {
-            userData: await encryptor.decrypt(req.cookies._ud),
-            userGuilds: await encryptor.decrypt(req.cookies._ug)
-        });
-    });
-
-    app.get('/dashboard/:id', async (req, res) => {
-
-        const userData = await encryptor.decrypt(req.cookies._ud);
-        const userGuilds = await encryptor.decrypt(req.cookies._ug);
-
-        if (!req.params || !req.params.id) return res.redirect('/dashboard');
-
-        let canAccess = false;
-        for (var i = 0; i < userGuilds.length; i++) {
-            if (userGuilds[i].id == req.params.id) canAccess = true;
-        }
-
-        if (!canAccess) return res.redirect('/dashboard');
-
-        return res.render('pages/dashboard', {
-            userData: await encryptor.decrypt(req.cookies._ud),
-            selectedGuild: userGuilds.find(guild => guild.id == req.params.id)
-        });
-    })
-
     app.get('/commands', async (req, res) => {
 
         const validCategories = ['all', 'moderation', 'music', 'fun', 'misc'];
@@ -159,9 +129,13 @@ module.exports = (client) => {
     const oauthRoute = require('./routers/oauth');
     app.use('/oauth', oauthRoute);
 
-
+    // Api Routes
     const apiRoute = require('./routers/api');
     app.use('/api', apiRoute);
+
+    // Dashboard Routes
+    const dashboardRoute = require('./routers/dashboard');
+    app.use('/dashboard', dashboardRoute);
 
     // 404 Error
     app.use((req, res) => {

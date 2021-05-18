@@ -65,18 +65,146 @@ body {
     box-shadow: 0px 6px 35px -7px #000000;
 }
 
+#title {
+    text-align: center;
+    text-shadow: 2px 2px black;
+    margin-top: 65px
+}
+
 .controlPart {
     width: 100%;
     height: auto;
+    overflow: hidden;
+    display: inline-block;
 }
 
 .configuration {
-    height: 150px;
-    width: 250px;
-    background-color: #7289DA;
+    height: 700px;
+    width: 500px;
+    overflow: hidden;
+    margin: auto;
+    position: relative;
+    top: 150px;
+}
+
+.forms {
+    padding: 15px;
+    padding-left: 0px;
+}
+
+.prefixPart {
+    border-left: 2px solid #7289DA;
+    padding: 20px;
+    background-color: #1b1b1b;
+    -webkit-box-shadow: 0px 6px 35px -7px #000000; 
+    box-shadow: 0px 6px 35px -7px #000000;
+    border-radius: 12px;
+    margin: 30px;
 }
 
 #prefixInput {
-    width: 100px;
-    height: 30px;
+    width: 90%;
+    margin: 20px;
+    margin-left: 2px;
+    background-color: #302f2f;
+    border: 2px solid #7289DA;
+    color: white;
+}
+
+#prefixInput:focus {
+    box-shadow: none;
+    outline: 0 none;
+}
+
+.languagePart {
+    margin: 30px;
+    border-left: 2px solid #7289DA;
+    padding: 20px;
+    background-color: #1b1b1b;
+    -webkit-box-shadow: 0px 6px 35px -7px #000000; 
+    box-shadow: 0px 6px 35px -7px #000000;
+    border-radius: 8px;
+}
+
+#languageButton {
+    margin: 20px;
+    margin-left: 2px;
+    padding: 10px;
+    background-color: #7289DA;
+    cursor: pointer;
+    width: 140px;
+    border-radius: 7px;
+}
+
+#languageButton:hover {
+    background-color: #687cc4;
+}
+
+.languages {
+    display: none;
+    position: fixed;
+    list-style: none;
+    top: 780px;
+    padding: 5px;
+    background-color: #302f2f;
+    z-index: 10000;
+    border-radius: 12px;
+    -webkit-box-shadow: 0px 6px 35px -7px #000000; 
+    box-shadow: 0px 6px 35px -7px #000000;
+}
+
+.language {
+    padding: 10px 30px;
+    background-color: #302f2f;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.language:hover {
+    background-color: #222222;
+}
+
+.moderation {
+    height: 450px;
+    width: 500px;
+    overflow: hidden;
+}
+
+.linkProtectionPart {
+    margin-top: 15px;;
+    border-left: 2px solid #7289DA;
+    padding: 20px;
+}
+
+@media (max-width: 500px) {
+    .configuration {
+        width: 450px;
+    }
+}
+
+@media (max-width: 420px) {
+    .configuration {
+        width: 420px;
+        text-align: center;
+    }
+
+    #prefixInput {
+        position: relative;
+        left: 20px
+    }
+
+    #languageButton {
+        position: relative;
+        left: 80px;
+    }
+}
+
+
+@media (max-width: 390px) {
+    .configuration {
+        width: 390px;
+        text-align: center;
+    }
+
+
 }
