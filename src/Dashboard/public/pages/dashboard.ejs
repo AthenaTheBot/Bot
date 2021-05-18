@@ -26,12 +26,12 @@
                 <h2 id="title">Configuration Settings</h2>
                 <div class="forms">
                     <div class="prefixPart">
-                        <h3>Prefix Setup</h3>
-                        <input class="form-control" id="prefixInput" onkeydown="setPrefix(event)" type="text" placeholder="Write your own prefix!">
+                        <h3>Change Prefix</h3>
+                        <input class="form-control" id="prefixInput" onkeydown="setPrefix(event, '<%= selectedGuild.id %>')" type="text" placeholder="Write the prefix you want then press ENTER!">
                     </div>
 
                     <div class="languagePart">
-                        <h3>Language Setup</h3>
+                        <h3>Change Language</h3>
                         <p id="languageButton" onclick="openMenu()">Select Language</p>
                         <ul class="languages">
                             <li onclick="selectLang('en-US')" class="language">English</li>

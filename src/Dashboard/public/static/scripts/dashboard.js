@@ -37,7 +37,7 @@ const selectLang = (language) => {
     $('#languageButton').text(language);
 }
 
-const setPrefix = (event) => {
+const setPrefix = (event, id) => {
 
     if (event.key == 'Enter') {
 
@@ -49,6 +49,26 @@ const setPrefix = (event) => {
         else {
 
             $('#prefixInput').css('border-color', 'green');
+
+            fetch('/dashboard/actions', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ operation: 'setPrefix',  guildID: id, prefix: prefix }),
+            })
+            .then(response => response.json())
+            .then(data => {
+
+                if (data.status == 200) return console.log('Operation successfull!');
+                else {
+
+                    return console.error('An error occured!');
+                }
+            })
+            .catch((error) => {
+                  console.error('Error:', error);
+            });
         }
     }
     else {
