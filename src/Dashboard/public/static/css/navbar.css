@@ -130,6 +130,7 @@
         position: fixed !important;
         right: 0;
         top: 85px;
+        z-index: 10000;
         text-align: right;
         width: 130px;
         border: 1px solid #7289DA;

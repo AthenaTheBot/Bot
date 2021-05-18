@@ -140,3 +140,34 @@ noscript p span {
         margin-bottom: 150px;
     }
 }
+
+@media (max-width: 485px) {
+    .botFeature {
+        margin: 35px;
+    }
+}
+
+@media (max-width: 440px) {
+    .botFeature {
+        margin: 15px;
+    }
+}
+
+@media (max-width: 400px) {
+    .botFeature {
+        margin: 0px;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 370px) {
+    .botFeature {
+        width: 200px;
+    }
+}
+
+@media (max-width: 330px) {
+    .botFeature {
+        width: 170px;
+    }
+}

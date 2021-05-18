@@ -21,10 +21,10 @@ body {
     border-radius: 5px;
 }
   
+
 ::-webkit-scrollbar-thumb:hover {
     background: #5c6fb1;
 }
-
 
 #nav-button-dashboard {
     color: #7289DA !important;
@@ -33,29 +33,47 @@ body {
     pointer-events: none;
 }
 
+#title {
+    color: #7289DA;
+    text-align: center;
+    font-family: 'Rajdhani', sans-serif;
+    position: relative;
+    top: 120px;
+    margin-bottom: 50px;
+}
+
 .containter {
     min-height: 54.1vh;
 }
 
-.selectedServer {
+.servers {
+    position: relative;
+    top: 120px;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    overflow: hidden;
+}
+
+.server {
     width: 300px;
     min-width: 185px;
     height: 170px;
     border: 1px solid #7289DA;
     line-height: 1.5;
     padding: 15px;
-    margin: auto;
-    position: relative;
-    top: 70px;
+    margin: 55px;
     border-radius: 12px;
+    display: inline-block;
     vertical-align: top;
     -webkit-box-shadow: 0px 14px 52px -1px rgba(0,0,0,1);
     -moz-box-shadow: 0px 14px 52px -1px rgba(0,0,0,1);
     box-shadow: 0px 14px 52px -1px rgba(0,0,0,1);
-    text-align: center;
+    cursor: pointer;
+    animation: normalAnim 300ms forwards;
 }
 
-.selectedServer img {
+.server img {
     height: 80px;
     width: 80px;
     border-radius: 50%;
@@ -65,18 +83,32 @@ body {
     box-shadow: 0px 6px 35px -7px #000000;
 }
 
-.controlPart {
-    width: 100%;
-    height: auto;
+.server:hover {
+    animation: bounceAnim 300ms forwards;
 }
 
-.configuration {
-    height: 150px;
-    width: 250px;
-    background-color: #7289DA;
+@keyframes bounceAnim {
+    0% {
+      -webkit-transform: translateY(0);
+      transform: translateY(0);
+    }
+  
+    100% {
+      -webkit-transform: translateY(-20px);
+      transform: translateY(-20px);
+    }
+  
 }
 
-#prefixInput {
-    width: 100px;
-    height: 30px;
+@keyframes normalAnim {
+    0% {
+      -webkit-transform: translateY(-20px);
+      transform: translateY(-20px);
+    }
+  
+    100% {
+      -webkit-transform: translateY(0);
+      transform: translateY(0);
+    }
+  
 }

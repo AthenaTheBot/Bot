@@ -49,7 +49,7 @@ module.exports = (client) => {
     
         if (!req.cookies || !req.cookies._ud || !req.cookies._ug) return res.redirect('/oauth/login');
 
-        return res.status(200).render('pages/dashboard', {
+        return res.status(200).render('pages/dashboardServerChooser', {
             userData: await encryptor.decrypt(req.cookies._ud),
             userGuilds: await encryptor.decrypt(req.cookies._ug)
         });
@@ -69,7 +69,10 @@ module.exports = (client) => {
 
         if (!canAccess) return res.redirect('/dashboard');
 
-        res.render('pages/manager');
+        return res.render('pages/dashboard', {
+            userData: await encryptor.decrypt(req.cookies._ud),
+            selectedGuild: userGuilds.find(guild => guild.id == req.params.id)
+        });
     })
 
     app.get('/commands', async (req, res) => {

@@ -5,34 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Manage your server easily from the dashboard of Athena.">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300&display=swap" rel="stylesheet">
     <script src="../static/scripts/jquery.min.js"></script>
     <link rel="stylesheet" href="../static/css/bootstrap-min.css">
-    <link rel="stylesheet" href="../static/css/dashboard.css">
+    <link rel="stylesheet" href="../static/css/dashboardServerChooser.css">
     <link rel="icon" type="image/png" href="https://i.imgur.com/YfKn5dP.png">
     <title>Dashboard - Athena</title>
 </head>
 <body>
     <%- include('../components/navbar') %> 
 
+    <h1 id="title">SERVERS</h1>
     <div class="containter">
-        <div class="selectedServer">
-            <img src="<%= selectedGuild.icon %> " alt="<%= selectedGuild.name %> ">
-            <h5><%= selectedGuild.name %></h5>
-        </div>
-        <div class="controlPart">
-            <div class="configuration">
-                <div class="prefixPart">
-                    <h3>Prefix Setup</h3>
-                    <input id="prefixInput" type="text">
+        <div class="servers">
+            <% for (var i = 0; i < userGuilds.length; i++) { %>
+                <div class="server" onclick="window.location.href='/dashboard/<%= userGuilds[i].id %>'">
+                    <img src="<%= userGuilds[i].icon %> " alt="<%= userGuilds[i].name %> ">
+                    <h5><%= userGuilds[i].name %></h5>
                 </div>
-                <div class="language">
-
-                </div>
-            </div>
-
-            <div class="moderation">
-
-            </div>
+            <% } %>  
         </div>
     </div>
 
