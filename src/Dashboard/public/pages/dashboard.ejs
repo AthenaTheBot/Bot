@@ -13,10 +13,19 @@
     <title>Dashboard - Athena</title>
 </head>
 <body>
-    <div class="main">
-        <h3>Under construction!</h3>
-        <p>Come back later and see the diffrence!</p> 
-        <a href="/">Go to the main page</a>
-    </div>   
+    <%- include('../components/navbar') %> 
+
+    <div class="containter">
+        <div class="servers">
+            <% for (var i = 0; i < userGuilds.length; i++) { %>
+                <div class="server" onclick="window.location.href='/dashboard/<%= userGuilds[i].id %>'">
+                    <img src="<%= userGuilds[i].icon %> " alt="<%= userGuilds[i].name %> ">
+                    <h5><%= userGuilds[i].name %></h5>
+                </div>
+            <% } %>  
+        </div>
+    </div>
+
+    <%- include('../components/footer') %> 
 </body>
 </html>

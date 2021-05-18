@@ -1,21 +1,105 @@
 body {
-    background-color: #292929;
-    color: white;
-    text-align: center !important;
-    font-family: Arial, Helvetica, sans-serif !important;
+    background-color: #292929 !important;
+    color: white !important;
+    width: 100%;
+    margin: 0;
+    padding: 0
 }
 
-.main {
-    margin-top: 15%;
-    text-shadow: 2px 2px #7289DA;
+::-webkit-scrollbar {
+    width: 5px;
+}
+  
+
+::-webkit-scrollbar-track {
+    background-color: #1a1a1a;
+}
+  
+
+::-webkit-scrollbar-thumb {
+    background: #7289DA;
+    border-radius: 5px;
+}
+  
+
+::-webkit-scrollbar-thumb:hover {
+    background: #5c6fb1;
 }
 
-.main a {
-    text-decoration: none;
-    color: #7289DA;
-    text-shadow: 1px 1px transparent;
-}
-
-.main a:hover {
+#nav-button-dashboard {
+    color: #7289DA !important;
     text-decoration: underline;
+    cursor: default;
+    pointer-events: none;
+}
+
+.containter {
+    min-height: 54.1vh;
+}
+
+.servers {
+    position: relative;
+    top: 60px;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    overflow: hidden;
+}
+
+.server {
+    width: 300px;
+    min-width: 185px;
+    height: 170px;
+    border: 1px solid #7289DA;
+    line-height: 1.5;
+    padding: 15px;
+    margin: 55px;
+    border-radius: 12px;
+    display: inline-block;
+    vertical-align: top;
+    -webkit-box-shadow: 0px 14px 52px -1px rgba(0,0,0,1);
+    -moz-box-shadow: 0px 14px 52px -1px rgba(0,0,0,1);
+    box-shadow: 0px 14px 52px -1px rgba(0,0,0,1);
+    cursor: pointer;
+    animation: normalAnim 300ms forwards;
+}
+
+.server img {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    box-sizing: 2px 2px 2px;
+    -webkit-box-shadow: 0px 6px 35px -7px #000000; 
+    box-shadow: 0px 6px 35px -7px #000000;
+}
+
+.server:hover {
+    animation: bounceAnim 300ms forwards;
+}
+
+@keyframes bounceAnim {
+    0% {
+      -webkit-transform: translateY(0);
+      transform: translateY(0);
+    }
+  
+    100% {
+      -webkit-transform: translateY(-20px);
+      transform: translateY(-20px);
+    }
+  
+}
+
+@keyframes normalAnim {
+    0% {
+      -webkit-transform: translateY(-20px);
+      transform: translateY(-20px);
+    }
+  
+    100% {
+      -webkit-transform: translateY(0);
+      transform: translateY(0);
+    }
+  
 }

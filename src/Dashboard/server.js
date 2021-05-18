@@ -45,9 +45,31 @@ module.exports = (client) => {
         });
     })
     
-    app.get('/dashboard', (req, res) => {
+    app.get('/dashboard', async (req, res) => {
     
-        return res.status(200).render('pages/dashboard');
+        if (!req.cookies || !req.cookies._ud || !req.cookies._ug) return res.redirect('/oauth/login');
+
+        return res.status(200).render('pages/dashboard', {
+            userData: await encryptor.decrypt(req.cookies._ud),
+            userGuilds: await encryptor.decrypt(req.cookies._ug)
+        });
+    });
+
+    app.get('/dashboard/:id', async (req, res) => {
+
+        const userData = await encryptor.decrypt(req.cookies._ud);
+        const userGuilds = await encryptor.decrypt(req.cookies._ug);
+
+        if (!req.params || !req.params.id) return res.redirect('/dashboard');
+
+        let canAccess = false;
+        for (var i = 0; i < userGuilds.length; i++) {
+            if (userGuilds[i].id == req.params.id) canAccess = true;
+        }
+
+        if (!canAccess) return res.redirect('/dashboard');
+
+        res.render('pages/manager');
     })
 
     app.get('/commands', async (req, res) => {
