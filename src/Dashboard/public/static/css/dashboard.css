@@ -83,8 +83,8 @@ body {
 
 #title {
     text-align: center;
-    text-shadow: 2px 2px black;
-    margin-top: 65px
+    text-shadow: 2px 2px #7289DA;
+    margin-top: 65px;
 }
 
 .controlPart {
@@ -177,6 +177,26 @@ body {
 
 .language:hover {
     background-color: #222222;
+}
+
+.warnings {
+    position: relative;
+    height: 30%;
+    width: 350px;
+    position: fixed;
+    overflow: hidden;
+}
+
+.warn {
+    background-color: #1b1b1b;
+    color: white;
+    height: 50px;
+    width: 300px;
+    border: 2px solid #7289DA;
+    border-radius: 5px;
+    padding: 10px;
+    display: none;
+    margin: 15px;
 }
 
 @media (max-width: 500px) {

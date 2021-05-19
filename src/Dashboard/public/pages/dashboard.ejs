@@ -27,21 +27,23 @@
             </div>
         </div>
         <div class="controlPart">
+            <div class="warnings">
+                <p class="warn">Example warning!</p>
+            </div>
             <div class="configuration">
                 <h2 id="title">Configuration Settings</h2>
                 <div class="forms">
                     <div class="prefixPart">
-                        <h3>Change Prefix</h3>
+                        <h4>Change Prefix</h4>
                         <input class="form-control" id="prefixInput" onkeydown="setPrefix(event, '<%= selectedGuild.id %>')" type="text" placeholder="Write the prefix you want then press ENTER!">
                     </div>
 
                     <div class="languagePart">
-                        <h3>Change Language</h3>
-                        <p id="languageButton" onclick="openMenu()">Select Language</p>
+                        <h4>Change Language</h4>
+                        <p id="languageButton" onclick="openMenu()"><%= selectedGuild.language %></p>
                         <ul class="languages">
                             <li onclick="selectLang('en-US', '<%= selectedGuild.id %>')" class="language">English</li>
                             <li onclick="selectLang('tr-TR', '<%= selectedGuild.id %>')" class="language">Türkçe</li>
-                            <li onclick="selectLang('defaultLang', '<%= selectedGuild.id %>')" class="language">Default</li>
                         </ul>
                     </div>
                 </div>
