@@ -143,4 +143,5 @@ const addWarning = (text) => {
         }
 
     }, 5000);
-}
+};
+

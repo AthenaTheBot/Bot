@@ -71,6 +71,8 @@ body {
     box-shadow: 0px 14px 52px -1px rgba(0,0,0,1);
     cursor: pointer;
     animation: normalAnim 300ms forwards;
+    position: relative;
+    z-index: 1000000;
 }
 
 .details {
