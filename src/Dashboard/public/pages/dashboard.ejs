@@ -5,11 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Manage your server easily from the dashboard of Athena.">
-    <script src="../static/scripts/jquery.min.js"></script>
     <link rel="stylesheet" href="../static/css/bootstrap-min.css">
     <link rel="stylesheet" href="../static/css/dashboard.css">
-    <script src="https://kit.fontawesome.com/88e62b65ed.js" crossorigin="anonymous"></script>
-    <script src="../static/scripts/dashboard.js"></script>
     <link rel="icon" type="image/png" href="https://i.imgur.com/YfKn5dP.png">
     <title>Dashboard - Athena</title>
 </head>
@@ -35,15 +32,15 @@
                 <div class="forms">
                     <div class="prefixPart">
                         <h4>Change Prefix</h4>
-                        <input class="form-control" id="prefixInput" onkeydown="setPrefix(event, '<%= selectedGuild.id %>')" type="text" placeholder="Write the prefix you want then press ENTER!">
+                        <input class="form-control" id="prefixInput" onkeydown="setPrefix(event, '<%= selectedGuild.id %>')" value="<%= selectedGuild.prefix %>" type="text" placeholder="Write the prefix you want then press ENTER!">
                     </div>
 
                     <div class="languagePart">
                         <h4>Change Language</h4>
                         <p id="languageButton" onclick="openMenu()"><%= selectedGuild.language %></p>
                         <ul class="languages">
-                            <li onclick="selectLang('en-US', '<%= selectedGuild.id %>')" class="language">English</li>
                             <li onclick="selectLang('tr-TR', '<%= selectedGuild.id %>')" class="language">Türkçe</li>
+                            <li onclick="selectLang('en-US', '<%= selectedGuild.id %>')" class="language">English</li>
                         </ul>
                     </div>
                 </div>
@@ -52,5 +49,9 @@
     </div>
 
     <%- include('../components/footer') %> 
+
+    <script src="../static/scripts/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/88e62b65ed.js" crossorigin="anonymous"></script>
+    <script src="../static/scripts/dashboard.js"></script>
 </body>
 </html>

@@ -136,13 +136,55 @@ router.post('/actions', async (req, res) => {
                     }
                     res.status(200).json({ status: 200, message: 'Successfull' }).end();
                     break;
+                case 'getPrefix':
+                    if (!req.body.guildID) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+                    try {
+
+                        const guildData = await Athena.db.collection('servers').findOne({ _id: req.body.guildID });
+
+                        if (!guildData || !guildData.data || !guildData.data.preferences) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
+
+                        const prefix = guildData.data.preferences.prefix;
+
+                        if (!prefix) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
+
+                        return res.status(200).json({ status: 200, data: prefix }).end();
+
+                    }
+                    catch(err) {
+
+                        Athena.handleError({ error: err, print: true });
+                        return res.status(500).json({ status: 500, message: 'Server Error' }).end();
+                    }
+                    break;
+                case 'getLanguage':
+                    if (!req.body.guildID) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+                    try {
+
+                        const guildData = await Athena.db.collection('servers').findOne({ _id: req.body.guildID });
+
+                        if (!guildData || !guildData.data || !guildData.data.preferences) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
+
+                        const language = guildData.data.preferences.language;
+
+                        if (!language) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
+
+                        return res.status(200).json({ status: 200, data: language }).end();
+
+                    }
+                    catch(err) {
+
+                        Athena.handleError({ error: err, print: true });
+                        return res.status(500).json({ status: 500, message: 'Server Error' }).end();
+                    }
+                    break;
                 default:
                     res.status(400).json({ status: 400, message: 'Bad Request' }).end();
                     break;
             }
 
             return;
-        };
+        }
     };
 
 });

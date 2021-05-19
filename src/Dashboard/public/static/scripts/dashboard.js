@@ -1,5 +1,5 @@
 let menuOpened = false;
-const openMenu = () => {
+const openMenu = async () => {
     if (menuOpened) {
         $('.languages').css('display', 'none');
         menuOpened = false;
@@ -12,7 +12,7 @@ const openMenu = () => {
     }
 };
 
-const selectLang = (language, id) => {
+const selectLang = async (language, id) => {
 
     $('.languages').css('display', 'none');
     menuOpened = false;
@@ -37,6 +37,36 @@ const selectLang = (language, id) => {
 
     $('#languageButton').text(display);
 
+    let canRun = true;
+    await fetch('/dashboard/actions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ operation: 'getLanguage',  guildID: id }),
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        if (data.status == 200) {
+
+            if (data.data == language) {
+
+                $('#languageButton').css('border-color', '#860606'); 
+                addWarning('The language that you are trying to set is same as the current one!');
+                return canRun = false;
+            }
+        }
+    })
+    .catch(error => {
+
+        console.log(error);
+        addWarning('An unexpected error occured while trying to make changes!');
+        return
+    });
+
+    if (!canRun) return;
+
     fetch('/dashboard/actions', {
         method: 'POST',
         headers: {
@@ -49,7 +79,11 @@ const selectLang = (language, id) => {
 
         if (data.status == 200) {
 
-            addWarning('Successfully made changes!');
+            $('#languageButton').css('border-color', 'green'); 
+            addWarning('Successfully set server language!');
+            setTimeout(() => {
+                $('#languageButton').css('border-color', '#7289DA'); 
+            }, 1500);
             return;
         }
         else {
@@ -70,7 +104,7 @@ const selectLang = (language, id) => {
 let warnCount = 0;
 let warnRemoved = 0;
 
-const setPrefix = (event, id) => {
+const setPrefix = async (event, id) => {
 
     if (event.key == 'Enter') {
 
@@ -81,7 +115,34 @@ const setPrefix = (event, id) => {
         }
         else {
 
-            $('#prefixInput').css('border-color', 'green');
+            let canRun = true;
+            await fetch('/dashboard/actions', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ operation: 'getPrefix',  guildID: id }),
+            })
+            .then(response => response.json())
+            .then(data => {
+
+                if (data.status == 200) {
+
+                    if (data.data == prefix) {
+
+                        $('#prefixInput').css('border-color', '#860606'); 
+                        addWarning('The prefix that you are trying to set is same as the current one!');
+                        return canRun = false;
+                    }
+                }
+            })
+            .catch(error => {
+
+                addWarning('An unexpected error occured while trying to make changes!');
+                return
+            });
+
+            if (!canRun) return;
 
             fetch('/dashboard/actions', {
                 method: 'POST',
@@ -95,7 +156,11 @@ const setPrefix = (event, id) => {
 
                 if (data.status == 200) {
 
-                    addWarning('Successfully made changes!');
+                    $('#prefixInput').css('border-color', 'green');
+                    addWarning('Successfully set server prefix!');
+                    setTimeout(() => {
+                        $('#prefixInput').css('border-color', '#7289DA'); 
+                    }, 1500);
                     return;
                 }
                 else {

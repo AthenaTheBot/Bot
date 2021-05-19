@@ -4,6 +4,8 @@ const router = express.Router();
 const encryptor = require('simple-encryptor').createEncryptor('abcçdefgğhıijklmnoöprsştuüvyz123456789?_-*');
 const path = require('path');
 
+const fs = require('fs');
+
 const Athena = require('../../Structures/Base');
 const base = new Athena();
 
@@ -65,6 +67,25 @@ router.get('/errors', async (req, res) => {
     const userData = await encryptor.decrypt(req.cookies._ud);
 
     if (userData && userData.id == base.config.bot.OWNER) {
+
+        if (req.query && req.query.operation) {
+
+            if (req.query.operation == 'reset') {
+
+                try {
+
+                    await fs.writeFileSync(path.join(__dirname, '..', '..', '..', 'Errors.json'), JSON.stringify({ ERRORS: [] }));
+                }
+                catch (err) {
+
+                    return res.status(500).json({ status: 500, message: err }).end(); 
+                }
+
+                return res.status(200).json({ status: 200, message: 'Successfully reset the errors file.' }).end();
+            }
+
+            return;
+        }
 
         try {
 

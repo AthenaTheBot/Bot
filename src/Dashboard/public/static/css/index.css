@@ -98,6 +98,7 @@ noscript p span {
     min-width: 185px;
     height: 300px;
     border: 2px solid #7289DA;
+    background-color: #1b1b1b;
     line-height: 1.5;
     padding: 15px;
     margin: 55px;
@@ -120,10 +121,11 @@ noscript p span {
 }
 
 .inviteQuestion {
-    margin-top: 4%;
+    margin-top: 100px;
     text-shadow: 2px 2px #7289DA;
     text-align: center;
-    margin-bottom: 200px;
+    margin-bottom: 100px;
+    padding: 15px 0px;
 }
 
 #inviteQuestionButton:hover {
@@ -131,6 +133,17 @@ noscript p span {
     -moz-box-shadow: 0px 14px 52px -1px rgba(0,0,0,1);
     box-shadow: 0px 14px 52px -1px rgba(0,0,0,1)
 }
+
+
+@media (min-width: 850px) and (max-width: 1578px) {
+    .shortDescription {
+        height: 500px;;
+    }
+    #botFeature-4 {
+        margin-bottom: 150px;
+    }
+}
+
 
 @media (max-width: 1750px) {
     .shortDescription {
@@ -153,15 +166,6 @@ noscript p span {
 @media (max-width: 1020px) {
     .shortDescription {
         height: 600px;;
-    }
-}
-
-@media (max-width: 850px) {
-    .shortDescription {
-        height: 500px;;
-    }
-    #botFeature-4 {
-        margin-bottom: 150px;
     }
 }
 

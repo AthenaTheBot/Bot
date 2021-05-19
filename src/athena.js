@@ -24,7 +24,6 @@ base.once('ready', async() => {
 // Login
 base.login(base.config.bot.TOKEN);
 
-
 // Error handling
 process.on('unhandledRejection', (err) => {
     base.handleError({ error: err, print: true }); 
@@ -33,6 +32,5 @@ process.on('unhandledRejection', (err) => {
 process.on('uncaughtException', (err) => {
     base.handleError({ error: err, print: true }); 
 });
-
 
 module.exports = base;

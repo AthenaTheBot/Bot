@@ -97,7 +97,8 @@ body {
     font-size: 13px;
     background-color: #131212;
     color: #7289DA;
-    padding: 3px
+    padding: 4px;
+    border-radius: 3px;
 }
 
 #serverLine {

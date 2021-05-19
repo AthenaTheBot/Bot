@@ -69,7 +69,8 @@ body {
     font-size: 13px;
     background-color: #131212;
     color: #7289DA;
-    padding: 3px
+    padding: 4px;
+    border-radius: 3px;
 }
 
 #serverLine {
@@ -146,7 +147,8 @@ body {
     margin: 20px;
     margin-left: 2px;
     padding: 10px;
-    background-color: #7289DA;
+    background-color: #302f2f;
+    border: 2px solid #7289DA;
     cursor: pointer;
     width: 140px;
     border-radius: 7px;
@@ -181,7 +183,7 @@ body {
 
 .warnings {
     position: absolute;
-    height: 400px;
+    height: 360px;
     width: 350px;
     overflow: hidden;
 }
@@ -189,7 +191,8 @@ body {
 .warn {
     background-color: #1b1b1b;
     color: white;
-    height: 50px;
+    min-height: 50px;
+    height: fit-content;
     width: 300px;
     border: 2px solid #7289DA;
     border-radius: 5px;

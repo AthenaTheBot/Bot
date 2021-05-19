@@ -5,7 +5,7 @@
     text-align: center;
     background-image: url("../images/footer.svg");
     background-repeat: no-repeat;
-    background-position: bottom;
+    background-position: bottom !important;
     background-size: cover;
     overflow: visible;
     display: flex;
