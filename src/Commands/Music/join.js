@@ -10,7 +10,7 @@ const run = async (client, message, args, locale, db) => {
 
     const guildMusicState = client.guildMusicStates.get(message.guild.id);
 
-    if (guildMusicState && guildMusicState.playing) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.ALREADY_PLAYING}`));
+    if (guildMusicState && guildMusicState.playing) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.ALREADY_BEING_USED}`));
 
     if (!message.member.voice.channel) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.NOT_IN_VC}`));
 
