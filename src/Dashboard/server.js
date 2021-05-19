@@ -31,10 +31,11 @@ module.exports = (client) => {
     });
 
     app.set('view engine', 'ejs');
-    app.set('views', `${__dirname}/public`);
+    app.set('views', `${__dirname}/public/pages`);
     app.use(bodyParser.json())
     app.use(cookieParser())
-    app.use(express.static(`${__dirname}/public`));
+    app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
+    app.use('/', express.static(path.join(__dirname, 'public', 'seo')));
      
     // Main Routes
     app.get('/', async (req, res) => {
@@ -91,7 +92,7 @@ module.exports = (client) => {
 
         });
 
-        return res.status(200).render('pages/commands', {
+        return res.status(200).render('commands', {
             userData: await encryptor.decrypt(req.cookies._ud),
             userGuilds: await encryptor.decrypt(req.cookies._ug),
             categories: validCategories,
@@ -102,7 +103,7 @@ module.exports = (client) => {
 
     app.get('/privacy', async (req, res) => {
 
-        return res.status(200).render('pages/privacy', {
+        return res.status(200).render('privacy', {
             userData: await encryptor.decrypt(req.cookies._ud),
             userGuilds: await encryptor.decrypt(req.cookies._ug)
         });
@@ -110,7 +111,7 @@ module.exports = (client) => {
 
     app.get('/tos', async (req, res) => {
 
-        return res.status(200).render('pages/tos', {
+        return res.status(200).render('tos', {
             userData: await encryptor.decrypt(req.cookies._ud),
             userGuilds: await encryptor.decrypt(req.cookies._ug)
         });
@@ -139,7 +140,7 @@ module.exports = (client) => {
 
     // 404 Error
     app.use((req, res) => {
-        return res.status(404).render('pages/errors/404');
+        return res.status(404).render('errors/404');
     })
     
     try {

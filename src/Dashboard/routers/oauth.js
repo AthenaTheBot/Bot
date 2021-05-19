@@ -34,17 +34,17 @@ router.get('/callback', async (req, res) => {
             redirectUri: config.dashboard.REDIRECT_URI
         });
     
-        if (!data) return res.render('pages/errors/fetchError');
+        if (!data) return res.render('errors/fetchError');
     
         let userData = await oauth.getUser(data.access_token);
         let userGuilds = await oauth.getUserGuilds(data.access_token);
     
         const availabeGuilds = userGuilds.filter(x => x.owner === true);
     
-        if (!userData || !userGuilds) return res.render('pages/errors/fetchError');
+        if (!userData || !userGuilds) return res.render('errors/fetchError');
 
         for (var i = 0; i < userGuilds.length; i++) {
-            if (userGuilds[i].icon == null) userGuilds[i].icon = "../static/images/defaultServer.png";
+            if (userGuilds[i].icon == null) userGuilds[i].icon = "../assets/images/defaultServer.png";
             else userGuilds[i].icon = `https://cdn.discordapp.com/icons/${userGuilds[i].id}/${userGuilds[i].icon}.png`;
         }
     
@@ -56,7 +56,7 @@ router.get('/callback', async (req, res) => {
     catch (err) {
 
         console.log('[' + 'ERROR'.bgRed.black + ']', err);
-        return res.render('pages/errors/fetchError');
+        return res.render('errors/fetchError');
     }
 
 })

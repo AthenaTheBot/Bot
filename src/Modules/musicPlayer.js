@@ -51,7 +51,7 @@ module.exports.play = async (base, guild, locale) => {
                         const newGuildMusicState = await base.guildMusicStates.get(guild);
                         if (newGuildMusicState && newGuildMusicState.playing) return;
                         else {
-                            if (!newGuildMusicState) return;
+                            if (!newGuildMusicState || !newGuildMusicState.connection) return;
                             base.channels.cache.get(newGuildMusicState.voiceChannel).leave();
                             textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.INACTIVE_FOR_TOO_LONG));
                             base.guildMusicStates.delete(guild);

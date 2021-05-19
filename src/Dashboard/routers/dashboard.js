@@ -28,7 +28,7 @@ router.get('/', async(req, res) => {
         }
     }
 
-    return res.status(200).render('pages/dashboardServerChooser', {
+    return res.status(200).render('dashboardServerChooser', {
         userData: userData,
         userGuilds: userGuilds
     });
@@ -94,7 +94,7 @@ router.get('/:id', async (req, res) => {
     if (selectedGuild.name.length > 25) selectedGuild.displayName = selectedGuild.name.slice(0, 25) + '...';
     else selectedGuild.displayName = selectedGuild.name;
 
-    return res.render('pages/dashboard', {
+    return res.render('dashboard', {
         userData: userData,
         selectedGuild: userGuilds.find(guild => guild.id == req.params.id)
     });
