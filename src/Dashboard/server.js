@@ -6,7 +6,7 @@ module.exports = (client) => {
     const express = require('express');
     const fs = require('fs');
     const path = require('path');
-    const encryptor = require('simple-encryptor').createEncryptor('abcçdefgğhıijklmnoöprsştuüvyz123456789?_-*');
+    const encryptor = require('simple-encryptor').createEncryptor('bruh_31*aöçğwothx');
     const cookieParser = require('cookie-parser');
     const bodyParser = require('body-parser');
 
@@ -100,6 +100,8 @@ module.exports = (client) => {
             commands: commands
         });
     });
+
+    app.get('/test', (req, res) => { res.send('Hello') })
 
     app.get('/privacy', async (req, res) => {
 

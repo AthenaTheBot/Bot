@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const encryptor = require('simple-encryptor').createEncryptor('abcçdefgğhıijklmnoöprsştuüvyz123456789?_-*');
-const DiscordOauth2 = require("discord-oauth2");
-const oauth = new DiscordOauth2();
 const fs = require('fs');
+const fetch = require('node-fetch');
+const Athena = require('../../athena');
 
-const config = require('../../../config');
+const { Permissions } = require('discord.js');
 
 router.get('/login', (req, res) => {
-    return res.redirect(config.dashboard.LOGIN_URL);
+    return res.redirect(Athena.config.dashboard.LOGIN_URL);
 })
 
 router.get('/logout', async(req, res) => {
@@ -25,33 +24,53 @@ router.get('/callback', async (req, res) => {
 
     try {
 
-        const data = await oauth.tokenRequest({ 
-            clientId: config.bot.CLIENT_ID, 
-            clientSecret: config.bot.CLIENT_SECRET, 
-            code: req.query.code, 
-            scope: "identify guilds", 
-            grantType: "authorization_code", 
-            redirectUri: config.dashboard.REDIRECT_URI
-        });
-    
-        if (!data) return res.render('errors/fetchError');
-    
-        let userData = await oauth.getUser(data.access_token);
-        let userGuilds = await oauth.getUserGuilds(data.access_token);
-    
-        const availabeGuilds = userGuilds.filter(x => x.owner === true);
-    
-        if (!userData || !userGuilds) return res.render('errors/fetchError');
+        const tokenData = await fetch(`https://discord.com/api/oauth2/token`, {
+            method: 'POST',
+            body: `client_id=${Athena.config.bot.CLIENT_ID}&client_secret=${Athena.config.bot.CLIENT_SECRET}&grant_type=authorization_code&code=${req.query.code}&redirect_uri=${Athena.config.dashboard.REDIRECT_URI}`,
+            headers: { 
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+        .then(res => res.json()).catch(err => {});
 
-        for (var i = 0; i < userGuilds.length; i++) {
-            if (userGuilds[i].icon == null) userGuilds[i].icon = "../assets/images/defaultServer.png";
-            else userGuilds[i].icon = `https://cdn.discordapp.com/icons/${userGuilds[i].id}/${userGuilds[i].icon}.png`;
+        if (!tokenData) return res.status(200).render('erros/fetchError');
+
+        let userData = await fetch('https://discord.com/api/users/@me', {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `${tokenData.token_type} ${tokenData.access_token}`,
+            },
+        })
+        .then(res => res.json()).catch(err => {});
+
+        let userGuildData = await fetch('https://discord.com/api/users/@me/guilds', {
+            headers: { 
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `${tokenData.token_type} ${tokenData.access_token}`,
+            },
+        })
+        .then(res => res.json()).catch(err => {});
+
+        if (!userData || !userGuildData) return res.status(200).render('errors/fetchError');
+
+        const availabeGuilds = new Array();
+        for (var i = 0; i < userGuildData.length; i++) {
+            const perrmissions = new Permissions(userGuildData[i].permissions);
+            userGuildData[i].permissions = perrmissions.toArray();
+            if (userGuildData[i].owner || userGuildData[i].permissions.includes('ADMINISTRATOR')) availabeGuilds.push(userGuildData[i]); 
         }
+
+        // https://cdn.discordapp.com/icons/${userGuilds[i].id}/${userGuilds[i].icon}.png
     
-        await res.cookie('_ud', await encryptor.encrypt(userData));
-        await res.cookie('_ug', await encryptor.encrypt(availabeGuilds));
-    
-        return res.redirect('/');
+        const data = { ...userData, ...availabeGuilds };
+
+        return res.render('loading', {
+            redirectURL: '/test',
+            time: 5,
+            setStorage: true,
+            storageName: 'data',
+            storageData: data
+        });
     }
     catch (err) {
 

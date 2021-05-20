@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const encryptor = require('simple-encryptor').createEncryptor('abcçdefgğhıijklmnoöprsştuüvyz123456789?_-*');
+const encryptor = require('simple-encryptor').createEncryptor('bruh_31*aöçğwothx');
 
 const Athena = require('../../athena');
 
