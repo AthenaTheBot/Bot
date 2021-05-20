@@ -1,6 +1,7 @@
 User-Agent: *
 Disallow: /api/
 Disallow: /oauth/
+Disallow: /dashboard/*
 Crawl-delay: 2
 
 Sitemap: https://athenabot.site/sitemap.xml
