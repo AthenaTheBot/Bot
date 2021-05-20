@@ -34,8 +34,8 @@ module.exports = (client) => {
     app.set('views', `${__dirname}/public/pages`);
     app.use(bodyParser.json())
     app.use(cookieParser())
-    app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
     app.use('/', express.static(path.join(__dirname, 'public', 'seo')));
+    app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
      
     // Main Routes
     app.get('/', async (req, res) => {
