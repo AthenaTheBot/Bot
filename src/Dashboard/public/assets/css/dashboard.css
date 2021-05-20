@@ -182,10 +182,12 @@ body {
 }
 
 .warnings {
-    position: absolute;
+    position: fixed;
+    top: 110px;
     height: 360px;
     width: 350px;
     overflow: hidden;
+    z-index: 100000;
 }
 
 .warn {
@@ -208,10 +210,10 @@ body {
     .warnings {
         position: relative;
         left: none;
-        height: 150px !important;
+        height: 190px !important;
         z-index: 10000000;
         width: 100%;
-        top: 150px;
+        top: 40px;
     }
 
     .warn {
