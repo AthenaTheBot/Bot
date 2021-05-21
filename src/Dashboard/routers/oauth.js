@@ -70,8 +70,14 @@ router.get('/callback', async (req, res) => {
             if (userGuildData[i].owner || userGuildData[i].permissions.includes('ADMINISTRATOR')) availabeGuilds.push(userGuildData[i]); 
         };
 
-        await res.cookie('session', await encryptor.encrypt(tokenData.access_token), {});
-        await res.cookie('_ud', await encryptor.encrypt(userData));
+        const expiresInHour = tokenData.expires_in / 3600;
+
+        await res.cookie('session', await encryptor.encrypt(tokenData.access_token), {
+            expires: new Date(Date.now() + expiresInHour * 3600000)
+        });
+        await res.cookie('_ud', await encryptor.encrypt(userData), {
+            expires: new Date(Date.now() + expiresInHour * 3600000)
+        });
 
         return res.redirect('/');
     }
