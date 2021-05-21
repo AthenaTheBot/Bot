@@ -17,8 +17,8 @@ $(document).ready(() => {
             if (guilds[i].name.length > 25) guilds[i].name = guilds[i].name.slice(0, 25) + '...';
 
             let cardDescription;
-            if (guilds[i].memberCount == 'Unknown') cardDescription = `<a id="dashButton" href="/dashboard/${guilds[i].id}">Go To Dashboard</a>`;
-            else cardDescription = `<a id="dashButton" href="/invite">Invite Athena!</a>`;
+            if (guilds[i].memberCount == 'Unknown') cardDescription = `<a id="dashButton" href="/invite">Invite Athena!</a>`;
+            else cardDescription = `<a id="dashButton" href="/dashboard/${guilds[i].id}">Go To Dashboard</a>`;
 
             $('.servers').append(`
                 <div class="server">

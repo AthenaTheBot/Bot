@@ -21,42 +21,12 @@
 <body>
     <%- include('../components/navbar') %> 
 
-    <div class="containter">
-        <div class="selectedServer">
-            <img src="<%= selectedGuild.icon %> " alt="<%= selectedGuild.name %> ">
-            <h5><%= selectedGuild.displayName %></h5>
-            <hr id="serverLine">
-            <div class="details">
-                <p>Member Count: <span class="customCode"><%= selectedGuild.memberCount %></span></p>
-                <p>Channel Count: <span class="customCode"><%= selectedGuild.channelCount %></span></p> 
-            </div>
-        </div>
-        <div class="controlPart">
-            <div class="configuration">
-                <h2 id="title">Configuration Settings</h2>
-                <div class="forms">
-                    <div class="prefixPart">
-                        <h4>Change Prefix</h4>
-                        <input class="form-control" id="prefixInput" onkeydown="setPrefix(event, '<%= selectedGuild.id %>')" value="<%= selectedGuild.prefix %>" type="text" placeholder="Write the prefix you want then press ENTER!">
-                    </div>
+    <div class="containter"></div>
 
-                    <div class="languagePart">
-                        <h4>Change Language</h4>
-                        <p id="languageButton" onclick="openMenu()"><%= selectedGuild.language %></p>
-                        <ul class="languages">
-                            <li onclick="selectLang('tr-TR', '<%= selectedGuild.id %>')" class="language">Türkçe</li>
-                            <li onclick="selectLang('en-US', '<%= selectedGuild.id %>')" class="language">English</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="warnings">
-        <p class="warn">Example warning!</p>
-    </div>
+    <div class="warnings"></div>
 
     <%- include('../components/footer') %> 
+
+    <script>init("<%= selectedGuild %>")</script>
 </body>
 </html>

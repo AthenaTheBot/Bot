@@ -16,20 +16,18 @@ router.get('/', async(req, res) => {
 
 router.get('/:id', async (req, res) => {
 
-    if (!req.cookies || !req.cookies._ud || !req.cookies._ug) return res.redirect('/oauth/login');
+    if (!req.params || isNaN(req.params.id)) return res.redirect('/dashboard');
+
+    if (!req.cookies || !req.cookies._ud) return res.redirect('/oauth/login');
 
     let userData = await encryptor.decrypt(req.cookies._ud);
 
-    if (!req.params || !req.params.id) return res.redirect('/dashboard');
-
-    if (!canAccess) return res.redirect('/dashboard');
-
     return res.render('dashboard', {
         userData: userData,
-        selectedGuild: userGuilds.find(guild => guild.id == req.params.id)
+        selectedGuild: req.params.id
     });
 
-});
+})
 
 router.post('/actions', async (req, res) => {
 
@@ -88,6 +86,7 @@ router.post('/actions', async (req, res) => {
                     return res.status(200).json({ status: 200, data: language }).end();
                 }
                 catch(err) {
+                    console.log(err.code);
                     Athena.handleError({ error: err, print: true });
                     return res.status(500).json({ status: 500, message: 'Server Error' }).end();
                 }

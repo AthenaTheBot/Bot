@@ -1,3 +1,130 @@
+const init = async (guildID) => {
+
+    $(document).ready(async () => {
+
+        const guildsText = window.localStorage.getItem("_ug");
+        const guilds = JSON.parse(guildsText);
+
+        // Encrtpt all data
+    
+        if (!guilds) {
+            window.location.replace('/oauth/login');
+        }
+        else {
+        
+            for (var i = 0; i < guilds.length; i++) {
+
+                if (guilds[i].id == guildID) {
+
+                    let guildIcon;
+                    if (guilds[i].icon) guildIcon = `https://cdn.discordapp.com/icons/${guilds[i].id}/${guilds[i].icon}.png`;
+                    else guildIcon = '/assets/images/defaultServer.png';
+            
+                    if (guilds[i].name.length > 25) guilds[i].name = guilds[i].name.slice(0, 25) + '...';
+
+                    const prefixData = await fetch('/dashboard/actions', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ operation: 'getPrefix',  guildID: guildID }),
+                    })
+                    .then(response => response.json());
+
+                    const languageData = await fetch('/dashboard/actions', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ operation: 'getLanguage',  guildID: guildID }),
+                    })
+                    .then(response => response.json());
+
+                    guilds[i].language = languageData.data;
+                    guilds[i].prefix = prefixData.data;
+
+                    let displayLanguage;
+                    switch(guilds[i].language) {
+                        case 'en-US':
+                            displayLanguage = 'English';
+                            break;
+                        case 'tr-TR':
+                            displayLanguage = 'Türkçe';
+                            break;
+                    }
+
+                    $('.containter').append(`
+                        <div class="selectedServer"> 
+                            <img src="${guildIcon}" alt="${guilds[i].name}">
+                            <h5>${guilds[i].name}</h5> 
+                            <hr id="serverLine"> 
+                            <div class="details"> 
+                                <p>Member Count: <span class="customCode">${guilds[i].memberCount}</span></p> 
+                                <p>Channel Count: <span class="customCode">${guilds[i].channelCount}</span></p> 
+                            </div> 
+                        </div> 
+                        <div class="controlPart"> 
+                            <div class="configuration"> 
+                                <h2 id="title">Configuration Settings</h2> 
+                                <div class="forms"> 
+                                    <div class="prefixPart"> 
+                                        <h4>Change Prefix</h4> 
+                                        <input class="form-control" id="prefixInput" onkeydown="setPrefix(event, '${guilds[i].id}')" value="${guilds[i].prefix}" type="text" placeholder="Write the prefix you want then press ENTER!"> 
+                                    </div> 
+                                    
+                                    <div class="languagePart"> 
+                                        <h4>Change Language</h4> 
+                                        <p id="languageButton" onclick="openMenu()">${displayLanguage}</p> 
+                                        <ul class="languages"> 
+                                            <li onclick="selectLang('tr-TR', '${guilds[i].id}')" class="language">Türkçe</li> 
+                                            <li onclick="selectLang('en-US', '${guilds[i].id}')" class="language">English</li> 
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `)
+
+                    break;
+                };
+            };
+        };
+    
+        /*
+                <div class="selectedServer">
+                <img src="<%= selectedGuild.icon %> " alt="<%= selectedGuild.name %> ">
+                <h5><%= selectedGuild.displayName %></h5>
+                <hr id="serverLine">
+                <div class="details">
+                    <p>Member Count: <span class="customCode"><%= selectedGuild.memberCount %></span></p>
+                    <p>Channel Count: <span class="customCode"><%= selectedGuild.channelCount %></span></p> 
+                </div>
+            </div>
+            <div class="controlPart">
+                <div class="configuration">
+                    <h2 id="title">Configuration Settings</h2>
+                    <div class="forms">
+                        <div class="prefixPart">
+                            <h4>Change Prefix</h4>
+                            <input class="form-control" id="prefixInput" onkeydown="setPrefix(event, '<%= selectedGuild.id %>')" value="<%= selectedGuild.prefix %>" type="text" placeholder="Write the prefix you want then press ENTER!">
+                        </div>
+    
+                        <div class="languagePart">
+                            <h4>Change Language</h4>
+                            <p id="languageButton" onclick="openMenu()"><%= selectedGuild.language %></p>
+                            <ul class="languages">
+                                <li onclick="selectLang('tr-TR', '<%= selectedGuild.id %>')" class="language">Türkçe</li>
+                                <li onclick="selectLang('en-US', '<%= selectedGuild.id %>')" class="language">English</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+        */
+    })
+}
+
 let menuOpened = false;
 const openMenu = async () => {
     if (menuOpened) {
