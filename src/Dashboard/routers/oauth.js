@@ -3,7 +3,6 @@ const router = express.Router();
 const fs = require('fs');
 const fetch = require('node-fetch');
 const Athena = require('../../athena');
-
 const encryptor = require('simple-encryptor').createEncryptor('abcdefgeijklmnorçöasşay?124568?_**!$');
 
 const { Permissions } = require('discord.js');
@@ -15,7 +14,7 @@ router.get('/login', (req, res) => {
 router.get('/logout', async(req, res) => {
 
     await res.clearCookie('_ud');
-    await res.clearCookie('_ug');
+    await res.clearCookie('session');
 
     return res.redirect('/');
 })
@@ -71,18 +70,10 @@ router.get('/callback', async (req, res) => {
             if (userGuildData[i].owner || userGuildData[i].permissions.includes('ADMINISTRATOR')) availabeGuilds.push(userGuildData[i]); 
         };
 
-        // https://cdn.discordapp.com/icons/${userGuilds[i].id}/${userGuilds[i].icon}.png
-    
+        await res.cookie('session', await encryptor.encrypt(tokenData.access_token), {});
         await res.cookie('_ud', await encryptor.encrypt(userData));
 
-        return res.render('loading', {
-            localStorage: {
-                name: "_ug",
-                guilds: availabeGuilds
-            },
-            redirectURL: '/',
-            redirectSecond: 2
-        });
+        return res.redirect('/');
     }
     catch (err) {
 

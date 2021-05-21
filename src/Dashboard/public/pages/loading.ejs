@@ -16,27 +16,5 @@
         <div class="bounce4"></div>
     </div>
 
-    <% if (localStorage) { %>
-        <script>
-            const data = JSON.stringify(<%- JSON.stringify(localStorage.guilds) %>);
-
-            window.localStorage.setItem('_ug', data);
-
-            setTimeout(() => {
-
-                window.location.replace("<%= redirectURL %>");
-
-            },  <%= redirectSecond %> * 1000);
-            
-        </script>
-    <% } else { %>
-        <script>
-            setTimeout(() => {
-
-                window.location.replace("<%= redirectURL %>");
-
-            }, "<%= redirectSecond %>" * 1000);
-        </script>
-    <% } %>   
 </body>
 </html>
