@@ -42,6 +42,30 @@ body {
     margin-bottom: 50px;
 }
 
+noscript {
+    width: 100%;
+    text-align: center;
+    background-color: #131313cb;
+    position: fixed;
+    padding: 10px;
+    bottom: 0px;
+    z-index: 100000;
+    text-align: left;
+    border-top: 1px solid #7289DA;
+}
+
+noscript p {
+    color: white;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: 13.5px;
+}
+
+noscript p span {
+    font-size: 20px;
+    color: #7289DA
+}
+
 .containter {
     min-height: 54.1vh;
 }
