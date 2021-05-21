@@ -47,55 +47,8 @@ module.exports = (client) => {
     
     app.get('/commands', async (req, res) => {
 
-        const validCategories = ['all', 'moderation', 'music', 'fun', 'misc'];
-        let categoryChoosen = req.query.category;
-
-        if (!categoryChoosen || !validCategories.includes(categoryChoosen)) categoryChoosen = 'all';
-
-        const commands = new Array();
-
-        client.commands.forEach(async (command) => {
-            
-            if (!command.Description || command.Description.length == 0) command.Description = 'None';
-            if (!command.Usage) command.Usage = 'None';
-            if (!command.RequiredPerms || command.RequiredPerms.length == 0) command.RequiredPerms = 'None';
-            if (!command.RequiredBotPerms || command.RequiredBotPerms.length == 0) command.RequiredBotPerms = 'None';
-
-            if (categoryChoosen == 'all') {
-                
-                return commands.push({
-                    Name: command.Name,
-                    Description: command.Description,
-                    Usage: command.Usage,
-                    RequiredPerms: command.RequiredPerms,
-                    RequiredBotPerms : command.RequiredBotPerms
-                });
-            }
-            else {
-
-                if (command.Category.toLowerCase() == categoryChoosen) {
-
-                    return commands.push({
-                        Name: command.Name,
-                        Description: command.Description,
-                        Usage: command.Usage,
-                        RequiredPerms: command.RequiredPerms,
-                        RequiredBotPerms : command.RequiredBotPerms
-                    });
-                }
-                else {
-
-                    return;
-                }
-            }
-
-        });
-
         return res.status(200).render('commands', {
-            userData: await encryptor.decrypt(req.cookies._ud),
-            categories: validCategories,
-            categoryChoosen: categoryChoosen,
-            commands: commands
+            userData: await encryptor.decrypt(req.cookies._ud)
         });
     });
 

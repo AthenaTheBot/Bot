@@ -6,8 +6,7 @@ const path = require('path');
 
 const fs = require('fs');
 
-const Athena = require('../../Structures/Base');
-const base = new Athena();
+const Athena = require('../../athena');
 
 router.get('/vote', async (req, res) => {
 
@@ -32,10 +31,10 @@ router.get('/vote', async (req, res) => {
                 break;
         }
 
-        if (!user) return res.status(403).json({ message: 'Unauthorized' }).end();
+        if (!user) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
         else {
 
-            res.status(200).json({ message: 'Successful' }).end();
+            res.status(200).json({ status: 200, message: 'Successful' }).end();
 
             let userDiscordData = await base.users.cache.get(user);
             let userData = await base.db.manager.getUser(userDiscordData);
@@ -58,9 +57,59 @@ router.get('/vote', async (req, res) => {
     }
     else {
 
-        return res.status(403).json({ message: 'Unauthorized' }).end();
+        return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
     }
 });
+
+router.get('/commands', (req, res) => {
+
+    const commands = new Array();
+
+    try {
+
+        const validCategories = fs.readdirSync(path.join(__dirname, '..', '..', 'Commands'));
+
+        validCategories.forEach((category) => {
+    
+            if (category == 'Owner') return;
+            
+            const categoryCommands = new Array();
+    
+            const commandFiles = fs.readdirSync(path.join(__dirname, '..', '..', 'Commands', category)).filter(file => file.endsWith('.js'));
+    
+            commandFiles.forEach(commandFile => {
+    
+                const command = require(path.join(__dirname, '..', '..', 'Commands', category, commandFile));
+    
+                if (!Athena.commands.get(command.Name) || command.Category == 'Owner') return;
+                
+                return categoryCommands.push({ 
+                    name: command.Name, 
+                    description: command.Description || 'None', 
+                    usage: command.Usage || 'None',
+                    required_perms: command.RequiredPerms, 
+                    required_bot_perms: command.RequiredBotPerms 
+                });
+            })
+    
+            commands.push({ category: category, commands: categoryCommands });
+        });
+    }
+    catch (err) {
+
+        Athena.log('error', err);
+        return res.status(500).json({ status: 500, message: 'Server Error' });
+    }
+
+    let filteredCategory;
+    if (req.query.category) {
+        filteredCategory = commands.filter(commands => commands.category == req.query.category);
+        if (filteredCategory.length == 0) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+    }
+    else filteredCategory = commands;
+
+    return res.json({ status: 200, data: filteredCategory });
+})
 
 router.get('/errors', async (req, res) => {
 

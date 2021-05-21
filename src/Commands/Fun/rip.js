@@ -28,7 +28,7 @@ module.exports = {
     Category: 'Fun',
     Description: 'RIP',
     Cooldown: 2,
-    Usage: '',
+    Usage: '@member',
     RequiredPerms: [],
     RequiredBotPerms: ["ATTACH_FILES", "SEND_MESSAGES"],
     Run: run

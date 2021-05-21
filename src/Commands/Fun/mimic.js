@@ -42,6 +42,7 @@ module.exports = {
     Aliases: ['taklit', 'taklitet'],
     Category: 'Fun',
     Description: 'Hmm, maybe Athena can mimic someone, who knows...',
+    Usage: '[@member] [message]',
     Cooldown: 2.5,
     RequiredPerms: [],
     RequiredBotPerms: ["MANAGE_WEBHOOKS", "SEND_MESSAGES", "EMBED_LINKS"],

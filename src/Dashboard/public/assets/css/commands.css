@@ -147,6 +147,11 @@ noscript p span {
     height: fit-content;
 }
 
+.active {
+    background-color: #7289DA !important;
+    cursor: default
+}
+
 @media (max-width: 550px) {
     .categories {
         width: 150px;

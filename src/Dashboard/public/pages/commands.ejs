@@ -32,24 +32,9 @@
     </div>
 
     <div class="container">
-        <div class="categories">
-            <% for (var i = 0; i < categories.length; i++) { %>
-                <% if (categoryChoosen == categories[i]) { %>
-                    <a href="?category=<%= categories[i] %>"><h5 style="background-color: #7289DA;" class="category"><%= categories[i] %></h5></a>
-                <% } else { %>  
-                    <a href="?category=<%= categories[i] %>"><h5 class="category"><%= categories[i] %></h5></a>
-                <% } %>  
-            <% } %>  
-        </div>
+        <div class="categories"></div>
 
-        <div class="commands">
-            <% for (var i = 0; i < commands.length; i++) { %>
-            <div class="command" onclick="expandCommand('<%= commands[i].Name %>')">
-                <h5 id="title">at! <%= commands[i].Name %> <code id="customCode"><%= commands[i].Usage %></code></h5>
-                <p style="display: none;" class="description" id="description_<%= commands[i].Name %>">Description: <%= commands[i].Description %><br> Required Perms for Users: <code id="customCode"><%= commands[i].RequiredPerms %></code> <br> Required Perms for Bot: <code id="customCode"><%= commands[i].RequiredBotPerms %></code></p>
-            </div> 
-            <% } %>  
-        </div>
+        <div class="commands"></div>
     </div>
 
     <%- include('../components/footer') %>
