@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const encryptor = require('simple-encryptor').createEncryptor('bruh_31*aöçğwothx');
+const encryptor = require('simple-encryptor').createEncryptor('abcdefgeijklmnorçöasşay?124568?_**!$');
 const path = require('path');
 
 const fs = require('fs');

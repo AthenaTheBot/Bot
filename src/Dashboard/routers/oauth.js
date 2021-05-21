@@ -4,6 +4,8 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 const Athena = require('../../athena');
 
+const encryptor = require('simple-encryptor').createEncryptor('abcdefgeijklmnorçöasşay?124568?_**!$');
+
 const { Permissions } = require('discord.js');
 
 router.get('/login', (req, res) => {
@@ -57,19 +59,29 @@ router.get('/callback', async (req, res) => {
         for (var i = 0; i < userGuildData.length; i++) {
             const perrmissions = new Permissions(userGuildData[i].permissions);
             userGuildData[i].permissions = perrmissions.toArray();
+            const guildInfo = Athena.guilds.resolve(userGuildData[i].id);
+            if (guildInfo) {
+                userGuildData[i].memberCount = guildInfo.memberCount;
+                userGuildData[i].channelCount = guildInfo.channels.cache.size;
+            }
+            else {
+                userGuildData[i].memberCount = 'Unknown';
+                userGuildData[i].channelCount = 'Unknown';
+            }
             if (userGuildData[i].owner || userGuildData[i].permissions.includes('ADMINISTRATOR')) availabeGuilds.push(userGuildData[i]); 
-        }
+        };
 
         // https://cdn.discordapp.com/icons/${userGuilds[i].id}/${userGuilds[i].icon}.png
     
-        const data = { ...userData, ...availabeGuilds };
+        await res.cookie('_ud', await encryptor.encrypt(userData));
 
         return res.render('loading', {
-            redirectURL: '/test',
-            time: 5,
-            setStorage: true,
-            storageName: 'data',
-            storageData: data
+            localStorage: {
+                name: "_ug",
+                guilds: availabeGuilds
+            },
+            redirectURL: '/',
+            redirectSecond: 2
         });
     }
     catch (err) {

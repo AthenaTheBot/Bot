@@ -6,7 +6,7 @@ module.exports = (client) => {
     const express = require('express');
     const fs = require('fs');
     const path = require('path');
-    const encryptor = require('simple-encryptor').createEncryptor('bruh_31*aöçğwothx');
+    const encryptor = require('simple-encryptor').createEncryptor('abcdefgeijklmnorçöasşay?124568?_**!$');
     const cookieParser = require('cookie-parser');
     const bodyParser = require('body-parser');
 
@@ -41,8 +41,7 @@ module.exports = (client) => {
     app.get('/', async (req, res) => {
         
         return res.status(200).render('index', {
-            userData: await encryptor.decrypt(req.cookies._ud),
-            userGuilds: await encryptor.decrypt(req.cookies._ug)
+            userData: await encryptor.decrypt(req.cookies._ud)
         });
     })
     
@@ -94,28 +93,23 @@ module.exports = (client) => {
 
         return res.status(200).render('commands', {
             userData: await encryptor.decrypt(req.cookies._ud),
-            userGuilds: await encryptor.decrypt(req.cookies._ug),
             categories: validCategories,
             categoryChoosen: categoryChoosen,
             commands: commands
         });
     });
 
-    app.get('/test', (req, res) => { res.send('Hello') })
-
     app.get('/privacy', async (req, res) => {
 
         return res.status(200).render('privacy', {
-            userData: await encryptor.decrypt(req.cookies._ud),
-            userGuilds: await encryptor.decrypt(req.cookies._ug)
+            userData: await encryptor.decrypt(req.cookies._ud)
         });
     });
 
     app.get('/tos', async (req, res) => {
 
         return res.status(200).render('tos', {
-            userData: await encryptor.decrypt(req.cookies._ud),
-            userGuilds: await encryptor.decrypt(req.cookies._ug)
+            userData: await encryptor.decrypt(req.cookies._ud)
         });
     });
 

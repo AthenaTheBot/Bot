@@ -1,36 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const encryptor = require('simple-encryptor').createEncryptor('bruh_31*aöçğwothx');
+const encryptor = require('simple-encryptor').createEncryptor('abcdefgeijklmnorçöasşay?124568?_**!$');
 
 const Athena = require('../../athena');
 
 router.get('/', async(req, res) => {
 
-    if (!req.cookies || !req.cookies._ud || !req.cookies._ug) return res.redirect('/oauth/login');
-
-    let userData = await encryptor.decrypt(req.cookies._ud);
-    let userGuilds = await encryptor.decrypt(req.cookies._ug);
-
-    for (var i = 0; i < userGuilds.length; i++) {
-        if (userGuilds[i].name.length > 25) userGuilds[i].name = userGuilds[i].name.slice(0, 25) + '...';
-        const guild = Athena.guilds.resolve(userGuilds[i].id)
-        if (!guild) {
-            userGuilds[i].memberCount = 'Unknown';
-            userGuilds[i].channelCount = 'Unknown';
-            userGuilds[i].dashURL = '#';
-            userGuilds[i].available = false;
-        }
-        else {
-            userGuilds[i].memberCount = guild.memberCount;
-            userGuilds[i].channelCount = guild.channels.cache.size;
-            userGuilds[i].dashURL = '/dashboard/' + guild.id;
-            userGuilds[i].available = true;
-        }
-    }
+    if (!req.cookies || !req.cookies._ud) return res.redirect('/oauth/login');
 
     return res.status(200).render('dashboardServerChooser', {
-        userData: userData,
-        userGuilds: userGuilds
+        userData: await encryptor.decrypt(req.cookies._ud)
     });
 
 });
@@ -40,59 +19,10 @@ router.get('/:id', async (req, res) => {
     if (!req.cookies || !req.cookies._ud || !req.cookies._ug) return res.redirect('/oauth/login');
 
     let userData = await encryptor.decrypt(req.cookies._ud);
-    let userGuilds = await encryptor.decrypt(req.cookies._ug);
 
     if (!req.params || !req.params.id) return res.redirect('/dashboard');
 
-    let canAccess = false;
-    for (var i = 0; i < userGuilds.length; i++) {
-        if (userGuilds[i].id == req.params.id) canAccess = true;
-    }
-
     if (!canAccess) return res.redirect('/dashboard');
-
-    const selectedGuild = userGuilds.find(guild => guild.id == req.params.id);
-
-    const selectedGuildData = Athena.guilds.resolve(selectedGuild.id);
-
-    if (!selectedGuildData) return res.redirect('/dashboard');
-    else {
-
-        const resultDB = await Athena.db.manager.getGuild(selectedGuildData);
-
-        if (resultDB && resultDB.data &&  resultDB.data.preferences) {
-            switch(resultDB.data.preferences.language) {
-                case 'en-US':
-                    selectedGuild.language = 'English';
-                    break;
-                case 'tr-TR':
-                    selectedGuild.language = 'Türkçe';
-                    break;
-                default:
-                    selectedGuild.language = null;
-                    break;
-            }
-
-            if (resultDB.data.preferences.prefix) {
-                selectedGuild.prefix = resultDB.data.preferences.prefix;
-            }
-            else {
-
-                selectedGuild.prefix = null;
-            }
-        }
-        else {
-            selectedGuild.language = null;
-        }
-
-        selectedGuild.memberCount = selectedGuildData.memberCount;
-        selectedGuild.channelCount = selectedGuildData.channels.cache.size;
-        selectedGuild.dashURL = '/dashboard/' + selectedGuildData.id;
-        selectedGuild.available = true;
-    }
-
-    if (selectedGuild.name.length > 25) selectedGuild.displayName = selectedGuild.name.slice(0, 25) + '...';
-    else selectedGuild.displayName = selectedGuild.name;
 
     return res.render('dashboard', {
         userData: userData,

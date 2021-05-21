@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Manage your server easily from the dashboard of Athena.">
     <script src="/assets/scripts/jquery.min.js"></script>
+    <script src="/assets/scripts/dashboardServerChooser.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/bootstrap-min.css">
@@ -18,24 +19,7 @@
 
     <h1 id="title">SERVERS</h1>
     <div class="containter">
-        <div class="servers">
-            <% for (var i = 0; i < userGuilds.length; i++) { %>
-                <div class="server">
-                    <img src="<%= userGuilds[i].icon %> " alt="<%= userGuilds[i].name %> ">
-                    <h5><%= userGuilds[i].name %></h5>
-                    <hr id="serverLine">
-                    <div class="details">
-                        <p>Member Count: <span class="customCode"><%= userGuilds[i].memberCount %></span></p>
-                        <p>Channel Count: <span class="customCode"><%= userGuilds[i].channelCount %></span></p>
-                        <% if (userGuilds[i].available) { %>
-                            <a id="dashButton" href="<%= userGuilds[i].dashURL %>">Go To Dashboard</a>
-                        <% } else { %>
-                            <a id="dashButton" href="/invite">Invite Athena!</a>
-                        <% } %>   
-                    </div>
-                </div>
-            <% } %>  
-        </div>
+        <div class="servers"></div>
     </div>
 
     <%- include('../components/footer') %> 
