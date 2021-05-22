@@ -12,6 +12,7 @@ $(document).ready(async () => {
     });
 
     loadCategory('All');
+    $('.spinner').css('display', 'none');
 });
 
 const loadCategory = async (category) => {
