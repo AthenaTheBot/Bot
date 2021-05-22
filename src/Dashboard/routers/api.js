@@ -18,16 +18,16 @@ router.get('/vote', async (req, res) => {
 
         let user;
         switch(req.header('Authorization')) {
-            case base.webhookTokens.TOPGG:
+            case Athena.webhookTokens.TOPGG:
                 user = req.body.user;
                 break;
-            case base.webhookTokens.BOTSFORDISCORD:
+            case Athena.webhookTokens.BOTSFORDISCORD:
                 user = req.body.user;
                 break;
-            case base.webhookTokens.DISCORDBOATS:
+            case Athena.webhookTokens.DISCORDBOATS:
                 user = req.body.user.id;
                 break;
-            case base.webhookTokens.DCBOTLISTCOM:
+            case Athena.webhookTokens.DCBOTLISTCOM:
                 user = req.body.id;
                 break;
             default:
@@ -40,12 +40,12 @@ router.get('/vote', async (req, res) => {
 
             res.status(200).json({ status: 200, message: 'Successful' }).end();
 
-            let userDiscordData = await base.users.cache.get(user);
-            let userData = await base.db.manager.getUser(userDiscordData);
+            let userDiscordData = await Athena.users.cache.get(user);
+            let userData = await Athena.db.manager.getUser(userDiscordData);
 
             if (!userData || !userDiscordData) return;
             
-            base.log("log", `${userDiscordData.tag} is voted!`);
+            Athena.log("log", `${userDiscordData.tag} is voted!`);
             
             if (!userData.preferences.notifications) return;
             else {
@@ -119,7 +119,7 @@ router.get('/errors', async (req, res) => {
 
     const userData = await encryptor.decrypt(req.cookies._ud);
 
-    if (userData && userData.id == base.config.bot.OWNER) {
+    if (userData && userData.id == Athena.config.bot.OWNER) {
 
         if (req.query && req.query.operation) {
 
