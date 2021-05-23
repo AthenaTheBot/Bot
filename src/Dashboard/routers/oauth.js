@@ -34,7 +34,12 @@ router.get('/callback', async (req, res) => {
         })
         .then(res => res.json()).catch(err => {});
 
-        if (!tokenData) return res.status(200).render('erros/fetchError');
+        if (!tokenData || tokenData.error) {
+
+            res.status(200).render('erros/fetchError');
+            Athena.log('error', `[${tokenData.error}]: ${tokenData.error_description}`);
+            return;
+        }
 
         let userData = await fetch('https://discord.com/api/users/@me', {
             headers: {

@@ -2,11 +2,6 @@ const express = require('express');
 const router = express.Router();
 const encryptor = require('simple-encryptor').createEncryptor('abcdefgeijklmnorçöasşay?124568?_**!$');
 
-const fetch = require('node-fetch');
-const { Permissions } = require('discord.js');
-
-const Athena = require('../../athena');
-
 router.get('/', async(req, res) => {
 
     if (!req.cookies || !req.cookies._ud || !req.cookies.session) return res.redirect('/oauth/login');

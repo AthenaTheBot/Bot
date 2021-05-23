@@ -167,75 +167,63 @@ router.get('/errors', async (req, res) => {
     }
 })
 
-router.post('/actions', async (req, res) => {
+router.post('/guilds/:id', async (req, res) => {
 
-    if (req.method == 'POST') {
-    
-        switch(req.body.operation) {
-            case 'setPrefix':
-                if (!req.body.prefix) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
-                try {
+    if (!req.cookies || !req.cookies.session || !encryptor.decrypt(req.cookies.session)) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
 
-                    await Athena.db.manager.setValue({ collection: 'servers', query: { _id: req.body.guildID }, operation: { $set: { "data.preferences.prefix": req.body.prefix } } });
-                }
-                catch(err) {
+    if (!req.params || !req.params.id || isNaN(req.params.id) || !req.body || !req.body.operation) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
 
-                    Athena.handleError({ error: err, print: true });
-                    return res.status(500).json({ status: 500, message: 'Server Error' }).end();
-                }
-                res.status(200).json({ status: 200, message: 'Successfull' }).end();
-                break;
-            case 'setLanguage':
-                if (!req.body.language) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
-                const validLangauges = ['en-US', 'tr-TR'];
-                if (!validLangauges.includes(req.body.language)) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
-                try {
-    
-                    await Athena.db.manager.setValue({ collection: 'servers', query: { _id: req.body.guildID }, operation: { $set: { "data.preferences.language": req.body.language } } });
-                }
-                catch(err) {
+    const guildData = await Athena.db.collection('servers').findOne({ _id: req.params.id }).catch(err => {});
+            
+    if (!guildData || !guildData.data) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
 
-                    Athena.handleError({ error: err, print: true });
-                    return res.status(500).json({ status: 500, message: 'Server Error' }).end();
-                }
-                res.status(200).json({ status: 200, message: 'Successfull' }).end();
-                break;
-            case 'getPrefix':
-                if (!req.body.guildID) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
-                try {
-                    const guildData = await Athena.db.collection('servers').findOne({ _id: req.body.guildID });
-                    if (!guildData || !guildData.data || !guildData.data.preferences) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
-                    const prefix = guildData.data.preferences.prefix;
-                    if (!prefix) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
-                    return res.status(200).json({ status: 200, data: prefix }).end();
-                }
-                catch(err) {
-                    Athena.handleError({ error: err, print: true });
-                    return res.status(500).json({ status: 500, message: 'Server Error' }).end();
-                }
-                break;
-            case 'getLanguage':
-                if (!req.body.guildID) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
-                try {
-                    const guildData = await Athena.db.collection('servers').findOne({ _id: req.body.guildID });
-                    if (!guildData || !guildData.data || !guildData.data.preferences) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
-                    const language = guildData.data.preferences.language;
-                    if (!language) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
-                    return res.status(200).json({ status: 200, data: language }).end();
-                }
-                catch(err) {
-                    console.log(err.code);
-                    Athena.handleError({ error: err, print: true });
-                    return res.status(500).json({ status: 500, message: 'Server Error' }).end();
-                }
-                break;
-            default:
-                res.status(400).json({ status: 400, message: 'Bad Request' }).end();
-                break;
-        }
-        return;
+    switch(req.body.operation) {
+        case 'getGuild':
+            res.status(200).json({ status: 200, data: guildData.data });
+            break;
+
+        case 'setPrefix':
+
+            if (req.body.value == guildData.data.preferences.prefix) return res.status(401).json({ status: 401, message: 'Bad Request', code: 'same_prefix' }).end();
+
+            try {
+
+                await Athena.db.manager.setValue({ collection: 'servers', query: { _id: req.params.id }, operation: { $set: { "data.preferences.prefix": req.body.value } } });
+            }
+            catch(err) {
+
+                Athena.log('error', err);
+                return res.status(500).json({ status: 500, message: 'Server Error' }).end();
+            }
+
+            res.status(200).json({ status: 200, message: 'Successfull' }).end();
+
+            break;
+
+        case 'setLanguage':
+            const validLanguages = ['en-US', 'tr-TR'];
+
+            if (req.body.value == guildData.data.preferences.language || !validLanguages.includes(req.body.value)) return res.status(400).json({ status: 400, message: 'Bad Request', code: 'same_language' }).end();
+
+            try {
+
+                await Athena.db.manager.setValue({ collection: 'servers', query: { _id: req.params.id }, operation: { $set: { "data.preferences.language": req.body.value } } });
+            }
+            catch(err) {
+
+                Athena.log('error', err);
+                return res.status(500).json({ status: 500, message: 'Server Error' }).end();
+            }
+
+            res.status(200).json({ status: 200, message: 'Successfull' }).end();
+
+            break;
+
+        default:
+            res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+            break;
     }
-})
+});
 
 router.get('/users/@me', async (req, res) => {
 

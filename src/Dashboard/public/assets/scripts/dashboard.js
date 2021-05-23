@@ -2,107 +2,90 @@ const init = async (guildID) => {
 
     $(document).ready(async () => {
 
-        await fetch('/api/users/@me/guilds')
-        .then(res => res.json())
-        .then(async (data) => {
-    
-            if (!data || data.status != 200) window.location.replace('/');
-            else {
-    
-                await $('.spinner').css('display', 'none');
-    
-                const guilds = data.data;
+        const availabeGuilds = await fetch(`/api/users/@me/guilds`).then(res => res.json()).catch(err => {});
 
-                const isAvailable = guilds.filter(x => x.id == guildID);
-                if (isAvailable.length == 0) return window.location.replace('/dashboard');
-                
-                if (!guilds) {
-                    window.location.replace('/oauth/login');
-                }
-                else {
-                
-                    for (var i = 0; i < guilds.length; i++) {
-        
-                        if (guilds[i].id == guildID) {
-        
-                            let guildIcon;
-                            if (guilds[i].icon) guildIcon = `https://cdn.discordapp.com/icons/${guilds[i].id}/${guilds[i].icon}.png`;
-                            else guildIcon = '/assets/images/defaultServer.png';
-                    
-                            if (guilds[i].name.length > 25) guilds[i].name = guilds[i].name.slice(0, 25) + '...';
-        
-                            const prefixData = await fetch('/api/actions', {
-                                method: 'POST',
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({ operation: 'getPrefix',  guildID: guildID }),
-                            })
-                            .then(response => response.json());
-        
-                            const languageData = await fetch('/api/actions', {
-                                method: 'POST',
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({ operation: 'getLanguage',  guildID: guildID }),
-                            })
-                            .then(response => response.json());
-        
-                            guilds[i].language = languageData.data;
-                            guilds[i].prefix = prefixData.data;
-        
-                            let displayLanguage;
-                            switch(guilds[i].language) {
-                                case 'en-US':
-                                    displayLanguage = 'English';
-                                    break;
-                                case 'tr-TR':
-                                    displayLanguage = 'Türkçe';
-                                    break;
-                            }
-        
-                            $('.containter').append(`
-                                <div class="selectedServer"> 
-                                    <img src="${guildIcon}" alt="${guilds[i].name}">
-                                    <h5>${guilds[i].name}</h5> 
-                                    <hr id="serverLine"> 
-                                    <div class="details"> 
-                                        <p>Member Count: <span class="customCode">${guilds[i].memberCount}</span></p> 
-                                        <p>Channel Count: <span class="customCode">${guilds[i].channelCount}</span></p> 
-                                    </div> 
-                                </div> 
-                                <div class="controlPart"> 
-                                    <div class="configuration"> 
-                                        <h2 id="title">Configuration Settings</h2> 
-                                        <div class="forms"> 
-                                            <div class="prefixPart"> 
-                                                <h4>Change Prefix</h4> 
-                                                <input class="form-control" id="prefixInput" onkeydown="setPrefix(event, '${guilds[i].id}')" value="${guilds[i].prefix}" type="text" placeholder="Write the prefix you want then press ENTER!"> 
-                                            </div> 
-                                            
-                                            <div class="languagePart"> 
-                                                <h4>Change Language</h4> 
-                                                <p id="languageButton" onclick="openMenu()">${displayLanguage}</p> 
-                                                <ul class="languages"> 
-                                                    <li onclick="selectLang('tr-TR', '${guilds[i].id}')" class="language">Türkçe</li> 
-                                                    <li onclick="selectLang('en-US', '${guilds[i].id}')" class="language">English</li> 
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `)
-        
-                            break;
-                        }
-                    };
-                };
-            }
+        if (!availabeGuilds) return handleError();
+
+        const currentGuild = availabeGuilds.data.find(guild => guild.id == guildID);
+
+        if (!currentGuild) return handleError();
+
+        const currentGuildDB = await fetch(`/api/guilds/${guildID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ operation: 'getGuild' })
         })
-        .catch(err => {});
+        .then(res => res.json()).catch(err => {});
+
+        if (!currentGuildDB || !currentGuildDB.data) return handleError();
+
+        let guildIcon;
+        if (currentGuild.icon) guildIcon = `https://cdn.discordapp.com/icons/${currentGuild.id}/${currentGuild.icon}.png`;
+        else guildIcon = '/assets/images/defaultServer.png';
+
+        if (currentGuild.name.length > 25) currentGuild.name = currentGuild.name.slice(0, 25) + '...';
+
+        let displayLanguage;
+        switch(currentGuildDB.data.preferences.language) {
+            case 'en-US':
+                displayLanguage = 'English';
+                break;
+            case 'tr-TR':
+                displayLanguage = 'Türkçe';
+                break;
+        }
+
+        await $('.spinner').remove();
+
+        $('.container').append(`
+            <div class="selectedServer"> 
+                <img src="${guildIcon}" alt="${currentGuild.name}">
+                <h5>${currentGuild.name}</h5> 
+                <hr id="serverLine"> 
+                <div class="details"> 
+                    <p>Member Count: <span class="customCode">${currentGuild.memberCount}</span></p> 
+                    <p>Channel Count: <span class="customCode">${currentGuild.channelCount}</span></p> 
+                </div> 
+            </div> 
+            <div class="controlPart"> 
+                <div class="configuration"> 
+                    <h2 id="title">Configuration Settings</h2> 
+                    <div class="forms"> 
+                        <div class="prefixPart"> 
+                            <h4>Change Prefix</h4> 
+                            <input class="form-control" id="prefixInput" onkeydown="setPrefix(event, '${currentGuild.id}')" value="${currentGuildDB.data.preferences.prefix}" type="text" placeholder="Write the prefix you want then press ENTER!"> 
+                        </div> 
+                        
+                        <div class="languagePart"> 
+                            <h4>Change Language</h4> 
+                            <p id="languageButton" onclick="openMenu()">${displayLanguage}</p> 
+                            <ul class="languages"> 
+                                <li onclick="selectLang('tr-TR', '${currentGuild.id}')" class="language">Türkçe</li> 
+                                <li onclick="selectLang('en-US', '${currentGuild.id}')" class="language">English</li> 
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `)
+        
+    });
+};
+
+const handleError = () => {
+
+    $('.container').children().remove();
     
-    })
+    $('.spinner').remove();
+
+    $('.container').append(`
+        <div class="error">
+            <h3>Oh no!</h3>
+            <p>It looks like an error occured whihe trying to open the dashobard of your guild! Please try again later..</p>
+        </div>
+    `);
 }
 
 let menuOpened = false;
@@ -142,49 +125,19 @@ const selectLang = async (language, id) => {
 
     if (!display) return;
 
-    $('#languageButton').text(display);
-
-    let canRun = true;
-    await fetch('/api/actions', {
+    fetch(`/api/guilds/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ operation: 'getLanguage',  guildID: id }),
+        body: JSON.stringify({ operation: 'setLanguage',  value: language, id: id }),
     })
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
 
         if (data.status == 200) {
 
-            if (data.data == language) {
-
-                $('#languageButton').css('border-color', '#860606'); 
-                addWarning('The language that you are trying to set is same as the current one!');
-                return canRun = false;
-            }
-        }
-    })
-    .catch(error => {
-
-        console.log(error);
-        addWarning('An unexpected error occured while trying to make changes!');
-        return
-    });
-
-    if (!canRun) return;
-
-    fetch('/api/actions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ operation: 'setLanguage',  guildID: id, language: language }),
-    })
-    .then(response => response.json())
-    .then(data => {
-
-        if (data.status == 200) {
+            $('#languageButton').text(display);
 
             $('#languageButton').css('border-color', 'green'); 
             addWarning('Successfully set server language!');
@@ -192,6 +145,14 @@ const selectLang = async (language, id) => {
                 $('#languageButton').css('border-color', '#7289DA'); 
             }, 1500);
             return;
+        }
+        else if (data.code && data.code == 'same_language') {
+
+            $('#languageButton').css('border-color', '#860606');
+            addWarning('The language that you are trying to set is same as the current one!');
+            setTimeout(() => {
+                $('#languageButton').css('border-color', '#7289DA'); 
+            }, 1500);
         }
         else {
 
@@ -222,43 +183,14 @@ const setPrefix = async (event, id) => {
         }
         else {
 
-            let canRun = true;
-            await fetch('/api/actions', {
+            fetch(`/api/guilds/${id}`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ operation: 'getPrefix',  guildID: id }),
+                body: JSON.stringify({ operation: 'setPrefix', value: prefix, id: id }),
             })
-            .then(response => response.json())
-            .then(data => {
-
-                if (data.status == 200) {
-
-                    if (data.data == prefix) {
-
-                        $('#prefixInput').css('border-color', '#860606'); 
-                        addWarning('The prefix that you are trying to set is same as the current one!');
-                        return canRun = false;
-                    }
-                }
-            })
-            .catch(error => {
-
-                addWarning('An unexpected error occured while trying to make changes!');
-                return
-            });
-
-            if (!canRun) return;
-
-            fetch('/api/actions', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ operation: 'setPrefix',  guildID: id, prefix: prefix }),
-            })
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
 
                 if (data.status == 200) {
@@ -269,6 +201,14 @@ const setPrefix = async (event, id) => {
                         $('#prefixInput').css('border-color', '#7289DA'); 
                     }, 1500);
                     return;
+                }
+                else if (data.code && data.code == 'same_prefix') {
+
+                    $('#prefixInput').css('border-color', '#860606');
+                    addWarning('The prefix that you are trying to set is same as the current one!');
+                    setTimeout(() => {
+                        $('#prefixInput').css('border-color', '#7289DA'); 
+                    }, 1500);
                 }
                 else {
 

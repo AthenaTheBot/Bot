@@ -252,6 +252,9 @@ class Base extends Client {
                 else {
 
                     this.log('error', err);
+
+                    fs.writeFileSync(path.join(__dirname, '..', '..', 'Errors.json'), JSON.stringify({ ERRORS: [ { code: data.error.code, name: data.error.name, message: data.error.code, stack: data.error.stack } ] }));
+
                 }
             }
         }
