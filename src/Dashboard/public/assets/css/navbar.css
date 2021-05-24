@@ -60,7 +60,7 @@
     cursor: pointer;
     z-index: 150;
     position: absolute;
-    right: 100px;
+    left: 77%;
     top: 30px;
 }
 
@@ -103,7 +103,7 @@
     animation: bounceAnim 500ms forwards;
     position: absolute;
     top: 120px;
-    right: 130px;
+    left: 77%;
     display: none;
 }
 
