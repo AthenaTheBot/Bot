@@ -52,6 +52,13 @@ module.exports = (client) => {
         });
     });
 
+    app.get('/report', async(req, res) => {
+
+        return res.status(200).render('report', {
+            userData: await encryptor.decrypt(req.cookies._ud)
+        });
+    });
+
     app.get('/privacy', async (req, res) => {
 
         return res.status(200).render('privacy', {

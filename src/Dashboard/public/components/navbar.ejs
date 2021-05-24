@@ -4,6 +4,7 @@
         <script src="/assets/scripts/bootstrap.min.js"></script>
         <script src="/assets/scripts/navbar.js"></script>
         <script src="/assets/scripts/cookie.js"></script>
+        <script src="https://kit.fontawesome.com/88e62b65ed.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="/assets/css/navbar.css">
         <link rel="stylesheet" href="/assets/css/bootstrap-min.css">
     </head>
@@ -34,15 +35,17 @@
               </li>
               <% if (userData) { %>
                 <div class="profilePart">
+                  <!-- TODO: Add logo check --> 
                   <img src="https://cdn.discordapp.com/avatars/<%= userData.id %>/<%= userData.avatar %>.png?size=4096">
                   <div class="username">
+                    <% if (userData.username.length > 7) { userData.username = userData.username.slice(0, 7) + '..'; } %> 
                     <p id="Username"><%= userData.username %></p>
-                    <p id="Discriminator">#<%= userData.discriminator %> </p>
+                    <p id="Discriminator">#<%= userData.discriminator %> <i id="profileButton" class="fas fa-chevron-down"></i></p>
                   </div>
                   <a id="logoutButtonCollapsed" href="/oauth/logout">Logout</a>
                 </div>
                 <ul id="profileDropdown">
-                  <a href="/report"><li>Report a Member</li></a>
+                  <a href="/report"><li>Report a User</li></a>
                   <a href="/oauth/logout"><li>Logout</li></a>
                 </ul>
               <% } %>  

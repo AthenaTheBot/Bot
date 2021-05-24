@@ -60,7 +60,7 @@
     cursor: pointer;
     z-index: 150;
     position: absolute;
-    left: 77%;
+    left: 79%;
     top: 30px;
 }
 
@@ -100,10 +100,10 @@
     box-sizing: border-box;
     padding: 5px;
     border-radius: 6px;
-    animation: bounceAnim 500ms forwards;
+    animation: dropdownAnim 500ms forwards;
     position: absolute;
-    top: 120px;
-    left: 77%;
+    top: 80px;
+    left: 79%;
     display: none;
 }
 
@@ -125,15 +125,21 @@
     color: #d3d2d2;
 }
 
-@keyframes bounceAnim {
+#profileButton {
+    color: white; 
+    position: relative; 
+    left: 4px
+}
+
+@keyframes dropdownAnim {
     0% {
       -webkit-transform: translateY(0);
       transform: translateY(0);
     }
   
     100% {
-      -webkit-transform: translateY(-20px);
-      transform: translateY(-20px);
+      -webkit-transform: translateY(20px);
+      transform: translateY(20px);
     }
   
 }
@@ -142,6 +148,18 @@
 
     #loginButton {
         display: none;
+    }
+
+    #dropdown_button {
+        visibility: hidden;
+    }
+
+    #profileButton {
+        display: none;
+    }
+
+    #loginButtonCollapsed {
+        visibility: visible !important;
     }
 
     .navbar-toggler {
@@ -161,47 +179,40 @@
         border-top-left-radius: 12px;
         border-bottom-left-radius: 12px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
-
-    #loginButtonCollapsed {
-        visibility: visible !important;
+        overflow: hidden;
     }
 
     .profilePart {
         position: relative;
-        bottom: 0;
-        height: 120px;
-        margin: 0;
-        padding: 0;
+        height: 100px;
+        top: 10px;
+        left: 0px;
     }
 
     .profilePart img {
         position: relative;
-        top: 25px;
-        left: 20px;
-        float: left;
+        top: 0px;
+        left: 15px;
     }
 
     .username {
         position: relative;
-        float:unset;
-        left: 65px;
-        top: 0px;
-        width: 40px !important;
-        height: 100px !important;
-        line-height: 0.001;
+        left: 15px;
     }
 
     #Username {
-        margin-top: -10px;
+        float: none;
+        position: relative;
+        top: 0px;
+        left: 10px;
+        margin-top: -7px
     }
 
     #Discriminator {
-        margin-top: -20 !important;
-    }
-
-    #profileDropdown {
-        display: none !important;
+        position: relative;
+        top: 0px;
+        margin-top: -20px;
+        left: 10px;
     }
 
     #logoutButtonCollapsed {
@@ -209,14 +220,12 @@
         text-decoration: none;
         font-weight: normal;
         color: #d83434;
-        margin-right: 40px;
         position: absolute;
-        right: 6px;
-        top: 80px;
+        right: 35px;
+        top: 55px;
     }
 
     #logoutButtonCollapsed:hover {
         text-decoration: underline;
     }
-
 }
