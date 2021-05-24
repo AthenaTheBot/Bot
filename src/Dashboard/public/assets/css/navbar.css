@@ -56,12 +56,12 @@
 .profilePart {
     font-weight: bold;
     font-size: 17px;
-    margin-top: 15px;
-    margin-left: 75%;
     visibility: hidden;
     cursor: pointer;
     z-index: 150;
-    position: absolute
+    position: absolute;
+    right: 100px;
+    top: 30px;
 }
 
 .profilePart a {
@@ -91,28 +91,51 @@
     top: 10px;
 }
 
-#logoutButton {
-    background-color: #1d1d1d;
-    width: 7rem;
+#profileDropdown {
+    list-style: none;
+    line-height: 1.8;
+    background-color: #1a1a1a;
     text-align: center;
-    padding: 10px 10px 10px 10px;
-    float: left;
-    margin-left: 75%;
-    margin-top: 75px;
+    width: fit-content;
+    box-sizing: border-box;
+    padding: 5px;
+    border-radius: 6px;
+    animation: bounceAnim 500ms forwards;
     position: absolute;
-    z-index: 155;
+    top: 120px;
+    right: 130px;
     display: none;
-    border-radius: 10px
 }
 
-#logoutButton {
+#profileDropdown li {
+    border-radius: 5px;
+    margin: 3px;
+    position: relative;
+    z-index: 100000;
+    padding: 2px 10px;
+}
+
+#profileDropdown li:hover {
+    background-color: #7289DA;
+    color: #d3d2d2;
+}
+
+#profileDropdown a {
     text-decoration: none !important;
-    color: #d83434 !important;
-    font-weight: normal !important;
+    color: #d3d2d2;
 }
 
-#logoutButton:hover {
-    text-decoration: underline
+@keyframes bounceAnim {
+    0% {
+      -webkit-transform: translateY(0);
+      transform: translateY(0);
+    }
+  
+    100% {
+      -webkit-transform: translateY(-20px);
+      transform: translateY(-20px);
+    }
+  
 }
 
 @media only screen and (max-width: 990px) {
@@ -177,7 +200,7 @@
         margin-top: -20 !important;
     }
 
-    #logoutButton {
+    #profileDropdown {
         display: none !important;
     }
 

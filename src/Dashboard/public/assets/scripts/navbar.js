@@ -12,9 +12,9 @@ function userLoggedIn() {
   
       $(document).ready(function() {
         $('.profilePart').click(() => {
-          const doc = document.getElementById("logoutButton");
-          if (doc.style.display === 'inline') return $('#logoutButton').fadeOut();
-          else return $('#logoutButton').fadeIn('medium');
+          const doc = document.getElementById("profileDropdown");
+          if (doc.style.display === 'block') return $('#profileDropdown').css('display', 'none');
+          else return $('#profileDropdown').css('display', 'block');
         })
       });
 }
