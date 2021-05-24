@@ -11,14 +11,25 @@
     <title>Report User - Athena</title>
 </head>
 <body>
-
     <%- include('../components/navbar') %> 
 
     <div class="container">
-
+        <div class="header">
+            <h1>Report a User</h1>
+            <p>First of all please report any abuse that is done to Athena such as spamming commands. Secondly, in your report please provide any detail that you know to make this report effective.</p>
+        </div>
+        <hr id="containerLine">
+        <div class="IDPart">
+            <h3>Please specify users's ID</h3>
+            <input id="formID" type="text" placeholder="Please enter the users id."> 
+        </div>
+        <div class="paragraphPart">
+            <h3>Please write your report</h3>
+            <textarea name="message" id="formParagraph" placeholder="Please enter the message."></textarea>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg">Large button</button>
     </div>
 
     <%- include('../components/footer') %> 
-
 </body>
 </html>

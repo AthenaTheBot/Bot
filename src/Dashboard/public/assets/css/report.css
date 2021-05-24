@@ -2,4 +2,110 @@ body {
     background-color: #292929 !important;
     color: white !important;
     font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+  
+
+::-webkit-scrollbar-track {
+    background-color: #1a1a1a;
+}
+  
+
+::-webkit-scrollbar-thumb {
+    background: #7289DA;
+    border-radius: 5px;
+}
+  
+::-webkit-scrollbar-thumb:hover {
+    background: #5c6fb1;
+}
+
+.container {
+    min-height: 800px;
+    height: fit-content;
+    width: 35% !important;
+    background-color: #1a1a1a;
+    text-align: center;
+    margin-top: 100px;
+    border-radius: 7px;
+    -webkit-box-shadow: 0px 6px 20px -7px #000000; 
+    box-shadow: 0px 6px 20px -7px #000000;
+    padding: 40px;
+}
+
+.header h1 {
+    text-shadow: 2px 2px #7289DA;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.header p {
+    width: 85%;
+    margin: 30px auto;
+}
+
+#containerLine {
+    width: 90%;
+    color: #7289DA;
+    background-color: #7289DA;
+    opacity: 1;
+    margin: 50px auto;
+}
+
+#formID {
+    width: 90%;
+    height: 40px;
+    padding: 10px;
+    background-color: #3f3f3f;
+    color: #adadad;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+}
+
+.formID:focus {
+    border: 1px solid #7289DA;
+}
+
+.IDPart {
+    margin-top: 70px;
+}
+
+.IDPart h3 {
+    margin: 40px;
+}
+
+.paragraphPart {
+    margin-top: 100px;
+}
+
+.paragraphPart h3 {
+    margin: 40px;
+}
+
+#formParagraph {
+    width: 90%;
+    min-height: 150px;
+    height: fit-content;
+    background-color: #3f3f3f;
+    border: none;
+    padding: 10px;
+    color: #adadad;
+    outline: none;
+    border-radius: 5px;
+}
+
+.btn {
+    margin: 25px;
+    background-color: #7289DA !important;
+    border: none !important;
+}
+
+.btn:hover {
+    -webkit-box-shadow: 0px 6px 20px -7px #000000; 
+    box-shadow: 0px 6px 20px -7px #000000;
 }

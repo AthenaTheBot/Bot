@@ -5,7 +5,7 @@
 .nav-link {
     color: #c7c6c6 !important;
     padding-right: 25px !important;
-    margin-top: 5px
+    margin-top: 5px;
 }
 
 .nav-link:hover {
@@ -62,6 +62,9 @@
     position: absolute;
     left: 79%;
     top: 30px;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
 }
 
 .profilePart a {
@@ -105,6 +108,9 @@
     top: 80px;
     left: 79%;
     display: none;
+    z-index: 1000000;
+    -webkit-box-shadow: 0px 6px 20px -7px #000000; 
+    box-shadow: 0px 6px 20px -7px #000000;
 }
 
 #profileDropdown li {
@@ -117,7 +123,7 @@
 
 #profileDropdown li:hover {
     background-color: #7289DA;
-    color: #d3d2d2;
+    color: white;
 }
 
 #profileDropdown a {
@@ -192,7 +198,7 @@
     .profilePart img {
         position: relative;
         top: 0px;
-        left: 15px;
+        left: 20px;
     }
 
     .username {
