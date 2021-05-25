@@ -105,7 +105,7 @@
     border-radius: 6px;
     animation: dropdownAnim 500ms forwards;
     position: absolute;
-    top: 80px;
+    top: 65px;
     left: 79%;
     display: none;
     z-index: 1000000;

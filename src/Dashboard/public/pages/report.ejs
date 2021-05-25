@@ -5,10 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Report a user to Athena.">
+    <script src="/assets/scripts/jquery.min.js"></script>
+    <script src="/assets/scripts/report.js"></script>
     <link rel="stylesheet" href="/assets/css/bootstrap-min.css">
     <link rel="stylesheet" href="/assets/css/report.css">
     <link rel="icon" type="image/png" href="/assets/images/logo.png">
-    <title>Report User - Athena</title>
+    <title>Report a User - Athena</title>
 </head>
 <body>
     <%- include('../components/navbar') %> 
@@ -27,8 +29,10 @@
             <h3>Please write your report</h3>
             <textarea name="message" id="formParagraph" placeholder="Please enter the message."></textarea>
         </div>
-        <button type="button" class="btn btn-primary btn-lg">Large button</button>
+        <button id="submitButton" type="button" class="btn btn-primary btn-lg">Submit</button>
     </div>
+
+    <div class="warnings"></div>
 
     <%- include('../components/footer') %> 
 </body>

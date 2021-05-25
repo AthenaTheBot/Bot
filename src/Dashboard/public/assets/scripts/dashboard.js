@@ -83,7 +83,7 @@ const handleError = () => {
     $('.container').append(`
         <div class="error">
             <h3>Oh no!</h3>
-            <p>It looks like an error occured whihe trying to open the dashobard of your guild! Please try again later..</p>
+            <p>It looks like an error occured while trying to open the dashobard of your guild! Please try again later..</p>
         </div>
     `);
 }

@@ -167,6 +167,43 @@ router.get('/errors', async (req, res) => {
     }
 })
 
+router.post('/report', async (req, res) => {
+
+    if (!req.cookies || !req.cookies._ud) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
+
+    if (!req.body || !req.body.id || !req.body.content) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+
+    const userData = encryptor.decrypt(req.cookies._ud);
+
+    let run = true;
+    fetch(Athena.config.dashboard.REPORTS_WEBHOOK, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            tts: false,
+            embeds: [
+                {
+                    description: `**Reporter**: \n ${userData.username}#${userData.discriminator} | \`${userData.id}\` \n \n **Reported User**: \n \`${req.body.id}\` \n \n **Content**: \n ${req.body.content}`,
+                    color: 7506394,
+                }
+            ]
+        })
+    })
+    .catch(err => {
+
+        res.status(500).json({ status: 500, message: 'Server Error' }).end();
+        run = false;
+        return;
+    })
+
+    if (!run) return;
+
+    res.status(200).json({ status: 200, message: 'Success' }).end();
+    return;
+})
+
 router.post('/guilds/:id', async (req, res) => {
 
     if (!req.cookies || !req.cookies.session || !encryptor.decrypt(req.cookies.session)) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();

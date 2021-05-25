@@ -8,13 +8,7 @@ const run = async (client, message, args, locale, db) => {
     const successEmbed = new MessageEmbed().setColor('GREEN');
     const defaultEmbed = new MessageEmbed().setColor(client.branding.colors.default);
 
-    const str = args.slice(0).join(' ');
-
-    if (!str) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.INVALID_REPORT}`));
-
-    client.channels.cache.get(client.config.channels.REPORT).send(defaultEmbed.setDescription(`**Report Content**: \n ${str} \n \n **Reporter**: \n ${message.author.tag} | \`${message.author.id}\` `));
-
-    return message.channel.send(successEmbed.setDescription(`${client.branding.emojis.success} ${locale.SUCCESS}`));
+    return message.channel.send(successEmbed.setDescription(`[${locale.MSG}](https://athenabot.site/report)`));
 }
 
 module.exports = {
