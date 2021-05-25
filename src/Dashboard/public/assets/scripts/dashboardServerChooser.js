@@ -4,10 +4,10 @@ $(document).ready(async() => {
     .then(res => res.json())
     .then(async (data) => {
 
-        if (!data) window.location.replace('/');
+        if (!data) return handleError();
         else {
 
-            await $('.spinner').css('display', 'none');
+            await $('.spinner').remove();
 
             loadServers(data.data);
         }
@@ -53,14 +53,14 @@ const loadServers = (guilds) => {
 
 const handleError = () => {
 
-    $('.container').children().remove();
+    $('.serversContainer').children().remove();
     
     $('.spinner').remove();
 
-    $('.container').append(`
+    $('.serversContainer').append(`
         <div class="error">
             <h3>Oh no!</h3>
-            <p>It looks like an error occured whihe trying to open the dashobard of your guild! Please try again later..</p>
+            <p>It looks like an error occured whihe trying to open the dashobard! Please try again later..</p>
         </div>
     `);
 }

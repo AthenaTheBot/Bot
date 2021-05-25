@@ -59,8 +59,6 @@ $(document).ready(() => {
                 })
                 .catch(err => {
 
-                    console.log(err);
-
                     handleError();
                     return;
                 })

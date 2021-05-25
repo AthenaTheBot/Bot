@@ -35,8 +35,11 @@
               </li>
               <% if (userData) { %>
                 <div class="profilePart">
-                  <!-- TODO: Add logo check --> 
-                  <img src="https://cdn.discordapp.com/avatars/<%= userData.id %>/<%= userData.avatar %>.png?size=4096">
+                  <% if (!userData.avatar) { %>
+                    <img src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png" alt="">
+                  <% } else { %>
+                    <img src="https://cdn.discordapp.com/avatars/<%= userData.id %>/<%= userData.avatar %>.png?size=4096">
+                  <% } %>   
                   <div class="username">
                     <% if (userData.username.length > 7) { userData.username = userData.username.slice(0, 7) + '..'; } %> 
                     <p id="Username"><%= userData.username %></p>
