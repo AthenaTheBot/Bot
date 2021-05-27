@@ -19,6 +19,8 @@ const init = async (guildID) => {
         })
         .then(res => res.json()).catch(err => {});
 
+        if (currentGuildDB.status == 403) return handleError(403);
+
         if (!currentGuildDB || !currentGuildDB.data) return handleError();
 
         let guildIcon;
@@ -74,7 +76,10 @@ const init = async (guildID) => {
     });
 };
 
-const handleError = () => {
+const handleError = (type) => {
+
+    if (type == 403) msg = `<p>It looks like you don't have acces to go there.</p>`
+    else msg = `<p>It looks like an error occured while trying to open the dashobard of your guild! Please try again later..</p>`
 
     $('.container').children().remove();
     
@@ -83,7 +88,7 @@ const handleError = () => {
     $('.container').append(`
         <div class="error">
             <h3>Oh no!</h3>
-            <p>It looks like an error occured while trying to open the dashobard of your guild! Please try again later..</p>
+            ${msg}
         </div>
     `);
 }
