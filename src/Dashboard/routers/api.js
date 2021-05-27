@@ -214,7 +214,7 @@ router.post('/guilds/:id', async (req, res) => {
     if (!userData || !sessionKey) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
 
     let userCurrentGuilds = await getCurrentUserGuilds(sessionKey, true);
-
+    
     if (!userCurrentGuilds || userCurrentGuilds.length == 0 || userCurrentGuilds.retry_after) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
 
     const availabeGuild = userCurrentGuilds.filter(x => x.id == req.params.id);
@@ -223,10 +223,10 @@ router.post('/guilds/:id', async (req, res) => {
 
     const perms = new Permissions(availabeGuild[0].permissions).toArray();
 
-    if (!perms || !perms.includes('ADMINISTRATOR') && availabeGuild[0].owner == true) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
+    if (!perms || !perms.includes('ADMINISTRATOR') && availabeGuild[0].owner != true) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
 
     const guildData = await Athena.db.collection('servers').findOne({ _id: req.params.id }).catch(err => {});
-            
+
     if (!guildData || !guildData.data) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
 
     switch(req.body.operation) {
