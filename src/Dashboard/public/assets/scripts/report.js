@@ -52,7 +52,7 @@ $(document).ready(() => {
                     }
                     else {
 
-                        handleError();
+                        handleError(data.status);
                         return;
                     }
 
@@ -112,14 +112,16 @@ const setLoading = () => {
     `)
 }
 
-const handleError = () => {
+const handleError = (type) => {
+
+    if (type == 429) msg = `<h3>Calm down!</h3> \n <p>You are making too many reports! Wait for a while then try again later.</p>`
+    else msg = `<h3>Oh no!</h3> \n <p>It looks like an error occured while trying send your report! Please try again later..</p>`
 
     $('.container').children().remove();
 
     $('.container').append(`
         <div class="error">
-            <h3>Oh no!</h3>
-            <p>It looks like an error occured while trying send your report! Please try again later..</p>
+            ${msg}
         </div>
     `);
 }

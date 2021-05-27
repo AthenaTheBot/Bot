@@ -342,5 +342,5 @@ const setRequestCache = (ip) => {
 
         Athena.websiteRequestCache = filteredArray;
 
-    }, 5000)
+    }, 120000)
 }
