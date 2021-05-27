@@ -3,14 +3,60 @@ const router = express.Router();
 
 const encryptor = require('simple-encryptor').createEncryptor('abcdefgeijklmnorçöasşay?124568?_**!$');
 const path = require('path');
-
 const fetch = require('node-fetch');
-
 const fs = require('fs');
-
 const Athena = require('../../athena');
-
 const { Permissions } = require('discord.js');
+
+router.get('/commands', (req, res) => {
+
+    const commands = new Array();
+
+    try {
+
+        const validCategories = fs.readdirSync(path.join(__dirname, '..', '..', 'Commands'));
+
+        validCategories.forEach((category) => {
+    
+            if (category == 'Owner') return;
+            
+            const categoryCommands = new Array();
+    
+            const commandFiles = fs.readdirSync(path.join(__dirname, '..', '..', 'Commands', category)).filter(file => file.endsWith('.js'));
+    
+            commandFiles.forEach(commandFile => {
+    
+                const command = require(path.join(__dirname, '..', '..', 'Commands', category, commandFile));
+    
+                if (!Athena.commands.get(command.Name) || command.Category == 'Owner') return;
+                
+                return categoryCommands.push({ 
+                    name: command.Name, 
+                    description: command.Description || 'None', 
+                    usage: command.Usage || 'None',
+                    required_perms: command.RequiredPerms, 
+                    required_bot_perms: command.RequiredBotPerms 
+                });
+            })
+    
+            commands.push({ category: category, commands: categoryCommands });
+        });
+    }
+    catch (err) {
+
+        Athena.log('error', err);
+        return res.status(500).json({ status: 500, message: 'Server Error' });
+    }
+
+    let filteredCategory;
+    if (req.query.category) {
+        filteredCategory = commands.filter(commands => commands.category == req.query.category);
+        if (filteredCategory.length == 0) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+    }
+    else filteredCategory = commands;
+
+    return res.json({ status: 200, data: filteredCategory });
+})
 
 router.get('/vote', async (req, res) => {
 
@@ -64,56 +110,6 @@ router.get('/vote', async (req, res) => {
         return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
     }
 });
-
-router.get('/commands', (req, res) => {
-
-    const commands = new Array();
-
-    try {
-
-        const validCategories = fs.readdirSync(path.join(__dirname, '..', '..', 'Commands'));
-
-        validCategories.forEach((category) => {
-    
-            if (category == 'Owner') return;
-            
-            const categoryCommands = new Array();
-    
-            const commandFiles = fs.readdirSync(path.join(__dirname, '..', '..', 'Commands', category)).filter(file => file.endsWith('.js'));
-    
-            commandFiles.forEach(commandFile => {
-    
-                const command = require(path.join(__dirname, '..', '..', 'Commands', category, commandFile));
-    
-                if (!Athena.commands.get(command.Name) || command.Category == 'Owner') return;
-                
-                return categoryCommands.push({ 
-                    name: command.Name, 
-                    description: command.Description || 'None', 
-                    usage: command.Usage || 'None',
-                    required_perms: command.RequiredPerms, 
-                    required_bot_perms: command.RequiredBotPerms 
-                });
-            })
-    
-            commands.push({ category: category, commands: categoryCommands });
-        });
-    }
-    catch (err) {
-
-        Athena.log('error', err);
-        return res.status(500).json({ status: 500, message: 'Server Error' });
-    }
-
-    let filteredCategory;
-    if (req.query.category) {
-        filteredCategory = commands.filter(commands => commands.category == req.query.category);
-        if (filteredCategory.length == 0) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
-    }
-    else filteredCategory = commands;
-
-    return res.json({ status: 200, data: filteredCategory });
-})
 
 router.get('/errors', async (req, res) => {
 
@@ -169,9 +165,11 @@ router.get('/errors', async (req, res) => {
 
 router.post('/report', async (req, res) => {
 
-    if (!req.cookies || !req.cookies._ud) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
+    if (!req.cookies || !req.cookies.session  ||  !req.cookies._ud || !encryptor.decrypt(req.cookies._ud) || !encryptor.decrypt(req.cookies.session)) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
 
     if (!req.body || !req.body.id || !req.body.content) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+
+    if (Athena.websiteRequestCache.includes(req.ip)) return res.status(429).json({ status: 429, message: 'Too Many Requests!' }).end();
 
     const userData = encryptor.decrypt(req.cookies._ud);
 
@@ -194,6 +192,7 @@ router.post('/report', async (req, res) => {
     .catch(err => {
 
         res.status(500).json({ status: 500, message: 'Server Error' }).end();
+        setRequestCache(req.ip);
         run = false;
         return;
     })
@@ -201,14 +200,30 @@ router.post('/report', async (req, res) => {
     if (!run) return;
 
     res.status(200).json({ status: 200, message: 'Success' }).end();
+    setRequestCache(req.ip);
     return;
 })
 
 router.post('/guilds/:id', async (req, res) => {
 
-    if (!req.cookies || !req.cookies.session || !encryptor.decrypt(req.cookies.session)) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
+    if (!req.cookies || !req.cookies.session || !req.cookies._ud || isNaN(req.params.id) || req.params.id.length != 18) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
 
-    if (!req.params || !req.params.id || isNaN(req.params.id) || !req.body || !req.body.operation) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+    const userData = await encryptor.decrypt(req.cookies._ud);
+    const sessionKey = await encryptor.decrypt(req.cookies.session);
+
+    if (!userData || !sessionKey) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+
+    let userCurrentGuilds = await getCurrentUserGuilds(sessionKey, true);
+
+    if (!userCurrentGuilds || userCurrentGuilds.length == 0 || userCurrentGuilds.retry_after) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
+
+    const availabeGuild = userCurrentGuilds.filter(x => x.id == req.params.id);
+
+    if (!availabeGuild || availabeGuild.length == 0) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+
+    const perms = new Permissions(availabeGuild[0].permissions).toArray();
+
+    if (!perms || !perms.includes('ADMINISTRATOR') && availabeGuild[0].owner == true) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
 
     const guildData = await Athena.db.collection('servers').findOne({ _id: req.params.id }).catch(err => {});
             
@@ -240,7 +255,9 @@ router.post('/guilds/:id', async (req, res) => {
         case 'setLanguage':
             const validLanguages = ['en-US', 'tr-TR'];
 
-            if (req.body.value == guildData.data.preferences.language || !validLanguages.includes(req.body.value)) return res.status(400).json({ status: 400, message: 'Bad Request', code: 'same_language' }).end();
+            if (!validLanguages.includes(req.body.value) )return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+
+            if (req.body.value == guildData.data.preferences.validLanguages) return res.status(400).json({ status: 400, message: 'Bad Request', code: 'same_language' }).end();
 
             try {
 
@@ -262,24 +279,7 @@ router.post('/guilds/:id', async (req, res) => {
     }
 });
 
-router.get('/users/@me', async (req, res) => {
-
-    if (req.cookies || req.cookies.session) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
-
-    const sessionKey = await encryptor.decrypt(req.cookies.session);
-
-    let userCurrentGuilds = await fetch('https://discord.com/api/users/@me', {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': `Bearer ${sessionKey}`,
-        }
-    })
-    .then(res => res.json()).catch(err => {});
-
-    if (!userCurrentGuilds) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
-
-    return res.status(200).json({ status: 200, data: userCurrentGuilds }).end();
-});
+router.get('/users/@me', async (req, res) => {});
 
 router.get('/users/@me/guilds', async (req, res) => {
 
@@ -287,15 +287,9 @@ router.get('/users/@me/guilds', async (req, res) => {
 
     const sessionKey = await encryptor.decrypt(req.cookies.session);
 
-    let userCurrentGuilds = await fetch('https://discord.com/api/users/@me/guilds', {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': `Bearer ${sessionKey}`,
-        }
-    })
-    .then(res => res.json()).catch(err => {});
+    if (!sessionKey) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
 
-    if (!userCurrentGuilds) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
+    let userCurrentGuilds = await getCurrentUserGuilds(sessionKey, false);
 
     const availabeGuilds = new Array();
     for (var i = 0; i < userCurrentGuilds.length; i++) {
@@ -317,3 +311,36 @@ router.get('/users/@me/guilds', async (req, res) => {
 });
 
 module.exports = router;
+
+const getCurrentUserGuilds = async (sessionKey, cache) => {
+
+    if (cache) return Athena.websiteUserGuildsCache.get(sessionKey);
+
+    let userCurrentGuilds = await fetch('https://discord.com/api/users/@me/guilds', {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Bearer ${sessionKey}`,
+        }
+    })
+    .then(res => res.json()).catch(err => {});
+
+    if (!userCurrentGuilds) return undefined;
+    else {
+
+        Athena.websiteUserGuildsCache.set(sessionKey, userCurrentGuilds);
+        return userCurrentGuilds;
+    }
+};
+
+const setRequestCache = (ip) => {
+
+    Athena.websiteRequestCache.push(ip);
+
+    setTimeout(() => {
+
+        const filteredArray = Athena.websiteRequestCache.filter(x => x != ip);
+
+        Athena.websiteRequestCache = filteredArray;
+
+    }, 5000)
+}

@@ -25,6 +25,8 @@ class Base extends Client {
         this.serverDatabaseCache = new Collection();
         this.guildMusicStates = new Collection();
         this.cooldowns = new Collection();
+        this.websiteRequestCache = new Array();
+        this.websiteUserGuildsCache = new Collection();
         this.branding = {
             colors: {
                 default: '#7289DA'

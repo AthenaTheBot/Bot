@@ -130,7 +130,7 @@ const selectLang = async (language, id) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ operation: 'setLanguage',  value: language, id: id }),
+        body: JSON.stringify({ operation: 'setLanguage',  value: language }),
     })
     .then(res => res.json())
     .then(data => {
@@ -188,7 +188,7 @@ const setPrefix = async (event, id) => {
                 headers: {
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ operation: 'setPrefix', value: prefix, id: id }),
+                body: JSON.stringify({ operation: 'setPrefix', value: prefix }),
             })
             .then(res => res.json())
             .then(data => {
