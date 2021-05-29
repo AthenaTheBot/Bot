@@ -42,25 +42,47 @@ module.exports.play = async (base, guild, locale) => {
             });
     
             player.on('finish', async () => {
-                textChannel.send(locale.SONG_FINISHED);
-                guildMusicState.queue.shift();
-                guildMusicState.playing = false;
-                if (guildMusicState.queue.length == 0) {
-                    textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.QUEUE_FINISHED));
-                    setTimeout(async () => {
-                        const newGuildMusicState = await base.guildMusicStates.get(guild);
-                        if (newGuildMusicState && newGuildMusicState.playing) return;
-                        else {
-                            if (!newGuildMusicState || !newGuildMusicState.connection) return;
-                            base.channels.cache.get(newGuildMusicState.voiceChannel).leave();
-                            textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.INACTIVE_FOR_TOO_LONG));
-                            base.guildMusicStates.delete(guild);
-                        }
-                    }, 150 * 1000);
+                if (!guildMusicState.loop) {
+                    guildMusicState.queue.shift();
+                    guildMusicState.playing = false;
+                    if (guildMusicState.queue.length == 0) {
+                        textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.QUEUE_FINISHED));
+                        setTimeout(async () => {
+                            const newGuildMusicState = await base.guildMusicStates.get(guild);
+                            if (newGuildMusicState && newGuildMusicState.playing) return;
+                            else {
+                                if (!newGuildMusicState || !newGuildMusicState.connection) return;
+                                base.channels.cache.get(newGuildMusicState.voiceChannel).leave();
+                                textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.INACTIVE_FOR_TOO_LONG));
+                                base.guildMusicStates.delete(guild);
+                            }
+                        }, 150 * 1000);
+                    }
+                    else {
+        
+                        this.play(base, guild, locale);
+                    }
                 }
                 else {
-    
-                    this.play(base, guild, locale);
+                    guildMusicState.queue.push(guildMusicState.queue[0]);
+                    guildMusicState.queue.shift();
+                    if (guildMusicState.queue.length == 0) {
+                        textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.QUEUE_FINISHED));
+                        setTimeout(async () => {
+                            const newGuildMusicState = await base.guildMusicStates.get(guild);
+                            if (newGuildMusicState && newGuildMusicState.playing) return;
+                            else {
+                                if (!newGuildMusicState || !newGuildMusicState.connection) return;
+                                base.channels.cache.get(newGuildMusicState.voiceChannel).leave();
+                                textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.INACTIVE_FOR_TOO_LONG));
+                                base.guildMusicStates.delete(guild);
+                            }
+                        }, 150 * 1000);
+                    }
+                    else {
+
+                        this.play(base, guild, locale);
+                    }
                 }
             });
     

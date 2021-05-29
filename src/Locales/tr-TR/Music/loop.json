@@ -1,0 +1,6 @@
+{
+    "ALREADY_NOT_PLAYING": "Athena şuanda zaten bir şarkı çalmıyor.",
+    "NOT_SAME_VC": "Bu komutu kullanmak için Athena ile aynı ses kanalında olmalısın!",
+    "ENABLED_LOOP": "Döngü başarıyla açıldı.",
+    "DISABLED_LOOP": "Döngü başarıyla kapatıldı."
+}

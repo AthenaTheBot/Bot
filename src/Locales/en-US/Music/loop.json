@@ -1,0 +1,6 @@
+{
+    "ALREADY_NOT_PLAYING": "Athena already isn't playing a song!",
+    "NOT_SAME_VC": "You have to be in a same voice channel with Athena to use this command!",
+    "ENABLED_LOOP": "Successfully enabled loop.",
+    "DISABLED_LOOP": "Successfully disabled loop."
+}
