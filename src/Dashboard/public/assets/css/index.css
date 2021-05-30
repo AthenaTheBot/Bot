@@ -4,6 +4,7 @@ body {
     font-family: Arial, Helvetica, sans-serif !important;
     width: 100% !important;
     margin: 0px !important;
+    overflow-y: scroll !important;
 }
 
 

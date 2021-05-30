@@ -30,7 +30,7 @@ body {
 }
 
 .content {
-    width: 70% !important;
+    max-width: 80%;
     position: relative;
     top: 200px;
     height: fit-content;
@@ -53,4 +53,13 @@ body {
 .content a:hover {
     color: #7289DA;
     text-decoration: underline;
+}
+
+@media(max-width: 500px) {
+
+    .content {
+        width: fit-content;
+        padding: 20px;
+        max-width: 95%;
+    }
 }

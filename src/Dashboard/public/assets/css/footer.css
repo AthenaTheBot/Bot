@@ -1,6 +1,7 @@
 .footer {
     color: #969595;
     width: 100%;
+    min-height: 300px;
     height: 40vh;
     text-align: center;
     background-image: url("../images/footer.svg");

@@ -12,17 +12,17 @@ $(document).ready(async () => {
     });
 
     loadCategory('All');
-    $('.spinner').css('display', 'none');
 });
 
 const loadCategory = async (category) => {
 
     if (category == 'All') {
 
+        $('.command').remove();
+        $('.spinner').css('display', 'block');
+
         const categoryCommnads = await fetch('/api/commands').then(res => res.json()).catch(err => {})
 
-        $('.command').remove();
-    
         categoryCommnads.data.forEach(categories => {
     
             categories.commands.forEach(command => {
@@ -30,6 +30,8 @@ const loadCategory = async (category) => {
                 if (command.required_perms.length == 0) command.required_perms = 'None';
                 if (command.required_bot_perms.length == 0) command.required_bot_perms = 'None';
  
+                $('.spinner').css('display', 'none');
+
                 $('.commands').append(`
                 <div class="command" id="${command.name}">
                     <h5 id="title">at! ${command.name} <code id="customCode">${command.usage}</code></h5>
@@ -49,11 +51,14 @@ const loadCategory = async (category) => {
         const categoryCommnads = await fetch('/api/commands?category=' + category).then(res => res.json()).catch(err => {})
 
         $('.command').remove();
+        $('.spinner').css('display', 'block');
     
         categoryCommnads.data[0].commands.forEach(command => {
     
             if (command.required_perms.length == 0) command.required_perms = 'None';
             if (command.required_bot_perms.length == 0) command.required_bot_perms = 'None';
+
+            $('.spinner').css('display', 'none');
 
             $('.commands').append(`
                 <div class="command" id="${command.name}">
