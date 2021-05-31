@@ -49,4 +49,4 @@ $(document).ready(async () => {
 
     $('.loader').remove();
     
-})
+});
