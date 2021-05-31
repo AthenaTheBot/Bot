@@ -19,8 +19,8 @@
     <title>Dashboard - Athena</title>
 </head>
 <body>
-    <%- include('../components/navbar') %> 
 
+    <!--
     <div class="spinner">
         <div class="bounce1"></div>
         <div class="bounce2"></div>
@@ -28,11 +28,36 @@
         <div class="bounce4"></div>
     </div>
 
-    <div class="container"></div>
+    -->
 
-    <div class="warnings"></div>
+    <div class="container">
+        <div class="controlBar">
+            <div class="serverPart">
+                <img src="/assets/images/defaultServer.png" alt="">
+                <h4>Server Name</h4>
+            </div>
+            <div class="categoryPart">
+                <ul class="category">
+                    <p class="categoryHeader">General <i id="categoryDropdown" class="fas fa-chevron-down"></i></p>
+                    <li class="categoryElement selected">Prefix</li>
+                    <li class="categoryElement">Language</li>
+                </ul>
+                <ul class="category">
+                    <p class="categoryHeader">Moderation <i id="categoryDropdown" class="fas fa-chevron-down"></i></p>
+                    <li class="categoryElement">Auto Role</li>
+                    <li class="categoryElement">Link Protection</li>
+                    <li class="categoryElement">Action Logger</li>
+                </ul>
+                <ul class="category">
+                    <p class="categoryHeader">Music <i id="categoryDropdown" class="fas fa-chevron-down"></i></p>
+                    <li class="categoryElement">Server Queue</li>
+                </ul>
+            </div>
+        </div>
+        <div class="content">
 
-    <%- include('../components/footer') %> 
+        </div>
+    </div>
 
     <script>init("<%= selectedGuild %>");</script>
 </body>

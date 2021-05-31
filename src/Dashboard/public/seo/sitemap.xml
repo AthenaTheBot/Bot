@@ -9,53 +9,23 @@
 
 <url>
   <loc>https://athenabot.site/</loc>
-  <lastmod>2021-05-14T20:52:25+00:00</lastmod>
+  <lastmod>2021-05-31T06:11:52+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://athenabot.site/dashboard</loc>
-  <lastmod>2021-05-14T20:52:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
   <loc>https://athenabot.site/commands</loc>
-  <lastmod>2021-05-14T20:52:25+00:00</lastmod>
+  <lastmod>2021-05-31T06:11:52+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://athenabot.site/privacy</loc>
-  <lastmod>2021-05-14T20:52:25+00:00</lastmod>
+  <lastmod>2021-05-31T06:11:52+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://athenabot.site/tos</loc>
-  <lastmod>2021-05-14T20:52:25+00:00</lastmod>
+  <lastmod>2021-05-31T06:11:52+00:00</lastmod>
   <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://athenabot.site/commands?category=all</loc>
-  <lastmod>2021-05-14T20:52:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://athenabot.site/commands?category=moderation</loc>
-  <lastmod>2021-05-14T20:52:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://athenabot.site/commands?category=music</loc>
-  <lastmod>2021-05-14T20:52:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://athenabot.site/commands?category=fun</loc>
-  <lastmod>2021-05-14T20:52:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://athenabot.site/commands?category=misc</loc>
-  <lastmod>2021-05-14T20:52:25+00:00</lastmod>
-  <priority>0.64</priority>
 </url>
 
 
