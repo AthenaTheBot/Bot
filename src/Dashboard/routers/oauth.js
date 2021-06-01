@@ -14,6 +14,7 @@ router.get('/login', (req, res) => {
 router.get('/logout', async(req, res) => {
 
     await res.clearCookie('_ud');
+    await res.clearCookie('_ug');
     await res.clearCookie('session');
 
     return res.redirect('/');
@@ -77,10 +78,12 @@ router.get('/callback', async (req, res) => {
 
         const expiresInHour = tokenData.expires_in / 3600;
 
-        await res.cookie('session', await encryptor.encrypt(tokenData.access_token), {
-            expires: new Date(Date.now() + expiresInHour * 3600000)
-        });
-        await res.cookie('_ud', await encryptor.encrypt(userData), {
+        const session = {
+            key: tokenData.access_token,
+            ...userData
+        }
+
+        await res.cookie('session', await encryptor.encrypt(session), {
             expires: new Date(Date.now() + expiresInHour * 3600000)
         });
 
@@ -88,7 +91,7 @@ router.get('/callback', async (req, res) => {
     }
     catch (err) {
 
-        console.log('[' + 'ERROR'.bgRed.black + ']', err);
+        console.log('ERROR'.bgRed.black, err);
         return res.render('errors/fetchError');
     }
 

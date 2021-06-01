@@ -40,36 +40,46 @@ module.exports = (client) => {
     // Main Routes
     app.get('/', async (req, res) => {
         
+        if (req.cookies._ud) return res.redirect('/oauth/logout');
+
         return res.status(200).render('index', {
-            userData: await encryptor.decrypt(req.cookies._ud)
+            userData: await encryptor.decrypt(req.cookies.session)
         });
     })
     
     app.get('/commands', async (req, res) => {
 
+        if (req.cookies._ud) return res.redirect('/oauth/logout');
+
         return res.status(200).render('commands', {
-            userData: await encryptor.decrypt(req.cookies._ud)
+            userData: await encryptor.decrypt(req.cookies.session)
         });
     });
 
     app.get('/report', async(req, res) => {
 
+        if (req.cookies._ud) return res.redirect('/oauth/logout');
+
         return res.status(200).render('report', {
-            userData: await encryptor.decrypt(req.cookies._ud)
+            userData: await encryptor.decrypt(req.cookies.session)
         });
     });
 
     app.get('/privacy', async (req, res) => {
 
+        if (req.cookies._ud) return res.redirect('/oauth/logout');
+
         return res.status(200).render('privacy', {
-            userData: await encryptor.decrypt(req.cookies._ud)
+            userData: await encryptor.decrypt(req.cookies.session)
         });
     });
 
     app.get('/tos', async (req, res) => {
 
+        if (req.cookies._ud) return res.redirect('/oauth/logout');
+
         return res.status(200).render('tos', {
-            userData: await encryptor.decrypt(req.cookies._ud)
+            userData: await encryptor.decrypt(req.cookies.session)
         });
     });
 

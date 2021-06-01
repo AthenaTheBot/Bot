@@ -113,9 +113,11 @@ router.get('/vote', async (req, res) => {
 
 router.get('/errors', async (req, res) => {
 
-    const userData = await encryptor.decrypt(req.cookies._ud);
+    if (!req.cookies || !req.cookies.session) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
 
-    if (userData && userData.id == Athena.config.bot.OWNER) {
+    const session = await encryptor.decrypt(req.cookies.session);
+
+    if (session && session.id == Athena.config.bot.OWNER) {
 
         if (req.query && req.query.operation) {
 
@@ -165,13 +167,13 @@ router.get('/errors', async (req, res) => {
 
 router.post('/report', async (req, res) => {
 
-    if (!req.cookies || !req.cookies.session  ||  !req.cookies._ud || !encryptor.decrypt(req.cookies._ud) || !encryptor.decrypt(req.cookies.session)) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
+    if (!req.cookies || !req.cookies.session || !encryptor.decrypt(req.cookies.session)) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
 
     if (!req.body || !req.body.id || !req.body.content) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
 
     if (Athena.websiteRequestCache.includes(req.ip)) return res.status(429).json({ status: 429, message: 'Too Many Requests!' }).end();
 
-    const userData = encryptor.decrypt(req.cookies._ud);
+    const userData = encryptor.decrypt(req.cookies.session);
 
     let run = true;
     fetch(Athena.config.dashboard.REPORTS_WEBHOOK, {
@@ -206,14 +208,13 @@ router.post('/report', async (req, res) => {
 
 router.post('/guilds/:id', async (req, res) => {
 
-    if (!req.cookies || !req.cookies.session || !req.cookies._ud || isNaN(req.params.id) || req.params.id.length != 18) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+    if (!req.cookies || !req.cookies.session || isNaN(req.params.id) || req.params.id.length != 18) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
 
-    const userData = await encryptor.decrypt(req.cookies._ud);
-    const sessionKey = await encryptor.decrypt(req.cookies.session);
+    const session = await encryptor.decrypt(req.cookies.session);
 
-    if (!userData || !sessionKey) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+    if (!session || !session) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
 
-    let userCurrentGuilds = await getCurrentUserGuilds(sessionKey, true);
+    let userCurrentGuilds = await getCurrentUserGuilds(session.key, true);
     
     if (!userCurrentGuilds || userCurrentGuilds.length == 0 || userCurrentGuilds.retry_after) return res.status(500).json({ status: 500, message: 'Server Error' }).end();
 
@@ -285,11 +286,11 @@ router.get('/users/@me/guilds', async (req, res) => {
 
     if (!req.cookies || !req.cookies.session) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
 
-    const sessionKey = await encryptor.decrypt(req.cookies.session);
+    const session = await encryptor.decrypt(req.cookies.session);
 
-    if (!sessionKey) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+    if (!session) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
 
-    let userCurrentGuilds = await getCurrentUserGuilds(sessionKey, false);
+    let userCurrentGuilds = await getCurrentUserGuilds(session.key, false);
 
     const availabeGuilds = new Array();
     for (var i = 0; i < userCurrentGuilds.length; i++) {
