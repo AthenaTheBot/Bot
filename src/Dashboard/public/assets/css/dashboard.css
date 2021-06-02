@@ -319,6 +319,7 @@ code {
 .content {
     position: fixed;
     left: 20%;
+    top: 100px;
     height: 100vh;
     width: fit-content;
     margin: 15px;
@@ -383,4 +384,19 @@ code {
     font-weight: bold;
     font-size: 13.5px;
     color: #797878
+}
+
+@media (max-width: 1650px) {
+    .content {
+        left: 35%;
+    }
+    .dashComp {
+        width: 45vw;
+    }
+}
+
+@media (max-width: 840px) {
+    .controlBar {
+        width: 200px;
+    }
 }
