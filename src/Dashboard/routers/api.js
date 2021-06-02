@@ -280,7 +280,16 @@ router.post('/guilds/:id', async (req, res) => {
     }
 });
 
-router.get('/users/@me', async (req, res) => {});
+router.get('/users/@me', async (req, res) => {
+
+    if (!req.cookies || !req.cookies.session) return res.status(403).json({ status: 403, message: 'Unauthorized' }).end();
+
+    const userData = await encryptor.decrypt(req.cookies.session);
+
+    userData.key = null;
+
+    return res.status(200).json({ status: 200, data: userData }).end();
+})
 
 router.get('/users/@me/guilds', async (req, res) => {
 

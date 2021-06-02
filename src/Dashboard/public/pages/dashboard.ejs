@@ -10,15 +10,10 @@
     <script src="https://kit.fontawesome.com/88e62b65ed.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/assets/css/bootstrap-min.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
-    <link rel="stylesheet" href="/assets/css/dashboard.css">
-    <link rel="stylesheet" href="/assets/css/footer.css">
-    <link rel="stylesheet" href="/assets/css/navbar.css">
     <link rel="icon" type="image/png" href="/assets/images/logo.png">
     <title>Dashboard - Athena</title>
 </head>
 <body>
-
-    
     <div class="loader">
         <div class="spinner">
             <div class="bounce1"></div>
@@ -28,31 +23,76 @@
         </div>
     </div>
     <div class="container">
+        <div class="profile">
+            <img src="/assets/images/defaultServer.png" alt="Default">
+            <p id="user">Tuna</p>
+            <p id="discriminator">#1565  <i id="profileButton" class="fas fa-chevron-down"></i></p>
+        </div>
+        <ul id="profileDropdown">
+            <a href="/dashboard"><li>Servers</li></a>
+            <a href="/report"><li>Report a User</li></a>
+            <a href="/oauth/logout"><li>Logout</li></a>
+          </ul>
         <div class="controlBar">
             <div class="serverPart">
-                <img src="/assets/images/defaultServer.png" alt="">
+                <img src="/assets/images/defaultServer.png" alt="Server">
                 <h4>Server Name</h4>
+                <div class="serverStats">
+                    <p>Member Count: <code>100</code></p>
+                    <p>Channel Count: <code>15</code></p>
+                </div>
             </div>
+            <hr id="serverLine">
             <div class="categoryPart">
                 <ul class="category">
-                    <p class="categoryHeader">General <i id="categoryDropdown" class="fas fa-chevron-down"></i></p>
-                    <li class="categoryElement selected">Prefix</li>
-                    <li class="categoryElement">Language</li>
+                    <p class="categoryHeader">Configuration <i id="categoryDropdown" class="fas fa-chevron-down"></i></p>
+                    <li class="categoryElement selected">General</li>
                 </ul>
                 <ul class="category">
                     <p class="categoryHeader">Moderation <i id="categoryDropdown" class="fas fa-chevron-down"></i></p>
-                    <li class="categoryElement">Auto Role</li>
-                    <li class="categoryElement">Link Protection</li>
-                    <li class="categoryElement">Action Logger</li>
+                    <li class="categoryElement disabled">Auto Role (Coming Soon)</li>
+                    <li class="categoryElement disabled">Link Protection (Coming Soon)</li>
+                    <li class="categoryElement disabled">Action Logger (Coming Soon)</li>
                 </ul>
                 <ul class="category">
                     <p class="categoryHeader">Music <i id="categoryDropdown" class="fas fa-chevron-down"></i></p>
-                    <li class="categoryElement">Server Queue</li>
+                    <li class="categoryElement disabled">Server Queue (Coming Soon)</li>
                 </ul>
             </div>
+
         </div>
         <div class="content">
+            <div class="configuration">
+                <div class="dashComp">
+                    <h3 id="dashCompTitle">Server Prefix</h3>
+                    <p>Change Athena's current prefix on your server.</p>
+                    <hr>
+                    <div class="dashCompInputPart">
+                        <p>Set prefix</p>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control">
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary" type="button">Update</button>
+                            </div>
+                          </div>
+                    </div>
+                </div>
 
+                <div class="dashComp">
+                    <h3 id="dashCompTitle">Server Language</h3>
+                    <p>Change Athena's current language on your server.</p>
+                    <hr>
+                    <div class="dashCompInputPart">
+                        <p>Set language</p>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control">
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary" type="button">Update</button>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
