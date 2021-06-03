@@ -22,77 +22,32 @@
             <div class="bounce4"></div>
         </div>
     </div>
-    <div class="container">
-        <div class="profile">
-            <img src="/assets/images/defaultServer.png" alt="Default">
-            <p id="user">Tuna</p>
-            <p id="discriminator">#1565  <i id="profileButton" class="fas fa-chevron-down"></i></p>
-        </div>
-        <ul id="profileDropdown">
-            <a href="/dashboard"><li>Servers</li></a>
-            <a href="/report"><li>Report a User</li></a>
-            <a href="/oauth/logout"><li>Logout</li></a>
-          </ul>
-        <div class="controlBar">
-            <div class="serverPart">
+
+    <div class="general">
+        <div class="control">
+            <div class="server">
                 <img src="/assets/images/defaultServer.png" alt="Server">
-                <h4>Server Name</h4>
-                <div class="serverStats">
-                    <p>Member Count: <code>100</code></p>
-                    <p>Channel Count: <code>15</code></p>
+                <h3>Server Name</h3>
+                <hr>
+                <div class="stats">
+                    <p><span style="font-weight: bold;">130</span> Members</p>
+                    <p><span style="font-weight: bold;">43</span> Channels</p>
                 </div>
             </div>
-            <hr id="serverLine">
-            <div class="categoryPart">
+            <div class="categories">
                 <ul class="category">
-                    <p class="categoryHeader">Configuration <i id="categoryDropdown" class="fas fa-chevron-down"></i></p>
-                    <li class="categoryElement selected">General</li>
+                    <p class="categoryName">Configuration<i id="categoryButon" class="fas fa-chevron-down"></i></p>
+                    <li class="categoryElement active">General</li>
                 </ul>
                 <ul class="category">
-                    <p class="categoryHeader">Moderation <i id="categoryDropdown" class="fas fa-chevron-down"></i></p>
-                    <li class="categoryElement disabled">Auto Role (Coming Soon)</li>
-                    <li class="categoryElement disabled">Link Protection (Coming Soon)</li>
-                    <li class="categoryElement disabled">Action Logger (Coming Soon)</li>
-                </ul>
-                <ul class="category">
-                    <p class="categoryHeader">Music <i id="categoryDropdown" class="fas fa-chevron-down"></i></p>
-                    <li class="categoryElement disabled">Server Queue (Coming Soon)</li>
+                    <p class="categoryName">Moderation<i id="categoryButon" class="fas fa-chevron-down"></i></p>
+                    <li class="categoryElement">Auto Role</li>
+                    <li class="categoryElement">Link Protection</li>
                 </ul>
             </div>
-
         </div>
         <div class="content">
-            <div class="configuration">
-                <div class="dashComp">
-                    <h3 id="dashCompTitle">Server Prefix</h3>
-                    <p>Change Athena's current prefix on your server.</p>
-                    <hr>
-                    <div class="dashCompInputPart">
-                        <p>Set prefix</p>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control">
-                            <div class="input-group-append">
-                              <button class="btn btn-outline-secondary" type="button">Update</button>
-                            </div>
-                          </div>
-                    </div>
-                </div>
 
-                <div class="dashComp">
-                    <h3 id="dashCompTitle">Server Language</h3>
-                    <p>Change Athena's current language on your server.</p>
-                    <hr>
-                    <div class="dashCompInputPart">
-                        <p>Set language</p>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control">
-                            <div class="input-group-append">
-                              <button class="btn btn-outline-secondary" type="button">Update</button>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </body>
