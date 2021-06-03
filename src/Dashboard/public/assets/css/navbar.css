@@ -92,6 +92,7 @@
     float: left;
     position: relative;
     top: 10px;
+    font-weight: bold;
 }
 
 #profileDropdown {
