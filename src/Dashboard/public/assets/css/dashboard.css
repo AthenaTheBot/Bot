@@ -213,6 +213,7 @@ body {
     left: 15px !important;
     top: 20px !important;
     cursor: pointer;
+    display: none;
     font-size: 21px;
     width: 30px;
     height: 30px;
@@ -330,7 +331,7 @@ body {
 }
 
 .configuration {
-    margin: 20px 35px;
+    margin: 40px 35px;
     padding: 30px;
     background-color: #1b1b1b;
     border-radius: 10px;
@@ -347,6 +348,30 @@ body {
     font-size: 14px;
     color: #919191;
 }
+
+.input-group input {
+    background-color: #2b2b2b !important;
+    color: #a8a8a8 !important;
+    box-shadow: none !important;
+    border: 1px solid #7289DA !important;
+    border-radius: 10px;
+}
+
+.input-group-append button {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    background-color: #7289DA;
+    color: white;
+    box-shadow: none !important;
+}
+
+.input-group-append button:hover {
+    background-color: #6374b3;
+
+}
+
 @media(max-width: 1005px) {
     .icon {
         display: block;
@@ -370,4 +395,16 @@ body {
         animation-duration: 850ms;
         animation-fill-mode: forwards;
     }    
+}
+
+@media(max-width: 680px) {
+    .configurations {
+        margin: 90px 0;
+        width: 100%;
+    }
+
+    .configuration {
+        margin: 35px auto;
+        width: fit-content;
+    }
 }
