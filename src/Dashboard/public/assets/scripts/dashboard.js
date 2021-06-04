@@ -23,10 +23,15 @@ $(document).ready(() => {
         if (controlDiv.className == 'control') {
 
             controlDiv.className += ' collapsed';
+
+            $('#expand').css('display', 'block');
+            $('#collapse').css('display', 'none');
         }
         else {
 
             controlDiv.className = 'control';
+            $('#expand').css('display', 'none');
+            $('#collapse').css('display', 'block');
         }
 
     })

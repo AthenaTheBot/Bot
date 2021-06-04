@@ -112,8 +112,13 @@ body {
     overflow: hidden;
     height: 100vh;
     background-color: #1a1a1a;
-    -webkit-box-shadow: 0px 6px 10px -7px #000000; 
-    box-shadow: 0px 6px 10px -7px #000000;
+    -webkit-box-shadow: 0px 6px 20px -7px #000000; 
+    box-shadow: 0px 6px 20px -7px #000000;
+    animation-name: controlbarExpand;
+    animation-duration: 850ms;
+    animation-fill-mode: forwards;
+    position: relative;
+    z-index: 10000  ;
 }
 
 .content {
@@ -205,13 +210,13 @@ body {
 
 .icon {
     position: relative;
-    left: 15px;
-    top: 20px;
+    left: 15px !important;
+    top: 20px !important;
     cursor: pointer;
     font-size: 21px;
-    display: none;
     width: fit-content;
     height: fit-content;
+    z-index: 10000000;
 }
 
 .topbar {
@@ -360,6 +365,9 @@ body {
     }
 
     .collapsed {
-        width: 0px ;
+        width: 0px;
+        animation-name: controlbarCollapse;
+        animation-duration: 850ms;
+        animation-fill-mode: forwards;
     }    
 }
