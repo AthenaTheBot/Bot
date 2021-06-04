@@ -52,7 +52,7 @@ body {
     background-color: #292929;
     height: 100vh;
     width: 100vw;
-    z-index: 10000;
+    z-index: 9999000000;
 }
 
 .spinner {
@@ -142,7 +142,7 @@ body {
 
 .server h3 {
     padding: 15px;
-    margin: 15px;
+    margin: 15px 0;
     font-weight: normal;
     text-shadow: 2px 2px #7289DA;
 }
@@ -355,7 +355,8 @@ body {
     box-shadow: none !important;
     border: 1px solid #7289DA !important;
     border-radius: 10px;
-}
+    width: 40% !important;
+} 
 
 .input-group-append button {
     border-top-right-radius: 10px;
@@ -370,6 +371,49 @@ body {
 .input-group-append button:hover {
     background-color: #6374b3;
 
+}
+
+.input-group select {
+    width: 40%;
+    background-color: #2b2b2b !important;
+    color: #a8a8a8 !important;
+    box-shadow: none !important;
+    border: 1px solid #7289DA !important;
+    border-radius: 10px;
+    outline: none !important;
+}
+
+.disabled {
+    color: #5f5f5f;
+    cursor: default;
+    user-select: none;
+}
+
+.warnings {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    width: 35vw;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.warn {
+    background-color: #1b1b1b;
+    border: 1px solid #7289DA;
+    border-radius: 10px;
+    width: fit-content;
+    height: fit-content;
+    padding: 15px;
+    margin: 15px;
+    -webkit-box-shadow: 0px 6px 10px -7px #000000; 
+    box-shadow: 0px 6px 10px -7px #000000;
+}
+
+.warn p {
+    margin: 0;
 }
 
 @media(max-width: 1005px) {
