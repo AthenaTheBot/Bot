@@ -15,5 +15,21 @@ $(document).ready(() => {
             $('#profileButton').css('transform', 'rotate(180deg)');
             menuExpanded = true;
         }
-    }) 
+    });
+
+    $('.icon').click(() => {
+        const controlDiv = document.getElementById('control');
+
+        if (controlDiv.className == 'control') {
+
+            controlDiv.className += ' collapsed';
+        }
+        else {
+
+            controlDiv.className = 'control';
+        }
+
+    })
+
+    $('.loader').remove();
 })

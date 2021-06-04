@@ -4,6 +4,9 @@ body {
     background-color: #292929 !important;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    box-sizing: border-box;
 }
 
 ::-webkit-scrollbar {
@@ -25,6 +28,77 @@ body {
     background: #5c6fb1 !important;
 }
 
+@keyframes controlbarCollapse {
+    0% { 
+        width: 360px 
+    }
+    100% { 
+        width: 0px;
+    }
+}
+
+@keyframes controlbarExpand {
+    0% { 
+        width: 0px;
+    }
+    100% { 
+        width: 360px;
+        overflow-y: scroll;
+    }
+}
+
+.loader {
+    position: fixed;
+    background-color: #292929;
+    height: 100vh;
+    width: 100vw;
+    z-index: 10000;
+}
+
+.spinner {
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    position: relative;
+    top: 300px;
+}
+  
+.spinner > div {
+  width: 18px;
+  height: 18px;
+  background-color: #7289DA;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+
 .general {
     height: 100vh !important;
     width: 100vw !important;
@@ -35,8 +109,7 @@ body {
 
 .control {
     width: 360px;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    overflow: hidden;
     height: 100vh;
     background-color: #1a1a1a;
     -webkit-box-shadow: 0px 6px 10px -7px #000000; 
@@ -47,7 +120,6 @@ body {
     width: calc(100vw - 360px);
     height: 100vh;
     overflow-x: hidden;
-    overflow-y: scroll;
 }
 
 .server {
@@ -131,12 +203,23 @@ body {
     font-weight: bold;
 }
 
+.icon {
+    position: relative;
+    left: 15px;
+    top: 20px;
+    cursor: pointer;
+    font-size: 21px;
+    display: none;
+    width: fit-content;
+    height: fit-content;
+}
+
 .topbar {
     position: relative;
     top: 0px;
     right: 0px;
     width: 100%;
-    height: 80px;
+    height: 70px;
     overflow: hidden;
 }
 
@@ -146,7 +229,7 @@ body {
     display: flex;
     position: absolute;
     right: 50px;
-    top: 15px;
+    top: 20px;
     cursor: pointer;
     user-select: none;
 }
@@ -232,6 +315,51 @@ body {
 }
 
 .main {
-    height: calc(100vh - 80px);
+    height: calc(100vh - 70px);
     width: 100%;
+    overflow-x: hidden;
+}
+
+.configurations {
+    margin: 70px 40px;
+}
+
+.configuration {
+    margin: 20px 35px;
+    padding: 30px;
+    background-color: #1b1b1b;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 6px 10px -7px #000000; 
+    box-shadow: 0px 6px 10px -7px #000000;
+}
+
+.configuration h3 {
+    text-shadow: 2px 2px #7289DA;
+}
+
+.configContent {
+    font-weight: bold;
+    font-size: 14px;
+    color: #919191;
+}
+@media(max-width: 1005px) {
+    .icon {
+        display: block;
+    }
+
+    .topbar {
+        width: 100vw;
+    }
+
+    .control {
+        position: fixed;
+    }
+
+    .content {
+        width: 100vw;
+    }
+
+    .collapsed {
+        width: 0px ;
+    }    
 }
