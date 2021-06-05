@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Find all commands of Athena and get detailed information about specific command of Athena.">
     <script src="/assets/scripts/jquery.min.js"></script>
-    <script src="/assets/scripts/cookie.js"></script>
     <script src="/assets/scripts/commands.js"></script>
     <link rel="stylesheet" href="/assets/css/bootstrap-min.css">
     <link rel="stylesheet" href="/assets/css/commands.css">
@@ -19,11 +18,6 @@
     <noscript>
         <p><span>Warning: </span>You have to enable javascript to see the command descriptions since we are showing you command descriptions by javascript.</p>
     </noscript>
-
-    <div class="cookieWarning">
-        <p id="cookieWarningText">🍪 We use cookies to ensure that we give the full functionality of our site. <a style="color: #7289DA; text-decoration: none;" href="/privacy">Learn more</a></p>
-        <button id= "cookieWarningButton" type="button" class="btn-close btn-close-white" aria-label="Close"></button>
-    </div>
 
     <div class="header">
         <h2>Commands</h2>
@@ -38,8 +32,9 @@
     </div>
 
     <div class="container">
-        <div class="categories"></div>
-
+        <div class="categories">
+            <h5 class="category">Loading</h5>
+        </div>
         <div class="commands"></div>
     </div>
 

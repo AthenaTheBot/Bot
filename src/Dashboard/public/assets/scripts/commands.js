@@ -2,6 +2,7 @@ $(document).ready(async () => {
 
     const commandData = await fetch('/api/commands').then(res => res.json()).catch(err => {});
 
+    $('.categories').children().remove();
     $('.categories').append(`<h5 id="All" class="category">All</h5>`);
     $('#All').click(() => { loadCategory('All') });
 
