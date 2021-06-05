@@ -40,12 +40,12 @@
                 </ul>
                 <ul class="category">
                     <p class="categoryName">Moderation<i id="categoryButon" class="fas fa-chevron-down"></i></p>
-                    <li class="categoryElement disabled"><i class="fas fa-terminal"></i> Auto Role (Coming Soon)</li>
-                    <li class="categoryElement disabled"><i class="fas fa-terminal"></i> Link Protection (Coming Soon)</li>
+                    <li class="categoryElement disabled"><i class="fas fa-terminal"></i> Auto Role <span class="badge rounded-pill soonBadge">SOON</span></li>
+                    <li class="categoryElement disabled"><i class="fas fa-terminal"></i> Link Protection <span class="badge rounded-pill soonBadge">SOON</span></li>
                 </ul>
                 <ul class="category">
                     <p class="categoryName">Music<i id="categoryButon" class="fas fa-chevron-down"></i></p>
-                    <li class="categoryElement disabled"><i class="fas fa-terminal"></i> Control Player (Coming Soon)</li>
+                    <li class="categoryElement disabled"><i class="fas fa-terminal"></i> Player <span class="badge rounded-pill soonBadge">SOON</span></li>
                 </ul>
             </div>
         </div>
@@ -72,11 +72,11 @@
                         <p>Change Athena's prefix on your server.</p>
                         <hr>
                         <div class="configContent">
-                            <p>Set Config</p>
+                            <p>Set Prefix</p>
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Write your custom prefix">
+                                <input id="prefixInput" type="text" class="form-control" placeholder="Write your custom prefix">
                                 <div class="input-group-append">
-                                  <button class="btn btn-outline-secondary" type="button">Update</button>
+                                  <button id="prefixButton" class="btn btn-outline-secondary" type="button">Update</button>
                                 </div>
                             </div>
                         </div>
@@ -89,13 +89,12 @@
                         <div class="configContent">
                             <p>Set Language</p>
                             <div class="input-group">
-                                <select class="custom-select" id="inputGroupSelect04">
-                                  <option selected>Default</option>
+                                <select id="languageSelect" class="custom-select" id="inputGroupSelect04">
                                   <option value="en-US">English</option>
                                   <option value="tr-TR">Türkçe</option>
                                 </select>
                                 <div class="input-group-append">
-                                  <button class="btn btn-outline-secondary" type="button">Update</button>
+                                  <button id="languageButton" class="btn btn-outline-secondary" type="button">Update</button>
                                 </div>
                             </div>
                         </div>
@@ -103,11 +102,7 @@
                 </div>
             </div>
         </div>
-        <div class="warnings">
-            <div class="warn">
-                <p>Hey! This is a warning!</p>
-            </div>
-        </div>
+        <div class="warnings"></div>
     </div>
 </body>
 </html>

@@ -34,20 +34,73 @@ $(document).ready(async () => {
             $('#collapse').css('display', 'block');
         }
 
+    });
+
+    const currentGuildID = window.location.pathname.split('/dashboard/').pop();
+
+    $('#prefixButton').click(async () => {
+
+        const prefix = $('#prefixInput').val();
+
+        if (!prefix) warn('Invalid prefix was specified!');
+
+        const serverResponse = await fetch(`/api/guilds/${currentGuildID}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                operation: 'setPrefix',
+                value: prefix
+            })
+        })
+        .then(res => res.json()).catch(err => {})
+
+        if (serverResponse && serverResponse.status == 200) return warn('Successfully set server prefix.');
+        else {
+
+            if (serverResponse && serverResponse.status == 401) return warn('The prefix that you are trying to set is the same as the current one.');
+            else return warn('An unexpected error occured while setting the server prefix.');
+        }
     })
 
-    const currentServer = window.location.pathname.split('/dashboard/').pop();
+    $('#languageButton').click(async () => {
 
-    const user = await fetch('/api/users/@me').then(res => res.json()).catch(err => {});
-    const userGuilds = await fetch('/api/users/@me/guilds').then(res => res.json()).catch(err => {});
+        const language = $('#languageSelect').val();
 
-    if (!user || !userGuilds || user.status != 200 || userGuilds.status != 200) return handleError();
+        const serverResponse = await fetch(`/api/guilds/${currentGuildID}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                operation: 'setLanguage',
+                value: language
+            })
+        })
+        .then(res => res.json()).catch(err => {})
 
-    const currentServerData = userGuilds.data.find(guild => guild.id == currentServer);
+        if (serverResponse && serverResponse.status == 200) return warn('Successfully set server language.');
+        else {
 
-    if (!currentServerData) return window.location.replace('/dashboard');
+            if (serverResponse && serverResponse.status == 401) return warn('The language that you are trying to set is the same as the current one.');
+            else return warn('An unexpected error occured while setting the server language.');
+        }
+    })
 
-    const currentServerDB = fetch(`/api/guilds/${currentServer}`, {
+    const user = await fetch('/api/users/@me').then(res => res.json()).then(res => {
+        if (res.status != 200) return null;
+        else return res.data;
+    }).catch(err => { return null; });
+
+    const userGuilds = await fetch('/api/users/@me/guilds').then(res => res.json()).then(res => {
+        if (res.status != 200) return null;
+        else return res.data;
+    }).catch(err => { return null; });
+
+    if (!user || !userGuilds) return handleError();
+
+    const currentGuild = userGuilds.find(guild => guild.id == currentGuildID);
+
+    if (!currentGuild) return window.location.replace('/dashboard');
+
+    const currentGuildDB = await fetch(`/api/guilds/${currentGuildID}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -56,49 +109,100 @@ $(document).ready(async () => {
             operation: 'getGuild'
         })
     })
-    .then(res => res.json()).catch(err => {});
+    .then(res => res.json()).then(res => {
+        if (res.status != 200) return null;
+        else return res.data;
+    }).catch(err => { return null; });
 
-    if (!currentServerDB) return handleError();
+    if (!currentGuildDB) return handleError();
 
-    let displayServerName;
-    if (currentServerData.name.length > 15) displayServerName = currentServerData.name.slice(0, 15) + '..';
-    else displayServerName = currentServerData.name;
+    let guildDisplayName;
+    if (currentGuild.name.length > 15) guildDisplayName = currentGuild.name.slice(0, 15) + '..';
+    else guildDisplayName = currentGuild.name;
 
-    let displayServerIcon;
-    if (currentServerData.icon) displayServerIcon = `https://cdn.discordapp.com/icons/${currentServerData.id}/${currentServerData.icon}.png`;
-    else displayServerIcon = '/assets/images/defaultServer.png';
+    let guildDisplayIcon;
+    if (currentGuild.icon) guildDisplayIcon = `https://cdn.discordapp.com/icons/${currentGuild.id}/${currentGuild.icon}.png`;
+    else guildDisplayIcon = '/assets/images/defaultServer.png';
 
     $('.server').children().remove();
     $('.server').append(`
-        <img src="${displayServerIcon}" alt="${currentServerData.name}">
-        <h3>${displayServerName}</h3>
+        <img src="${guildDisplayIcon}" alt="${currentGuild.name}">
+        <h3>${guildDisplayName}</h3>
         <hr>
         <div class="stats">
-            <p><span style="font-weight: bold;">${currentServerData.memberCount}</span> Members</p>
-            <p><span style="font-weight: bold;">${currentServerData.channelCount}</span> Channels</p>
+            <p><span style="font-weight: bold;">${currentGuild.memberCount}</span> Members</p>
+            <p><span style="font-weight: bold;">${currentGuild.channelCount}</span> Channels</p>
         </div>
     `);
 
-    let displayUserName;
-    if (user.data.username.length > 10) displayUserName = user.data.username.slice(0, 10) + '..';
-    else displayUserName = user.data.username;
+    let userDisplayName;
+    if (user.username.length > 10) userDisplayName = user.username.slice(0, 10) + '..';
+    else userDisplayName = user.username;
  
-    let displayAvatar;
-    if (user.data.avatar) displayAvatar = `https://cdn.discordapp.com/avatars/${user.data.id}/${user.data.avatar}.png`;
-    else displayAvatar = '/assets/images/defaultServer.png';
+    let userDisplayAvatar;
+    if (user.avatar) userDisplayAvatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+    else userDisplayAvatar = '/assets/images/defaultServer.png';
 
     $('.profile').children().remove();
     $('.profile').append(`
-        <img src="${displayAvatar}" alt="User">
-        <p id="username">${displayUserName}</p>
-        <p id="discriminator">#${user.data.discriminator} <i id="profileButton" class="fas fa-chevron-down"></i></p>
-    `)
+        <img src="${userDisplayAvatar}" alt="User">
+        <p id="username">${userDisplayName}</p>
+        <p id="discriminator">#${user.discriminator} <i id="profileButton" class="fas fa-chevron-down"></i></p>
+    `);
+
+    $('#prefixInput').val(currentGuildDB.preferences.prefix);
+    $("#languageSelect").val(currentGuildDB.preferences.language);
 
     $('.loader').remove();
 })
 
 const handleError = () => {
 
+    $('.general').children().remove();
+    $('.general').append(`
+        <div class="error">
+            <h3>Ooops!</h3>
+            <p>It looks like an unexpected error occured while we are loading your dashboard, please try again later. <br> Btw, pls report this issue occurs again : - )</p>
+            <a href="/dashboard">Return to menu</a>
+        </div>
+    `)
     $('.loader').remove();
-    $('.general').append(`Error`);
+
+    return;
+}
+
+let warnCount = 0;
+let warnRemoved = 0;
+let lastWarn;
+const warn = (msg) => {
+
+    if (lastWarn == msg) return;
+
+    $('.warnings').append(`
+    <div class="warn" id="warn_${warnCount}">${msg}</div>
+    `);
+
+    $(`#warn_${warnCount}`).hide().fadeIn();
+
+    warnCount = warnCount + 1;
+    lastWarn = msg;
+
+    setTimeout(() => {
+        
+        $(`#warn_${warnRemoved}`).fadeOut();
+
+        setTimeout(() => {
+            $(`#warn_${warnRemoved}`).remove();
+        }, 1000);
+
+        warnRemoved = warnRemoved + 1;
+
+        if (warnRemoved == warnCount) {
+            warnCount = 0;
+            warnRemoved = 0;
+        }
+
+        lastWarn = null;
+
+    }, 5000);
 }

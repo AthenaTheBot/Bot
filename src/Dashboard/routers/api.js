@@ -237,7 +237,7 @@ router.post('/guilds/:id', async (req, res) => {
 
         case 'setPrefix':
 
-            if (req.body.value == guildData.data.preferences.prefix) return res.status(401).json({ status: 401, message: 'Bad Request', code: 'same_prefix' }).end();
+            if (req.body.value == guildData.data.preferences.prefix) return res.status(401).json({ status: 401, message: 'Bad Request' }).end();
 
             try {
 
@@ -258,7 +258,7 @@ router.post('/guilds/:id', async (req, res) => {
 
             if (!validLanguages.includes(req.body.value) )return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
 
-            if (req.body.value == guildData.data.preferences.validLanguages) return res.status(400).json({ status: 400, message: 'Bad Request', code: 'same_language' }).end();
+            if (req.body.value == guildData.data.preferences.language) return res.status(401).json({ status: 401, message: 'Bad Request' }).end();
 
             try {
 

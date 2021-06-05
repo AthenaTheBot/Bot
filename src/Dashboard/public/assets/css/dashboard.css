@@ -349,23 +349,23 @@ body {
     color: #919191;
 }
 
+.input-group {
+    width: 60%;
+    max-width: 700px;
+}
+
 .input-group input {
     background-color: #2b2b2b !important;
     color: #a8a8a8 !important;
     box-shadow: none !important;
     border: 1px solid #7289DA !important;
-    border-radius: 10px;
-    width: 40% !important;
 } 
 
 .input-group-append button {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
     background-color: #7289DA;
     color: white;
     box-shadow: none !important;
+    width: 80px;
 }
 
 .input-group-append button:hover {
@@ -374,12 +374,12 @@ body {
 }
 
 .input-group select {
-    width: 40%;
+    width: calc(100% - 80px);
+    padding-left: 5px;
     background-color: #2b2b2b !important;
     color: #a8a8a8 !important;
     box-shadow: none !important;
     border: 1px solid #7289DA !important;
-    border-radius: 10px;
     outline: none !important;
 }
 
@@ -391,29 +391,61 @@ body {
 
 .warnings {
     position: fixed;
-    bottom: 0px;
-    right: 0px;
-    width: 35vw;
-    height: 10vh;
+    bottom: 0;
+    right: 0;
+    width: 40vw;
+    height: 12vh;
     display: flex;
-    justify-content: center;
-    overflow: hidden;
 }
 
 .warn {
     background-color: #1b1b1b;
-    border: 1px solid #7289DA;
-    border-radius: 10px;
-    width: fit-content;
-    height: fit-content;
-    padding: 15px;
     margin: 15px;
+    padding: 10px;
+    color: #adacac;
     -webkit-box-shadow: 0px 6px 10px -7px #000000; 
     box-shadow: 0px 6px 10px -7px #000000;
+    min-width: 100px;
+    min-height: 30px;
+    height: fit-content;
+    height: -moz-fit-content;
+    width: fit-content;
+    width: -moz-fit-content;
+    border-radius: 10px;
+    border: 1px solid #7289DA;
+    flex-wrap: wrap !important;
+    overflow: hidden;
 }
 
-.warn p {
-    margin: 0;
+.error {
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    padding: 15px;
+    background-color: #1b1b1b;
+    border-radius: 8px;
+    border: 1px solid #7289DA;
+    -webkit-box-shadow: 0px 6px 10px -7px #000000; 
+    box-shadow: 0px 6px 10px -7px #000000;
+    color: #a3a2a2;
+}
+
+.error h3 {
+    color: white;
+}
+
+.error a {
+    text-decoration: none;
+    color: #7289DA
+}
+
+.error a:hover {
+    text-decoration: underline;
+}
+
+.soonBadge {
+    background-color: #585858; 
+    margin-left: 2px;
 }
 
 @media(max-width: 1005px) {
@@ -449,6 +481,5 @@ body {
 
     .configuration {
         margin: 35px auto;
-        width: fit-content;
     }
 }
