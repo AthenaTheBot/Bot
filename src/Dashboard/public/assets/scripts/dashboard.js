@@ -36,6 +36,18 @@ $(document).ready(async () => {
 
     });
 
+    $('.categoryName').click(function() {
+        const display = $(this).siblings().css('display');
+        if (display == 'list-item') {
+            $(this).siblings().css('display', 'none');
+            $(this).children().css('transform', 'rotate(0deg)');
+        }
+        else {
+            $(this).siblings().css('display', 'list-item');
+            $(this).children().css('transform', 'rotate(180deg)');
+        }
+    })
+
     const currentGuildID = window.location.pathname.split('/dashboard/').pop();
 
     $('#prefixButton').click(async () => {
@@ -165,7 +177,8 @@ const handleError = () => {
             <p>It looks like an unexpected error occured while we are loading your dashboard, please try again later. <br> Btw, pls report this issue occurs again : - )</p>
             <a href="/dashboard">Return to menu</a>
         </div>
-    `)
+    `);
+
     $('.loader').remove();
 
     return;
@@ -174,9 +187,12 @@ const handleError = () => {
 let warnCount = 0;
 let warnRemoved = 0;
 let lastWarn;
-const warn = (msg) => {
+const warn = async (msg) => {
 
     if (lastWarn == msg) return;
+    else if ($('.warn').length >= 2) {
+        await wait(6);
+    }
 
     $('.warnings').append(`
     <div class="warn" id="warn_${warnCount}">${msg}</div>
@@ -205,4 +221,12 @@ const warn = (msg) => {
         lastWarn = null;
 
     }, 5000);
+}
+
+const wait = (second) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve();
+        }, second * 1000)
+    })
 }
