@@ -254,8 +254,6 @@ const wait = (second) => {
 
 const musicInit = async () => {
   
-    return $('.loader').remove();
-
     const currentGuildID = window.location.pathname.split('/dashboard/').pop();
 
     $('.general').append(`    
@@ -286,7 +284,7 @@ const musicInit = async () => {
             return;
         }
 
-        $('#songTitle').text(guildMusicState.queue[0].title + 'asdsadsadsadasdaddaddaaddsadada ');
+        $('#songTitle').text(guildMusicState.queue[0].title);
         $('#songArtist').attr('href', guildMusicState.queue[0].url)
 
         $('#songArtist').text(guildMusicState.queue[0].artist.name);
@@ -296,13 +294,14 @@ const musicInit = async () => {
 
         guildMusicState.queue.forEach((song) => {
             $('.queue').append(`
-                <div class="song">
-                    <img src="${song.thumbnail || '#'}" alt="Song">
-                    <a class="queueSongTitle" href="${song.url}">${song.title}</a>
-                    <br>
-                    <a class="queueSongArtist" href="${song.artist.url || '#'}">${song.artist.name}</a>
+                <div class="queueSong">
+                    <img src="${song.thumbnail || '/assets/images/defaultServer.png'}" alt="${song.title}">
+                    <div class="textPart">
+                        <a id="queueSongName" href="${song.url}">${song.title}</a>
+                        <a id="queueSongArtist" href="${song.artist.url || '#'}">${song.artist.name}</a>
+                    </div>
                 </div>
-            `)
+            `);
         })
 
         $('.loader').remove();

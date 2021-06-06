@@ -517,6 +517,11 @@ body {
 
 .controller {
     margin: 20px;
+    user-select: none;
+}
+
+#forwardBtn {
+    transform: rotate(180deg);
 }
 
 .controlBtn {
@@ -536,6 +541,10 @@ body {
 
 .queue {
     text-align: center;
+}
+
+.queue h3 {
+    text-shadow: 2px 2px #7289DA;
 }
 
 .queueSong {
