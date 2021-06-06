@@ -36,16 +36,16 @@
             <div class="categories">
                 <ul class="category">
                     <p class="categoryName">Configuration<i id="categoryButon" class="fas fa-chevron-down"></i></p>
-                    <li class="categoryElement active"><i class="fas fa-terminal"></i> General</li>
+                    <li class="categoryElement btnActive" data-class="configurations"><i class="fas fa-terminal"></i> General</li>
                 </ul>
                 <ul class="category">
                     <p class="categoryName">Moderation<i id="categoryButon" class="fas fa-chevron-down"></i></p>
-                    <li class="categoryElement disabled"><i class="fas fa-terminal"></i> Auto Role <span class="badge rounded-pill soonBadge">SOON</span></li>
-                    <li class="categoryElement disabled"><i class="fas fa-terminal"></i> Link Protection <span class="badge rounded-pill soonBadge">SOON</span></li>
+                    <li class="categoryElement btnDisabled"><i class="fas fa-terminal"></i> Auto Role <span class="badge rounded-pill soonBadge">SOON</span></li>
+                    <li class="categoryElement btnDisabled"><i class="fas fa-terminal"></i> Link Protection <span class="badge rounded-pill soonBadge">SOON</span></li>
                 </ul>
                 <ul class="category">
                     <p class="categoryName">Music<i id="categoryButon" class="fas fa-chevron-down"></i></p>
-                    <li class="categoryElement disabled"><i class="fas fa-terminal"></i> Player <span class="badge rounded-pill soonBadge">SOON</span></li>
+                    <li class="categoryElement" data-class="music"><i class="fas fa-terminal"></i> Player</li>
                 </ul>
             </div>
         </div>
@@ -66,7 +66,7 @@
                   </ul>
             </div>
             <div class="main">
-                <div class="configurations">
+                <div class="configurations active">
                     <div class="configuration">
                         <h3>Sever Prefix</h3>
                         <p>Change Athena's prefix on your server.</p>
@@ -97,6 +97,30 @@
                                   <button id="languageButton" class="btn btn-outline-secondary" type="button">Update</button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="music">
+                    <div class="player">
+                        <img src="/assets/images/defaultServer.png" alt="Music">
+                        <br>
+                        <a id="songTitle" href="#">Angel Dust</a> 
+                        <br>
+                        <a id="songArtist" href="#">Ethan Ross</a>
+                        <div class="controller">
+                            <i id="backwards" class="fas fa-step-backward controlBtn"></i>
+                            <i id="player" class="fas fa-play controlBtn"></i>
+                            <i id="towards" class="fas fa-step-backward controlBtn"></i>
+                        </div>
+                    </div>
+                    <div class="queue">
+                        <h2>Queue</h2>
+                        <div class="song">
+                            <img src="/assets/images/defaultServer.png" alt="Music">
+                            <a class="queueSongTitle" href="#">Song Name</a>
+                            <br>
+                            <a class="queueSongArtist" href="#">Song Artist</a>
                         </div>
                     </div>
                 </div>

@@ -48,6 +48,14 @@ $(document).ready(async () => {
         }
     })
 
+    $('.categoryElement').click(function() {
+        const className = $(this).attr('data-class');
+        $('.main').children().removeClass('active');
+        $('.category').children().removeClass('btnActive');
+        $(this).addClass('btnActive');
+        $(`.${className}`).addClass('active');
+    })
+
     const currentGuildID = window.location.pathname.split('/dashboard/').pop();
 
     $('#prefixButton').click(async () => {
