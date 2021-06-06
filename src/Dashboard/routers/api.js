@@ -232,7 +232,12 @@ router.post('/guilds/:id', async (req, res) => {
 
     switch(req.body.operation) {
         case 'getGuild':
-            res.status(200).json({ status: 200, data: guildData.data });
+            res.status(200).json({ status: 200, data: guildData.data }).end();
+            break;
+
+        case 'getMusicState':
+            let data = await Athena.guildMusicStates.get(req.params.id) || {};
+            res.status(200).json({ status: 200, a: true, data: { playing: data.playing || null, queue: data.queue || [], loop: data.loop || false } }).end();
             break;
 
         case 'setPrefix':
@@ -274,7 +279,7 @@ router.post('/guilds/:id', async (req, res) => {
 
             break;
 
-        default:
+            default:
             res.status(400).json({ status: 400, message: 'Bad Request' }).end();
             break;
     }

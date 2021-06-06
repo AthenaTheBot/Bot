@@ -65,7 +65,12 @@ const run = async (client, message, args, locale, db) => {
                 title: youtubeResult[0].title,
                 description: youtubeResult[0].description,
                 url: youtubeResult[0].url,
-                duration: youtubeResult[0].duration    
+                duration: youtubeResult[0].duration,
+                thumbnail: youtubeResult[0].bestThumbnail.url,
+                artist: {
+                    name: youtubeResult[0].author.name,
+                    url: youtubeResult[0].author.url
+                }
             });
     
             return message.channel.send(defaultEmbed.setDescription(locale.SONG_ADDED.replace('$song', `[${youtubeResult[0].title}](${youtubeResult[0].url})`)));
@@ -93,7 +98,12 @@ const run = async (client, message, args, locale, db) => {
                 title: videoData.title,
                 description: "Cannot found description.",
                 url: songRequest,
-                duration: null
+                duration: null,
+                thumbnail: null,
+                artist: {
+                    name: 'Unknown',
+                    url: null
+                }
             });
 
             if (guildMusicState.queue.length > 1) message.channel.send(defaultEmbed.setDescription(locale.SONG_ADDED.replace('$song', `[${videoData.title}](${songRequest.trim()})`)));
@@ -103,12 +113,17 @@ const run = async (client, message, args, locale, db) => {
             const youtubeResult = await (await ytsr(songRequest, { pages: 1, limit: 1})).items.filter(x => x.type === 'video');
 
             if (!youtubeResult[0]) return message.channel.send(errorEmbed.setColor('RED').setDescription(`${client.branding.emojis.error} ${locale.CANNOT_FIND_SONG}`));
-    
+            
             guildMusicState.queue.push({
                 title: youtubeResult[0].title,
                 description: youtubeResult[0].description,
                 url: youtubeResult[0].url,
-                duration: youtubeResult[0].duration    
+                duration: youtubeResult[0].duration,
+                thumbnail: youtubeResult[0].bestThumbnail.url,
+                artist: {
+                    name: youtubeResult[0].author.name,
+                    url: youtubeResult[0].author.url
+                }
             });
 
             if (guildMusicState.queue.length > 1) message.channel.send(defaultEmbed.setDescription(locale.SONG_ADDED.replace('$song', `[${youtubeResult[0].title}](${youtubeResult[0].url})`)));

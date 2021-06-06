@@ -461,56 +461,71 @@ body {
 }
 
 .player {
-    text-align: center;
-    margin: 150px auto;
-    padding: 15px;
+    width: 75%;
+    height: fit-content;
+    margin: 85px auto;
     background-color: #1a1a1a;
+    overflow: hidden;
+    padding: 15px;
     border-radius: 30px;
-    width: 40%;
-    min-width: 250px;
     -webkit-box-shadow: 0px 6px 10px -7px #000000; 
     box-shadow: 0px 6px 10px -7px #000000;
 }
 
-.player img {
-    height: 180px;
-    width: 180px;
+.song {
+    text-align: center;
+    margin: 10px;
+}
+
+.song img {
     border-radius: 30px;
     -webkit-box-shadow: 0px 6px 10px -7px #000000; 
     box-shadow: 0px 6px 10px -7px #000000;
+    height: 210px;
+    width: 210px;
+}
+
+.songInfo {
     margin: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
-.player a {
+.songInfo a {
     text-decoration: none;
-    color: white;
+}
+
+.songInfo a:hover {
+    animation-name: linkHover;
+    animation-duration: 300ms;
+    animation-fill-mode: forwards;
+}
+
+@keyframes linkHover {
+    100% { color: #7289dac4; }
 }
 
 #songTitle {
-    font-size: 30px !important;
+    font-size: 30px;
+    color: white;
 }
 
 #songArtist {
-    font-size: 14.5px;
-    margin: 10px
-}
-
-#songTitle:hover {
-    text-decoration: underline;
-}
-
-#songArtist:hover {
-    text-decoration: underline;
+    margin: 5px;
+    color: #7c7a7a;
 }
 
 .controller {
-    margin: 25px;
+    margin: 20px;
 }
 
 .controlBtn {
+    height: fit-content;
+    width: fit-content;
     padding: 15px;
-    border-radius: 15px;
+    margin: 15px 15px;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 .controlBtn:hover {
@@ -519,59 +534,61 @@ body {
     animation-fill-mode: forwards;
 }
 
-@keyframes controlBtnAnim {
-    0% { background-color: #7289da3a; }
-    100% { background-color: #7289dac9; }
-}
-
-#towards {
-    transform: rotate(180deg);
-}
-
 .queue {
     text-align: center;
-    margin: 15px;
 }
 
-.queue h2 {
-    text-shadow: 2px 2px #7289DA;
-}
-
-.song {
-    display: flex;
-    text-align: center;
-    width: 65%;
-    margin: 25px auto;
+.queueSong {
     background-color: #1a1a1a;
+    width: 65%;
+    height: fit-content;
+    min-height: 100px;
+    -webkit-box-shadow: 0px 6px 10px -7px #000000; 
+    box-shadow: 0px 6px 10px -7px #000000;
     padding: 15px;
+    margin: 30px auto;
+    border-radius: 10px;
+}
+
+.queueSong img {
+    height: 65px;
+    width: 65px;
     border-radius: 10px;
     -webkit-box-shadow: 0px 6px 10px -7px #000000; 
     box-shadow: 0px 6px 10px -7px #000000;
+    float: left;
 }
 
-.song img {
-    height: 60px;
-    width: 60px;
-    border-radius: 10px;
+.textPart {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin: 10px;
+    box-sizing: border-box;
 }
 
-.song a {
+.textPart a {
     text-decoration: none;
+    float: left;
+    margin-left: 15px;
+}
+
+.textPart a:hover {
+    animation-name: linkHover;
+    animation-duration: 300ms;
+    animation-fill-mode: forwards;
+}
+
+#queueSongName {
     color: white;
-    margin: 15px;
 }
 
-.song a:hover {
-    text-decoration: underline;
+#queueSongArtist {
+    color: #747474;
 }
 
-.queueSongArtist {
-    position: relative;
-    top: 25px;
-    left: -115px;
-    font-weight: bold;
-    font-size: 14px;
-    color: #707070 !important;
+@keyframes controlBtnAnim {
+    100% { background-color: #7289dac4; }
 }
 
 @media(max-width: 1005px) {
@@ -607,5 +624,17 @@ body {
 
     .configuration {
         margin: 35px auto;
+    }
+}
+
+@media(max-width: 460px) {
+    .controlBtn {
+        margin: 15px 5px
+    }
+}
+
+@media(max-width: 375px) {
+    .controlBtn {
+        margin: 15px 0px
     }
 }

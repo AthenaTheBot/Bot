@@ -45,7 +45,7 @@
                 </ul>
                 <ul class="category">
                     <p class="categoryName">Music<i id="categoryButon" class="fas fa-chevron-down"></i></p>
-                    <li class="categoryElement" data-class="music"><i class="fas fa-terminal"></i> Player</li>
+                    <li class="categoryElement" data-class="music" onclick="musicInit()"><i class="fas fa-terminal"></i> Player</li>
                 </ul>
             </div>
         </div>
@@ -103,24 +103,27 @@
 
                 <div class="music">
                     <div class="player">
-                        <img src="/assets/images/defaultServer.png" alt="Music">
-                        <br>
-                        <a id="songTitle" href="#">Angel Dust</a> 
-                        <br>
-                        <a id="songArtist" href="#">Ethan Ross</a>
-                        <div class="controller">
-                            <i id="backwards" class="fas fa-step-backward controlBtn"></i>
-                            <i id="player" class="fas fa-play controlBtn"></i>
-                            <i id="towards" class="fas fa-step-backward controlBtn"></i>
+                        <div class="song">
+                            <img src="/assets/images/defaultServer.png" alt="Song">
+                            <div class="songInfo">
+                                <a href="#" id="songTitle">Song Name</a>
+                                <a href="#" id="songArtist">Artist Name</a>
+                            </div>
+                            <div class="controller">
+                                <i id="backwardBtn" class="fas fa-step-backward controlBtn"></i>
+                                <i id="playBtn" class="fas fa-play controlBtn"></i>
+                                <i id="forwardBtn" class="fas fa-step-backward controlBtn"></i>
+                            </div>
                         </div>
                     </div>
                     <div class="queue">
-                        <h2>Queue</h2>
-                        <div class="song">
-                            <img src="/assets/images/defaultServer.png" alt="Music">
-                            <a class="queueSongTitle" href="#">Song Name</a>
-                            <br>
-                            <a class="queueSongArtist" href="#">Song Artist</a>
+                        <h3>Song Queue</h3>
+                        <div class="queueSong">
+                            <img src="/assets/images/defaultServer.png" alt="Song">
+                            <div class="textPart">
+                                <a id="queueSongName" href="#">Song Name</a>
+                                <a id="queueSongArtist" href="#">Song Artist</a>
+                            </div>
                         </div>
                     </div>
                 </div>

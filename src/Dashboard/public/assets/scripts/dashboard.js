@@ -102,7 +102,20 @@ $(document).ready(async () => {
             if (serverResponse && serverResponse.status == 401) return warn('The language that you are trying to set is the same as the current one.');
             else return warn('An unexpected error occured while setting the server language.');
         }
-    })
+    });
+
+    $('#playBtn').click(function() {
+        const btnClasses = $(this).attr('class').split(' ');
+        if (btnClasses.includes('fa-play')) {
+
+            $(this).removeClass('fa-play');
+            $(this).addClass('fa-pause');
+        }
+        else {
+            $(this).removeClass('fa-pause');
+            $(this).addClass('fa-play');
+        }
+    });
 
     const user = await fetch('/api/users/@me').then(res => res.json()).then(res => {
         if (res.status != 200) return null;
@@ -238,3 +251,61 @@ const wait = (second) => {
         }, second * 1000)
     })
 }
+
+const musicInit = async () => {
+  
+    return $('.loader').remove();
+
+    const currentGuildID = window.location.pathname.split('/dashboard/').pop();
+
+    $('.general').append(`    
+    <div class="loader">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+            <div class="bounce4"></div>
+        </div>
+    </div>`);
+
+    const guildMusicState = await fetch(`/api/guilds/${currentGuildID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            operation: 'getMusicState',
+        })
+    })
+    .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
+
+    if (!guildMusicState) return handleError();
+    else {
+
+        if (!guildMusicState.playing) {
+
+            $('.loader').remove();
+            return;
+        }
+
+        $('#songTitle').text(guildMusicState.queue[0].title + 'asdsadsadsadasdaddaddaaddsadada ');
+        $('#songArtist').attr('href', guildMusicState.queue[0].url)
+
+        $('#songArtist').text(guildMusicState.queue[0].artist.name);
+        $('#songArtist').attr('href', guildMusicState.queue[0].artist.url)
+
+        $('#songThumbnail').attr('src', guildMusicState.queue[0].thumbnail);
+
+        guildMusicState.queue.forEach((song) => {
+            $('.queue').append(`
+                <div class="song">
+                    <img src="${song.thumbnail || '#'}" alt="Song">
+                    <a class="queueSongTitle" href="${song.url}">${song.title}</a>
+                    <br>
+                    <a class="queueSongArtist" href="${song.artist.url || '#'}">${song.artist.name}</a>
+                </div>
+            `)
+        })
+
+        $('.loader').remove();
+    }
+
+};
