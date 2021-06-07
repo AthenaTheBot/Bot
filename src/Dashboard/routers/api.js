@@ -238,6 +238,25 @@ router.post('/guilds/:id', async (req, res) => {
         case 'getMusicState':
             let data = await Athena.guildMusicStates.get(req.params.id) || {};
             res.status(200).json({ status: 200, a: true, data: { playing: data.playing || null, queue: data.queue || [], loop: data.loop || false } }).end();
+            break;  
+
+        case 'updateMusicState':
+            const validStates = ['pause', 'resume'];
+            if (!req.body.value || !validStates.includes(req.body.value)) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+            const guildState = Athena.guildMusicStates.get(req.params.id);
+            if (!guildState) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+            switch(req.body.value) {
+                case 'pause':
+                    guildState.player.pause();
+                    res.status(200).json({ status: 200, message: 'Successfull' }).end();
+                    break;
+
+                case 'resume':
+                    guildState.player.resume();
+                    res.status(200).json({ status: 200, message: 'Successfull' }).end();
+                    break;
+
+            }
             break;
 
         case 'setPrefix':

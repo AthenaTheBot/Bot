@@ -28,6 +28,7 @@ body {
     background: #5c6fb1 !important;
 }
 
+
 @keyframes controlbarCollapse {
     0% { 
         width: 360px 
@@ -112,13 +113,11 @@ body {
     overflow: hidden;
     height: 100vh;
     background-color: #1a1a1a;
-    -webkit-box-shadow: 0px 6px 20px -7px #000000; 
-    box-shadow: 0px 6px 20px -7px #000000;
     animation-name: controlbarExpand;
     animation-duration: 850ms;
     animation-fill-mode: forwards;
     position: relative;
-    z-index: 10000  ;
+    z-index: 10000;
 }
 
 .content {
@@ -234,6 +233,7 @@ body {
 .profile {
     height: 40px;
     width: fit-content;
+    width: -moz-fit-content;
     display: flex;
     position: absolute;
     right: 50px;
@@ -268,6 +268,7 @@ body {
     background-color: #1a1a1a;
     text-align: center;
     width: fit-content;
+    width: -moz-fit-content;
     box-sizing: border-box;
     padding: 5px;
     border-radius: 6px;
@@ -422,6 +423,7 @@ body {
 .error {
     text-align: center;
     width: fit-content;
+    width: -moz-fit-content;
     margin: auto;
     padding: 15px;
     background-color: #1b1b1b;
@@ -457,19 +459,64 @@ body {
 .music {
     display: none;
     height: fit-content;
+    height: -moz-fit-content;
     width: 100%;
 }
 
+.musicContainer {
+    margin: 35px;
+    display: flex;
+}
+
+.effects {
+    height: 550px;
+    width: 550px;
+    margin: 100px auto;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 6px 10px -7px #000000; 
+    box-shadow: 0px 6px 10px -7px #000000;
+}
+
+.effect {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px;
+    padding: 15px;
+    background-color: #141414;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 6px 10px -7px #000000; 
+    box-shadow: 0px 6px 10px -7px #000000;
+    box-sizing: border-box;
+}
+
+.effect h5 {
+    margin: 15px;
+}
+
+.buttonPart button {
+    border-color: #7289DA !important;
+    background-color: #7289DA !important;
+    box-shadow: none !important;
+}
+
+.buttonPart button:hover {
+    background-color: #5d6faf !important;
+}
+
 .player {
-    width: 75%;
+    width: 450px;
+    min-height: 460px;
     height: fit-content;
-    margin: 85px auto;
+    height: -moz-fit-content;
+    margin: 140px auto;
     background-color: #1a1a1a;
     overflow: hidden;
     padding: 15px;
     border-radius: 30px;
     -webkit-box-shadow: 0px 6px 10px -7px #000000; 
     box-shadow: 0px 6px 10px -7px #000000;
+    border: 1px solid #7289DA
 }
 
 .song {
@@ -506,7 +553,7 @@ body {
 }
 
 #songTitle {
-    font-size: 30px;
+    font-size: 23px;
     color: white;
 }
 
@@ -526,11 +573,17 @@ body {
 
 .controlBtn {
     height: fit-content;
+    height: -moz-fit-content;
     width: fit-content;
+    width: -moz-fit-content;
     padding: 15px;
     margin: 15px 15px;
     cursor: pointer;
     border-radius: 10px;
+    border: 1px solid #7289DA;
+    background-color: #2b2b2b;
+    -webkit-box-shadow: 0px 6px 10px -7px #000000; 
+    box-shadow: 0px 6px 10px -7px #000000;
 }
 
 .controlBtn:hover {
@@ -540,23 +593,39 @@ body {
 }
 
 .queue {
+    overflow-y: scroll;
+    margin: 100px auto;
     text-align: center;
+    width: 550px;
+    height: 550px;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: #1a1a1a;
+    -webkit-box-shadow: 0px 6px 10px -7px #000000; 
+    box-shadow: 0px 6px 10px -7px #000000;
+
 }
 
 .queue h3 {
+    margin: 15px;
     text-shadow: 2px 2px #7289DA;
 }
 
 .queueSong {
-    background-color: #1a1a1a;
-    width: 65%;
+    background-color: #141414;
+    width: 100%;
     height: fit-content;
+    height: -moz-fit-content;
     min-height: 100px;
     -webkit-box-shadow: 0px 6px 10px -7px #000000; 
     box-shadow: 0px 6px 10px -7px #000000;
     padding: 15px;
     margin: 30px auto;
     border-radius: 10px;
+}
+
+.queueSong:first-child {
+    margin: 5px auto;
 }
 
 .queueSong img {
@@ -647,3 +716,34 @@ body {
         margin: 15px 0px
     }
 }
+
+@media(max-width: 2040px) {
+    .musicContainer {
+        flex-direction: column;
+    }
+    
+    .player {
+        flex-direction: column-reverse !important;
+        margin: 50px auto;
+    }
+}
+
+@media (max-width: 655px) {
+    .musicContainer {
+        margin: 0px;
+        width: 100%;
+    }
+
+    .player {
+        width: 95%;
+    }
+
+    .effects {
+        width: 95%;
+    }
+
+    .queue {
+        width: 95%;
+    }
+}
+
