@@ -1,13 +1,22 @@
 const ytdl = require('discord-ytdl-core');
 const { MessageEmbed } = require('discord.js');
+const path = require('path');
 
 const Embed = new MessageEmbed();
 
-module.exports.play = async (base, guild, locale) => {
+module.exports.play = async (base, guild) => {
 
-    if (!base || !guild || !locale) return;
+    if (!base || !guild ) return;
 
-    let guildMusicState = base.guildMusicStates.get(guild);
+    const guildData = await base.db.manager.getGuild(guild);
+
+    let language;
+    if (guildData.data.preferences.language) language = guildData.data.preferences.language;
+    else language = 'en-US';
+
+    const locale = require(path.join(__dirname, '..', 'Locales', language, 'Music', 'play.json'));
+
+    let guildMusicState = base.guildMusicStates.get(guild.id);
 
     if (guildMusicState && guildMusicState.connection) {
 
@@ -48,13 +57,13 @@ module.exports.play = async (base, guild, locale) => {
                     if (guildMusicState.queue.length == 0) {
                         textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.QUEUE_FINISHED));
                         setTimeout(async () => {
-                            const newGuildMusicState = await base.guildMusicStates.get(guild);
+                            const newGuildMusicState = await base.guildMusicStates.get(guild.id);
                             if (newGuildMusicState && newGuildMusicState.playing) return;
                             else {
                                 if (!newGuildMusicState || !newGuildMusicState.connection) return;
                                 base.channels.cache.get(newGuildMusicState.voiceChannel).leave();
                                 textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.INACTIVE_FOR_TOO_LONG));
-                                base.guildMusicStates.delete(guild);
+                                base.guildMusicStates.delete(guild.id);
                             }
                         }, 150 * 1000);
                     }
@@ -69,13 +78,13 @@ module.exports.play = async (base, guild, locale) => {
                     if (guildMusicState.queue.length == 0) {
                         textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.QUEUE_FINISHED));
                         setTimeout(async () => {
-                            const newGuildMusicState = await base.guildMusicStates.get(guild);
+                            const newGuildMusicState = await base.guildMusicStates.get(guild.id);
                             if (newGuildMusicState && newGuildMusicState.playing) return;
                             else {
                                 if (!newGuildMusicState || !newGuildMusicState.connection) return;
                                 base.channels.cache.get(newGuildMusicState.voiceChannel).leave();
                                 textChannel.send(Embed.setColor(base.branding.colors.default).setDescription(locale.INACTIVE_FOR_TOO_LONG));
-                                base.guildMusicStates.delete(guild);
+                                base.guildMusicStates.delete(guild.id);
                             }
                         }, 150 * 1000);
                     }
@@ -89,10 +98,10 @@ module.exports.play = async (base, guild, locale) => {
             guildMusicState.connection.on('disconnect', async () => {
                 guildMusicState.playing = false;
                 setTimeout(async () => {
-                    const updatedGuildMusicState = await base.guildMusicStates.get(guild);
+                    const updatedGuildMusicState = await base.guildMusicStates.get(guild.id);
                     if (updatedGuildMusicState && updatedGuildMusicState.playing) return;
                     else {
-                        return base.guildMusicStates.delete(guild);
+                        return base.guildMusicStates.delete(guild.id);
                     }
                 }, 30 * 60 * 1000);
             });

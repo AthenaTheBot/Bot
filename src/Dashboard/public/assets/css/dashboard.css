@@ -567,7 +567,7 @@ body {
     user-select: none;
 }
 
-#forwardBtn {
+#skipBtn {
     transform: rotate(180deg);
 }
 
@@ -635,6 +635,11 @@ body {
     -webkit-box-shadow: 0px 6px 10px -7px #000000; 
     box-shadow: 0px 6px 10px -7px #000000;
     float: left;
+}
+
+#noSongWarn {
+    position: relative;
+    top: 75px
 }
 
 .textPart {
@@ -744,6 +749,20 @@ body {
 
     .queue {
         width: 95%;
+    }
+}
+
+@media (max-width: 2040px) {
+    .player {
+        order: 1;
+    }
+
+    .effects {
+        order: 2;
+    }
+
+    .queue {
+        order: 3;
     }
 }
 

@@ -241,7 +241,7 @@ router.post('/guilds/:id', async (req, res) => {
             break;  
 
         case 'updateMusicState':
-            const validStates = ['pause', 'resume'];
+            const validStates = ['pause', 'resume', 'skip'];
             if (!req.body.value || !validStates.includes(req.body.value)) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
             const guildState = Athena.guildMusicStates.get(req.params.id);
             if (!guildState) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
@@ -253,6 +253,17 @@ router.post('/guilds/:id', async (req, res) => {
 
                 case 'resume':
                     guildState.player.resume();
+                    res.status(200).json({ status: 200, message: 'Successfull' }).end();
+                    break;
+
+                case 'skip':
+                    const guildMusicState = Athena.guildMusicStates.get(req.params.id);
+                    guildMusicState.queue.shift();
+                    const guildData = await Athena.guilds.fetch(req.params.id);
+                    if (guildMusicState.queue.length == 0) guildData.me.voice.channel.leave();
+                    else {
+                        Athena.musicPlayer.play(Athena, guildData);
+                    }
                     res.status(200).json({ status: 200, message: 'Successfull' }).end();
                     break;
 

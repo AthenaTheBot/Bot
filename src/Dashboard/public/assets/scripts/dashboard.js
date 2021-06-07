@@ -107,7 +107,7 @@ $(document).ready(async () => {
     $('#playBtn').click(async function() {
         const btnClasses = $(this).attr('class').split(' ');
         if (btnClasses.includes('fa-play')) {
-            await fetch(`/api/guilds/${currentGuildID}`, {
+            const serverResponse = await fetch(`/api/guilds/${currentGuildID}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -115,13 +115,16 @@ $(document).ready(async () => {
                     value: 'pause'
                 })
             })
-            .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
+            .then(res => res.json()).catch(err => { return null; });
+            if (serverResponse.status != 200) return;
+            else {
 
-            $(this).removeClass('fa-play');
-            $(this).addClass('fa-pause');
+                $(this).removeClass('fa-play');
+                $(this).addClass('fa-pause');
+            }
         }
         else {
-            await fetch(`/api/guilds/${currentGuildID}`, {
+            const serverRes = await fetch(`/api/guilds/${currentGuildID}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -129,12 +132,27 @@ $(document).ready(async () => {
                     value: 'resume'
                 })
             })
-            .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
+            .then(res => res.json()).catch(err => { return null; });
+            if (serverRes.status != 200) return;
+            else {
 
-            $(this).removeClass('fa-pause');
-            $(this).addClass('fa-play');
+                $(this).removeClass('fa-pause');
+                $(this).addClass('fa-play');
+            }
         }
     });
+
+    $('#skipBtn').click(async function() {
+        await fetch(`/api/guilds/${currentGuildID}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                operation: 'updateMusicState',
+                value: 'skip'
+            })
+        })
+        .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
+    })
 
     const user = await fetch('/api/users/@me').then(res => res.json()).then(res => {
         if (res.status != 200) return null;
@@ -296,6 +314,8 @@ const musicInit = async (passiveCheck) => {
     
             $('#songThumbnail').attr('src', '/assets/images/defaultServer.png');
     
+            $('#noSongWarn').css('display', 'block');
+
             $('.queueSong').remove();
         }
         else {
@@ -312,6 +332,7 @@ const musicInit = async (passiveCheck) => {
     
             guildMusicState.queue.forEach((song) => {
                 if (song.title.length >= 25) song.title = song.title.slice(0, 25) + '..';
+                $('#noSongWarn').css('display', 'none');
                 $('.queue').append(`
                     <div class="queueSong">
                         <img src="${song.thumbnail || '/assets/images/defaultServer.png'}" alt="${song.title}">
@@ -364,6 +385,7 @@ const musicInit = async (passiveCheck) => {
         
                 guildMusicState.queue.forEach((song) => {
                     if (song.title.length >= 15) song.title = song.title.slice(0, 15) + '..';
+                    $('#noSongWarn').css('display', 'none');
                     $('.queue').append(`
                         <div class="queueSong">
                             <img src="${song.thumbnail || '/assets/images/defaultServer.png'}" alt="${song.title}">

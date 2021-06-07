@@ -38,9 +38,7 @@ const run = async (client, message, args, locale, db) => {
 
     if (!language) client.config.defaults.LANGUAGE;
 
-    const playCommand = client.commands.get('play');
-
-    client.musicPlayer.play(client, message.guild.id, require(path.join(__dirname, '..', '..', 'Locales', language, playCommand.Category, playCommand.Name + '.json')));
+    client.musicPlayer.play(client, message.guild);
 
     return message.channel.send(locale.SKIPPED_SONG);
 }
