@@ -431,6 +431,8 @@ const musicInit = async (passiveCheck) => {
 
             $('#nightcore').text('Disabled');
             $('#bassboost').text('Disabled');
+
+            $('.notPlayingAlert').css('display', 'block');
         }
         else {
 
@@ -452,6 +454,8 @@ const musicInit = async (passiveCheck) => {
             else $('#bassboost').text('Disabled');
 
             $('.queueSong').remove();
+
+            $('.notPlayingAlert').css('display', 'none');
     
             guildMusicState.queue.forEach((song) => {
                 if (song.title.length >= 25) song.title = song.title.slice(0, 25) + '..';
@@ -510,6 +514,8 @@ const musicInit = async (passiveCheck) => {
         
                 if (guildMusicState.nightcoreEnabled) $('#nightcore').text('Enabled');
                 else if (guildMusicState.bassboostEnabled) $('#bassboost').text('Enabled');
+
+                $('.notPlayingAlert').css('display', 'none');
 
                 guildMusicState.queue.forEach((song) => {
                     if (song.title.length >= 15) song.title = song.title.slice(0, 15) + '..';

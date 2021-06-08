@@ -239,8 +239,10 @@ router.post('/guilds/:id', async (req, res) => {
             let data = await Athena.guildMusicStates.get(req.params.id) || {};
             let nightcoreEnabled = false;
             let bassboostEnabled = false;
-            if (data.encoderArgs.includes('aresample=48000,asetrate=48000*1.25')) nightcoreEnabled = true;
-            else if (data.encoderArgs.includes('bass=g=20,dynaudnorm=f=400')) bassboostEnabled = true;
+            if (data && data.encoderArgs) {
+                if (data.encoderArgs.includes('aresample=48000,asetrate=48000*1.25')) nightcoreEnabled = true;
+                else if (data.encoderArgs.includes('bass=g=20,dynaudnorm=f=400')) bassboostEnabled = true;
+            }
             res.status(200).json({ status: 200, a: true, data: { playing: data.playing || null, queue: data.queue || [], loop: data.loop || false, bassboostEnabled: bassboostEnabled, nightcoreEnabled: nightcoreEnabled } }).end();
             break;  
 
@@ -393,7 +395,10 @@ module.exports = router;
 
 const getCurrentUserGuilds = async (sessionKey, cache) => {
 
-    if (cache) return Athena.websiteUserGuildsCache.get(sessionKey);
+    if (cache && Athena.websiteUserGuildsCache.get(sessionKey)) {
+
+        return Athena.websiteUserGuildsCache.get(sessionKey);
+    }
 
     let userCurrentGuilds = await fetch('https://discord.com/api/users/@me/guilds', {
         headers: {
@@ -405,8 +410,24 @@ const getCurrentUserGuilds = async (sessionKey, cache) => {
 
     if (!userCurrentGuilds) return undefined;
     else {
+        if (userCurrentGuilds.retry_after) {
+            setTimeout(async () => {
+                const serverRes = await fetch('https://discord.com/api/users/@me/guilds', {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Authorization': `Bearer ${sessionKey}`,
+                    }
+                })
+                .then(res => res.json()).then(data => { return data.data; }).catch(err => {});
+                return serverRes;
+            }, userCurrentGuilds.retry_after);
+            return;
+        }
 
         Athena.websiteUserGuildsCache.set(sessionKey, userCurrentGuilds);
+        setTimeout(() => {
+            Athena.websiteUserGuildsCache.delete(sessionKey);
+        }, 15 * 60 * 1000)
         return userCurrentGuilds;
     }
 };
