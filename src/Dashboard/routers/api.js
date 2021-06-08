@@ -241,7 +241,7 @@ router.post('/guilds/:id', async (req, res) => {
             break;  
 
         case 'updateMusicState':
-            const validStates = ['pause', 'resume', 'skip'];
+            const validStates = ['pause', 'resume', 'skip', 'enableLoop', 'disableLoop'];
             if (!req.body.value || !validStates.includes(req.body.value)) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
             const guildState = Athena.guildMusicStates.get(req.params.id);
             if (!guildState) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
@@ -264,6 +264,18 @@ router.post('/guilds/:id', async (req, res) => {
                     else {
                         Athena.musicPlayer.play(Athena, guildData);
                     }
+                    res.status(200).json({ status: 200, message: 'Successfull' }).end();
+                    break;
+
+                case 'enableLoop':
+                    const guildMusicState2 = Athena.guildMusicStates.get(req.params.id);
+                    guildMusicState2.loop = true;
+                    res.status(200).json({ status: 200, message: 'Successfull' }).end();
+                    break;
+
+                case 'disableLoop':
+                    const guildMusicState3 = Athena.guildMusicStates.get(req.params.id);
+                    guildMusicState3.loop = false;
                     res.status(200).json({ status: 200, message: 'Successfull' }).end();
                     break;
 

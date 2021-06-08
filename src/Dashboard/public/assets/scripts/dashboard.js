@@ -154,6 +154,38 @@ $(document).ready(async () => {
         .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
     })
 
+    $('#loopBtn').click(async function() {
+        const isEnabled = $('#loopBtn').css('background-color');
+        if (isEnabled != 'rgba(114, 137, 218, 0.77)') {
+
+            await fetch(`/api/guilds/${currentGuildID}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    operation: 'updateMusicState',
+                    value: 'enableLoop'
+                })
+            })
+            .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
+
+            $('#loopBtn').css('background-color', 'rgba(114, 137, 218, 0.78)');
+        }
+        else {
+
+            await fetch(`/api/guilds/${currentGuildID}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    operation: 'updateMusicState',
+                    value: 'disableLoop'
+                })
+            })
+            .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
+
+            $('#loopBtn').css('background-color', '#2b2b2b');
+        }
+    })
+
     const user = await fetch('/api/users/@me').then(res => res.json()).then(res => {
         if (res.status != 200) return null;
         else return res.data;
@@ -328,6 +360,8 @@ const musicInit = async (passiveCheck) => {
     
             $('#songThumbnail').attr('src', guildMusicState.queue[0].thumbnail);
     
+            if (guildMusicState.loop) $('#loopBtn').css('background-color', 'rgba(114, 137, 218, 0.78)');
+
             $('.queueSong').remove();
     
             guildMusicState.queue.forEach((song) => {
@@ -382,6 +416,8 @@ const musicInit = async (passiveCheck) => {
                 $('#songArtist').attr('href', guildMusicState.queue[0].artist.url)
         
                 $('#songThumbnail').attr('src', guildMusicState.queue[0].thumbnail);
+
+                if (guildMusicState.loop) $('#loopBtn').css('background-color', 'rgba(114, 137, 218, 0.78)');
         
                 guildMusicState.queue.forEach((song) => {
                     if (song.title.length >= 15) song.title = song.title.slice(0, 15) + '..';
