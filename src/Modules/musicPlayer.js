@@ -18,7 +18,7 @@ module.exports.play = async (base, guild) => {
 
     let guildMusicState = base.guildMusicStates.get(guild.id);
 
-    if (guildMusicState && guildMusicState.connection) {
+    if (guildMusicState && guildMusicState.connection && guildMusicState.queue.length > 0) {
 
         let encoderArgs;
         if (guildMusicState.encoderArgs.length > 0) encoderArgs = ['-af', ...guildMusicState.encoderArgs];

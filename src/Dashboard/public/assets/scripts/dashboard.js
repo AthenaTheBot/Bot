@@ -158,7 +158,7 @@ $(document).ready(async () => {
         const isEnabled = $('#loopBtn').css('background-color');
         if (isEnabled != 'rgba(114, 137, 218, 0.77)') {
 
-            await fetch(`/api/guilds/${currentGuildID}`, {
+            fetch(`/api/guilds/${currentGuildID}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -166,13 +166,20 @@ $(document).ready(async () => {
                     value: 'enableLoop'
                 })
             })
-            .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
+            .then(res => res.json()).then(data => {
 
-            $('#loopBtn').css('background-color', 'rgba(114, 137, 218, 0.78)');
+                if (data.status != 200) return;
+                else {
+
+                    $('#loopBtn').css('background-color', 'rgba(114, 137, 218, 0.78)');
+                }
+
+            }).catch(err => { return null; });
+
         }
         else {
 
-            await fetch(`/api/guilds/${currentGuildID}`, {
+            fetch(`/api/guilds/${currentGuildID}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -180,11 +187,81 @@ $(document).ready(async () => {
                     value: 'disableLoop'
                 })
             })
-            .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
+            .then(res => res.json()).then(data => {
 
-            $('#loopBtn').css('background-color', '#2b2b2b');
+                if (data.status != 200) return;
+                else {
+
+                    $('#loopBtn').css('background-color', '#2b2b2b');
+                }
+
+            }).catch(err => { return null; });
+
         }
     })
+
+    $('.buttonPart button').click(async function() {
+        switch($(this).attr('data-type')) {
+            case 'nightcore':
+                if ($(this).text() == 'Enabled') {
+                    await fetch(`/api/guilds/${currentGuildID}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            operation: 'updateMusicState',
+                            value: 'disableEffects'
+                        })
+                    })
+                    .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
+                    $(this).text('Disabled');
+                }
+                else {
+                    await fetch(`/api/guilds/${currentGuildID}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            operation: 'updateMusicState',
+                            value: 'enableNightcore'
+                        })
+                    })
+                    .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
+                    $(this).text('Enabled');
+                    $('#bassboost').text('Disabled');
+                }
+                break;
+            
+            case 'bassboost':
+                if ($(this).text() == 'Enabled') {
+                    await fetch(`/api/guilds/${currentGuildID}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            operation: 'updateMusicState',
+                            value: 'disableEffects'
+                        })
+                    })
+                    .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
+                    $(this).text('Disabled');
+                }
+                else {
+                    await fetch(`/api/guilds/${currentGuildID}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            operation: 'updateMusicState',
+                            value: 'enableBassboost'
+                        })
+                    })
+                    .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
+                    $(this).text('Enabled');
+                    $('#nightcore').text('Disabled');
+                }
+                break;
+
+            default:
+                break;
+        }
+    });
 
     const user = await fetch('/api/users/@me').then(res => res.json()).then(res => {
         if (res.status != 200) return null;
@@ -349,6 +426,11 @@ const musicInit = async (passiveCheck) => {
             $('#noSongWarn').css('display', 'block');
 
             $('.queueSong').remove();
+
+            $('#loopBtn').css('background-color', '#2b2b2b');
+
+            $('#nightcore').text('Disabled');
+            $('#bassboost').text('Disabled');
         }
         else {
 
@@ -361,6 +443,13 @@ const musicInit = async (passiveCheck) => {
             $('#songThumbnail').attr('src', guildMusicState.queue[0].thumbnail);
     
             if (guildMusicState.loop) $('#loopBtn').css('background-color', 'rgba(114, 137, 218, 0.78)');
+            else $('#loopBtn').css('background-color', '#2b2b2b');
+
+            if (guildMusicState.nightcoreEnabled) $('#nightcore').text('Enabled');
+            else $('#nightcore').text('Disabled');
+
+            if (guildMusicState.bassboostEnabled) $('#bassboost').text('Enabled');
+            else $('#bassboost').text('Disabled');
 
             $('.queueSong').remove();
     
@@ -419,6 +508,9 @@ const musicInit = async (passiveCheck) => {
 
                 if (guildMusicState.loop) $('#loopBtn').css('background-color', 'rgba(114, 137, 218, 0.78)');
         
+                if (guildMusicState.nightcoreEnabled) $('#nightcore').text('Enabled');
+                else if (guildMusicState.bassboostEnabled) $('#bassboost').text('Enabled');
+
                 guildMusicState.queue.forEach((song) => {
                     if (song.title.length >= 15) song.title = song.title.slice(0, 15) + '..';
                     $('#noSongWarn').css('display', 'none');

@@ -237,45 +237,67 @@ router.post('/guilds/:id', async (req, res) => {
 
         case 'getMusicState':
             let data = await Athena.guildMusicStates.get(req.params.id) || {};
-            res.status(200).json({ status: 200, a: true, data: { playing: data.playing || null, queue: data.queue || [], loop: data.loop || false } }).end();
+            let nightcoreEnabled = false;
+            let bassboostEnabled = false;
+            if (data.encoderArgs.includes('aresample=48000,asetrate=48000*1.25')) nightcoreEnabled = true;
+            else if (data.encoderArgs.includes('bass=g=20,dynaudnorm=f=400')) bassboostEnabled = true;
+            res.status(200).json({ status: 200, a: true, data: { playing: data.playing || null, queue: data.queue || [], loop: data.loop || false, bassboostEnabled: bassboostEnabled, nightcoreEnabled: nightcoreEnabled } }).end();
             break;  
 
         case 'updateMusicState':
-            const validStates = ['pause', 'resume', 'skip', 'enableLoop', 'disableLoop'];
+            const validStates = ['pause', 'resume', 'skip', 'enableLoop', 'disableLoop', 'enableNightcore', 'enableBassboost', 'disableEffects'];
             if (!req.body.value || !validStates.includes(req.body.value)) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
-            const guildState = Athena.guildMusicStates.get(req.params.id);
-            if (!guildState) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+            const guildMusicState = Athena.guildMusicStates.get(req.params.id);
+            if (!guildMusicState) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
+            const guild = await Athena.guilds.fetch(req.params.id);
             switch(req.body.value) {
                 case 'pause':
-                    guildState.player.pause();
+                    guildMusicState.player.pause();
                     res.status(200).json({ status: 200, message: 'Successfull' }).end();
                     break;
 
                 case 'resume':
-                    guildState.player.resume();
+                    guildMusicState.player.resume();
                     res.status(200).json({ status: 200, message: 'Successfull' }).end();
                     break;
 
                 case 'skip':
-                    const guildMusicState = Athena.guildMusicStates.get(req.params.id);
+                    if (guildMusicState.loop) {
+                        guildMusicState.queue.push(guildMusicState.queue[0]);
+                    }
                     guildMusicState.queue.shift();
-                    const guildData = await Athena.guilds.fetch(req.params.id);
-                    if (guildMusicState.queue.length == 0) guildData.me.voice.channel.leave();
+                    if (guildMusicState.queue.length == 0) guild.me.voice.channel.leave();
                     else {
-                        Athena.musicPlayer.play(Athena, guildData);
+                        Athena.musicPlayer.play(Athena, guild);
                     }
                     res.status(200).json({ status: 200, message: 'Successfull' }).end();
                     break;
 
                 case 'enableLoop':
-                    const guildMusicState2 = Athena.guildMusicStates.get(req.params.id);
-                    guildMusicState2.loop = true;
+                    guildMusicState.loop = true;
                     res.status(200).json({ status: 200, message: 'Successfull' }).end();
                     break;
 
                 case 'disableLoop':
-                    const guildMusicState3 = Athena.guildMusicStates.get(req.params.id);
-                    guildMusicState3.loop = false;
+                    guildMusicState.loop = false;
+                    res.status(200).json({ status: 200, message: 'Successfull' }).end();
+                    break;
+
+                case 'enableNightcore':
+                    guildMusicState.encoderArgs = ['aresample=48000,asetrate=48000*1.25'];
+                    Athena.musicPlayer.play(Athena, guild);
+                    res.status(200).json({ status: 200, message: 'Successfull' }).end();
+                    break;
+
+                case 'enableBassboost':
+                    guildMusicState.encoderArgs = ['bass=g=20,dynaudnorm=f=400'];
+                    Athena.musicPlayer.play(Athena, guild);
+                    res.status(200).json({ status: 200, message: 'Successfull' }).end();
+                    break;
+
+                case 'disableEffects':
+                    guildMusicState.encoderArgs = [];
+                    Athena.musicPlayer.play(Athena, guild);
                     res.status(200).json({ status: 200, message: 'Successfull' }).end();
                     break;
 

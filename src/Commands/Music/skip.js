@@ -17,6 +17,10 @@ const run = async (client, message, args, locale, db) => {
 
     if (message.guild.me.voice.channel.id !== message.member.voice.channel.id) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.NOT_SAME_VC}`));
 
+    if (guildMusicState.loop) {
+        guildMusicState.queue.push(guildMusicState.queue[0]);
+    }
+
     guildMusicState.queue.shift();
 
     if (!guildMusicState.queue || guildMusicState.queue.length === 0) {
