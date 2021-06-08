@@ -54,6 +54,7 @@ $(document).ready(async () => {
         $('.category').children().removeClass('btnActive');
         $(this).addClass('btnActive');
         $(`.${className}`).addClass('active');
+        $('.control').addClass('collapsed')
     })
 
     const currentGuildID = window.location.pathname.split('/dashboard/').pop();
@@ -212,8 +213,11 @@ $(document).ready(async () => {
                             value: 'disableEffects'
                         })
                     })
-                    .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
-                    $(this).text('Disabled');
+                    .then(res => res.json()).then(res => {
+                        if (res.status == 200) {
+                            $(this).text('Disabled');
+                        }
+                    }).catch(err => { return null; });
                 }
                 else {
                     await fetch(`/api/guilds/${currentGuildID}`, {
@@ -224,9 +228,12 @@ $(document).ready(async () => {
                             value: 'enableNightcore'
                         })
                     })
-                    .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
-                    $(this).text('Enabled');
-                    $('#bassboost').text('Disabled');
+                    .then(res => res.json()).then(res => {
+                        if (res.status == 200) {
+                            $(this).text('Enabled');
+                            $('#bassboost').text('Disabled');
+                        }
+                    }).catch(err => { return null; });
                 }
                 break;
             
@@ -240,8 +247,11 @@ $(document).ready(async () => {
                             value: 'disableEffects'
                         })
                     })
-                    .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
-                    $(this).text('Disabled');
+                    .then(res => res.json()).then(res => {
+                        if (res.status == 200) {
+                            $(this).text('Disabled');
+                        }
+                    }).catch(err => { return null; });
                 }
                 else {
                     await fetch(`/api/guilds/${currentGuildID}`, {
@@ -252,9 +262,12 @@ $(document).ready(async () => {
                             value: 'enableBassboost'
                         })
                     })
-                    .then(res => res.json()).then(res => { return res.data; }).catch(err => { return null; });
-                    $(this).text('Enabled');
-                    $('#nightcore').text('Disabled');
+                    .then(res => res.json()).then(res => {
+                        if (res.status == 200) {
+                            $(this).text('Enabled');
+                            $('#nightcore').text('Disabled');
+                        }
+                    }).catch(err => { return null; });
                 }
                 break;
 
@@ -437,12 +450,13 @@ const musicInit = async (passiveCheck) => {
         else {
 
             $('#songTitle').text(guildMusicState.queue[0].title);
+            $('#songTitle').attr('href', guildMusicState.queue[0].url);
+
             $('#songArtist').attr('href', guildMusicState.queue[0].url)
-    
             $('#songArtist').text(guildMusicState.queue[0].artist.name);
             $('#songArtist').attr('href', guildMusicState.queue[0].artist.url)
     
-            $('#songThumbnail').attr('src', guildMusicState.queue[0].thumbnail);
+            $('#songThumbnail').attr('src', guildMusicState.queue[0].thumbnail || '/assets/images/defaultServer.png');
     
             if (guildMusicState.loop) $('#loopBtn').css('background-color', 'rgba(114, 137, 218, 0.78)');
             else $('#loopBtn').css('background-color', '#2b2b2b');
@@ -503,8 +517,9 @@ const musicInit = async (passiveCheck) => {
             else {
 
                 $('#songTitle').text(guildMusicState.queue[0].title);
+                $('#songTitle').attr('href', guildMusicState.queue[0].url);
+
                 $('#songArtist').attr('href', guildMusicState.queue[0].url)
-        
                 $('#songArtist').text(guildMusicState.queue[0].artist.name);
                 $('#songArtist').attr('href', guildMusicState.queue[0].artist.url)
         

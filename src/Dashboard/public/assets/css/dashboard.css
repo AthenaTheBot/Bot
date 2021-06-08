@@ -30,21 +30,20 @@ body {
 
 
 @keyframes controlbarCollapse {
-    0% { 
-        width: 360px 
+    0% {
+        transform: translateX(0px);
     }
     100% { 
-        width: 0px;
+        transform: translateX(-360px);
     }
 }
 
 @keyframes controlbarExpand {
-    0% { 
-        width: 0px;
+    0% {
+        transform: translateX(-360px);
     }
     100% { 
-        width: 360px;
-        overflow-y: scroll;
+        transform: translateX(0px);
     }
 }
 
@@ -110,14 +109,15 @@ body {
 
 .control {
     width: 360px;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
     height: 100vh;
     background-color: #1a1a1a;
     animation-name: controlbarExpand;
     animation-duration: 850ms;
     animation-fill-mode: forwards;
     position: relative;
-    z-index: 10000;
+    z-index: 99999900;
 }
 
 .content {
@@ -218,7 +218,7 @@ body {
     font-size: 21px;
     width: 30px;
     height: 30px;
-    z-index: 10000000;
+    z-index: 999999000;
 }
 
 .topbar {
@@ -447,8 +447,8 @@ body {
     text-decoration: underline;
 }
 
-.soonBadge {
-    background-color: #585858; 
+.badge {
+    background-color: #7289DA; 
     margin-left: 2px;
 }
 
@@ -466,6 +466,8 @@ body {
 .musicContainer {
     margin: 35px;
     display: flex;
+    position: relative;
+    z-index: 1;
 }
 
 .effects {
@@ -715,7 +717,6 @@ body {
     }
 
     .collapsed {
-        width: 0px;
         animation-name: controlbarCollapse;
         animation-duration: 850ms;
         animation-fill-mode: forwards;
@@ -724,12 +725,16 @@ body {
 
 @media(max-width: 680px) {
     .configurations {
-        margin: 90px 0;
-        width: 100%;
+        margin: 90px auto;
+        width: 95%;
     }
 
     .configuration {
         margin: 35px auto;
+    }
+
+    .input-group {
+        width: 100%
     }
 }
 
@@ -815,3 +820,8 @@ body {
     }
 }
 
+@media(max-width: 580px) {
+    .notPlayingAlert {
+        width: 90%;
+    }
+}
