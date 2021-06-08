@@ -803,6 +803,7 @@ body {
 }
 
 @media (max-width: 2040px) {
+
     .player {
         order: 1;
     }
@@ -823,5 +824,6 @@ body {
 @media(max-width: 580px) {
     .notPlayingAlert {
         width: 90%;
+        margin: 50px auto;
     }
 }

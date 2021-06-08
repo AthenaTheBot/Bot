@@ -4,17 +4,9 @@ const path = require('path');
 
 const Embed = new MessageEmbed();
 
-module.exports.play = async (base, guild) => {
+module.exports.play = async (base, guild, locale) => {
 
-    if (!base || !guild ) return;
-
-    const guildData = await base.db.manager.getGuild(guild);
-
-    let language;
-    if (guildData.data.preferences.language) language = guildData.data.preferences.language;
-    else language = 'en-US';
-
-    const locale = require(path.join(__dirname, '..', 'Locales', language, 'Music', 'play.json'));
+    if (!base || !guild || !locale) return;
 
     let guildMusicState = base.guildMusicStates.get(guild.id);
 

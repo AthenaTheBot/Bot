@@ -252,6 +252,8 @@ router.post('/guilds/:id', async (req, res) => {
             const guildMusicState = Athena.guildMusicStates.get(req.params.id);
             if (!guildMusicState) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
             const guild = await Athena.guilds.fetch(req.params.id);
+            const guildDB = await Athena.db.manager.getGuild(guild);
+            const locale = require(path.join(__dirname, '..', '..', 'Locales', guildDB.data.preferences.language, 'Music', 'play.json'))
             switch(req.body.value) {
                 case 'pause':
                     guildMusicState.player.pause();
@@ -270,7 +272,7 @@ router.post('/guilds/:id', async (req, res) => {
                     guildMusicState.queue.shift();
                     if (guildMusicState.queue.length == 0) guild.me.voice.channel.leave();
                     else {
-                        Athena.musicPlayer.play(Athena, guild);
+                        Athena.musicPlayer.play(Athena, guild, locale);
                     }
                     res.status(200).json({ status: 200, message: 'Successfull' }).end();
                     break;
@@ -287,19 +289,19 @@ router.post('/guilds/:id', async (req, res) => {
 
                 case 'enableNightcore':
                     guildMusicState.encoderArgs = ['aresample=48000,asetrate=48000*1.25'];
-                    Athena.musicPlayer.play(Athena, guild);
+                    Athena.musicPlayer.play(Athena, guild, locale);
                     res.status(200).json({ status: 200, message: 'Successfull' }).end();
                     break;
 
                 case 'enableBassboost':
                     guildMusicState.encoderArgs = ['bass=g=20,dynaudnorm=f=400'];
-                    Athena.musicPlayer.play(Athena, guild);
+                    Athena.musicPlayer.play(Athena, guild, locale);
                     res.status(200).json({ status: 200, message: 'Successfull' }).end();
                     break;
 
                 case 'disableEffects':
                     guildMusicState.encoderArgs = [];
-                    Athena.musicPlayer.play(Athena, guild);
+                    Athena.musicPlayer.play(Athena, guild, locale);
                     res.status(200).json({ status: 200, message: 'Successfull' }).end();
                     break;
 

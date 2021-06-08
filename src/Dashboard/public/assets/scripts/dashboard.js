@@ -434,7 +434,7 @@ const musicInit = async (passiveCheck) => {
             $('#songArtist').text('Song Artist');
             $('#songArtist').attr('href', '#')
     
-            $('#songThumbnail').attr('src', '/assets/images/defaultServer.png');
+            $('#songThumbnail').attr('src', '/assets/images/defaultSong.png');
     
             $('#noSongWarn').css('display', 'block');
 
@@ -456,7 +456,7 @@ const musicInit = async (passiveCheck) => {
             $('#songArtist').text(guildMusicState.queue[0].artist.name);
             $('#songArtist').attr('href', guildMusicState.queue[0].artist.url)
     
-            $('#songThumbnail').attr('src', guildMusicState.queue[0].thumbnail || '/assets/images/defaultServer.png');
+            $('#songThumbnail').attr('src', guildMusicState.queue[0].thumbnail || '/assets/images/defaultSong.png');
     
             if (guildMusicState.loop) $('#loopBtn').css('background-color', 'rgba(114, 137, 218, 0.78)');
             else $('#loopBtn').css('background-color', '#2b2b2b');
@@ -476,7 +476,7 @@ const musicInit = async (passiveCheck) => {
                 $('#noSongWarn').css('display', 'none');
                 $('.queue').append(`
                     <div class="queueSong">
-                        <img src="${song.thumbnail || '/assets/images/defaultServer.png'}" alt="${song.title}">
+                        <img src="${song.thumbnail || '/assets/images/defaultSong.png'}" alt="${song.title}">
                         <div class="textPart">
                             <a id="queueSongName" href="${song.url}">${song.title}</a>
                             <a id="queueSongArtist" href="${song.artist.url || '#'}">${song.artist.name}</a>
@@ -537,7 +537,7 @@ const musicInit = async (passiveCheck) => {
                     $('#noSongWarn').css('display', 'none');
                     $('.queue').append(`
                         <div class="queueSong">
-                            <img src="${song.thumbnail || '/assets/images/defaultServer.png'}" alt="${song.title}">
+                            <img src="${song.thumbnail || '/assets/images/defaultSong.png'}" alt="${song.title}">
                             <div class="textPart">
                                 <a id="queueSongName" href="${song.url}">${song.title}</a>
                                 <a id="queueSongArtist" href="${song.artist.url || '#'}">${song.artist.name}</a>

@@ -129,7 +129,7 @@ const run = async (client, message, args, locale, db) => {
             if (guildMusicState.queue.length > 1) message.channel.send(defaultEmbed.setDescription(locale.SONG_ADDED.replace('$song', `[${youtubeResult[0].title}](${youtubeResult[0].url})`)));
         }
         
-        client.musicPlayer.play(client, message.guild).catch(err => {
+        client.musicPlayer.play(client, message.guild, locale).catch(err => {
           
             client.handleError({ commandName: module.exports.Name, channelID: message.channel.id, msg: locale.ERROR_MSG, error: err, print: true });
         });
