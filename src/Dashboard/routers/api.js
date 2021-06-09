@@ -241,7 +241,7 @@ router.post('/guilds/:id', async (req, res) => {
             let bassboostEnabled = false;
             if (data && data.encoderArgs) {
                 if (data.encoderArgs.includes('aresample=48000,asetrate=48000*1.25')) nightcoreEnabled = true;
-                else if (data.encoderArgs.includes('bass=g=20,dynaudnorm=f=400')) bassboostEnabled = true;
+                else if (data.encoderArgs.includes('bass=g=25,dynaudnorm=f=400,volume=3')) bassboostEnabled = true;
             }
             res.status(200).json({ status: 200, a: true, data: { playing: data.playing || null, queue: data.queue || [], loop: data.loop || false, bassboostEnabled: bassboostEnabled, nightcoreEnabled: nightcoreEnabled } }).end();
             break;  
@@ -294,7 +294,7 @@ router.post('/guilds/:id', async (req, res) => {
                     break;
 
                 case 'enableBassboost':
-                    guildMusicState.encoderArgs = ['bass=g=20,dynaudnorm=f=400'];
+                    guildMusicState.encoderArgs = ['bass=g=25,dynaudnorm=f=400,volume=3'];
                     Athena.musicPlayer.play(Athena, guild, locale);
                     res.status(200).json({ status: 200, message: 'Successfull' }).end();
                     break;
@@ -372,7 +372,7 @@ router.get('/users/@me/guilds', async (req, res) => {
 
     if (!session) return res.status(400).json({ status: 400, message: 'Bad Request' }).end();
 
-    let userCurrentGuilds = await getCurrentUserGuilds(session.key, false);
+    let userCurrentGuilds = await getCurrentUserGuilds(session.key, true);
 
     const availabeGuilds = new Array();
     for (var i = 0; i < userCurrentGuilds.length; i++) {
@@ -397,41 +397,46 @@ module.exports = router;
 
 const getCurrentUserGuilds = async (sessionKey, cache) => {
 
-    if (cache && Athena.websiteUserGuildsCache.get(sessionKey)) {
+    return new Promise(async (resolve, reject) => {
 
-        return Athena.websiteUserGuildsCache.get(sessionKey);
-    }
+        if (cache && Athena.websiteUserGuildsCache.get(sessionKey)) {
 
-    let userCurrentGuilds = await fetch('https://discord.com/api/users/@me/guilds', {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': `Bearer ${sessionKey}`,
-        }
-    })
-    .then(res => res.json()).catch(err => {});
-
-    if (!userCurrentGuilds) return undefined;
-    else {
-        if (userCurrentGuilds.retry_after) {
-            setTimeout(async () => {
-                const serverRes = await fetch('https://discord.com/api/users/@me/guilds', {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Authorization': `Bearer ${sessionKey}`,
-                    }
-                })
-                .then(res => res.json()).then(data => { return data.data; }).catch(err => {});
-                return serverRes;
-            }, userCurrentGuilds.retry_after);
+            resolve(Athena.websiteUserGuildsCache.get(sessionKey));
             return;
         }
+    
+        let userCurrentGuilds = await fetch('https://discord.com/api/users/@me/guilds', {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${sessionKey}`,
+            }
+        })
+        .then(res => res.json()).catch(err => {});
+    
+        if (!userCurrentGuilds) resolve([]);
+        else {
+            if (userCurrentGuilds.retry_after) {
+                setTimeout(async () => {
+                    const serverRes = await fetch('https://discord.com/api/users/@me/guilds', {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Authorization': `Bearer ${sessionKey}`,
+                        }
+                    })
+                    .then(res => res.json()).catch(err => {});
+                    resolve(serverRes);
+                }, userCurrentGuilds.retry_after);
+            }
+            else {
 
-        Athena.websiteUserGuildsCache.set(sessionKey, userCurrentGuilds);
-        setTimeout(() => {
-            Athena.websiteUserGuildsCache.delete(sessionKey);
-        }, 15 * 60 * 1000)
-        return userCurrentGuilds;
-    }
+                Athena.websiteUserGuildsCache.set(sessionKey, userCurrentGuilds);
+                setTimeout(() => {
+                    Athena.websiteUserGuildsCache.delete(sessionKey);
+                },  30 * 1000)
+                resolve(userCurrentGuilds);
+            }
+        }
+    })
 };
 
 const setRequestCache = (ip) => {

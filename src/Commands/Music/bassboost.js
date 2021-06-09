@@ -15,7 +15,7 @@ const run = async (client, message, args, locale, db) => {
 
     if (!message.member.voice.channel || message.guild.me.voice.channel.id != message.member.voice.channel.id) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.NOT_SAME_VC}`));
 
-    if (guildMusicState.encoderArgs.length > 0 && !guildMusicState.encoderArgs.includes('bass=g=20,dynaudnorm=f=400')) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.ALREADY_APPLIED_FILTER}`));
+    if (guildMusicState.encoderArgs.length > 0 && !guildMusicState.encoderArgs.includes('bass=g=25,dynaudnorm=f=400,volume=3')) return message.channel.send(errorEmbed.setDescription(`${client.branding.emojis.error} ${locale.ALREADY_APPLIED_FILTER}`));
 
     const guildData = await client.db.manager.getGuild(message.guild);
     const userData = await client.db.manager.getUser(message.author);
@@ -28,23 +28,23 @@ const run = async (client, message, args, locale, db) => {
 
     const playCommand = client.commands.get('play');
 
-    if (guildMusicState.encoderArgs.includes('bass=g=20,dynaudnorm=f=400')) {
+    if (guildMusicState.encoderArgs.includes('bass=g=25,dynaudnorm=f=400,volume=3')) {
 
-        guildMusicState.encoderArgs = guildMusicState.encoderArgs.filter(x => x != 'bass=g=20,dynaudnorm=f=400');
+        guildMusicState.encoderArgs = guildMusicState.encoderArgs.filter(x => x != 'bass=g=25,dynaudnorm=f=400,volume=3');
 
         client.guildMusicStates.set(message.guild.id, guildMusicState);
 
-        client.musicPlayer.play(client, message.guild.id, require(path.join(__dirname, '..', '..', 'Locales', language, playCommand.Category, playCommand.Name + '.json')));
+        client.musicPlayer.play(client, message.guild, require(path.join(__dirname, '..', '..', 'Locales', language, playCommand.Category, playCommand.Name + '.json')));
 
         return message.channel.send(defaultEmbed.setDescription(`${locale.DISABLED}`));
     }
     else {
 
-        guildMusicState.encoderArgs.push('bass=g=20,dynaudnorm=f=400');
+        guildMusicState.encoderArgs.push('bass=g=25,dynaudnorm=f=400,volume=3');
 
         client.guildMusicStates.set(message.guild.id, guildMusicState);
 
-        client.musicPlayer.play(client, message.guild.id, require(path.join(__dirname, '..', '..', 'Locales', language, playCommand.Category, playCommand.Name + '.json')));
+        client.musicPlayer.play(client, message.guild, require(path.join(__dirname, '..', '..', 'Locales', language, playCommand.Category, playCommand.Name + '.json')));
 
         return message.channel.send(defaultEmbed.setDescription(`${locale.ENABLED}`));
     }

@@ -4,7 +4,7 @@ const path = require('path');
 
 const Embed = new MessageEmbed();
 
-module.exports.play = async (base, guild, locale) => {
+module.exports.play = async (base, guild, locale, seekTime) => {
 
     if (!base || !guild || !locale) return;
 
@@ -21,9 +21,10 @@ module.exports.play = async (base, guild, locale) => {
             player = await guildMusicState.connection.play(await ytdl(guildMusicState.queue[0].url, {
                 filter: "audioonly",
                 opusEncoded: true,
-                encoderArgs: encoderArgs
+                encoderArgs: encoderArgs,
+                seek: guildMusicState.disconnected ? guildMusicState.seekTime : 0
             }), 
-            { type: 'opus' });
+            { type: 'opus', bitrate: 'auto', highWaterMark: 1 });
 
         }
         catch (err) {
@@ -34,7 +35,6 @@ module.exports.play = async (base, guild, locale) => {
         if (player) {
 
             guildMusicState.player = player;
-
             const textChannel = base.channels.cache.get(guildMusicState.textChannel);
 
             player.on('start', async () => {
@@ -43,6 +43,8 @@ module.exports.play = async (base, guild, locale) => {
             });
     
             player.on('finish', async () => {
+                guildMusicState.disconnected = false;
+                guildMusicState.seekTime = null;
                 if (!guildMusicState.loop) {
                     guildMusicState.queue.shift();
                     guildMusicState.playing = false;
@@ -86,8 +88,15 @@ module.exports.play = async (base, guild, locale) => {
                     }
                 }
             });
-    
+
+            player.on('error', (err) => {
+
+                base.handleError({ commandName: 'None (musicPlayer)', channelID: guildMusicState.textChannel, msg: locale.ERROR_MSG, error: err, print: true });
+            })
+
             guildMusicState.connection.on('disconnect', async () => {
+                guildMusicState.disconnected = true;
+                guildMusicState.seekTime = player.streamTime / 1000;
                 guildMusicState.playing = false;
                 setTimeout(async () => {
                     const updatedGuildMusicState = await base.guildMusicStates.get(guild.id);

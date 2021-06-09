@@ -23,7 +23,7 @@ const loadServers = (guilds) => {
     
             let guildIcon;
             if (guilds[i].icon) guildIcon = `https://cdn.discordapp.com/icons/${guilds[i].id}/${guilds[i].icon}.png`;
-            else guildIcon = '/assets/images/defaultServer.png';
+            else guildIcon = '/assets/images/default.png';
     
             if (guilds[i].name.length > 25) guilds[i].name = guilds[i].name.slice(0, 25) + '...';
     

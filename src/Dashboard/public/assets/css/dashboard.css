@@ -496,6 +496,14 @@ body {
     margin: 15px;
 }
 
+#notice {
+    font-size: 14px;
+    color: #777676;
+    margin: 10px auto !important;
+    width: fit-content;
+    width: -moz-fit-content;
+}
+
 .buttonPart button {
     border-color: #7289DA !important;
     background-color: #7289DA !important;

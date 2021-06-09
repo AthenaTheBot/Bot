@@ -34,7 +34,7 @@ const run = async (client, message, args, locale, db) => {
 
         client.guildMusicStates.set(message.guild.id, guildMusicState);
 
-        client.musicPlayer.play(client, message.guild.id, require(path.join(__dirname, '..', '..', 'Locales', language, playCommand.Category, playCommand.Name + '.json')));
+        client.musicPlayer.play(client, message.guild, require(path.join(__dirname, '..', '..', 'Locales', language, playCommand.Category, playCommand.Name + '.json')));
 
         return message.channel.send(defaultEmbed.setDescription(`${locale.DISABLED}`));
     }
@@ -44,7 +44,7 @@ const run = async (client, message, args, locale, db) => {
 
         client.guildMusicStates.set(message.guild.id, guildMusicState);
 
-        client.musicPlayer.play(client, message.guild.id, require(path.join(__dirname, '..', '..', 'Locales', language, playCommand.Category, playCommand.Name + '.json')));
+        client.musicPlayer.play(client, message.guild, require(path.join(__dirname, '..', '..', 'Locales', language, playCommand.Category, playCommand.Name + '.json')));
 
         return message.channel.send(defaultEmbed.setDescription(`${locale.ENABLED}`));
     }

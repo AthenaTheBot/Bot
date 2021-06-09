@@ -216,6 +216,8 @@ $(document).ready(async () => {
                     .then(res => res.json()).then(res => {
                         if (res.status == 200) {
                             $(this).text('Disabled');
+                            $('#bassboost').text('Disabled');
+                            return;
                         }
                     }).catch(err => { return null; });
                 }
@@ -232,7 +234,9 @@ $(document).ready(async () => {
                         if (res.status == 200) {
                             $(this).text('Enabled');
                             $('#bassboost').text('Disabled');
+                            return;
                         }
+                        return;
                     }).catch(err => { return null; });
                 }
                 break;
@@ -250,7 +254,10 @@ $(document).ready(async () => {
                     .then(res => res.json()).then(res => {
                         if (res.status == 200) {
                             $(this).text('Disabled');
+                            $('#nightcore').text('Disabled');
+                            return;
                         }
+                        return;
                     }).catch(err => { return null; });
                 }
                 else {
@@ -266,7 +273,9 @@ $(document).ready(async () => {
                         if (res.status == 200) {
                             $(this).text('Enabled');
                             $('#nightcore').text('Disabled');
+                            return;
                         }
+                        return;
                     }).catch(err => { return null; });
                 }
                 break;
@@ -314,7 +323,7 @@ $(document).ready(async () => {
 
     let guildDisplayIcon;
     if (currentGuild.icon) guildDisplayIcon = `https://cdn.discordapp.com/icons/${currentGuild.id}/${currentGuild.icon}.png`;
-    else guildDisplayIcon = '/assets/images/defaultServer.png';
+    else guildDisplayIcon = '/assets/images/default.png';
 
     $('.server').children().remove();
     $('.server').append(`
@@ -333,7 +342,7 @@ $(document).ready(async () => {
  
     let userDisplayAvatar;
     if (user.avatar) userDisplayAvatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
-    else userDisplayAvatar = '/assets/images/defaultServer.png';
+    else userDisplayAvatar = '/assets/images/default.png';
 
     $('.profile').children().remove();
     $('.profile').append(`
