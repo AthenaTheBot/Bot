@@ -36,7 +36,7 @@
     "node-localstorage": "^2.1.6",
     "simple-encryptor": "^4.0.0",
     "utf-8-validate": "^5.0.5",
-    "ws": "^7.4.5",
+    "ws": "^7.4.6",
     "ytdl-core": "^4.8.2",
     "ytdl-core-discord": "^1.3.0",
     "ytsr": "^3.4.1",

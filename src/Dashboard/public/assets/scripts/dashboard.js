@@ -107,7 +107,7 @@ $(document).ready(async () => {
 
     $('#playBtn').click(async function() {
         const btnClasses = $(this).attr('class').split(' ');
-        if (btnClasses.includes('fa-play')) {
+        if (btnClasses.includes('fa-pause')) {
             const serverResponse = await fetch(`/api/guilds/${currentGuildID}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -120,8 +120,8 @@ $(document).ready(async () => {
             if (serverResponse.status != 200) return;
             else {
 
-                $(this).removeClass('fa-play');
-                $(this).addClass('fa-pause');
+                $(this).removeClass('fa-pause');
+                $(this).addClass('fa-play');
             }
         }
         else {
@@ -137,8 +137,8 @@ $(document).ready(async () => {
             if (serverRes.status != 200) return;
             else {
 
-                $(this).removeClass('fa-pause');
-                $(this).addClass('fa-play');
+                $(this).removeClass('fa-play');
+                $(this).addClass('fa-pause');
             }
         }
     });
@@ -455,6 +455,10 @@ const musicInit = async (passiveCheck) => {
             $('#bassboost').text('Disabled');
 
             $('.notPlayingAlert').css('display', 'block');
+
+            $('#playBtn').removeClass('fa-pause');
+            $('#playBtn').addClass('fa-play');
+
         }
         else {
 
@@ -479,6 +483,9 @@ const musicInit = async (passiveCheck) => {
             $('.queueSong').remove();
 
             $('.notPlayingAlert').css('display', 'none');
+
+            $('#playBtn').removeClass('fa-play');
+            $('#playBtn').addClass('fa-pause');
     
             guildMusicState.queue.forEach((song) => {
                 if (song.title.length >= 25) song.title = song.title.slice(0, 25) + '..';
@@ -540,6 +547,9 @@ const musicInit = async (passiveCheck) => {
                 else if (guildMusicState.bassboostEnabled) $('#bassboost').text('Enabled');
 
                 $('.notPlayingAlert').css('display', 'none');
+
+                $('#playBtn').removeClass('fa-play');
+                $('#playBtn').addClass('fa-pause');
 
                 guildMusicState.queue.forEach((song) => {
                     if (song.title.length >= 15) song.title = song.title.slice(0, 15) + '..';

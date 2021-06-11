@@ -30,16 +30,22 @@ const loadServers = (guilds) => {
             let cardDescription;
             if (guilds[i].memberCount == 'Unknown') cardDescription = `<a id="dashButton" href="/invite">Invite Athena!</a>`;
             else cardDescription = `<a id="dashButton" href="/dashboard/${guilds[i].id}">Go To Dashboard</a>`;
+
+            let cardLink;
+            if (guilds[i].memberCount == 'Unknown') cardLink = '/invite';
+            else cardLink = `/dashboard/${guilds[i].id}`;
     
             $('.servers').append(`
-                <div class="server">
-                    <img src="${guildIcon}" alt="${guilds[i].name}">
-                    <h5>${guilds[i].name}</h5>
-                    <hr id="serverLine">
-                    <div class="details">
-                        <p>Member Count: <span class="customCode">${guilds[i].memberCount}</span></p>
-                        <p>Channel Count: <span class="customCode">${guilds[i].channelCount}</span></p>
-                        ${cardDescription}
+                <div class="server" onclick="window.location.replace('${cardLink}')">
+                    <div class="serverContent">
+                        <img src="${guildIcon}" alt="${guilds[i].name}">
+                        <h5>${guilds[i].name}</h5>
+                        <hr id="serverLine">
+                        <div class="details">
+                            <p>Member Count: <span class="customCode">${guilds[i].memberCount}</span></p>
+                            <p>Channel Count: <span class="customCode">${guilds[i].channelCount}</span></p>
+                            ${cardDescription}
+                        </div>
                     </div>
                 </div>
             `);
