@@ -1,0 +1,9 @@
+{
+  "short_name": "Athena",
+  "name": "Athena - The Discord Bot",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#5865F2",
+  "background_color": "#1f222c"
+}

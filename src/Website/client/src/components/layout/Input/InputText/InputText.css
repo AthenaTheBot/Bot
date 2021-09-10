@@ -1,0 +1,22 @@
+.athena-input-text {
+    width: 85% !important;
+    height: 50px;
+    background-color: var(--secondary-background);
+    border: none;
+    border-radius: 10px;
+    margin: 10px;
+    transition: all 350ms ease;
+    color: #b6b6b6;
+    padding: 10px;
+    border: 1px solid transparent;
+    max-width: 500px !important;
+}
+
+.athena-input-text:hover {
+    border: 1px solid var(--primary-theme)
+}
+
+.athena-input-text:focus {
+    outline: none;
+    border: 1px solid var(--secondary-theme);
+}

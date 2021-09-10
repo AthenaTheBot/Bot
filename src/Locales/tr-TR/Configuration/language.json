@@ -1,0 +1,6 @@
+{
+    "LANGUAGE_INFO": "Athena'nın şuan ki dili `$language`",
+    "INVALID_LANGUAGE": "Geçersiz dil belirtildi. Geçerli diller: $languages",
+    "ERROR": "Sunucu dili ayarlanılmaya çalışırken bir hata meydana geldi.",
+    "SUCCESS": "Başarıyla sunucu dili `$language` olarak değiştirildi."
+}

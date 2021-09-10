@@ -1,0 +1,4 @@
+{
+    "INVALID_AMOUNT": "Please, specify number of songs to skip.",
+    "ERROR": "An unexpected error occured on our side while trying to skip the song."
+}

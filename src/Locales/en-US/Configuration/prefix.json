@@ -1,0 +1,5 @@
+{
+    "PREFIX_INFO": "Current prefix of Athena is `$prefix`",
+    "ERROR": "An error has occured while trying to set server prefix.",
+    "SUCCESS": "Successfully changed server prefix to `$prefix`."
+}

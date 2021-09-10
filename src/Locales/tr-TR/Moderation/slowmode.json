@@ -1,0 +1,9 @@
+{
+    "SPECIFY_ARG": "Lütfen, bu kanal üzerinde yavaşmod açmak için bir sayı belirtin. \n \n Örnekler: \n `!yavaşmod 10s` --> 10 Saniye mesaj başına \n `!yavaşmod 3m` --> 3 Dakika mesaj başına \n `!yavaşmod 2h` --> 2 Saat mesaj başına",
+    "ERROR_MSG": "Yavaş mod ayarlanılmaya çalışılırken bir hata meydaba geldi.",
+    "SUCCESSFUL_ON": "Bu kanal üzeirnde yavaşmod **$value** olarak ayarlandı.",
+    "SUCCESSFUL_OFF": "Yavaş mod bu kanal üzerinde kapatıldı.",
+    "SECONDS": "saniye",
+    "MINUTES": "dakika",
+    "HOUR": "saat"
+}

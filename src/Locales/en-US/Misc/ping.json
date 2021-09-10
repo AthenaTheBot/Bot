@@ -1,0 +1,3 @@
+{
+    "MSG": "Pong! Average websocket latency: `$ping`ms"
+}

@@ -1,0 +1,4 @@
+{
+    "NO_ARG": "You have to specify a text in order to convert it into ascii format.",
+    "ERROR": "An error occured while converting message format to ascii."
+}

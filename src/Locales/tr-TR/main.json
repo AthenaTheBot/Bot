@@ -1,0 +1,7 @@
+{
+    "BOT_NOT_ENOUGH_PERM": "Athena o komutu çalıştırmak için yeterli yetkilere sahip değil.",
+    "USER_NOT_ENOUGH_PERM": "Oh, görünüşe göre o komutu kullanmak için yeterli yetkiye sahip değilsin.",
+    "ALREADY_NOT_PLAYING_SONG": "Athena, zaten şuanda müzik çalmıyor.",
+    "NOT_SAME_VC": "Şarkı sırasını kontrol etmek için Athena ile aynı ses kanalında olmalısın.",
+    "COOLDOWN_WARNING": "Soğumadasınız! Lütfen `$commandName` komutunu tekrar kullanmak için biraz bekleyin!"
+}

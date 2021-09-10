@@ -1,0 +1,32 @@
+.athena-pg-not-found-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.athena-pg-not-found-container > h1 {
+    font-size: 100px;
+    color: var(--primary-theme)
+}
+
+.athena-pg-not-found-container > p {
+    font-size: 21px;
+}
+
+.athena-pg-not-found-btn {
+    padding: 10px;
+    margin: 10px;
+    background-color: var(--secondary-theme);
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 3px;
+    transition: all 300ms ease;
+}
+
+.athena-pg-not-found-btn:hover {
+    background-color: #3c4499;
+}

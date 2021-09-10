@@ -1,0 +1,7 @@
+{
+    "INVALID_SONG": "Please, specify a valid song url to play.",
+    "SONG_NOT_FOUND": "Song you have specified couldn't find on YouTube.",
+    "SONG_ADDED_TO_QUEUE": "Song has been added to queue. $song",
+    "NOW_PLAYING": "Now playing: $song",
+    "ERROR": "Ooops! It looks like an unexpected error occured on our side."
+}

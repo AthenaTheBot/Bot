@@ -1,0 +1,12 @@
+{
+    "NEED_PERM": "Bu komutu kullanmak için yeterkli yetkilere sahip değilsin dostum.",
+    "BOT_NEED_PERM": "Athena'nın bu işlemi yerine getirmesi için `üyeleri at` yetkisine sahip olması gerekiyor.",
+    "NO_MENTION": "Lütfen, atmak için bir kişiyi etiketleyin.",
+    "CANNOT_KICK_YOURSELF": "Kendini sunucudan atamazsın!",
+    "CANNOT_KICK_MYSELF": "Athena kendini atamaz, çok kabasın!",
+    "NOT_ENOUGH_PERMS": "O kişiyi atmak için yeterli yetkilere sahip değilsin.",
+    "BOT_NOT_ENOUGH_PERMS": "O kişiyi atabilmek için Athena yeterli yetkilere sahip değil.",
+    "ERROR_MSG": "Belirtilen kişi sunucudan atılırken bir hata meydana geldi.",
+    "NO_REASON": "Belirtilmedi",
+    "SUCCESSFUL": "sunucudan atıldı."
+}

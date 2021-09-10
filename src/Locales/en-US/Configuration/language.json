@@ -1,0 +1,6 @@
+{
+    "LANGUAGE_INFO": "Current language of Athena is `$language`",
+    "INVALID_LANGUAGE": "Invalid language was specified. Valid languages: $languages",
+    "ERROR": "An error has occured while trying to set server prefix.",
+    "SUCCESS": "Successfully changed server language to `$language`."
+}

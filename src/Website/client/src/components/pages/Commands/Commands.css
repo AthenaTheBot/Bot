@@ -1,0 +1,128 @@
+h1,h5 {
+    font-weight: bold !important;
+}
+
+.command-page-header {
+    margin: 140px;
+    margin-bottom: 50px;
+    height: fit-content;
+    height: -moz-fit-content;
+    animation-name: fadeIn;
+    animation-duration: 1200ms;
+    animation-fill-mode: forwards;
+    text-align: center;
+}
+
+.command-page-header > h1 {
+    text-align: center;
+}
+
+.commands-container {
+    width: 80vw !important;
+    max-width: 1200px;
+    display: flex;
+    margin:  30px auto;
+    animation-name: fadeIn;
+    animation-duration: 1200ms;
+    animation-fill-mode: forwards;
+    margin-bottom: 150px !important;
+}
+
+.categories {
+    background-color: var(--primary-background);
+    padding: 5px;
+    text-align: center;
+    border-radius: 10px;
+    width: 350px;
+    margin: 30px;
+    height: fit-content;
+    height: -moz-fit-content;
+}
+
+.category {
+    padding: 10px;
+    margin: 15px 5px;
+    border-radius: 6px;
+    background-color: var(--secondary-background);
+    cursor: pointer;
+    position: sticky;
+    user-select: none;
+}
+
+.category:hover {
+    background-color: var(--primary-theme);
+}
+
+.activeCategory {
+    background-color: var(--secondary-theme);
+    cursor: default;
+    pointer-events: none;
+}
+
+.commands {
+    margin-top: 4px;
+    width: calc(80vw - 255px);
+}
+
+@media (max-width: 1165px) {
+    .commands-container {
+        flex-direction: column;
+        width: fit-content;
+    }
+
+    .command {
+        margin: 20px;
+    }
+
+    .commands {
+        margin: 10px auto;
+    }
+
+    .categories {
+        margin: 10px auto;
+        width: 320px;
+    }
+}
+
+@media (max-width: 870px) {
+    .commands-container {
+        margin: auto;
+        width: 100vw;
+    }
+
+    .command {
+        margin: 10px;
+    }
+
+    .commands {
+        width:  100%;
+    }
+}
+
+@media (max-width: 745px) {
+    .command-page-header {
+        width: 90%;
+        margin: 140px auto;
+        margin-bottom: 50px;
+    }
+} 
+
+@media (max-width: 350px) {
+    .commands-container {
+        width: 100vw;
+        margin: 0;
+    }
+
+    .commands {
+        width: 100vw !important;
+    }
+
+    .command {
+        width: 99%;
+        margin: 10px auto;
+    }
+
+    .categories {
+        width: 100vw;
+    }
+}

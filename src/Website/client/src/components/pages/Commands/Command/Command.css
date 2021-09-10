@@ -1,0 +1,42 @@
+.command {
+    width: 98%;
+    height: fit-content;
+    height: -moz-fit-content;
+    background-color: var(--primary-background);
+    margin: 30px;
+    padding: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 450ms ease;
+    user-select: none;
+}
+
+.command > h5 {
+    width: fit-content;
+    width: -moz-fit-content;
+}
+
+.command code {
+    font-size: 15px;
+    color: var(--primary-theme);
+    padding: 3px;
+    border-radius: 3px;
+    background-color: var(--secondary-background);
+}
+
+@keyframes commandExpandAnimText {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.command-expand {
+    background-color: var(--primary-background);
+    margin-top: 20px;
+    line-height: 1;
+    animation: commandExpandAnimText 300ms forwards;
+}

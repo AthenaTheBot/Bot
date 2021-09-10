@@ -1,0 +1,5 @@
+{
+    "PREFIX_INFO": "Athena'nın şuan ki prefixi `$prefix`",
+    "ERROR": "Sunucu prefixi ayarlanılmaya çalışırken bir hata meydana geldi.",
+    "SUCCESS": "Başarıyla sunucu prefixi `$prefix` olarak değiştirildi."
+}

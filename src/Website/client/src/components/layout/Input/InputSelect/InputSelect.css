@@ -1,0 +1,47 @@
+.athena-input-selection {
+    width: 85%;
+    max-width: 500px;
+}
+
+.athena-input-selection-main {
+    padding: 10px;
+    background-color: var(--secondary-background);
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    color: #b4b3b3;
+    margin: 10px;
+    border: 1px solid transparent;
+    transition: all 350ms ease;
+}
+
+.athena-input-selection-main:hover {
+    border: 1px solid var(--primary-theme);
+}
+
+.athena-input-selection-slide {
+    list-style: none;
+    background-color: var(--secondary-background);
+    padding: 5px;
+    text-align: left;
+    border-radius: 10px;
+    width: 97%;
+    margin: auto;
+    border: 1px solid #333333;
+    transition: all 350ms ease;
+    animation-name: slideInit;
+    animation-duration: 1200ms;
+    animation-fill-mode: forwards;
+}
+
+.athena-input-selection-slide-option {
+    padding: 10px;
+    margin: 3px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 350ms ease;
+}
+
+.athena-input-selection-slide-option:hover {
+    background-color: var(--primary-background);
+}

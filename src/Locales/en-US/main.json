@@ -1,0 +1,7 @@
+{
+    "BOT_NOT_ENOUGH_PERM": "Athena does not have enough permissions to run that command.",
+    "USER_NOT_ENOUGH_PERM": "Oh, it looks like you don't have enough permission to use that command.",
+    "ALREADY_NOT_PLAYING_SONG": "Athena, already isn't playing a song right now.",
+    "NOT_SAME_VC": "You have to be in same voice channel as Athena to control song queue.",
+    "COOLDOWN_WARNING": "You are in cooldown! Please wait a while to use `$commandName` command again."
+}

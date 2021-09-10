@@ -1,0 +1,57 @@
+@keyframes InitAnim {
+    0% { 
+        opacity: 0; 
+        transform: translateY(-30px) 
+    }
+
+    100% { 
+        opacity: 1; 
+        transform: translateY(0px); 
+    }
+}
+
+.server {
+    background-color: var(--primary-background);
+    width: 200px;
+    height: 230px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 35px;
+    display: inline-block;
+    border: 1.5px solid var(--primary-theme);
+    transition: all 550ms ease;
+    -webkit-box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.61); 
+    box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.61);
+    user-select: none;
+    animation-name: InitAnim;
+    animation-duration: 750ms;
+}
+
+.server > h4 {
+    margin-bottom: 20px;
+    font-weight: 400;
+}
+
+.server > img {
+    border-radius: 50%;
+    height: 90px;
+    width: 90px;
+    margin: 15px;
+    -webkit-box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.61); 
+    box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.61);
+}
+
+.server:hover {
+    transform: translateY(-30px);
+}
+
+.server-btn {
+    color: white !important;
+    background-color: var(--secondary-theme);
+    padding: 5px;
+    border-radius: 3px;
+    text-decoration: none !important;
+    font-weight: bold;
+    font-size: 14px;
+}

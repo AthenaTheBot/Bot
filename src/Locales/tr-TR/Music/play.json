@@ -1,0 +1,7 @@
+{
+    "INVALID_SONG": "Lütfen, çalmak için geçerli bir şarkı url si belirtin.",
+    "SONG_NOT_FOUND": "Belirtilen şarkı YouTube üzerinde bulunamadı.",
+    "SONG_ADDED_TO_QUEUE": "Şarkı sıraya eklendi. $song",
+    "NOW_PLAYING": "Şuanda çalınıyor: $song",
+    "ERROR": "Ooops! Görünüşe göre bizim tarafımızda beklenmeyen bir hata meydan geldi."
+}

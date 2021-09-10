@@ -1,0 +1,169 @@
+@keyframes alertAnim {
+    0% {
+        transform: translateY(60px)
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes alertClosingAnim {
+    0% {
+        transform: translateY(0px)
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+
+        transform: translateY(90px);
+    }
+}
+
+@keyframes alertbubbleAnim {
+    0% {
+        background-color: white;
+    }
+
+    50% {
+        background-color: #cecccc;
+    }
+
+    100% {
+        background-color: white;
+    }
+}
+
+.change-alert {
+    width: 75%;
+    height: 60px;
+    background-color: var(--primary-background);
+    color: white;
+    border-radius: 5px;
+    margin: 0px auto;
+    display: flex;
+    justify-content: space-between;
+    transition: all 650ms ease;
+    animation: alertAnim 650ms forwards;
+    position: sticky;
+    bottom: 15px;
+    border: 1px solid #333333;
+    -webkit-box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.61); 
+    box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.61);
+}
+
+.change-alert > p {
+    padding: 10px;
+    margin-bottom: 0px !important;
+    margin-top: 7px;
+    margin-left: 10px;
+    font-weight: 600;
+}
+
+.change-alert Button {
+    height: 40px;
+    width: 145px;
+    border: 1px solid black;
+    margin: 10px;
+    border: none;
+    background-color: var(--primary-theme);
+    box-shadow: none !important;
+    font-weight: 500;
+}
+
+.change-alert Button:hover {
+    background-color: var(--secondary-theme);
+}
+
+.change-alert Button:focus {
+    background-color: var(--secondary-theme);
+}
+
+.change-alert-btn-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.change-alert-bubble {
+    height: 10px;
+    width: 10px;
+    margin: 3px;
+    border-radius: 50%;
+    background-color: white;
+    transition: all 650ms ease;
+    animation: alertbubbleAnim 900ms forwards infinite
+}
+
+.bubble-1 {
+    animation-delay: 100ms;
+}
+
+.bubble-2 {
+    animation-delay: 200ms;
+}
+
+.bubble-3 {
+    animation-delay: 300ms;
+}
+
+.bubble-4 {
+    animation-delay: 400ms;
+}
+
+.change-alert-closing-anim {
+    animation: alertClosingAnim 650ms forwards;
+}
+
+.change-alert .btn-transparent {
+    background-color: transparent !important;
+    width: fit-content;
+}
+
+.change-alert-error-border {
+    border-color: var(--primary-error) !important;
+}
+
+.change-alert-error-background {
+    background-color: var(--primary-error) !important;
+}
+
+@media(max-width: 730px) {
+    .change-alert {
+        width: 99%;
+    }
+}
+
+@media (max-width: 540px) {
+    .change-alert {
+        height: fit-content;
+        height: -moz-fit-content;
+    }
+
+    .change-alert Button {
+        height: fit-content;
+    }
+
+    .change-alert Button > p {
+        margin: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .change-alert {
+        height: fit-content;
+        height: -moz-fit-content;
+    }
+
+    .change-alert Button {
+        height: fit-content;
+        height: -moz-fit-content;
+    }
+}

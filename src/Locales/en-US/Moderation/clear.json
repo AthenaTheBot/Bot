@@ -1,0 +1,4 @@
+{
+    "INVALID_AMOUT": "Please specify a **valid** amout.",
+    "SUCCESS": "Deleted, **$count** messages."
+}

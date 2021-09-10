@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;800&display=swap');
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.fadeIn {
+    animation: fadeIn 300ms forwards;
+}
+
+.fadeOut {
+    animation: fadeIn 300ms forwards reverse;
+}
+
+:root {
+    --primary-background: #15161d;
+    --secondary-background: #1c1e27;
+    --third-background: #1f222c;
+    
+    --primary-theme: #5865F2;
+    --secondary-theme: #4b56cc;
+
+    --primary-error: #b12b2b;
+}
+
+body {
+    background-color: var(--third-background);
+    color: white;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    animation-name: fadeIn;
+    animation-duration: 1200ms;
+    animation-fill-mode: forwards;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+#root {
+    height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+    overflow-wrap: break-word;
+}
+
+a {
+    color: var(--primary-theme) !important;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
