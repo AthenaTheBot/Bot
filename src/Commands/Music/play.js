@@ -14,7 +14,7 @@ const ytpl = require('ytpl');
 const ytsr = require('ytsr');
 const { getInfo } = require('ytdl-core');
 const { MessageEmbed } = require('discord.js');
-const { getPreview } = require('spotify-url-info');
+const Spotify = require('spotify-url-info');
 
 class Command extends BaseCommand {
     constructor(){
@@ -135,7 +135,7 @@ class Command extends BaseCommand {
             if (songs.length > 0) song = songs;
         }
         else if (reqSong.trim().startsWith('https://open.spotify.com/track/')) {
-            songInfo = await getPreview(reqSong.trim());
+            songInfo = await Spotify.getPreview(reqSong.trim());
             if  (songInfo) {
                 return this.getSong(`${songInfo.title} ${songInfo.artist}`);            
             }
