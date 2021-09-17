@@ -63,6 +63,10 @@ const getUserGuilds = async (sesKey) => {
 };
 
 // General Routes
+route.get('/getStats', (req,res) => {
+    res.json({ serverCount: Athena.guilds.cache.size, cachedUserCount: Athena.users.cache.size });
+})
+
 route.get('/commands', (req, res) => {
     if (!commandsCache || commandsCache.length == 0) {
         const categories = fs.readdirSync(path.join(__dirname, '..', '..', '..', 'Commands'));

@@ -7,7 +7,7 @@ class Command extends BaseCommand {
     constructor(){
         super({
             name: 'skip',
-            aliases: [],
+            aliases: ['s'],
             description: 'Command for skipping song queue.',
             category: 'Music',
             usage: null,

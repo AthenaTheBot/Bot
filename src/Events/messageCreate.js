@@ -13,7 +13,8 @@ module.exports = class Event {
 
         if (guildData?.data && userData?.preferences) {
 
-            if (!msg.content.startsWith(guildData.data?.preferences?.prefix)) return;
+            if (msg.content.includes(`<@!${client.user.id}>`) || msg.content.includes(`<@!${client.user.id}>`)) return msg.reply(`**Prefix**: \`${guildData.data.preferences.prefix}`)
+            else if (!msg.content.startsWith(guildData.data?.preferences?.prefix)) return;
 
             let preferedLanguage;
             if (userData?.preferences?.language) preferedLanguage = userData.preferences.language;
@@ -23,7 +24,7 @@ module.exports = class Event {
             const usedCommand = args.shift().trim().toLowerCase();
     
             const command = client.isCommand(usedCommand);
-    
+
             if (command) {
 
                 const mainLocale = client.locales.get(preferedLanguage).main;

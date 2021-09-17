@@ -28,16 +28,6 @@ module.exports = class Event {
 
                 const mainLocale = client.locales.get(preferedLanguage).main;
 
-                const cooldownData = client.cooldownManager.inCooldown(msg.author.id, command.name);
-
-                if (cooldownData.cooldown) {
-                    if (!cooldownData.warnSent) {
-                        msg.reply(mainLocale.COOLDOWN_WARNING.replace('$commandName', command.name));
-                        client.cooldownManager.updateState(msg.author.id, command.name, true);
-                    }
-                    return;
-                }
-
                 let botCanRun = true;
                 const botPerms = interaction.guild.me.permissionsIn(interaction.channel).toArray();
                 if (!botPerms.includes('SEND_MESSAGES') || !botPerms.includes('READ_MESSAGE_HISTORY')) return;
@@ -71,8 +61,6 @@ module.exports = class Event {
                 }
 
                 command.run(client, interaction, args, commandLocale.content);
-
-                client.cooldownManager.addCooldown(msg.author.id, command.name, command.cooldown);
 
                 if (client.config.DASHBOARD.CLIENT_ID != client.user.id) return;
 

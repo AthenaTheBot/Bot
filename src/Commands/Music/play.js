@@ -50,7 +50,7 @@ class Command extends BaseCommand {
             player: null
         }
 
-        if (!requestedSong) return msg.reply(locale.INVALID_SONG);
+        if (!requestedSong) return msg.reply({ embeds: [ Embed.setDescription(locale.INVALID_SONG) ] });
 
         if (!guildState) {
             client.songStates.set(msg.guild.id, defaultGuild)
@@ -77,11 +77,23 @@ class Command extends BaseCommand {
 
         guildState.queue.push(song);
         
-        this.playSong(guildState, (startedPlaying) => {
-            if (!startedPlaying) msg.reply(locale.ERROR);
+        this.playSong(guildState, async (startedPlaying, guildState) => {
+            if (!startedPlaying) msg.reply({ embeds: [ Embed.setDescription(locale.ERROR) ] });
             else {
 
-                msg.reply({ embeds: [ Embed.setDescription(locale.NOW_PLAYING.replace('$song', `[${guildState.queue[0].title}](${guildState.queue[0].url})`)) ] });
+                if (guildState.queue[0].msgSent) return;
+
+                try {
+
+                    await msg.reply({ embeds: [ Embed.setDescription(locale.NOW_PLAYING.replace('$song', `[${guildState.queue[0].title}](${guildState.queue[0].url})`)) ] });
+
+                }
+                catch(err) {
+
+                    return;
+                }
+                
+                guildState.queue[0].msgSent = true;
             }
         });
     }
@@ -184,12 +196,18 @@ class Command extends BaseCommand {
 
         player.play(resource);
 
-        player.on('error', () => {
+        player.on('error', (err) => {
+            console.log('ERROR:', err);
+            startedPlaying(false);
             subscription.unsubscribe();
+            guildState.playing = false;
+            player.stop();
+            const vc = getVoiceConnection(guildState.guild.id);
+            vc.destroy();
         })
 
         const connection = await joinVoiceChannel({ 
-            channelId: guildState.voiceChannel.id, // ! ERROR: TypeError: Cannot read property 'id' of null
+            channelId: guildState.voiceChannel.id,
             guildId: guildState.guild.id, 
             selfDeaf: true, 
             selfMute: false, 
@@ -200,7 +218,7 @@ class Command extends BaseCommand {
 
         player.on('stateChange', (oldState, newState) => {
             if (newState.status == AudioPlayerStatus.Playing) { 
-                if (startedPlaying) startedPlaying(true);
+                if (startedPlaying) startedPlaying(true, guildState);
                 guildState.playing = true;
             }
 
@@ -210,7 +228,7 @@ class Command extends BaseCommand {
 
                 if (guildState.queue.length > 0) {
                     this.playSong(guildState);
-                    if (startedPlaying) startedPlaying(true);
+                    if (startedPlaying) startedPlaying(true, guildState);
                 }
                 else {
                     setTimeout(() => {
