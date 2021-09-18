@@ -34,7 +34,7 @@ const getUserGuilds = async (sesKey) => {
     })
     .then(res => res.json()).catch(err => {});
 
-    if (userCurrentGuilds.retry_after) {
+    if (userCurrentGuilds?.retry_after) {
         await wait(userCurrentGuilds.retry_after)
         return getUserGuilds(sesKey);
     }
