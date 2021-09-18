@@ -9,12 +9,10 @@ const {
     getVoiceConnection
 
 } = require('@discordjs/voice');
-const ytdl = require('discord-ytdl-core');
-const ytpl = require('ytpl');
-const ytsr = require('ytsr');
-const { getInfo } = require('ytdl-core');
 const { MessageEmbed } = require('discord.js');
-const Spotify = require('spotify-url-info');
+const playDL = require('play-dl');
+const spotify = require('spotify-url-info');
+const Track = require('../../Structures/Track');
 
 class Command extends BaseCommand {
     constructor(){
@@ -61,6 +59,14 @@ class Command extends BaseCommand {
             const queueSong = await this.getSong(requestedSong);
             if (!queueSong) return msg.reply({ embeds: [ Embed.setDescription(locale.SONG_NOT_FOUND) ] });
             guildState.queue.push(queueSong);
+            let song = null;
+            if (queueSong.length && queueSong.length > 0) {
+                queueSong.forEach(item => {
+                    guildState.queue.push(item);
+                })
+    
+                song = queueSong[0];
+            }
             return msg.reply({ embeds: [ Embed.setDescription(locale.SONG_ADDED_TO_QUEUE.replace('$song', `[${queueSong.title}](${queueSong.url})`)) ] });
         };
 
@@ -77,7 +83,7 @@ class Command extends BaseCommand {
 
         guildState.queue.push(song);
         
-        this.playSong(guildState, async (startedPlaying, guildState) => {
+        this.playSong(client, guildState, async (startedPlaying, guildState) => {
             if (!startedPlaying) msg.reply({ embeds: [ Embed.setDescription(locale.ERROR) ] });
             else {
 
@@ -100,97 +106,74 @@ class Command extends BaseCommand {
 
     // Aditional Functions
     async getSong(reqSong) {
-        let song = {};
-        let songInfo = {};
+        const type = playDL.validate(reqSong);
+        if (!type) {
+            const ytSearchResult = await playDL.search(reqSong, { limit: 1, type: 'video' });
+            if (ytSearchResult[0]) {
 
-        const youtubeVidRegExp = new RegExp(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/gi)
-        const youtubePlaylistRegExp = new RegExp(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/gi)
+                return new Track(ytSearchResult[0].url, ytSearchResult[0].title, ytSearchResult[0].channel.name, ytSearchResult[0].durationInSec);
+            }
+            else {
 
-        if (reqSong.trim().match(youtubeVidRegExp)) {
-            songInfo = await getInfo(reqSong.trim()).catch(err => {});
-            if (songInfo) {
+                return null;
+            }
+        }
+        else if (type.startsWith('sp')) {
+            if (type == 'sp_track') {
+                const spotifyTrackData = await spotify.getData(reqSong);
+                if (spotifyTrackData) {
+                    const artistNames = [];
+                    spotifyTrackData.artists.forEach(artist => artistNames.push(artist.name));
+                    const ytSearchResult = await playDL.search(`${artistNames.join(' ')} ${spotifyTrackData.name}`, { limit: 1, type: 'video' });
+                    if (ytSearchResult[0]) {
 
-                song.url = reqSong,
-                song.title = songInfo.videoDetails.title,
-                song.description = songInfo.videoDetails.description,
-                song.duration = songInfo.videoDetails.lengthSeconds
-                song.author = {
-                    name: songInfo.videoDetails.author.name
+                        return new Track(ytSearchResult[0].url, ytSearchResult[0].title, ytSearchResult[0].channel.name, ytSearchResult[0].durationInSec);
+                    }
+                    else {
+
+                        return null;
+                    }
+                }
+                else {
+
+                    return null;
                 }
             }
             else {
 
-                song = null;
+
             }
         }
-        else if (reqSong.trim().match(youtubePlaylistRegExp)) {
-            let songs = [];
-            const playlist = await ytpl(reqSong);
-
-            if (playlist?.items) {
-                playlist.items.forEach(item => {
-                    let songDur = item.duration.split(':');
-                    songDur = parseInt((songDur[0] * 60)) + parseInt(songDur[1]);
-
-                    songs.push({
-                        url : item.url,
-                        title : item.title,
-                        description : item.description,
-                        duration : songDur,
-                        author : {
-                            name: item.author.name
-                        }
-                    })
-                })
-            }
-
-            if (songs.length > 0) song = songs;
-        }
-        else if (reqSong.trim().startsWith('https://open.spotify.com/track/')) {
-            songInfo = await Spotify.getPreview(reqSong.trim());
-            if  (songInfo) {
-                return this.getSong(`${songInfo.title} ${songInfo.artist}`);            
-            }
-        }
-        else {
-            
-            songInfo = (await ytsr(reqSong, { limit: 2 }).catch(err => {}))?.items?.find(x => x.type == 'video');
-            if (songInfo) {
-
-                let songDur = songInfo.duration.split(':');
-                songDur = parseInt((songDur[0] * 60)) + parseInt(songDur[1]);
-
-                song.url = songInfo.url;
-                song.title = songInfo.title;
-                song.description = songInfo.description;
-                song.duration = songDur;
-                song.author = {
-                    name: songInfo.author.name
-                };
+        else if (type.startsWith('yt')) {
+            if (type == 'yt_video') {
+                const videoInfo = await playDL.video_basic_info(reqSong);
+                return new Track(videoInfo.video_details.url, videoInfo.video_details.title, videoInfo.video_details.channel.name, videoInfo.video_details.url);
             }
             else {
+                const playlistInfo = await playDL.playlist_info(reqSong, true);
+                const videos = [];
+                if (playlistInfo?.videos) {
+                    playlistInfo.videos.forEach(video => {
+                        videos.push(new Track(video.url, video.title, playlistInfo.channel.name, video.durationInSec));
+                    })
+                }
 
-                song = null;
+                if (videos.length > 0) return videos;
+                else return null;
             }
         }
-
-        if (song) return song;
-        else return null;
     }
 
-    async playSong(guildState, startedPlaying) {
+    async playSong(client, guildState, startedPlaying) {
         if (guildState.playing) return;
 
         let encoderArgs = [];
         if (guildState.encoderArgs.length > 0) encoderArgs = ['-af', guildState.encoderArgs.join(',')];
 
         const player = createAudioPlayer();
-        const resource = createAudioResource(await ytdl(guildState.queue[0].url, { 
-            filter: 'audioonly', 
-            opusEncoded: true,
-            encoderArgs: encoderArgs
-        }), 
-        { inputType: StreamType.Opus });
+        const source = await playDL.stream(guildState.queue[0].url);
+        const resource = createAudioResource(source.stream, 
+        { inputType: source.type });
 
         if (!guildState.player) guildState.player = player;
 
@@ -227,7 +210,7 @@ class Command extends BaseCommand {
                 guildState.queue.shift();
 
                 if (guildState.queue.length > 0) {
-                    this.playSong(guildState);
+                    this.playSong(client, guildState);
                     if (startedPlaying) startedPlaying(true, guildState);
                 }
                 else {
@@ -237,6 +220,7 @@ class Command extends BaseCommand {
                             player.stop();
                             const vc = getVoiceConnection(guildState.guild.id);
                             vc?.destroy();
+                            client.songStates.delete(msg.guild.id);
                         }
                     }, 2 * 60 * 1000)
                 }
@@ -246,6 +230,10 @@ class Command extends BaseCommand {
         connection.on('stateChange', (oldState, newState) => {
             if (newState.status == VoiceConnectionStatus.Disconnected) {
                 guildState.playing = false;
+                setTimeout(() => {
+                    const newGuildState = client.songStates.get(guildState.guild.id);
+                    if (!newGuildState.playing) client.songStates.delete(guildState.guild.id);
+                }, 5 * 60 * 1000)
             }
         })
 
