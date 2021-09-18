@@ -28,10 +28,10 @@ class Command extends BaseCommand {
             ${locale.HEAD_MSG_2}
 
             **${locale.LINKS}**: 
-            [${locale.OUR_WEBSITE}](https://athenabot.site)
-            [${locale.COMMANDS_PAGE}](https://athenabot.site/commands)
-            [${locale.INVITE_ATHENA}](https://athenabot.site/invite)
-            [${locale.SUPPORT_SERVER}](https://athenabot.site/support)
+            [${locale.OUR_WEBSITE}](https://athena.bot)
+            [${locale.COMMANDS_PAGE}](https://athena.bot/commands)
+            [${locale.INVITE_ATHENA}](https://athena.bot/invite)
+            [${locale.SUPPORT_SERVER}](https://athena.bot/support)
         `);
         return msg.reply({ embeds: [ Embed ] });
     

@@ -1,6 +1,5 @@
 const BaseCommand = require('../../Structures/Command');
 const { MessageEmbed } = require('discord.js');
-let messages = [];
 
 class Command extends BaseCommand {
     constructor(){

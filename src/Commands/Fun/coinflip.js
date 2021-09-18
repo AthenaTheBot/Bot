@@ -8,7 +8,7 @@ class Command extends BaseCommand {
             aliases: [],
             description: 'Flip a coin and see the result.',
             category: 'Fun',
-            usage: null,
+            usage: '@member',
             options: [],
             cooldown: 1.5,
             required_perms: [],

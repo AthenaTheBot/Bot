@@ -9,7 +9,7 @@ class Command extends BaseCommand {
             aliases: [],
             description: 'Worse than hitler meme.',
             category: 'Fun',
-            usage: null,
+            usage: '@member',
             options: [],
             cooldown: 2,
             required_perms: [],

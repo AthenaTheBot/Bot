@@ -1,5 +1,7 @@
+// Modules
 import { Fragment, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import $ from 'jquery'
 
 // Other Comp
 import Navbar from '../../layout/Navbar/Navbar';
@@ -55,6 +57,8 @@ const Commands = () => {
 
         setNewCategories(newData);
         e.currentTarget.classList.add('activeCategory');
+
+        $('.command .command-active').removeClass('command-active');
     }
 
     return (

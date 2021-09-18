@@ -9,7 +9,7 @@ class Command extends BaseCommand {
             aliases: [],
             description: 'Want to see some cute cats?',
             category: 'Fun',
-            usage: null,
+            usage: '@member',
             options: [],
             cooldown: 2,
             required_perms: [],

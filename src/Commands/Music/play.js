@@ -236,7 +236,7 @@ class Command extends BaseCommand {
                             guildState.playing = false;
                             player.stop();
                             const vc = getVoiceConnection(guildState.guild.id);
-                            vc.destroy();
+                            vc?.destroy();
                         }
                     }, 2 * 60 * 1000)
                 }

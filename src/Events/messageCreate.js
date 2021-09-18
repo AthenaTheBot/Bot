@@ -57,7 +57,7 @@ module.exports = class Event {
                 if (!userCanRun) return msg.channel.send(mainLocale.USER_NOT_ENOUGH_PERM);
 
                 const commandLocale = client.locales.get(preferedLanguage).locales.find(locale => locale.cmd == command.name) || {};
-                if (!commandLocale.content) return msg.channel.send('LOCALE_NOT_AVAILABLE');
+                if (!commandLocale.content) return msg.channel.send('ERROR: LOCALE_NOT_AVAILABLE');
 
                 commandLocale.content.language = preferedLanguage;
 

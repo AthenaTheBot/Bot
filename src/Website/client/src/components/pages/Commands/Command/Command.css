@@ -39,4 +39,9 @@
     margin-top: 20px;
     line-height: 1;
     animation: commandExpandAnimText 300ms forwards;
+    display: none;
+}
+
+.command-active {
+    display: block !important;
 }
