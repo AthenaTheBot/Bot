@@ -20,7 +20,7 @@ module.exports = class Event {
     
             const args = new Array();
 
-            interaction.options?.forEach(option => {
+            interaction?.options?.forEach(option => {
                 args.push(option.value);
             })
 

@@ -220,7 +220,7 @@ class Command extends BaseCommand {
                             player.stop();
                             const vc = getVoiceConnection(guildState.guild.id);
                             vc?.destroy();
-                            client.songStates.delete(msg.guild.id);
+                            client.songStates.delete(guildState.guild.id);
                         }
                     }, 2 * 60 * 1000)
                 }
