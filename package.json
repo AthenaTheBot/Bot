@@ -1,0 +1,27 @@
+{
+  "name": "athena",
+  "version": "3.0.0",
+  "description": "Simple multi-functional discord bot.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "athena",
+    "v3",
+    "multi-functional"
+  ],
+  "author": "Tuna Sayin",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.10.7",
+    "discord.js": "^13.1.0",
+    "dotenv": "^10.0.0",
+    "mongoose": "^6.0.8"
+  },
+  "devDependencies": {
+    "@types/node": "^16.10.2"
+  }
+}
