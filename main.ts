@@ -16,4 +16,4 @@ Athena.initalize();
 
 // Exports
 export default config;
-export const logger =  Athena.logger;
+export const logger = Athena.logger;

@@ -41,7 +41,7 @@ class ErrorHandler {
       return false;
     }
 
-    this.logger.warn(`Recorded an error file. [${error.name}]`)
+    this.logger.warn(`Recorded an error with name [${error.name}].`);
     return true;
   }
 }

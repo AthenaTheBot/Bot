@@ -1,4 +1,5 @@
 // Modules
+import dayjs from "dayjs";
 import mongoose, { Connection } from "mongoose";
 
 // Classes
@@ -8,7 +9,7 @@ class DatabaseManager {
   url: string;
   connected: boolean;
   connection: Connection;
-  private logger: Logger; 
+  private logger: Logger;
 
   constructor(url: string) {
     if (url) {
@@ -30,7 +31,9 @@ class DatabaseManager {
       this.connected = true;
       return true;
     } catch (err) {
-      this.logger.error("An error occured while trying to connect database server.");
+      this.logger.error(
+        "An error occured while trying to connect database server."
+      );
       return false;
     }
   }
@@ -38,6 +41,9 @@ class DatabaseManager {
   // TODO: Record when the document is updated.
   async createDocument(collection: string, document: object): Promise<boolean> {
     if (!this.connected) return false;
+
+    // Update last updated column
+    Object.assign(document, { lastUpdated: dayjs().format("L LT") });
 
     try {
       await this.connection.collection(collection).insertOne(document);

@@ -14,5 +14,8 @@ class Utils {
     loadConfig() {
         return JSON.parse((0, fs_1.readFileSync)(this.configPath, { encoding: "utf-8" }));
     }
+    parseError(error) {
+        return `[ERROR NAME]: ${error.name} \n \n  [ERROR MESSAGE]:  ${error.message} \n \n [ERROR STACK]: ${error.stack}`;
+    }
 }
 exports.default = Utils;

@@ -2,7 +2,7 @@
 import { Client, Intents } from "discord.js";
 
 // Classes
-import Logger from './Classes/Logger';
+import Logger from "./Classes/Logger";
 import DatabaseManager from "./Classes/DatabaseManager";
 
 // Interfaces
@@ -42,7 +42,8 @@ class AthenaClient extends Client {
         this.logger.success("Successfully connected to database server.");
       else
         this.logger.error(
-          "An error occured while tring to connect database server");
+          "An error occured while tring to connect database server"
+        );
     });
 
     try {

@@ -5,50 +5,50 @@ import dayjs from "dayjs";
 import Utils from "./Utils";
 
 class Logger {
-    readonly defaultTag: string;
-    readonly successTag : string;
-    readonly warnTag : string;
-    readonly errorTag : string;
+  readonly defaultTag: string;
+  readonly successTag: string;
+  readonly warnTag: string;
+  readonly errorTag: string;
 
-    private utils : Utils;
+  private utils: Utils;
 
-    constructor(dTag ?: string, stag ?: string, wtag ?: string, etag ?: string) {
-        if (dTag) this.defaultTag = dTag;
-        else this.defaultTag = '\x1b[47m\x1b[30m LOG \x1b[0m"'; 
+  constructor(dTag?: string, stag?: string, wtag?: string, etag?: string) {
+    if (dTag) this.defaultTag = dTag;
+    else this.defaultTag = '\x1b[47m\x1b[30m LOG \x1b[0m"';
 
-        if (stag) this.successTag = stag;
-        else this.successTag = '\x1b[42m\x1b[30m SUCCESS \x1b[0m"';
+    if (stag) this.successTag = stag;
+    else this.successTag = '\x1b[42m\x1b[30m SUCCESS \x1b[0m"';
 
-        if (wtag) this.warnTag = wtag;
-        else this.warnTag = '\x1b[43m\x1b[30m WARN \x1b[0m';
-        
-        if (etag) this.errorTag = etag;
-        else this.errorTag = '\x1b[41m\x1b[30m ERROR \x1b[0m';
+    if (wtag) this.warnTag = wtag;
+    else this.warnTag = "\x1b[43m\x1b[30m WARN \x1b[0m";
 
-        this.utils = new Utils();
-    }
+    if (etag) this.errorTag = etag;
+    else this.errorTag = "\x1b[41m\x1b[30m ERROR \x1b[0m";
 
-    private _log(tag : string, msg : string) {
-        const date = dayjs(Date.now()).format("DD/MM/YYYY hh:mm");
-        console.log(`[${date}] ${tag} ${msg}`); 
-    }
+    this.utils = new Utils();
+  }
 
-    log(msg : string) {
-        this._log(this.defaultTag, msg);
-    }
-    
-    success(msg : string) {
-        this._log(this.successTag, msg);
-    }
+  private _log(tag: string, msg: string) {
+    const date = dayjs(Date.now()).format("DD/MM/YYYY hh:mm");
+    console.log(`[${date}] ${tag} ${msg}`);
+  }
 
-    warn(msg : string) {
-        this._log(this.warnTag, msg);
-    }
+  log(msg: string) {
+    this._log(this.defaultTag, msg);
+  }
 
-    error(msg : string | Error) {
-        if (typeof msg !== 'string') msg = this.utils.parseError(msg);
-        this._log(this.errorTag, msg);
-    }
+  success(msg: string) {
+    this._log(this.successTag, msg);
+  }
+
+  warn(msg: string) {
+    this._log(this.warnTag, msg);
+  }
+
+  error(msg: string | Error) {
+    if (msg instanceof Error) msg = this.utils.parseError(msg);
+    this._log(this.errorTag, msg);
+  }
 }
 
 export default Logger;

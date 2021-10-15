@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
-const dayjs_1 = __importDefault(require("dayjs"));
+const Logger_1 = __importDefault(require("./Classes/Logger"));
 const DatabaseManager_1 = __importDefault(require("./Classes/DatabaseManager"));
 class AthenaClient extends discord_js_1.Client {
     constructor(config) {
@@ -25,43 +25,25 @@ class AthenaClient extends discord_js_1.Client {
             ],
         });
         this.config = config;
+        this.logger = new Logger_1.default();
         this.dbManager = new DatabaseManager_1.default(this.config.db_url);
-    }
-    log(msg, type) {
-        let tag;
-        switch (type) {
-            case "success":
-                tag = "\x1b[42m\x1b[30m SUCCESS \x1b[0m";
-                break;
-            case "error":
-                tag = "\x1b[41m\x1b[30m ERROR \x1b[0m";
-                break;
-            case "warn":
-                tag = "\x1b[43m\x1b[30m WARN \x1b[0m";
-                break;
-            default:
-                tag = "\x1b[47m\x1b[30m LOG \x1b[0m";
-                break;
-        }
-        const date = (0, dayjs_1.default)(Date.now()).format("DD/MM/YYYY hh:mm");
-        console.log(`[${date}] ${tag} ${msg}`);
     }
     initalize() {
         return __awaiter(this, void 0, void 0, function* () {
             this.dbManager.connect().then((success) => {
                 if (success)
-                    this.log("Successfully connected to database server.", "success");
+                    this.logger.success("Successfully connected to database server.");
                 else
-                    this.log("An error occured while tring to connect database server", "error");
+                    this.logger.error("An error occured while tring to connect database server");
             });
             try {
                 yield this.login(this.config.bot.token);
             }
             catch (err) {
-                this.log("Failed to loggining into discord account.");
+                this.logger.error("Failed while trying to login into discord account.");
                 return;
             }
-            this.log("Successfully logged in to discord account.", "success");
+            this.logger.success("Successfully logged in to discord account.");
         });
     }
 }

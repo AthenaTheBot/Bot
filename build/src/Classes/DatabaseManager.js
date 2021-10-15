@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
+const Logger_1 = __importDefault(require("./Logger"));
 class DatabaseManager {
     constructor(url) {
         if (url) {
@@ -23,6 +24,7 @@ class DatabaseManager {
         }
         this.connected = false;
         this.connection = mongoose_1.default.connection;
+        this.logger = new Logger_1.default();
     }
     connect() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -32,7 +34,7 @@ class DatabaseManager {
                 return true;
             }
             catch (err) {
-                console.error(err);
+                this.logger.error("An error occured while trying to connect database server.");
                 return false;
             }
         });
