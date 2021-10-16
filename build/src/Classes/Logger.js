@@ -18,11 +18,11 @@ class Logger {
         if (wtag)
             this.warnTag = wtag;
         else
-            this.warnTag = '\x1b[43m\x1b[30m WARN \x1b[0m';
+            this.warnTag = "\x1b[43m\x1b[30m WARN \x1b[0m";
         if (etag)
             this.errorTag = etag;
         else
-            this.errorTag = '\x1b[41m\x1b[30m ERROR \x1b[0m';
+            this.errorTag = "\x1b[41m\x1b[30m ERROR \x1b[0m";
         this.utils = new Utils_1.default();
     }
     _log(tag, msg) {
@@ -39,7 +39,7 @@ class Logger {
         this._log(this.warnTag, msg);
     }
     error(msg) {
-        if (typeof msg !== 'string')
+        if (msg instanceof Error)
             msg = this.utils.parseError(msg);
         this._log(this.errorTag, msg);
     }

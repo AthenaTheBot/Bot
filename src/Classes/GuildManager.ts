@@ -1,7 +1,3 @@
-/* 
-    TODO: Create guild, delete user, update user
-*/
-
 // Modules
 import { model } from "mongoose";
 import dayjs from "dayjs";
@@ -14,10 +10,12 @@ import { Guild, GuildSchema } from "./Guild";
 class GuildManager {
   private logger: Logger;
   private dbManager: DatabaseManager;
+  guildCache: object[];
 
   constructor(dbManager: DatabaseManager) {
     this.logger = new Logger();
     this.dbManager = dbManager;
+    this.guildCache = [];
   }
 
   async create(id: string): Promise<void> {

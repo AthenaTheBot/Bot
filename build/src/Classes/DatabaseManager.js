@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const dayjs_1 = __importDefault(require("dayjs"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const Logger_1 = __importDefault(require("./Logger"));
 class DatabaseManager {
@@ -43,6 +44,7 @@ class DatabaseManager {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.connected)
                 return false;
+            Object.assign(document, { lastUpdated: (0, dayjs_1.default)().format("L LT") });
             try {
                 yield this.connection.collection(collection).insertOne(document);
                 return true;

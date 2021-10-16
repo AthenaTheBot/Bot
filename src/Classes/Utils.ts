@@ -16,7 +16,7 @@ class Utils {
     return JSON.parse(readFileSync(this.configPath, { encoding: "utf-8" }));
   }
 
-  parseError(error : Error) : string {
+  parseError(error: Error): string {
     return `[ERROR NAME]: ${error.name} \n \n  [ERROR MESSAGE]:  ${error.message} \n \n [ERROR STACK]: ${error.stack}`;
   }
 }

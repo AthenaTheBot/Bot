@@ -5,34 +5,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
 const path_1 = require("path");
+const cross_fetch_1 = __importDefault(require("cross-fetch"));
 const Logger_1 = __importDefault(require("./Logger"));
 class ErrorHandler {
-    constructor(errorFolder, debug) {
+    constructor(config, errorFolder) {
+        this.config = config;
         if (errorFolder) {
             this.errorFolder = errorFolder;
         }
         else {
             this.errorFolder = (0, path_1.join)(__dirname, "..", "..", "errors");
         }
-        if (debug) {
-            this.debugMode = true;
-        }
-        else {
-            this.debugMode = false;
-        }
         this.logger = new Logger_1.default();
+    }
+    parseError(error) {
+        return `[ERROR NAME]: ${error.name} \n \n  [ERROR MESSAGE]:  ${error.message} \n \n [ERROR STACK]: ${error.stack}`;
     }
     recordError(error) {
         try {
-            (0, fs_1.writeFileSync)((0, path_1.join)(this.errorFolder, error.name), `[ERROR NAME]: ${error.name} \n \n  [ERROR MESSAGE]:  ${error.message} \n \n [ERROR STACK]: ${error.stack}`, {
+            (0, fs_1.writeFileSync)((0, path_1.join)(this.errorFolder, error.name), this.parseError(error), {
                 encoding: "utf-8",
             });
         }
         catch (err) {
-            this.logger.error(`An error occured while trying to save a error record file. \n [ERROR NAME]: ${error.name} \n \n  [ERROR MESSAGE]:  ${error.message} \n \n [ERROR STACK]: ${error.stack}`);
+            this.logger.error(`An error occured while trying to save a error record file. \n ${this.parseError(err)}`);
             return false;
         }
         this.logger.warn(`Recorded an error with name [${error.name}].`);
+        return true;
+    }
+    reportError(error) {
+        (0, cross_fetch_1.default)(this.config.webhooks.error, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                content: `[ERROR NAME]: \`\`\`${error.name}\`\`\` \n \n [ERROR MESSAGE] \`\`\`${error.message}\`\`\` \n \n [ERROR STACK] \`\`\`${error.stack}\`\`\``,
+            }),
+        });
         return true;
     }
 }

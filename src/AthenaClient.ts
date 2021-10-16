@@ -42,7 +42,7 @@ class AthenaClient extends Client {
         this.logger.success("Successfully connected to database server.");
       else
         this.logger.error(
-          "An error occured while tring to connect database server"
+          "An error occured while trying to connect database server"
         );
     });
 

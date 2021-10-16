@@ -34,7 +34,7 @@ class AthenaClient extends discord_js_1.Client {
                 if (success)
                     this.logger.success("Successfully connected to database server.");
                 else
-                    this.logger.error("An error occured while tring to connect database server");
+                    this.logger.error("An error occured while trying to connect database server");
             });
             try {
                 yield this.login(this.config.bot.token);
