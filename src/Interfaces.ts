@@ -1,4 +1,5 @@
 export interface configInterface {
+  debugMode: boolean;
   bot: {
     token: string;
   };

@@ -15,6 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const Logger_1 = __importDefault(require("./Classes/Logger"));
 const DatabaseManager_1 = __importDefault(require("./Classes/DatabaseManager"));
+const Utils_1 = __importDefault(require("./Classes/Utils"));
+const EventManager_1 = __importDefault(require("./Classes/EventManager"));
+const ErrorHandler_1 = __importDefault(require("./Classes/ErrorHandler"));
 class AthenaClient extends discord_js_1.Client {
     constructor(config) {
         super({
@@ -25,8 +28,11 @@ class AthenaClient extends discord_js_1.Client {
             ],
         });
         this.config = config;
-        this.logger = new Logger_1.default();
         this.dbManager = new DatabaseManager_1.default(this.config.db_url);
+        this.eventManager = new EventManager_1.default(this);
+        this.errorHandler = new ErrorHandler_1.default(this.config);
+        this.logger = new Logger_1.default();
+        this.utils = new Utils_1.default();
     }
     initalize() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -36,6 +42,8 @@ class AthenaClient extends discord_js_1.Client {
                 else
                     this.logger.error("An error occured while trying to connect database server");
             });
+            yield this.eventManager.registerEventsFromEventFolder();
+            this.eventManager.listenEvents();
             try {
                 yield this.login(this.config.bot.token);
             }

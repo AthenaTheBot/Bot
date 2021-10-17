@@ -1,19 +1,19 @@
-/*
-    TODO: Handler all events if event file exist.
-*/
-
 // Modules
 import { readdirSync } from "fs";
 import { join } from "path";
 
 // Classes
 import AthenaClient from "../AthenaClient";
+import Event from "./Event";
 
 class EventManager {
+  client: AthenaClient;
   eventsFolder: string;
-  events: object[];
+  events: Event[];
 
-  constructor(AthenaClient: AthenaClient, evFolder?: string) {
+  constructor(client: AthenaClient, evFolder?: string) {
+    this.client = client;
+
     if (evFolder) {
       this.eventsFolder = evFolder;
     } else {
@@ -24,25 +24,44 @@ class EventManager {
   }
 
   registerEvent(eventName: string, eventFunction: () => boolean) {
-    this.events.push({
-      eventName: eventName,
-      eventFunction: eventFunction,
-    });
+    this.events.push(new Event(eventName, eventFunction));
   }
 
-  registerEventsFromEventFolder() {
-    const eventFiles = readdirSync(this.eventsFolder, "utf-8").filter((x) =>
-      x.endsWith(".ts")
+  async registerEventsFromEventFolder(): Promise<object> {
+    const eventFiles = await readdirSync(this.eventsFolder, "utf-8").filter(
+      (x) => x.endsWith(".js")
     );
 
-    eventFiles.forEach((eventFile) => {
-      import(join(this.eventsFolder, eventFile)).then((event) => {
-        this.events.push({
-          eventName: event.name,
-          eventFunction: event.function,
+    for (var i = 0; i < eventFiles.length; i++) {
+      const eventFile = eventFiles[i];
+      const event = await import(join(this.eventsFolder, eventFile)).then(
+        (d) => d.default
+      );
+      this.events.push(new Event(event.name, event.exec));
+    }
+
+    return this.events;
+  }
+
+  listenEvents() {
+    for (var i = 0; i < this.events.length; i++) {
+      const event = this.events[i];
+      try {
+        this.client.on(event.name, (data) => {
+          event.exec(this.client, data);
         });
-      });
-    });
+      } catch (err) {
+        this.client.logger.error(
+          `An error happened while loading event ${event.name}. ${
+            this.client.config.debugMode
+              ? "\n \n" + this.client.utils.parseError(<Error>err)
+              : ""
+          }`
+        );
+
+        break;
+      }
+    }
   }
 }
 

@@ -10,11 +10,11 @@ class Logger {
         if (dTag)
             this.defaultTag = dTag;
         else
-            this.defaultTag = '\x1b[47m\x1b[30m LOG \x1b[0m"';
+            this.defaultTag = "\x1b[47m\x1b[30m LOG \x1b[0m";
         if (stag)
             this.successTag = stag;
         else
-            this.successTag = '\x1b[42m\x1b[30m SUCCESS \x1b[0m"';
+            this.successTag = "\x1b[42m\x1b[30m SUCCESS \x1b[0m";
         if (wtag)
             this.warnTag = wtag;
         else

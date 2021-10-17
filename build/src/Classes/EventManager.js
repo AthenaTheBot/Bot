@@ -18,11 +18,25 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
 const path_1 = require("path");
+const Event_1 = __importDefault(require("./Event"));
 class EventManager {
-    constructor(AthenaClient, evFolder) {
+    constructor(client, evFolder) {
+        this.client = client;
         if (evFolder) {
             this.eventsFolder = evFolder;
         }
@@ -32,21 +46,34 @@ class EventManager {
         this.events = [];
     }
     registerEvent(eventName, eventFunction) {
-        this.events.push({
-            eventName: eventName,
-            eventFunction: eventFunction,
-        });
+        this.events.push(new Event_1.default(eventName, eventFunction));
     }
     registerEventsFromEventFolder() {
-        const eventFiles = (0, fs_1.readdirSync)(this.eventsFolder, "utf-8").filter((x) => x.endsWith(".ts"));
-        eventFiles.forEach((eventFile) => {
-            Promise.resolve().then(() => __importStar(require((0, path_1.join)(this.eventsFolder, eventFile)))).then((event) => {
-                this.events.push({
-                    eventName: event.name,
-                    eventFunction: event.function,
-                });
-            });
+        return __awaiter(this, void 0, void 0, function* () {
+            const eventFiles = yield (0, fs_1.readdirSync)(this.eventsFolder, "utf-8").filter((x) => x.endsWith(".js"));
+            for (var i = 0; i < eventFiles.length; i++) {
+                const eventFile = eventFiles[i];
+                const event = yield Promise.resolve().then(() => __importStar(require((0, path_1.join)(this.eventsFolder, eventFile)))).then((d) => d.default);
+                this.events.push(new Event_1.default(event.name, event.exec));
+            }
+            return this.events;
         });
+    }
+    listenEvents() {
+        for (var i = 0; i < this.events.length; i++) {
+            const event = this.events[i];
+            try {
+                this.client.on(event.name, (data) => {
+                    event.exec(this.client, data);
+                });
+            }
+            catch (err) {
+                this.client.logger.error(`An error happened while loading event ${event.name}. ${this.client.config.debugMode
+                    ? "\n \n" + this.client.utils.parseError(err)
+                    : ""}`);
+                break;
+            }
+        }
     }
 }
 exports.default = EventManager;

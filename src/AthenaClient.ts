@@ -7,6 +7,9 @@ import DatabaseManager from "./Classes/DatabaseManager";
 
 // Interfaces
 import { configInterface } from "./Interfaces";
+import Utils from "./Classes/Utils";
+import EventManager from "./Classes/EventManager";
+import ErrorHandler from "./Classes/ErrorHandler";
 
 /** Athena client class
  * @extends Client
@@ -14,9 +17,16 @@ import { configInterface } from "./Interfaces";
 class AthenaClient extends Client {
   readonly config: configInterface;
 
-  // Classes
-  logger: Logger;
+  // Managers
   dbManager: DatabaseManager;
+  eventManager: EventManager;
+
+  // Handlers
+  errorHandler: ErrorHandler;
+
+  // Utils
+  logger: Logger;
+  utils: Utils;
 
   constructor(config: configInterface) {
     super({
@@ -31,8 +41,15 @@ class AthenaClient extends Client {
     this.config = config;
 
     // Managers
-    this.logger = new Logger();
     this.dbManager = new DatabaseManager(this.config.db_url);
+    this.eventManager = new EventManager(this);
+
+    // Handlers
+    this.errorHandler = new ErrorHandler(this.config);
+
+    // Utils
+    this.logger = new Logger();
+    this.utils = new Utils();
   }
 
   /** Function that initalizes the client of Athena */
@@ -45,6 +62,10 @@ class AthenaClient extends Client {
           "An error occured while trying to connect database server"
         );
     });
+
+    await this.eventManager.registerEventsFromEventFolder();
+
+    this.eventManager.listenEvents();
 
     try {
       await this.login(this.config.bot.token);
