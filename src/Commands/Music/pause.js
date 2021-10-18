@@ -19,9 +19,10 @@ class Command extends BaseCommand {
 
         const guildState = client.songStates.get(msg.guild.id);
 
-        guildState.player.pause();
-
-        msg.react('👍');
+        if (guildState?.player) {
+            guildState.player.pause();
+            msg.react('👍');
+        }
     }
 }
 

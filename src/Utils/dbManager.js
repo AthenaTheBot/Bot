@@ -2,7 +2,7 @@
 const guildTemplate = require('../Structures/Guild');
 const userTemplate = require('../Structures/User');
 
-class dbFunctions {
+class dbManager {
     constructor(core) {
         if (core) {
             this.core = core;
@@ -158,4 +158,4 @@ class dbFunctions {
     }
 }
 
-module.exports = dbFunctions;
+module.exports = dbManager;

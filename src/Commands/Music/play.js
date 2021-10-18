@@ -42,7 +42,6 @@ class Command extends BaseCommand {
         const defaultGuild = {
             playing: false,
             queue: [],
-            encoderArgs: [],
             guild: msg.guild,
             voiceChannel: msg.member.voice.channel,
             player: null
@@ -83,25 +82,7 @@ class Command extends BaseCommand {
 
         guildState.queue.push(song);
         
-        this.playSong(client, guildState, async (startedPlaying, guildState) => {
-            if (!startedPlaying) msg.reply({ embeds: [ Embed.setDescription(locale.ERROR) ] });
-            else {
-
-                if (guildState.queue[0].msgSent) return;
-
-                try {
-
-                    await msg.reply({ embeds: [ Embed.setDescription(locale.NOW_PLAYING.replace('$song', `[${guildState.queue[0].title}](${guildState.queue[0].url})`)) ] });
-
-                }
-                catch(err) {
-
-                    return;
-                }
-                
-                guildState.queue[0].msgSent = true;
-            }
-        });
+        this.playSong(client, msg, guildState);
     }
 
     // Aditional Functions
@@ -164,11 +145,29 @@ class Command extends BaseCommand {
         }
     }
 
-    async playSong(client, guildState, startedPlaying) {
-        if (guildState.playing) return;
+    async playSong(client, msg, guildState, skipCommand) {
+        async function startedPlaying(playing, guildState) {
+            const Embed = new MessageEmbed();
+            if (!playing) msg.reply({ embeds: [ Embed.setDescription(locale.ERROR) ] });
+            else {
 
-        let encoderArgs = [];
-        if (guildState.encoderArgs.length > 0) encoderArgs = ['-af', guildState.encoderArgs.join(',')];
+                if (guildState.queue[0].msgSent) return;
+
+                try {
+
+                    await msg.reply({ embeds: [ Embed.setDescription(locale.NOW_PLAYING.replace('$song', `[${guildState.queue[0].title}](${guildState.queue[0].url})`)) ] });
+
+                }
+                catch(err) {
+
+                    return;
+                }
+                
+                guildState.queue[0].msgSent = true;
+            }
+        }
+
+        if (guildState.playing) return;
 
         const player = createAudioPlayer();
         const source = await playDL.stream(guildState.queue[0].url);
@@ -177,7 +176,9 @@ class Command extends BaseCommand {
 
         if (!guildState.player) guildState.player = player;
 
-        player.play(resource);
+        player.play(resource)
+
+        if (skipCommand) startedPlaying(true, guildState);
 
         player.on('error', (err) => {
             console.log('ERROR:', err);
@@ -210,7 +211,7 @@ class Command extends BaseCommand {
                 guildState.queue.shift();
 
                 if (guildState.queue.length > 0) {
-                    this.playSong(client, guildState);
+                    this.playSong(client, msg, guildState);
                     if (startedPlaying) startedPlaying(true, guildState);
                 }
                 else {

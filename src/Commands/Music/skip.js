@@ -1,6 +1,7 @@
 const BaseCommand = require('../../Structures/Command');
 const {
-    getVoiceConnection
+    getVoiceConnection,
+    AudioPlayerStatus
 } = require('@discordjs/voice');
 
 class Command extends BaseCommand {
@@ -48,14 +49,7 @@ class Command extends BaseCommand {
 
         const playCommand = client.commands.get('play');
 
-        playCommand.playSong(guildState, (started) => {
-
-            if (!started) return msg.reply(locale.ERROR);
-            else {
-
-                msg.react('👍');
-            }
-        });
+        playCommand.playSong(client, msg, guildState, true);
     }
 }
 
