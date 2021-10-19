@@ -2,10 +2,14 @@
 import Command from "./Command";
 import AthenaClient from "../AthenaClient";
 
+import { ApplicationCommandOptionData } from "discord.js";
+
 class CommandManager {
+  client: AthenaClient;
   commands: Command[];
 
-  constructor() {
+  constructor(client: AthenaClient) {
+    this.client = client;
     this.commands = [];
   }
 
@@ -13,7 +17,7 @@ class CommandManager {
     name: string,
     aliases: string[],
     description: string,
-    usage: string | null,
+    options: ApplicationCommandOptionData[],
     cooldown: number,
     requiredPerms: string[],
     requiredBotPerms: string[],
@@ -21,22 +25,33 @@ class CommandManager {
   ) {
     // TODO: Registering system for slash commands.
 
+    if (this.isValidCommand(name)) return;
+
     this.commands.push(
       new Command(
         name,
         aliases,
         description,
-        usage,
+        options,
         cooldown,
         requiredPerms,
         requiredBotPerms,
         exec
       )
     );
+
+    this.client.application?.commands.create({
+      name: name,
+      description: description,
+      type: "CHAT_INPUT",
+      options: options,
+      defaultPermission: requiredPerms.length == 0 ? true : false,
+    });
   }
 
   async registerCommandsFromCommandFolder(): Promise<object> {
     // TODO: Register all commands in command folder.
+    // TODO: Ignore folders if the folder is empty or not contain any ts/js file.
     return this.commands;
   }
 
@@ -48,6 +63,10 @@ class CommandManager {
     return this.commands.filter((x) => x.name === cmdName).length !== 0
       ? true
       : false;
+  }
+
+  getCommand(cmdName: string): Command | null {
+    return <Command>this.commands.find((x) => x.name == cmdName) || null;
   }
 }
 

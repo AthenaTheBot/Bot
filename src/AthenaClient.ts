@@ -10,6 +10,7 @@ import { configInterface } from "./Interfaces";
 import Utils from "./Classes/Utils";
 import EventManager from "./Classes/EventManager";
 import ErrorHandler from "./Classes/ErrorHandler";
+import CommandManager from "./Classes/CommandManager";
 
 /** Athena client class
  * @extends Client
@@ -20,6 +21,7 @@ class AthenaClient extends Client {
   // Managers
   dbManager: DatabaseManager;
   eventManager: EventManager;
+  commandManager: CommandManager;
 
   // Handlers
   errorHandler: ErrorHandler;
@@ -43,6 +45,7 @@ class AthenaClient extends Client {
     // Managers
     this.dbManager = new DatabaseManager(this.config.db_url);
     this.eventManager = new EventManager(this);
+    this.commandManager = new CommandManager(this);
 
     // Handlers
     this.errorHandler = new ErrorHandler(this.config);

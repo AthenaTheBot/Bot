@@ -1,10 +1,11 @@
+import { ApplicationCommandOptionData } from "discord.js";
 import AthenaClient from "../AthenaClient";
 
 class Command {
   name: string;
   aliases: string[];
   description: string;
-  usage: string | null;
+  options: ApplicationCommandOptionData[];
   cooldown: number;
   requiredPerms: string[];
   requiredBotPerms: string[];
@@ -14,7 +15,7 @@ class Command {
     name: string,
     aliases: string[],
     description: string,
-    usage: string | null,
+    options: ApplicationCommandOptionData[],
     cooldown: number,
     requiredPerms: string[],
     requiredBotPerms: string[],
@@ -23,7 +24,7 @@ class Command {
     this.name = name;
     this.aliases = aliases;
     this.description = description;
-    this.usage = usage;
+    this.options = options;
     this.cooldown = cooldown;
     this.requiredPerms = requiredPerms;
     this.requiredBotPerms = requiredBotPerms;
