@@ -14,11 +14,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = __importDefault(require("./Command"));
 class CommandManager {
-    constructor() {
+    constructor(client) {
+        this.client = client;
         this.commands = [];
     }
-    registerCommand(name, aliases, description, usage, cooldown, requiredPerms, requiredBotPerms, exec) {
-        this.commands.push(new Command_1.default(name, aliases, description, usage, cooldown, requiredPerms, requiredBotPerms, exec));
+    registerCommand(name, aliases, description, options, cooldown, requiredPerms, requiredBotPerms, exec) {
+        var _a;
+        if (this.isValidCommand(name))
+            return;
+        this.commands.push(new Command_1.default(name, aliases, description, options, cooldown, requiredPerms, requiredBotPerms, exec));
+        (_a = this.client.application) === null || _a === void 0 ? void 0 : _a.commands.create({
+            name: name,
+            description: description,
+            type: "CHAT_INPUT",
+            options: options,
+            defaultPermission: requiredPerms.length == 0 ? true : false,
+        });
     }
     registerCommandsFromCommandFolder() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -32,6 +43,9 @@ class CommandManager {
         return this.commands.filter((x) => x.name === cmdName).length !== 0
             ? true
             : false;
+    }
+    getCommand(cmdName) {
+        return this.commands.find((x) => x.name == cmdName) || null;
     }
 }
 exports.default = CommandManager;

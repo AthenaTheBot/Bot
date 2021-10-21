@@ -18,6 +18,8 @@ const DatabaseManager_1 = __importDefault(require("./Classes/DatabaseManager"));
 const Utils_1 = __importDefault(require("./Classes/Utils"));
 const EventManager_1 = __importDefault(require("./Classes/EventManager"));
 const ErrorHandler_1 = __importDefault(require("./Classes/ErrorHandler"));
+const CommandManager_1 = __importDefault(require("./Classes/CommandManager"));
+const PresenceManager_1 = __importDefault(require("./Classes/PresenceManager"));
 class AthenaClient extends discord_js_1.Client {
     constructor(config) {
         super({
@@ -30,6 +32,8 @@ class AthenaClient extends discord_js_1.Client {
         this.config = config;
         this.dbManager = new DatabaseManager_1.default(this.config.db_url);
         this.eventManager = new EventManager_1.default(this);
+        this.commandManager = new CommandManager_1.default(this);
+        this.presenceManager = new PresenceManager_1.default(this);
         this.errorHandler = new ErrorHandler_1.default(this.config);
         this.logger = new Logger_1.default();
         this.utils = new Utils_1.default();
@@ -46,12 +50,19 @@ class AthenaClient extends discord_js_1.Client {
             this.eventManager.listenEvents();
             try {
                 yield this.login(this.config.bot.token);
+                this.logger.success("Successfully logged in to discord account.");
             }
             catch (err) {
                 this.logger.error("Failed while trying to login into discord account.");
-                return;
+                return false;
             }
-            this.logger.success("Successfully logged in to discord account.");
+            this.presenceManager.setPresence([
+                {
+                    name: this.config.bot.activity,
+                    type: "COMPETING",
+                },
+            ]);
+            return true;
         });
     }
 }

@@ -11,6 +11,7 @@ import Utils from "./Classes/Utils";
 import EventManager from "./Classes/EventManager";
 import ErrorHandler from "./Classes/ErrorHandler";
 import CommandManager from "./Classes/CommandManager";
+import PresenceManager from "./Classes/PresenceManager";
 
 /** Athena client class
  * @extends Client
@@ -22,6 +23,7 @@ class AthenaClient extends Client {
   dbManager: DatabaseManager;
   eventManager: EventManager;
   commandManager: CommandManager;
+  presenceManager: PresenceManager;
 
   // Handlers
   errorHandler: ErrorHandler;
@@ -46,6 +48,7 @@ class AthenaClient extends Client {
     this.dbManager = new DatabaseManager(this.config.db_url);
     this.eventManager = new EventManager(this);
     this.commandManager = new CommandManager(this);
+    this.presenceManager = new PresenceManager(this);
 
     // Handlers
     this.errorHandler = new ErrorHandler(this.config);
@@ -56,7 +59,7 @@ class AthenaClient extends Client {
   }
 
   /** Function that initalizes the client of Athena */
-  async initalize(): Promise<void> {
+  async initalize(): Promise<boolean> {
     this.dbManager.connect().then((success) => {
       if (success)
         this.logger.success("Successfully connected to database server.");
@@ -72,12 +75,20 @@ class AthenaClient extends Client {
 
     try {
       await this.login(this.config.bot.token);
+      this.logger.success("Successfully logged in to discord account.");
     } catch (err) {
       this.logger.error("Failed while trying to login into discord account.");
-      return;
+      return false;
     }
 
-    this.logger.success("Successfully logged in to discord account.");
+    this.presenceManager.setPresence([
+      {
+        name: this.config.bot.activity,
+        type: "COMPETING",
+      },
+    ]);
+
+    return true;
   }
 }
 

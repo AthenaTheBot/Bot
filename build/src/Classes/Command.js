@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Command {
-    constructor(name, aliases, description, usage, cooldown, requiredPerms, requiredBotPerms, exec) {
+    constructor(name, aliases, description, options, cooldown, requiredPerms, requiredBotPerms, exec) {
         this.name = name;
         this.aliases = aliases;
         this.description = description;
-        this.usage = usage;
+        this.options = options;
         this.cooldown = cooldown;
         this.requiredPerms = requiredPerms;
         this.requiredBotPerms = requiredBotPerms;
