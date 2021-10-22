@@ -57,8 +57,14 @@ class CommandManager {
             const commandFiles = yield (0, fs_1.readdirSync)((0, path_1.join)(__dirname, "..", "Commands"), "utf-8");
             for (var i = 0; i < commandFiles.length; i++) {
                 const commandsFile = commandFiles[i];
-                const commands = yield Promise.resolve().then(() => __importStar(require((0, path_1.join)(__dirname, "..", "Commands", commandsFile)))).then((x) => x.default);
-                commands(this);
+                const commands = yield Promise.resolve().then(() => __importStar(require((0, path_1.join)(__dirname, "..", "Commands", commandsFile)))).then((x) => {
+                    if (typeof (x === null || x === void 0 ? void 0 : x.default) !== "function")
+                        return null;
+                    else
+                        return x.default;
+                });
+                if (commands)
+                    commands(this);
             }
             return this.commands;
         });

@@ -62,8 +62,12 @@ class CommandManager {
       const commandsFile = commandFiles[i];
       const commands = await import(
         join(__dirname, "..", "Commands", commandsFile)
-      ).then((x) => x.default);
-      commands(this);
+      ).then((x) => {
+        if (typeof x?.default !== "function") return null;
+        else return x.default;
+      });
+
+      if (commands) commands(this);
     }
     return this.commands;
   }
