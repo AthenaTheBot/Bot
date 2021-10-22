@@ -5,12 +5,15 @@ import dayjs from "dayjs";
 // Classes
 import Logger from "./Logger";
 import DatabaseManager from "./DatabaseManager";
-import { Guild, GuildSchema } from "./Guild";
+import Guild from "./Guild";
+
+// Schemas
+import GuildSchema from "../Schemas/GuildSchema";
 
 class GuildManager {
   private logger: Logger;
   private dbManager: DatabaseManager;
-  guildCache: object[];
+  protected guildCache: Guild[];
 
   constructor(dbManager: DatabaseManager) {
     this.logger = new Logger();
@@ -26,9 +29,9 @@ class GuildManager {
     });
   }
 
-  async edit(id: string) {}
+  async edit(id: string): Promise<void> {}
 
-  async delete(id: string) {
+  async delete(id: string): Promise<void> {
     this.dbManager.removeDocument("guilds", id).then((state) => {
       if (!state) {
         this.logger.error(

@@ -1,7 +1,3 @@
-// Modules
-import { Schema } from "mongoose";
-
-// Main Class
 class Guild {
   _id: string;
   settings: object;
@@ -22,20 +18,4 @@ class Guild {
   }
 }
 
-// Schema
-const GuildSchema = new Schema({
-  _id: String,
-  settings: {
-    premium: Boolean,
-    prefix: String,
-    language: String,
-  },
-  modules: {
-    moderationModule: {},
-    funModule: {},
-    utilsModule: {},
-  },
-  lastUpdated: String,
-});
-
-export { Guild, GuildSchema };
+export default Guild;
