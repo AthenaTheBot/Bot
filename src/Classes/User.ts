@@ -1,6 +1,6 @@
 enum languages {
-  EN_US,
-  TR_TR,
+  EN_US = "en-US",
+  TR_TR = "tr-TR",
 }
 
 interface UserOptionsInterface {
@@ -30,3 +30,4 @@ class User {
 }
 
 export default User;
+export { UserOptionsInterface, User };

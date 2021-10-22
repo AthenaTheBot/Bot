@@ -5,7 +5,7 @@ import { model } from "mongoose";
 // Classes
 import Logger from "./Logger";
 import DatabaseManager from "./DatabaseManager";
-import User from "./User";
+import User, { UserOptionsInterface } from "./User";
 
 // Schemas
 import UserSchema from "../Schemas/UserSchema";
@@ -21,9 +21,9 @@ class UserManager {
     this.userCache = [];
   }
 
-  async create(id: string): Promise<void> {
+  async create(id: string, options?: UserOptionsInterface): Promise<void> {
     const userModel = model("User", UserSchema);
-    const user = new userModel(new User(id));
+    const user = new userModel(new User(id, options));
     user.save((err) => {
       if (err) this.logger.error(err);
     });

@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 // Classes
 import Logger from "./Logger";
 import DatabaseManager from "./DatabaseManager";
-import Guild from "./Guild";
+import Guild, { GuildOptionsInterface } from "./Guild";
 
 // Schemas
 import GuildSchema from "../Schemas/GuildSchema";
@@ -21,9 +21,9 @@ class GuildManager {
     this.guildCache = [];
   }
 
-  async create(id: string): Promise<void> {
+  async create(id: string, options?: GuildOptionsInterface): Promise<void> {
     const guildModel = model("Guild", GuildSchema);
-    const guild = new guildModel(new Guild(id));
+    const guild = new guildModel(new Guild(id, options));
     guild.save((err) => {
       if (err) this.logger.error(err);
     });
