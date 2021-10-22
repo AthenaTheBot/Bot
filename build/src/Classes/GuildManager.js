@@ -15,17 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const dayjs_1 = __importDefault(require("dayjs"));
 const Logger_1 = __importDefault(require("./Logger"));
-const Guild_1 = require("./Guild");
+const Guild_1 = __importDefault(require("./Guild"));
+const GuildSchema_1 = __importDefault(require("../Schemas/GuildSchema"));
 class GuildManager {
     constructor(dbManager) {
         this.logger = new Logger_1.default();
         this.dbManager = dbManager;
         this.guildCache = [];
     }
-    create(id) {
+    create(id, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            const guildModel = (0, mongoose_1.model)("Guild", Guild_1.GuildSchema);
-            const guild = new guildModel(new Guild_1.Guild(id));
+            const guildModel = (0, mongoose_1.model)("Guild", GuildSchema_1.default);
+            const guild = new guildModel(new Guild_1.default(id, options));
             guild.save((err) => {
                 if (err)
                     this.logger.error(err);

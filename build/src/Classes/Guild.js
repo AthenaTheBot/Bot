@@ -1,15 +1,33 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GuildSchema = exports.Guild = void 0;
-const mongoose_1 = require("mongoose");
+exports.Guild = void 0;
+var languages;
+(function (languages) {
+    languages["EN_US"] = "en-US";
+    languages["TR_TR"] = "tr-TR";
+})(languages || (languages = {}));
 class Guild {
-    constructor(id) {
+    constructor(id, settings) {
         this._id = id;
-        this.settings = {
-            premium: false,
-            prefix: "at!",
-            language: "en-US",
-        };
+        this.settings = {};
+        if (settings === null || settings === void 0 ? void 0 : settings.premium) {
+            this.settings.premium = settings.premium;
+        }
+        else {
+            this.settings.premium = false;
+        }
+        if (settings === null || settings === void 0 ? void 0 : settings.prefix) {
+            this.settings.prefix = settings.prefix;
+        }
+        else {
+            this.settings.prefix = "at!";
+        }
+        if (settings === null || settings === void 0 ? void 0 : settings.language) {
+            this.settings.language = settings.language;
+        }
+        else {
+            this.settings.language = languages.EN_US;
+        }
         this.modules = {
             moderationModule: {},
             funModule: {},
@@ -18,18 +36,4 @@ class Guild {
     }
 }
 exports.Guild = Guild;
-const GuildSchema = new mongoose_1.Schema({
-    _id: String,
-    settings: {
-        premium: Boolean,
-        prefix: String,
-        language: String,
-    },
-    modules: {
-        moderationModule: {},
-        funModule: {},
-        utilsModule: {},
-    },
-    lastUpdated: String,
-});
-exports.GuildSchema = GuildSchema;
+exports.default = Guild;

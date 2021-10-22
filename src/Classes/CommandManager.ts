@@ -1,3 +1,7 @@
+// Modules
+import { readdirSync } from "fs";
+import { join } from "path";
+
 // Classes
 import Command from "./Command";
 import AthenaClient from "../AthenaClient";
@@ -50,8 +54,17 @@ class CommandManager {
   }
 
   async registerCommandsFromCommandFolder(): Promise<object> {
-    // TODO: Register all commands in command folder.
-    // TODO: Ignore folders if the folder is empty or not contain any ts/js file.
+    const commandFiles = await readdirSync(
+      join(__dirname, "..", "Commands"),
+      "utf-8"
+    );
+    for (var i = 0; i < commandFiles.length; i++) {
+      const commandsFile = commandFiles[i];
+      const commands = await import(
+        join(__dirname, "..", "Commands", commandsFile)
+      ).then((x) => x.default);
+      commands(this);
+    }
     return this.commands;
   }
 

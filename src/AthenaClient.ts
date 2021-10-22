@@ -71,6 +71,8 @@ class AthenaClient extends Client {
 
     await this.eventManager.registerEventsFromEventFolder();
 
+    await this.commandManager.registerCommandsFromCommandFolder();
+
     this.eventManager.listenEvents();
 
     try {
