@@ -1,6 +1,9 @@
 // Modules
 import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 import mongoose, { Connection } from "mongoose";
+
+dayjs.extend(localizedFormat);
 
 // Classes
 import Logger from "./Logger";
@@ -38,19 +41,29 @@ class DatabaseManager {
     }
   }
 
-  // TODO: Record when the document is updated.
   async createDocument(collection: string, document: object): Promise<boolean> {
-    if (!this.connected) return false;
+    let d = <any>document;
+    if (!this.connected || !d?.id) return false;
+
+    const itemExists =
+      (await this.connection
+        .collection(collection)
+        .count({ _id: d?.id }, { limit: 1 })) == 1
+        ? true
+        : false;
+
+    if (itemExists) return false;
 
     // Update last updated column
-    Object.assign(document, { lastUpdated: dayjs().format("L LT") });
+    const time = dayjs().format("L LT");
+    Object.assign(document, { lastUpdated: time });
 
     try {
       await this.connection.collection(collection).insertOne(document);
 
       return true;
     } catch (err) {
-      console.error(err);
+      this.logger.error(<Error>err);
       return false;
     }
   }
@@ -69,7 +82,7 @@ class DatabaseManager {
 
       return true;
     } catch (err) {
-      console.error(err);
+      this.logger.error(<Error>err);
       return false;
     }
   }
@@ -87,7 +100,7 @@ class DatabaseManager {
 
       return true;
     } catch (err) {
-      console.error(err);
+      this.logger.error(<Error>err);
       return false;
     }
   }
@@ -103,7 +116,7 @@ class DatabaseManager {
 
       return document;
     } catch (err) {
-      console.error(err);
+      this.logger.error(<Error>err);
       return null;
     }
   }

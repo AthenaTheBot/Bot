@@ -21,26 +21,34 @@ class UserManager {
     this.userCache = [];
   }
 
-  async create(id: string, options?: UserOptionsInterface): Promise<void> {
-    const userModel = model("User", UserSchema);
-    const user = new userModel(new User(id, options));
-    user.save((err) => {
-      if (err) this.logger.error(err);
-    });
+  async create(
+    id: string,
+    options?: UserOptionsInterface
+  ): Promise<User | null> {
+    const user = new User(id, options);
+    const success = await this.dbManager.createDocument("users", user);
+    if (success) {
+      this.userCache.push(user);
+      return user;
+    } else {
+      return null;
+    }
   }
 
-  async edit(): Promise<void> {}
+  async edit(): Promise<User | null> {
+    return null;
+  }
 
-  async delete(id: string): Promise<void> {
-    this.dbManager.removeDocument("users", id).then((state) => {
-      if (!state) {
-        this.logger.error(
-          `An error occured during deletion process on user '${id}'. Error Date: [${dayjs().format(
-            "L LT"
-          )}]`
-        );
-      }
-    });
+  async delete(id: string): Promise<boolean> {
+    return await this.dbManager.removeDocument("users", id);
+  }
+
+  /* 
+    TODO: Fetch user using db manager.
+    TODO: Implement cache system.
+  */
+  async fetch(id: string): Promise<User | null> {
+    return null;
   }
 }
 

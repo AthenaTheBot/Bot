@@ -20,6 +20,7 @@ const EventManager_1 = __importDefault(require("./Classes/EventManager"));
 const ErrorHandler_1 = __importDefault(require("./Classes/ErrorHandler"));
 const CommandManager_1 = __importDefault(require("./Classes/CommandManager"));
 const PresenceManager_1 = __importDefault(require("./Classes/PresenceManager"));
+const GuildManager_1 = __importDefault(require("./Classes/GuildManager"));
 class AthenaClient extends discord_js_1.Client {
     constructor(config) {
         super({
@@ -34,6 +35,7 @@ class AthenaClient extends discord_js_1.Client {
         this.eventManager = new EventManager_1.default(this);
         this.commandManager = new CommandManager_1.default(this);
         this.presenceManager = new PresenceManager_1.default(this);
+        this.guildManager = new GuildManager_1.default(this.dbManager);
         this.errorHandler = new ErrorHandler_1.default(this.config);
         this.logger = new Logger_1.default();
         this.utils = new Utils_1.default();

@@ -9,7 +9,7 @@ class Command {
   cooldown: number;
   requiredPerms: string[];
   requiredBotPerms: string[];
-  exec: (client: AthenaClient, data: any) => boolean;
+  exec: (client: AthenaClient, data: any) => boolean | Promise<boolean>;
 
   constructor(
     name: string,
@@ -19,7 +19,7 @@ class Command {
     cooldown: number,
     requiredPerms: string[],
     requiredBotPerms: string[],
-    exec: (client: AthenaClient, data: any) => boolean
+    exec: (client: AthenaClient, data: any) => boolean | Promise<boolean>
   ) {
     this.name = name;
     this.aliases = aliases;

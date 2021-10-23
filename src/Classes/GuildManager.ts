@@ -1,14 +1,13 @@
 // Modules
-import { model } from "mongoose";
 import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+
+dayjs.extend(localizedFormat);
 
 // Classes
 import Logger from "./Logger";
 import DatabaseManager from "./DatabaseManager";
 import Guild, { GuildOptionsInterface } from "./Guild";
-
-// Schemas
-import GuildSchema from "../Schemas/GuildSchema";
 
 class GuildManager {
   private logger: Logger;
@@ -21,26 +20,46 @@ class GuildManager {
     this.guildCache = [];
   }
 
-  async create(id: string, options?: GuildOptionsInterface): Promise<void> {
-    const guildModel = model("Guild", GuildSchema);
-    const guild = new guildModel(new Guild(id, options));
-    guild.save((err) => {
-      if (err) this.logger.error(err);
-    });
+  /* 
+    TODO: Log if cannot create a guild
+  */
+  async create(
+    id: string,
+    options?: GuildOptionsInterface
+  ): Promise<Guild | null> {
+    const guild = new Guild(id, options);
+    const success = await this.dbManager.createDocument("guilds", guild);
+    if (success) {
+      this.guildCache.push(guild);
+      return guild;
+    } else {
+      return null;
+    }
   }
 
-  async edit(id: string): Promise<void> {}
+  async edit(id: string): Promise<Guild | null> {
+    return null;
+  }
 
-  async delete(id: string): Promise<void> {
-    this.dbManager.removeDocument("guilds", id).then((state) => {
-      if (!state) {
-        this.logger.error(
-          `An error occured during deletion process on guild '${id}'. Error Date: [${dayjs().format(
-            "L LT"
-          )}]`
-        );
-      }
-    });
+  async delete(id: string): Promise<boolean> {
+    return await this.dbManager.removeDocument("guilds", id);
+  }
+
+  async fetch(id: string): Promise<Guild | null> {
+    const cacheIncludes =
+      this.guildCache.filter((x) => x._id === id).length == 1 ? true : false;
+    if (cacheIncludes) {
+      return <Guild>this.guildCache.find((x) => x._id === id);
+    } else {
+      const guildDocument = await (<any>(
+        this.dbManager.getDocument("guilds", id)
+      ));
+      const guild = new Guild(guildDocument?._id, guildDocument?.settings);
+      if (!guild) return null;
+
+      this.guildCache.push(guild);
+      return guild;
+    }
   }
 }
 

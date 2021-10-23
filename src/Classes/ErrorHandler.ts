@@ -5,6 +5,7 @@ import fetch from "cross-fetch";
 
 // Classes
 import Logger from "./Logger";
+import Utils from "./Utils";
 
 // Interfaces
 import { configInterface } from "../Interfaces";
@@ -13,6 +14,7 @@ class ErrorHandler {
   readonly errorFolder: string;
   private config: configInterface;
   private logger: Logger;
+  private utils: Utils;
 
   constructor(config: configInterface, errorFolder?: string) {
     this.config = config;
@@ -24,24 +26,21 @@ class ErrorHandler {
     }
 
     this.logger = new Logger();
-  }
-
-  parseError(error: Error): string {
-    return `[ERROR NAME]: ${error.name} \n \n  [ERROR MESSAGE]:  ${error.message} \n \n [ERROR STACK]: ${error.stack}`;
+    this.utils = new Utils();
   }
 
   recordError(error: Error): boolean {
     try {
       writeFileSync(
         join(this.errorFolder, error.name),
-        this.parseError(error),
+        this.utils.parseError(error),
         {
           encoding: "utf-8",
         }
       );
     } catch (err) {
       this.logger.error(
-        `An error occured while trying to save a error record file. \n ${this.parseError(
+        `An error occured while trying to save a error record file. \n ${this.utils.parseError(
           <Error>err
         )}`
       );

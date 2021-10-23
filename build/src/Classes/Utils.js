@@ -15,7 +15,7 @@ class Utils {
         return JSON.parse((0, fs_1.readFileSync)(this.configPath, { encoding: "utf-8" }));
     }
     parseError(error) {
-        return `[ERROR NAME]: ${error.name} \n \n  [ERROR MESSAGE]:  ${error.message} \n \n [ERROR STACK]: ${error.stack}`;
+        return `\n──────────────────────────────────────────────────\n[\x1b[41mERROR NAME\x1b[0m]: ${error.name} \n\n[\x1b[41mERROR MESSAGE\x1b[0m]:  ${error.message} \n\n[\x1b[41mERROR STACK\x1b[0m]: ${error.stack}\n──────────────────────────────────────────────────`;
     }
 }
 exports.default = Utils;

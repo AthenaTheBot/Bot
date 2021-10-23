@@ -13,7 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dayjs_1 = __importDefault(require("dayjs"));
+const localizedFormat_1 = __importDefault(require("dayjs/plugin/localizedFormat"));
 const mongoose_1 = __importDefault(require("mongoose"));
+dayjs_1.default.extend(localizedFormat_1.default);
 const Logger_1 = __importDefault(require("./Logger"));
 class DatabaseManager {
     constructor(url) {
@@ -42,15 +44,24 @@ class DatabaseManager {
     }
     createDocument(collection, document) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!this.connected)
+            let d = document;
+            if (!this.connected || !(d === null || d === void 0 ? void 0 : d.id))
                 return false;
-            Object.assign(document, { lastUpdated: (0, dayjs_1.default)().format("L LT") });
+            const itemExists = (yield this.connection
+                .collection(collection)
+                .count({ _id: d === null || d === void 0 ? void 0 : d.id }, { limit: 1 })) == 1
+                ? true
+                : false;
+            if (itemExists)
+                return false;
+            const time = (0, dayjs_1.default)().format("L LT");
+            Object.assign(document, { lastUpdated: time });
             try {
                 yield this.connection.collection(collection).insertOne(document);
                 return true;
             }
             catch (err) {
-                console.error(err);
+                this.logger.error(err);
                 return false;
             }
         });
@@ -66,7 +77,7 @@ class DatabaseManager {
                 return true;
             }
             catch (err) {
-                console.error(err);
+                this.logger.error(err);
                 return false;
             }
         });
@@ -82,7 +93,7 @@ class DatabaseManager {
                 return true;
             }
             catch (err) {
-                console.error(err);
+                this.logger.error(err);
                 return false;
             }
         });
@@ -96,7 +107,7 @@ class DatabaseManager {
                 return document;
             }
             catch (err) {
-                console.error(err);
+                this.logger.error(err);
                 return null;
             }
         });

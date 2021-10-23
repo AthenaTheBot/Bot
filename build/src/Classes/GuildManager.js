@@ -12,11 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = require("mongoose");
 const dayjs_1 = __importDefault(require("dayjs"));
+const localizedFormat_1 = __importDefault(require("dayjs/plugin/localizedFormat"));
+dayjs_1.default.extend(localizedFormat_1.default);
 const Logger_1 = __importDefault(require("./Logger"));
 const Guild_1 = __importDefault(require("./Guild"));
-const GuildSchema_1 = __importDefault(require("../Schemas/GuildSchema"));
 class GuildManager {
     constructor(dbManager) {
         this.logger = new Logger_1.default();
@@ -25,24 +25,41 @@ class GuildManager {
     }
     create(id, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            const guildModel = (0, mongoose_1.model)("Guild", GuildSchema_1.default);
-            const guild = new guildModel(new Guild_1.default(id, options));
-            guild.save((err) => {
-                if (err)
-                    this.logger.error(err);
-            });
+            const guild = new Guild_1.default(id, options);
+            const success = yield this.dbManager.createDocument("guilds", guild);
+            if (success) {
+                this.guildCache.push(guild);
+                return guild;
+            }
+            else {
+                return null;
+            }
         });
     }
     edit(id) {
-        return __awaiter(this, void 0, void 0, function* () { });
+        return __awaiter(this, void 0, void 0, function* () {
+            return null;
+        });
     }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.dbManager.removeDocument("guilds", id).then((state) => {
-                if (!state) {
-                    this.logger.error(`An error occured during deletion process on guild '${id}'. Error Date: [${(0, dayjs_1.default)().format("L LT")}]`);
-                }
-            });
+            return yield this.dbManager.removeDocument("guilds", id);
+        });
+    }
+    fetch(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const cacheIncludes = this.guildCache.filter((x) => x._id === id).length == 1 ? true : false;
+            if (cacheIncludes) {
+                return this.guildCache.find((x) => x._id === id);
+            }
+            else {
+                const guildDocument = yield (this.dbManager.getDocument("guilds", id));
+                const guild = new Guild_1.default(guildDocument === null || guildDocument === void 0 ? void 0 : guildDocument._id, guildDocument === null || guildDocument === void 0 ? void 0 : guildDocument.settings);
+                if (!guild)
+                    return null;
+                this.guildCache.push(guild);
+                return guild;
+            }
         });
     }
 }

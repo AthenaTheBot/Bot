@@ -12,11 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const dayjs_1 = __importDefault(require("dayjs"));
-const mongoose_1 = require("mongoose");
 const Logger_1 = __importDefault(require("./Logger"));
 const User_1 = __importDefault(require("./User"));
-const UserSchema_1 = __importDefault(require("../Schemas/UserSchema"));
 class UserManager {
     constructor(dbManager) {
         this.logger = new Logger_1.default();
@@ -25,24 +22,30 @@ class UserManager {
     }
     create(id, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            const userModel = (0, mongoose_1.model)("User", UserSchema_1.default);
-            const user = new userModel(new User_1.default(id, options));
-            user.save((err) => {
-                if (err)
-                    this.logger.error(err);
-            });
+            const user = new User_1.default(id, options);
+            const success = yield this.dbManager.createDocument("users", user);
+            if (success) {
+                this.userCache.push(user);
+                return user;
+            }
+            else {
+                return null;
+            }
         });
     }
     edit() {
-        return __awaiter(this, void 0, void 0, function* () { });
+        return __awaiter(this, void 0, void 0, function* () {
+            return null;
+        });
     }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.dbManager.removeDocument("users", id).then((state) => {
-                if (!state) {
-                    this.logger.error(`An error occured during deletion process on user '${id}'. Error Date: [${(0, dayjs_1.default)().format("L LT")}]`);
-                }
-            });
+            return yield this.dbManager.removeDocument("users", id);
+        });
+    }
+    fetch(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return null;
         });
     }
 }
