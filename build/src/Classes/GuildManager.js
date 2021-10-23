@@ -46,7 +46,7 @@ class GuildManager {
             return yield this.dbManager.removeDocument("guilds", id);
         });
     }
-    fetch(id) {
+    fetch(id, createGuildIfNotExists) {
         return __awaiter(this, void 0, void 0, function* () {
             const cacheIncludes = this.guildCache.filter((x) => x._id === id).length == 1 ? true : false;
             if (cacheIncludes) {
@@ -55,8 +55,14 @@ class GuildManager {
             else {
                 const guildDocument = yield (this.dbManager.getDocument("guilds", id));
                 const guild = new Guild_1.default(guildDocument === null || guildDocument === void 0 ? void 0 : guildDocument._id, guildDocument === null || guildDocument === void 0 ? void 0 : guildDocument.settings);
-                if (!guild)
-                    return null;
+                if (!guild) {
+                    if (createGuildIfNotExists) {
+                        return yield this.create(id);
+                    }
+                    else {
+                        return null;
+                    }
+                }
                 this.guildCache.push(guild);
                 return guild;
             }

@@ -45,7 +45,10 @@ class GuildManager {
     return await this.dbManager.removeDocument("guilds", id);
   }
 
-  async fetch(id: string): Promise<Guild | null> {
+  async fetch(
+    id: string,
+    createGuildIfNotExists?: boolean
+  ): Promise<Guild | null> {
     const cacheIncludes =
       this.guildCache.filter((x) => x._id === id).length == 1 ? true : false;
     if (cacheIncludes) {
@@ -55,7 +58,13 @@ class GuildManager {
         this.dbManager.getDocument("guilds", id)
       ));
       const guild = new Guild(guildDocument?._id, guildDocument?.settings);
-      if (!guild) return null;
+      if (!guild) {
+        if (createGuildIfNotExists) {
+          return await this.create(id);
+        } else {
+          return null;
+        }
+      }
 
       this.guildCache.push(guild);
       return guild;

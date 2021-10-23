@@ -8,7 +8,7 @@ var languages;
 })(languages || (languages = {}));
 class User {
     constructor(id, settings) {
-        this.id = id;
+        this._id = id;
         this.settings = {};
         if (settings === null || settings === void 0 ? void 0 : settings.language) {
             this.settings.language = settings.language;

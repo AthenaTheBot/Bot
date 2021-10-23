@@ -1,14 +1,7 @@
-// Modules
-import dayjs from "dayjs";
-import { model } from "mongoose";
-
 // Classes
 import Logger from "./Logger";
 import DatabaseManager from "./DatabaseManager";
 import User, { UserOptionsInterface } from "./User";
-
-// Schemas
-import UserSchema from "../Schemas/UserSchema";
 
 class UserManager {
   private logger: Logger;
@@ -47,8 +40,28 @@ class UserManager {
     TODO: Fetch user using db manager.
     TODO: Implement cache system.
   */
-  async fetch(id: string): Promise<User | null> {
-    return null;
+  async fetch(
+    id: string,
+    createUserIfNotExists?: boolean
+  ): Promise<User | null> {
+    const cacheIncludes =
+      this.userCache.filter((x) => x._id === id).length == 1 ? true : false;
+    if (cacheIncludes) {
+      return <User>this.userCache.find((x) => x._id === id);
+    } else {
+      const userDocument = await (<any>this.dbManager.getDocument("users", id));
+      const user = new User(userDocument?._id, userDocument?.settings);
+      if (!user) {
+        if (createUserIfNotExists) {
+          return await this.create(id);
+        } else {
+          return null;
+        }
+      }
+
+      this.userCache.push(user);
+      return user;
+    }
   }
 }
 

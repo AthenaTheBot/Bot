@@ -43,9 +43,26 @@ class UserManager {
             return yield this.dbManager.removeDocument("users", id);
         });
     }
-    fetch(id) {
+    fetch(id, createUserIfNotExists) {
         return __awaiter(this, void 0, void 0, function* () {
-            return null;
+            const cacheIncludes = this.userCache.filter((x) => x._id === id).length == 1 ? true : false;
+            if (cacheIncludes) {
+                return this.userCache.find((x) => x._id === id);
+            }
+            else {
+                const userDocument = yield this.dbManager.getDocument("users", id);
+                const user = new User_1.default(userDocument === null || userDocument === void 0 ? void 0 : userDocument._id, userDocument === null || userDocument === void 0 ? void 0 : userDocument.settings);
+                if (!user) {
+                    if (createUserIfNotExists) {
+                        return yield this.create(id);
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                this.userCache.push(user);
+                return user;
+            }
         });
     }
 }

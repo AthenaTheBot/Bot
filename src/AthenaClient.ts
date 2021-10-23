@@ -13,6 +13,7 @@ import ErrorHandler from "./Classes/ErrorHandler";
 import CommandManager from "./Classes/CommandManager";
 import PresenceManager from "./Classes/PresenceManager";
 import GuildManager from "./Classes/GuildManager";
+import UserManager from "./Classes/UserManager";
 
 /** Athena client class
  * @extends Client
@@ -26,6 +27,7 @@ class AthenaClient extends Client {
   commandManager: CommandManager;
   presenceManager: PresenceManager;
   guildManager: GuildManager;
+  userManager: UserManager;
 
   // Handlers
   errorHandler: ErrorHandler;
@@ -52,6 +54,7 @@ class AthenaClient extends Client {
     this.commandManager = new CommandManager(this);
     this.presenceManager = new PresenceManager(this);
     this.guildManager = new GuildManager(this.dbManager);
+    this.userManager = new UserManager(this.dbManager);
 
     // Handlers
     this.errorHandler = new ErrorHandler(this.config);

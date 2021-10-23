@@ -9,11 +9,11 @@ interface UserOptionsInterface {
 }
 
 class User {
-  id: string;
+  _id: string;
   settings: UserOptionsInterface;
 
   constructor(id: string, settings?: UserOptionsInterface) {
-    this.id = id;
+    this._id = id;
     this.settings = {};
     if (settings?.language) {
       this.settings.language = settings.language;

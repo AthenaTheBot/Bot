@@ -14,7 +14,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Event_1 = __importDefault(require("../Classes/Event"));
 exports.default = new Event_1.default("messageCreate", (client, msgData) => __awaiter(void 0, void 0, void 0, function* () {
-    const guild = yield client.guildManager.fetch(msgData.guild.id);
-    console.log(guild);
+    const guild = yield client.guildManager.fetch(msgData.guild.id, true);
+    const user = yield client.userManager.fetch(msgData.author.id, true);
+    if (!guild || !user)
+        return false;
+    const commandName = msgData.content
+        .trim()
+        .split(" ")[0]
+        .split(guild.settings.prefix)
+        .pop();
+    if (client.commandManager.isValidCommand(commandName))
+        return false;
+    const args = msgData.content.trim().split(" ").slice(1);
     return true;
 }));
