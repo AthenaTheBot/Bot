@@ -64,7 +64,7 @@ class AthenaClient extends discord_js_1.Client {
             this.presenceManager.setPresence([
                 {
                     name: this.config.bot.activity,
-                    type: "COMPETING",
+                    type: "LISTENING",
                 },
             ]);
             return true;

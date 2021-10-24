@@ -32,6 +32,7 @@ class GuildManager {
                 return guild;
             }
             else {
+                this.logger.error("An error occured while trying to create a guild with id " + id + ".");
                 return null;
             }
         });

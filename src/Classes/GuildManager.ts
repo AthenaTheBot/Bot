@@ -20,9 +20,6 @@ class GuildManager {
     this.guildCache = [];
   }
 
-  /* 
-    TODO: Log if cannot create a guild
-  */
   async create(
     id: string,
     options?: GuildOptionsInterface
@@ -33,6 +30,9 @@ class GuildManager {
       this.guildCache.push(guild);
       return guild;
     } else {
+      this.logger.error(
+        "An error occured while trying to create a guild with id " + id + "."
+      );
       return null;
     }
   }

@@ -24,6 +24,9 @@ class UserManager {
       this.userCache.push(user);
       return user;
     } else {
+      this.logger.error(
+        "An error occured while trying to create a user with id " + id + "."
+      );
       return null;
     }
   }

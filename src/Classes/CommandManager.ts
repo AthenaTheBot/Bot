@@ -25,10 +25,12 @@ class CommandManager {
     cooldown: number,
     requiredPerms: string[],
     requiredBotPerms: string[],
-    exec: (client: AthenaClient, data: any) => boolean
+    exec: (
+      client: AthenaClient,
+      data: any,
+      args: any[]
+    ) => boolean | Promise<boolean>
   ) {
-    // TODO: Registering system for slash commands.
-
     if (this.isValidCommand(name)) return;
 
     this.commands.push(

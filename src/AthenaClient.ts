@@ -92,7 +92,7 @@ class AthenaClient extends Client {
     this.presenceManager.setPresence([
       {
         name: this.config.bot.activity,
-        type: "COMPETING",
+        type: "LISTENING",
       },
     ]);
 

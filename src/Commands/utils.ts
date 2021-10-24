@@ -9,7 +9,7 @@ export default (commandManager: CommandManager) => {
     4,
     [],
     ["SEND_MESSAGES"],
-    (client, data): boolean => {
+    (client, data, args): boolean => {
       try {
         data.reply("Pong!");
       } catch (err) {

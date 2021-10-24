@@ -18,10 +18,16 @@ export default new Event(
       .pop();
 
     // Check wheter the comamnd is valid or not
-    if (client.commandManager.isValidCommand(commandName)) return false;
+    if (!client.commandManager.isValidCommand(commandName)) return false;
 
     // Parse message aruements from the message content
     const args = msgData.content.trim().split(" ").slice(1);
+
+    // Get the command data through command manager
+    const command = client.commandManager.getCommand(commandName);
+
+    // Execute command
+    command?.exec(client, msgData, args);
 
     return true;
   }

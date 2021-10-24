@@ -23,8 +23,10 @@ exports.default = new Event_1.default("messageCreate", (client, msgData) => __aw
         .split(" ")[0]
         .split(guild.settings.prefix)
         .pop();
-    if (client.commandManager.isValidCommand(commandName))
+    if (!client.commandManager.isValidCommand(commandName))
         return false;
     const args = msgData.content.trim().split(" ").slice(1);
+    const command = client.commandManager.getCommand(commandName);
+    command === null || command === void 0 ? void 0 : command.exec(client, msgData, args);
     return true;
 }));
