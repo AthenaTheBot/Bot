@@ -54,7 +54,7 @@ class UserManager {
     } else {
       const userDocument = await (<any>this.dbManager.getDocument("users", id));
       const user = new User(userDocument?._id, userDocument?.settings);
-      if (!user) {
+      if (!user._id) {
         if (createUserIfNotExists) {
           return await this.create(id);
         } else {

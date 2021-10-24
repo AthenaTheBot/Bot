@@ -53,7 +53,7 @@ class UserManager {
             else {
                 const userDocument = yield this.dbManager.getDocument("users", id);
                 const user = new User_1.default(userDocument === null || userDocument === void 0 ? void 0 : userDocument._id, userDocument === null || userDocument === void 0 ? void 0 : userDocument.settings);
-                if (!user) {
+                if (!user._id) {
                     if (createUserIfNotExists) {
                         return yield this.create(id);
                     }

@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const discord_js_1 = require("discord.js");
 exports.default = (commandManager) => {
     commandManager.registerCommand("prefix", [], "Change the prefix of Athena for your server and use the best fit for your server!", [
         {
@@ -18,7 +19,39 @@ exports.default = (commandManager) => {
             required: false,
         },
     ], 5, ["ADMINISTRATOR"], ["EMBED_LINKS"], (client, data, args) => __awaiter(void 0, void 0, void 0, function* () {
-        data.reply("Prefix command executed!");
-        return true;
+        const Embed = new discord_js_1.MessageEmbed().setColor("AQUA");
+        if (args.length === 0) {
+            try {
+                data.reply({
+                    embeds: [
+                        Embed.setDescription("My current command prefix is: `" +
+                            data.guild.data.settings.prefix +
+                            "`"),
+                    ],
+                });
+            }
+            catch (err) {
+                return false;
+            }
+            return true;
+        }
+        else {
+            const success = yield client.dbManager.updateDocument("guilds", data.guild.id, { $set: { "settings.prefix": args[0] } });
+            if (success) {
+                data.reply({
+                    embeds: [
+                        Embed.setDescription("Successfully set server prefix as `" + args[0] + "`"),
+                    ],
+                });
+            }
+            else {
+                data.reply({
+                    embeds: [
+                        Embed.setColor("RED").setDescription("An error occured while trying to set server prefix"),
+                    ],
+                });
+            }
+            return true;
+        }
     }));
 };

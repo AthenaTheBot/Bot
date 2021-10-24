@@ -56,7 +56,7 @@ class GuildManager {
             else {
                 const guildDocument = yield (this.dbManager.getDocument("guilds", id));
                 const guild = new Guild_1.default(guildDocument === null || guildDocument === void 0 ? void 0 : guildDocument._id, guildDocument === null || guildDocument === void 0 ? void 0 : guildDocument.settings);
-                if (!guild) {
+                if (!guild._id) {
                     if (createGuildIfNotExists) {
                         return yield this.create(id);
                     }

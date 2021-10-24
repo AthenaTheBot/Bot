@@ -58,7 +58,7 @@ class GuildManager {
         this.dbManager.getDocument("guilds", id)
       ));
       const guild = new Guild(guildDocument?._id, guildDocument?.settings);
-      if (!guild) {
+      if (!guild._id) {
         if (createGuildIfNotExists) {
           return await this.create(id);
         } else {

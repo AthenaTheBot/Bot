@@ -26,6 +26,8 @@ exports.default = new Event_1.default("messageCreate", (client, msgData) => __aw
     if (!client.commandManager.isValidCommand(commandName))
         return false;
     const args = msgData.content.trim().split(" ").slice(1);
+    msgData.guild.data = guild;
+    msgData.member.data = user;
     const command = client.commandManager.getCommand(commandName);
     command === null || command === void 0 ? void 0 : command.exec(client, msgData, args);
     return true;

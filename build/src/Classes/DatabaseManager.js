@@ -45,7 +45,7 @@ class DatabaseManager {
     createDocument(collection, document) {
         return __awaiter(this, void 0, void 0, function* () {
             let d = document;
-            if (!this.connected || !(d === null || d === void 0 ? void 0 : d.id))
+            if (!this.connected || !(d === null || d === void 0 ? void 0 : d._id))
                 return false;
             const itemExists = (yield this.connection
                 .collection(collection)
@@ -70,7 +70,22 @@ class DatabaseManager {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.connected)
                 return false;
+            const time = (0, dayjs_1.default)().format("L LT");
+            if (Object.keys(query).includes("$set")) {
+                Object.assign(query.$set, {
+                    lastUpdated: time,
+                });
+            }
+            else {
+                Object.assign(query, {
+                    $set: {
+                        lastUpdated: time,
+                    },
+                });
+            }
             try {
+                console.log(query);
+                console.log(documentId);
                 this.connection
                     .collection(collection)
                     .updateOne({ _id: documentId }, query);

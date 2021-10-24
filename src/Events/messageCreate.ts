@@ -23,6 +23,10 @@ export default new Event(
     // Parse message aruements from the message content
     const args = msgData.content.trim().split(" ").slice(1);
 
+    // Attaching guild and user data to the guild and user object.
+    msgData.guild.data = guild;
+    msgData.member.data = user;
+
     // Get the command data through command manager
     const command = client.commandManager.getCommand(commandName);
 

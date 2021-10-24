@@ -20,11 +20,13 @@ exports.default = new Event_1.default("interactionCreate", (client, interactionD
         return false;
     if (!client.commandManager.isValidCommand(interactionData.commandName))
         return false;
-    const command = client.commandManager.getCommand(interactionData.commandName);
     const args = [];
     for (var i = 0; i < interactionData.options.data.length; i++) {
         args.push(interactionData.options.data[i].value);
     }
+    interactionData.guild.data = guild;
+    interactionData.member.data = user;
+    const command = client.commandManager.getCommand(interactionData.commandName);
     command === null || command === void 0 ? void 0 : command.exec(client, interactionData, args);
     return true;
 }));

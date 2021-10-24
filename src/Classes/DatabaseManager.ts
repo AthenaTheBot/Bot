@@ -43,7 +43,7 @@ class DatabaseManager {
 
   async createDocument(collection: string, document: object): Promise<boolean> {
     let d = <any>document;
-    if (!this.connected || !d?.id) return false;
+    if (!this.connected || !d?._id) return false;
 
     const itemExists =
       (await this.connection
@@ -71,11 +71,26 @@ class DatabaseManager {
   async updateDocument(
     collection: string,
     documentId: string | number,
-    query: object
+    query: any
   ): Promise<boolean> {
     if (!this.connected) return false;
 
+    const time = dayjs().format("L LT");
+    if (Object.keys(query).includes("$set")) {
+      Object.assign(query.$set, {
+        lastUpdated: time,
+      });
+    } else {
+      Object.assign(query, {
+        $set: {
+          lastUpdated: time,
+        },
+      });
+    }
+
     try {
+      console.log(query);
+      console.log(documentId);
       this.connection
         .collection(collection)
         .updateOne({ _id: documentId }, query);
