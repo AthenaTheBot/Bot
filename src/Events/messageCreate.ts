@@ -21,7 +21,8 @@ export default new Event(
     if (!client.commandManager.isValidCommand(commandName)) return false;
 
     // Parse message aruements from the message content
-    const args = msgData.content.trim().split(" ").slice(1);
+    // TODO: Change arguemen split with a reg ex.
+    const args = msgData.content.trim().split(/ +/).slice(1);
 
     // Attaching guild and user data to the guild and user object.
     msgData.guild.data = guild;

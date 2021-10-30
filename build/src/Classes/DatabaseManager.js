@@ -28,6 +28,7 @@ class DatabaseManager {
         this.connected = false;
         this.connection = mongoose_1.default.connection;
         this.logger = new Logger_1.default();
+        this.documentCache = [];
     }
     connect() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -41,6 +42,22 @@ class DatabaseManager {
                 return false;
             }
         });
+    }
+    applyDBQuertToObject(obj, path, value) {
+        let first;
+        let rest;
+        if (Array.isArray(path)) {
+            first = path[0];
+            rest = path.filter((x) => x !== path[0]);
+        }
+        else {
+            const p = path.split(".");
+            first = p[0];
+            rest = p.filter((x) => x !== p[0]);
+        }
+        return Object.assign(Object.assign({}, obj), { [first]: rest.length > 0
+                ? this.applyDBQuertToObject(obj[first], rest, value)
+                : value });
     }
     createDocument(collection, document) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -58,6 +75,7 @@ class DatabaseManager {
             Object.assign(document, { lastUpdated: time });
             try {
                 yield this.connection.collection(collection).insertOne(document);
+                this.documentCache.push(document);
                 return true;
             }
             catch (err) {
@@ -84,11 +102,10 @@ class DatabaseManager {
                 });
             }
             try {
-                console.log(query);
-                console.log(documentId);
                 this.connection
                     .collection(collection)
                     .updateOne({ _id: documentId }, query);
+                this.documentCache.find((x) => (x === null || x === void 0 ? void 0 : x._id) === documentId);
                 return true;
             }
             catch (err) {

@@ -1,7 +1,7 @@
 // Modules
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
-import mongoose, { Connection } from "mongoose";
+import mongoose, { Connection, Document, ObjectQuerySelector } from "mongoose";
 
 dayjs.extend(localizedFormat);
 
@@ -13,6 +13,7 @@ class DatabaseManager {
   connected: boolean;
   connection: Connection;
   private logger: Logger;
+  readonly documentCache: any[];
 
   constructor(url: string) {
     if (url) {
@@ -26,6 +27,8 @@ class DatabaseManager {
     this.connection = mongoose.connection;
 
     this.logger = new Logger();
+
+    this.documentCache = [];
   }
 
   async connect(): Promise<boolean> {
@@ -39,6 +42,27 @@ class DatabaseManager {
       );
       return false;
     }
+  }
+
+  applyDBQuertToObject(obj: any, path: string | string[], value: any): any {
+    let first;
+    let rest;
+    if (Array.isArray(path)) {
+      first = path[0];
+      rest = path.filter((x) => x !== path[0]);
+    } else {
+      const p = path.split(".");
+      first = p[0];
+      rest = p.filter((x) => x !== p[0]);
+    }
+
+    return {
+      ...obj,
+      [first]:
+        rest.length > 0
+          ? this.applyDBQuertToObject(obj[first], rest, value)
+          : value,
+    };
   }
 
   async createDocument(collection: string, document: object): Promise<boolean> {
@@ -60,6 +84,8 @@ class DatabaseManager {
 
     try {
       await this.connection.collection(collection).insertOne(document);
+
+      this.documentCache.push(document);
 
       return true;
     } catch (err) {
@@ -89,11 +115,11 @@ class DatabaseManager {
     }
 
     try {
-      console.log(query);
-      console.log(documentId);
       this.connection
         .collection(collection)
         .updateOne({ _id: documentId }, query);
+
+      this.documentCache.find((x) => x?._id === documentId);
 
       return true;
     } catch (err) {

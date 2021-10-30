@@ -25,7 +25,7 @@ exports.default = new Event_1.default("messageCreate", (client, msgData) => __aw
         .pop();
     if (!client.commandManager.isValidCommand(commandName))
         return false;
-    const args = msgData.content.trim().split(" ").slice(1);
+    const args = msgData.content.trim().split(/ +/).slice(1);
     msgData.guild.data = guild;
     msgData.member.data = user;
     const command = client.commandManager.getCommand(commandName);
