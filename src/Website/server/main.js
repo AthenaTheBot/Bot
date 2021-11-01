@@ -7,8 +7,8 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const Athena = require("../../Athena");
 
-const httpPort = 80;
-const httpsPort = 443;
+const httpPort = Athena.config.DEBUG ? Athena.config.DEBUG_PORT : 80;
+const httpsPort = Athena.config.DEBUG ? null : 443;
 
 const httpsOptions = {
   cert: fs.readFileSync(path.join(__dirname, "certs", "cert.pem")),
@@ -17,10 +17,16 @@ const httpsOptions = {
 };
 
 const app = express();
-const httpServer = http.createServer((req, res) => {
-  res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
-  res.end();
-});
+const httpServer = http.createServer(
+  Athena.config.DEBUG
+    ? app
+    : (req, res) => {
+        res.writeHead(301, {
+          Location: "https://" + req.headers["host"] + req.url,
+        });
+        res.end();
+      }
+);
 const httpsServer = https.createServer(httpsOptions, app);
 
 // Configuration
@@ -33,7 +39,12 @@ app.get("/support", (req, res) => {
 });
 
 app.get("/invite", (req, res) => {
-  res.redirect(Athena.config.DASHBOARD.INVITE_LINK);
+  res.redirect(
+    Athena.config.DASHBOARD.INVITE_LINK.replace(
+      "$REDIRECTURI",
+      Athena.config.DASHBOARD.REDIRECT_URI
+    ).replace("$CLIENTID", Athena.user.id)
+  );
 });
 
 app.get("/source", (req, res) => {
@@ -41,12 +52,12 @@ app.get("/source", (req, res) => {
 });
 
 // Oauth Route
-const oauthRoute = require("./routes/oauth");
+const oauthRoute = require("./routers/oauth");
 oauthRoute.sj = true;
 app.use("/oauth", oauthRoute);
 
 // Api Route
-const apiRoute = require("./routes/api");
+const apiRoute = require("./routers/api");
 app.use("/api", apiRoute);
 
 // Main Route
@@ -56,9 +67,14 @@ app.get("/*", (req, res) => {
 
 try {
   httpServer.listen(httpPort);
-  httpsServer.listen(httpsPort);
+  if (!Athena.config.DEBUG) httpsServer.listen(httpsPort);
 } catch (err) {
   return Athena.log(2, err);
 }
 
-Athena.log(1, "Server is started on port " + httpsPort + ".");
+Athena.log(
+  1,
+  `Web server has been started successfully! HTTP Port: \x1b[32m${httpPort}\x1b[0m | HTTPS Port: \x1b[32m${
+    httpsPort ? httpsPort : "None"
+  }\x1b[0m`
+);
