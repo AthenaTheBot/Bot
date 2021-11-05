@@ -1,7 +1,8 @@
 {
-    "INVALID_SONG": "Lütfen, çalmak için geçerli bir şarkı url si belirtin.",
-    "SONG_NOT_FOUND": "Belirtilen şarkı YouTube üzerinde bulunamadı.",
-    "SONG_ADDED_TO_QUEUE": "Şarkı sıraya eklendi. $song",
-    "NOW_PLAYING": "Şuanda çalınıyor: $song",
-    "ERROR": "Ooops! Görünüşe göre o şarkı çalınırken bizim tarafımızda beklenmeyen bir hata meydan geldi."
+  "INVALID_SONG": "Lütfen, çalmak için geçerli bir şarkı url si belirtin.",
+  "SONG_NOT_FOUND": "Belirtilen şarkı YouTube üzerinde bulunamadı.",
+  "NOT_IN_VC": "Bu komutu kullanmak için bir ses kanalında bulunmalısınız.",
+  "SONG_ADDED_TO_QUEUE": "Şarkı sıraya eklendi. $song",
+  "NOW_PLAYING": "Şuanda çalınıyor: $song",
+  "ERROR": "Ooops! Görünüşe göre o şarkı çalınırken bizim tarafımızda beklenmeyen bir hata meydan geldi."
 }

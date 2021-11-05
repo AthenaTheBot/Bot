@@ -6,6 +6,7 @@ Athena is a multi-functional discord bot with a cool dashboard.
 
 - Add autorole command to bot.
 - Add autorole system to dashboard.
+- Command used event.
 
 ### Known Bug(s):
 

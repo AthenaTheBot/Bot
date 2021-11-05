@@ -5,7 +5,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 
 const dbManager = require("./Utils/dbManager");
-const cooldownManager = require("./Utils/cooldownManager");
+const { cooldownManager } = require("./Utils/cooldownManager");
 
 class Core extends Client {
   constructor() {
@@ -39,9 +39,8 @@ class Core extends Client {
     this.commandAliases = new Map();
     this.locales = new Map();
 
-    // Cooldowns
-    this.cooldowns = new Map();
-    this.cooldownManager = new cooldownManager(this);
+    // Cooldown Manager
+    this.cooldownManager = new cooldownManager();
 
     // Database Related
     this.dbConnection = null;

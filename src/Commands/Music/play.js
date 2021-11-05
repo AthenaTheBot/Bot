@@ -5,7 +5,6 @@ const {
   joinVoiceChannel,
   VoiceConnectionStatus,
   AudioPlayerStatus,
-  StreamType,
   getVoiceConnection,
 } = require("@discordjs/voice");
 const { MessageEmbed } = require("discord.js");
