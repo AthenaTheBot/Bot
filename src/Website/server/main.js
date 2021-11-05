@@ -47,10 +47,6 @@ app.get("/invite", (req, res) => {
   );
 });
 
-app.get("/source", (req, res) => {
-  res.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
-});
-
 // Oauth Route
 const oauthRoute = require("./routers/oauth");
 oauthRoute.sj = true;

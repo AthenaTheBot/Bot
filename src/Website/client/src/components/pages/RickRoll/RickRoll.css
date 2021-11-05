@@ -1,0 +1,20 @@
+.athena-rickroll {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px;
+  padding: 0px;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 99999;
+  flex-direction: column;
+}
+
+#rick-roll-yt-player {
+  height: 65vh;
+  width: 65vw;
+  margin: 20px;
+}

@@ -2,8 +2,9 @@
   text-align: center;
 }
 
-.loader p {
-  margin: 8px;
+.spinner p {
+  margin: 5px;
+  padding: 5px;
 }
 
 .spinner {

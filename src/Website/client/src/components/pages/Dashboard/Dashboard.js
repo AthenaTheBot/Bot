@@ -22,33 +22,28 @@ const Dashboard = () => {
   const [page, setPage] = useState("General");
   const [alert, setAlert] = useState(false);
   const [elements, setElements] = useState([]);
-  const validCategories = [
-    "general",
-    "autorole",
-    "linkprotection",
-    "player"
-  ];
+  const validCategories = ["general", "autorole", "linkprotection", "player"];
 
   const { id, category } = useParams();
 
   const updateGuildData = () => {
     return new Promise((resolve, reject) => {
       fetch("/api/guilds/" + id)
-      .then((res) => res.json())
-      .then((res) => {
-        if (!res.data) return;
-        setGuildData({
-          ...res.data,
-          easyAccess: {
-            prefix: res.data.preferences.prefix,
-            language: res.data.preferences.language
-          }
-        });
-        resolve();
-    })
-    .catch((err) => {});
-    })
-  }
+        .then((res) => res.json())
+        .then((res) => {
+          if (!res.data) return;
+          setGuildData({
+            ...res.data,
+            easyAccess: {
+              prefix: res.data.preferences.prefix,
+              language: res.data.preferences.language,
+            },
+          });
+          resolve();
+        })
+        .catch((err) => {});
+    });
+  };
 
   useEffect(() => {
     if (validCategories.includes(category)) setPage(category);
@@ -62,15 +57,15 @@ const Dashboard = () => {
       } else {
         $(".dash-control").addClass("dash-control-collapsed");
       }
-    }
+    };
 
     $(".dash-category-title").on("click", function () {
       if ($(this).siblings().hasClass("disabled")) {
         $(this).siblings().removeClass("disabled");
-        $(this).children().removeClass('dash-category-collapsed');
+        $(this).children().removeClass("dash-category-collapsed");
       } else {
         $(this).siblings().addClass("disabled");
-        $(this).children().addClass('dash-category-collapsed');
+        $(this).children().addClass("dash-category-collapsed");
       }
     });
 
@@ -86,7 +81,8 @@ const Dashboard = () => {
       toggleControlBar();
     });
 
-    if (!id || isNaN(id) || id.length !== 18) window.location.replace("/dashboard");
+    if (!id || isNaN(id) || id.length !== 18)
+      window.location.replace("/dashboard");
 
     fetch("/api/users/@me/guilds?selectManageable=true")
       .then((res) => res.json())
@@ -116,15 +112,15 @@ const Dashboard = () => {
           ...res.data,
           easyAccess: {
             prefix: res.data.preferences.prefix,
-            language: res.data.preferences.language
-          }
+            language: res.data.preferences.language,
+          },
         });
         setTimeout(() => {
           setLoading(false);
         }, 1500);
       })
       .catch((err) => {});
-      // eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -139,9 +135,7 @@ const Dashboard = () => {
           <h2>{guild.display_name || "Server Name"}</h2>
           <div className="dash-server-stats">
             <p>
-              <span className="dash-num">
-                {guild.memberCount || "Unknown"}
-              </span>
+              <span className="dash-num">{guild.memberCount || "Unknown"}</span>
               &nbsp;Members
             </p>
             <p>
@@ -154,11 +148,15 @@ const Dashboard = () => {
           <div className="dash-categories">
             <ul className="dash-category">
               <p className="dash-category-title">
-                Configuration <FiChevronUp className="dash-category-toggle-ico" />
+                Configuration{" "}
+                <FiChevronUp className="dash-category-toggle-ico" />
               </p>
               <Link to="general">
-                <li className="dash-category-option dash-category-active" data-id="general">
-                    <FiTerminal className="dash-ico" /> General
+                <li
+                  className="dash-category-option dash-category-active"
+                  data-id="general"
+                >
+                  <FiTerminal className="dash-ico" /> General
                 </li>
               </Link>
             </ul>
@@ -169,16 +167,14 @@ const Dashboard = () => {
               </p>
               <Link className="athena-dash-category-disabled">
                 <li className="dash-category-option" data-id="autorole">
-                  <FiTerminal className="dash-ico" /> Auto Role
-                  &nbsp;
+                  <FiTerminal className="dash-ico" /> Auto Role &nbsp;
                   <span className="athena-dash-badge">SOON</span>
                 </li>
               </Link>
               <Link className="athena-dash-category-disabled">
                 <li className="dash-category-option" data-id="linkprotection">
-                    <FiTerminal className="dash-ico" /> Link Protection
-                    &nbsp;
-                    <span className="athena-dash-badge">SOON</span>
+                  <FiTerminal className="dash-ico" /> Link Protection &nbsp;
+                  <span className="athena-dash-badge">SOON</span>
                 </li>
               </Link>
             </ul>
@@ -189,9 +185,8 @@ const Dashboard = () => {
               </p>
               <Link className="athena-dash-category-disabled">
                 <li className="dash-category-option" data-id="Player">
-                    <FiTerminal className="dash-ico" /> Player
-                    &nbsp;
-                    <span className="athena-dash-badge">SOON</span>
+                  <FiTerminal className="dash-ico" /> Player &nbsp;
+                  <span className="athena-dash-badge">SOON</span>
                 </li>
               </Link>
             </ul>
@@ -206,7 +201,9 @@ const Dashboard = () => {
             <img src="/assets/images/logo.png" alt="Athena" />
           </div>
           <Profile
-            drodpownOptions={[{ url: "/dashboard", content: "Servers", reload: false }]}
+            drodpownOptions={[
+              { url: "/dashboard", content: "Servers", reload: false },
+            ]}
           />
         </div>
         <div className="dash-content">

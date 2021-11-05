@@ -7,6 +7,7 @@ import PageNotFound from "./components/pages/PageNotFound/PageNotFound";
 import Legal from "./components/pages/Legal/Legal";
 import UserState from "./context/user/userState";
 import Error from "./components/pages/Error/Error";
+import RickRoll from "./components/pages/RickRoll/RİckRoll";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
@@ -35,6 +36,9 @@ const App = () => {
           </Route>
           <Route exact path="/error">
             <Error />
+          </Route>
+          <Route exact path="/source">
+            <RickRoll />
           </Route>
           <Route exact>
             <PageNotFound />
