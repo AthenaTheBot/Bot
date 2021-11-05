@@ -43,6 +43,11 @@ class Command extends BaseCommand {
     let guildState = client.songStates.get(msg.guild.id);
     const requestedSong = args.join(" ");
     const Embed = new MessageEmbed().setColor("#5865F2");
+
+    if (!msg.guild.available) {
+      return msg.reply({ ebmdes: [Embed.setDescription(locale.ERROR)] });
+    }
+
     const defaultGuild = {
       playing: false,
       queue: [],
@@ -244,6 +249,10 @@ class Command extends BaseCommand {
       if (newState.status == AudioPlayerStatus.Playing) {
         if (startedPlaying) startedPlaying(true, guildState);
         guildState.playing = true;
+      }
+
+      if (newState.status == AudioPlayerStatus.AutoPaused) {
+        guildState.voiceChannel = msg.guild.me.voice.channel;
       }
 
       if (newState.status == AudioPlayerStatus.Idle) {

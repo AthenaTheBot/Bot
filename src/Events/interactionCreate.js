@@ -25,7 +25,7 @@ module.exports = class Event {
 
       const args = new Array();
 
-      interaction?.options?.forEach((option) => {
+      interaction?.options?.data?.forEach((option) => {
         args.push(option.value);
       });
 
