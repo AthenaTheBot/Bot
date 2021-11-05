@@ -1,6 +1,6 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { useCookies } from "react-cookie";
+import userContext from "../../../context/user/userContext";
 import Navbar from "../../layout/Navbar/Navbar";
 import Footer from "../../layout/Footer/Footer";
 import Loader from "../../layout/Loader/Loader";
@@ -10,23 +10,21 @@ import Server from "./Server/Server";
 import "./Servers.css";
 
 const Commands = () => {
-  const [guilds, setGuilds] = useState([]);
+  const { user, userServers, getUserServers } = useContext(userContext);
   const [loading, setLoading] = useState(true);
-  const [cookies] = useCookies(0);
 
   useEffect(() => {
-    if (!cookies?.session) return window.location.replace("/oauth/login");
+    if (!user) return window.location.replace("/oauth/login");
 
-    fetch("/api/users/@me/guilds?selectManageable=true")
-      .then((res) => res.json())
-      .then((res) => {
-        if (!res.data) window.location.replace("/oauth/login");
-        setGuilds(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {});
+    const func = async () => {
+      await getUserServers();
+      setLoading(false);
+    };
+
+    func();
   }, []);
 
+  // TODO: message
   return (
     <Fragment>
       <Helmet>
@@ -39,8 +37,12 @@ const Commands = () => {
           <p>Please choose a server to continue.</p>
         </div>
         <div className="dash-servers-main">
-          <Loader active={loading} coverAllPage={false} />
-          {guilds.map((guild) => {
+          <Loader
+            active={loading}
+            loaderMsg="Fetcing your servers.."
+            coverAllPage={false}
+          />
+          {userServers?.map((guild) => {
             return (
               <Server
                 id={guild.id}

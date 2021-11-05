@@ -8,10 +8,10 @@ export default (state, action) => {
         user: action.payload,
       };
 
-    case types.GET_SERVERS:
+    case types.GET_USER_SERVERS:
       return {
         ...state,
-        servers: action.payload,
+        userServers: action.payload,
       };
 
     default:

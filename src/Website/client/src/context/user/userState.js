@@ -6,11 +6,9 @@ import UserReducer from "./userReducer";
 
 const initialState = {
   user: null,
-  userServers: [],
-  cookies: {},
+  userServers: null,
 };
 
-// TODO: Don't stress back end if there isn't any session token.
 const UserState = (props) => {
   const [state, dispatch] = useReducer(UserReducer, initialState);
   const [cookies] = useCookies(0);
@@ -24,21 +22,21 @@ const UserState = (props) => {
     dispatch({ type: "GET_USER", payload: user });
   };
 
-  const getServers = async () => {
+  const getUserServers = async () => {
+    if (!cookies?.session) return;
     const servers = await $.get("/api/users/@me/guilds?selectManageable=true")
       .then((res) => res.data)
       .catch((err) => {});
     if (!servers) return;
-    dispatch({ type: "GET_SERVERS", payload: servers });
+    dispatch({ type: "GET_USER_SERVERS", payload: servers });
   };
 
   return (
     <UserContext.Provider
       value={{
-        user: state.user,
-        servers: state.servers,
+        ...state,
         getUser,
-        getServers,
+        getUserServers,
       }}
     >
       {props.children}
