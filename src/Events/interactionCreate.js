@@ -70,9 +70,9 @@ module.exports = class Event {
 
         // * Music Command Checkup
         if (command.category == "Music") {
-          const guildState = client.songStates.get(msg.guild.id);
+          const guildState = client.songStates.get(interaction.guild.id);
           if (
-            msg.guild.me.voice?.channel &&
+            interaction.guild.me.voice?.channel &&
             interaction?.guild?.me?.voice?.channel?.id !=
               interaction?.member?.voice.channel?.id
           )
@@ -97,13 +97,12 @@ module.exports = class Event {
           .setDescription(
             `**Command**: \`${command.name}\` \n \n **Args**: \`${
               args.length == 0 ? "None" : args
-            }\` \n \n **User**: \`${msg.author.id}\``
+            }\` \n \n **User**: \`${interaction.member.id}\``
           );
 
-        client.channels.cache
-          .get(client.config.LOG_CHANNELS.COMMAND_USAGE)
-          .send({ embeds: [CommandUsageEmbed] })
-          .catch((err) => {});
+        (
+          await client.channels.fetch(client.config.LOG_CHANNELS.COMMAND_USAGE)
+        ).send({ embeds: [CommandUsageEmbed] });
       }
     }
   }
