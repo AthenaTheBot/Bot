@@ -143,10 +143,16 @@ class DatabaseManager {
                     .collection(collection)
                     .updateOne({ _id: documentId }, query);
                 const document = this.documentCache.find((x) => x._id === documentId);
-                if (document) {
+                let newDocument;
+                if (!document) {
+                    newDocument = yield this.getDocument(collection, documentId);
                 }
                 else {
+                    this.documentCache = this.documentCache.filter((x) => x._id !== documentId);
+                    newDocument = this.applyDBQueryToObject(document, query);
                 }
+                if (newDocument)
+                    this.documentCache.push(newDocument);
                 return true;
             }
             catch (err) {
@@ -171,17 +177,25 @@ class DatabaseManager {
             }
         });
     }
-    getDocument(collection, documentId) {
+    getDocument(collection, documentId, getFromCacheIfExists = true) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const document = yield this.connection
-                    .collection(collection)
-                    .findOne({ _id: documentId });
-                return document;
+            const itemExists = this.documentCache.filter((x) => x._id === documentId).length === 0
+                ? false
+                : true;
+            if (getFromCacheIfExists && itemExists) {
+                return this.documentCache.find((x) => x._id === documentId);
             }
-            catch (err) {
-                this.logger.error(err);
-                return null;
+            else {
+                try {
+                    const document = yield this.connection
+                        .collection(collection)
+                        .findOne({ _id: documentId });
+                    return document;
+                }
+                catch (err) {
+                    this.logger.error(err);
+                    return null;
+                }
             }
         });
     }

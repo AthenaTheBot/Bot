@@ -13,7 +13,7 @@ class DatabaseManager {
   connected: boolean;
   connection: Connection;
   private logger: Logger;
-  readonly documentCache: any[];
+  private documentCache: any[];
 
   constructor(url: string) {
     if (url) {
@@ -179,12 +179,21 @@ class DatabaseManager {
 
       // Check if document exists on cache.
       const document = this.documentCache.find((x) => x._id === documentId);
+      let newDocument;
 
-      // If document is valid then apply queris to db cache.
-      if (document) {
+      if (!document) {
+        // Fetch document then push
+        newDocument = await this.getDocument(collection, documentId);
       } else {
-        // Else push the new document to document cache.
+        // Remove document from cache
+        this.documentCache = this.documentCache.filter(
+          (x) => x._id !== documentId
+        );
+
+        newDocument = this.applyDBQueryToObject(document, query);
       }
+
+      if (newDocument) this.documentCache.push(newDocument);
 
       return true;
     } catch (err) {
@@ -213,17 +222,27 @@ class DatabaseManager {
 
   async getDocument(
     collection: string,
-    documentId: string | number
+    documentId: string | number,
+    getFromCacheIfExists = true
   ): Promise<object | null> {
-    try {
-      const document = await this.connection
-        .collection(collection)
-        .findOne({ _id: documentId });
+    const itemExists =
+      this.documentCache.filter((x) => x._id === documentId).length === 0
+        ? false
+        : true;
 
-      return document;
-    } catch (err) {
-      this.logger.error(<Error>err);
-      return null;
+    if (getFromCacheIfExists && itemExists) {
+      return this.documentCache.find((x) => x._id === documentId);
+    } else {
+      try {
+        const document = await this.connection
+          .collection(collection)
+          .findOne({ _id: documentId });
+
+        return document;
+      } catch (err) {
+        this.logger.error(<Error>err);
+        return null;
+      }
     }
   }
 }

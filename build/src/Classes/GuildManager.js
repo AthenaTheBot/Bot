@@ -21,16 +21,13 @@ class GuildManager {
     constructor(dbManager) {
         this.logger = new Logger_1.default();
         this.dbManager = dbManager;
-        this.guildCache = [];
     }
     create(id, options) {
         return __awaiter(this, void 0, void 0, function* () {
             const guild = new Guild_1.default(id, options);
             const success = yield this.dbManager.createDocument("guilds", guild);
-            if (success) {
-                this.guildCache.push(guild);
+            if (success)
                 return guild;
-            }
             else {
                 this.logger.error("An error occured while trying to create a guild with id " + id + ".");
                 return null;
@@ -49,24 +46,17 @@ class GuildManager {
     }
     fetch(id, createGuildIfNotExists) {
         return __awaiter(this, void 0, void 0, function* () {
-            const cacheIncludes = this.guildCache.filter((x) => x._id === id).length == 1 ? true : false;
-            if (cacheIncludes) {
-                return this.guildCache.find((x) => x._id === id);
-            }
-            else {
-                const guildDocument = yield (this.dbManager.getDocument("guilds", id));
-                const guild = new Guild_1.default(guildDocument === null || guildDocument === void 0 ? void 0 : guildDocument._id, guildDocument === null || guildDocument === void 0 ? void 0 : guildDocument.settings);
-                if (!guild._id) {
-                    if (createGuildIfNotExists) {
-                        return yield this.create(id);
-                    }
-                    else {
-                        return null;
-                    }
+            const guildDocument = yield this.dbManager.getDocument("guilds", id);
+            const guild = new Guild_1.default(guildDocument === null || guildDocument === void 0 ? void 0 : guildDocument._id, guildDocument === null || guildDocument === void 0 ? void 0 : guildDocument.settings);
+            if (!guild._id) {
+                if (createGuildIfNotExists) {
+                    return yield this.create(id);
                 }
-                this.guildCache.push(guild);
-                return guild;
+                else {
+                    return null;
+                }
             }
+            return guild;
         });
     }
 }

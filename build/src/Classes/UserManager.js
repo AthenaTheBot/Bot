@@ -18,16 +18,13 @@ class UserManager {
     constructor(dbManager) {
         this.logger = new Logger_1.default();
         this.dbManager = dbManager;
-        this.userCache = [];
     }
     create(id, options) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = new User_1.default(id, options);
             const success = yield this.dbManager.createDocument("users", user);
-            if (success) {
-                this.userCache.push(user);
+            if (success)
                 return user;
-            }
             else {
                 this.logger.error("An error occured while trying to create a user with id " + id + ".");
                 return null;
@@ -46,24 +43,17 @@ class UserManager {
     }
     fetch(id, createUserIfNotExists) {
         return __awaiter(this, void 0, void 0, function* () {
-            const cacheIncludes = this.userCache.filter((x) => x._id === id).length == 1 ? true : false;
-            if (cacheIncludes) {
-                return this.userCache.find((x) => x._id === id);
-            }
-            else {
-                const userDocument = yield this.dbManager.getDocument("users", id);
-                const user = new User_1.default(userDocument === null || userDocument === void 0 ? void 0 : userDocument._id, userDocument === null || userDocument === void 0 ? void 0 : userDocument.settings);
-                if (!user._id) {
-                    if (createUserIfNotExists) {
-                        return yield this.create(id);
-                    }
-                    else {
-                        return null;
-                    }
+            const userDocument = yield this.dbManager.getDocument("users", id);
+            const user = new User_1.default(userDocument === null || userDocument === void 0 ? void 0 : userDocument._id, userDocument === null || userDocument === void 0 ? void 0 : userDocument.settings);
+            if (!user._id) {
+                if (createUserIfNotExists) {
+                    return yield this.create(id);
                 }
-                this.userCache.push(user);
-                return user;
+                else {
+                    return null;
+                }
             }
+            return user;
         });
     }
 }
