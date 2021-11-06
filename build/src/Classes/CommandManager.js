@@ -73,12 +73,12 @@ class CommandManager {
         this.commands = this.commands.filter((x) => x.name !== cmdName);
     }
     isValidCommand(cmdName) {
-        return this.commands.filter((x) => x.name === cmdName).length !== 0
+        return this.commands.filter((x) => x.name === cmdName || x.aliases.includes(cmdName)).length !== 0
             ? true
             : false;
     }
     getCommand(cmdName) {
-        return this.commands.find((x) => x.name == cmdName) || null;
+        return ((this.commands.find((x) => x.name == cmdName || x.aliases.includes(cmdName))) || null);
     }
 }
 exports.default = CommandManager;

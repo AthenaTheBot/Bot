@@ -19,6 +19,13 @@ class Utils {
   parseError(error: Error): string {
     return `\n──────────────────────────────────────────────────\n[\x1b[41mERROR NAME\x1b[0m]: ${error.name} \n\n[\x1b[41mERROR MESSAGE\x1b[0m]:  ${error.message} \n\n[\x1b[41mERROR STACK\x1b[0m]: ${error.stack}\n──────────────────────────────────────────────────`;
   }
+
+  parseDuration(dur: string): number {
+    const minSecond = dur.trim().split(":");
+    const min = parseInt(minSecond[0]) as number;
+    const sec = parseInt(minSecond[1]) as number;
+    return min * 60 + sec;
+  }
 }
 
 export default Utils;

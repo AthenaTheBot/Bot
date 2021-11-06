@@ -1,12 +1,11 @@
 // Modules
 import { Client, Intents } from "discord.js";
 
+import { configInterface } from "./Interfaces";
+
 // Classes
 import Logger from "./Classes/Logger";
 import DatabaseManager from "./Classes/DatabaseManager";
-
-// Interfaces
-import { configInterface } from "./Interfaces";
 import Utils from "./Classes/Utils";
 import EventManager from "./Classes/EventManager";
 import ErrorHandler from "./Classes/ErrorHandler";

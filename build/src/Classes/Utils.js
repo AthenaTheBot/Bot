@@ -17,5 +17,11 @@ class Utils {
     parseError(error) {
         return `\n──────────────────────────────────────────────────\n[\x1b[41mERROR NAME\x1b[0m]: ${error.name} \n\n[\x1b[41mERROR MESSAGE\x1b[0m]:  ${error.message} \n\n[\x1b[41mERROR STACK\x1b[0m]: ${error.stack}\n──────────────────────────────────────────────────`;
     }
+    parseDuration(dur) {
+        const minSecond = dur.trim().split(":");
+        const min = parseInt(minSecond[0]);
+        const sec = parseInt(minSecond[1]);
+        return min * 60 + sec;
+    }
 }
 exports.default = Utils;
