@@ -2,6 +2,7 @@ import CommandManager from "../Classes/CommandManager";
 import { MessageEmbed } from "discord.js";
 
 export default (commandManager: CommandManager) => {
+  // Prefix command
   commandManager.registerCommand(
     "prefix",
     [],
@@ -38,9 +39,6 @@ export default (commandManager: CommandManager) => {
         }
         return true;
       } else {
-        /*
-          TODO: Implement dbManager system to guild and user managers.
-        */
         const success = await client.dbManager.updateDocument(
           "guilds",
           data.guild.id,
@@ -66,6 +64,130 @@ export default (commandManager: CommandManager) => {
         }
         return true;
       }
+    }
+  );
+
+  // Admin role command
+  commandManager.registerCommand(
+    "adminrole",
+    [],
+    "Command for setting admin role.",
+    [
+      {
+        type: "ROLE",
+        name: "Role",
+        description: "The role that you want to set as bot admin.",
+        required: true,
+      },
+    ],
+    4,
+    ["ADMINISTRATOR"],
+    ["EMBED_LINKS"],
+    async (client, data, args): Promise<boolean> => {
+      let mentionedRole;
+      if (data.isInteraction) {
+      } else {
+        mentionedRole = data.mentions.roles.first();
+      }
+
+      if (!mentionedRole?.id)
+        return data.reply({
+          embeds: [
+            new MessageEmbed()
+              .setColor("RED")
+              .setDescription("Please specify a valid role."),
+          ],
+        });
+
+      const success = await client.guildManager.updateGuild(data.guild.id, {
+        $set: { "modules.moderationModule.adminRole": mentionedRole.id },
+      });
+
+      if (success) {
+        data.reply({
+          embeds: [
+            new MessageEmbed()
+              .setColor("GREEN")
+              .setDescription(
+                `Successfully set admin role as <@&${mentionedRole.id}>`
+              ),
+          ],
+        });
+      } else {
+        return data.reply({
+          embeds: [
+            new MessageEmbed()
+              .setColor("RED")
+              .setDescription(
+                "An unexpected error occured while updating admin role, please try again in a minute."
+              ),
+          ],
+        });
+      }
+
+      return true;
+    }
+  );
+
+  // Mod role command
+  commandManager.registerCommand(
+    "modrole",
+    [],
+    "Command for setting admin role.",
+    [
+      {
+        type: "ROLE",
+        name: "Role",
+        description: "The role that you want to set as bot admin.",
+        required: true,
+      },
+    ],
+    4,
+    ["ADMINISTRATOR"],
+    ["EMBED_LINKS"],
+    async (client, data, args): Promise<boolean> => {
+      let mentionedRole;
+      if (data.isInteraction) {
+      } else {
+        mentionedRole = data.mentions.roles.first();
+      }
+
+      if (!mentionedRole?.id)
+        return data.reply({
+          embeds: [
+            new MessageEmbed()
+              .setColor("RED")
+              .setDescription("Please specify a valid role."),
+          ],
+        });
+
+      const success = await client.guildManager.updateGuild(data.guild.id, {
+        $set: { "modules.moderationModule.modRole": mentionedRole.id },
+      });
+
+      if (success) {
+        data.reply({
+          embeds: [
+            new MessageEmbed()
+              .setColor("GREEN")
+              .setDescription(
+                `Successfully set mod role as <@&${mentionedRole.id}>`
+              ),
+          ],
+        });
+      } else {
+        return data.reply({
+          embeds: [
+            new MessageEmbed()
+              .setColor("RED")
+              .setDescription(
+                "An unexpected error occured while updating admin role, please try again in a minute."
+              ),
+          ],
+        });
+      }
+
+      return true;
     }
   );
 };

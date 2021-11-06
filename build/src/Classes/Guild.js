@@ -29,7 +29,10 @@ class Guild {
             this.settings.language = languages.EN_US;
         }
         this.modules = {
-            moderationModule: {},
+            moderationModule: {
+                adminRole: null,
+                modRole: null,
+            },
             funModule: {},
             utilsModule: {},
         };

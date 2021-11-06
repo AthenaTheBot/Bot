@@ -33,6 +33,9 @@ export default new Event(
     interactionData.guild.data = guild;
     interactionData.member.data = user;
 
+    // Attaching extra data to indicate command that the data passed is a interaction
+    interactionData.isInteraction = true;
+
     // Get the command data through command manager.
     const command = client.commandManager.getCommand(
       interactionData.commandName

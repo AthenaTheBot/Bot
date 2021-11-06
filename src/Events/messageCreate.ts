@@ -27,6 +27,9 @@ export default new Event(
     msgData.guild.data = guild;
     msgData.member.data = user;
 
+    // Attaching extra data to indicate command that the data passed is not a interaction
+    msgData.isInteraction = false;
+
     // Get the command data through command manager
     const command = client.commandManager.getCommand(commandName);
 

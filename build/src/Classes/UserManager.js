@@ -56,5 +56,20 @@ class UserManager {
             return user;
         });
     }
+    updateUser(id, mongoQuery) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let user = (yield this.dbManager.getDocument("users", id));
+            if (!user) {
+                user = (yield this.create(id));
+                if (!user)
+                    return false;
+            }
+            const success = yield this.dbManager.updateDocument("users", user._id, mongoQuery);
+            if (success)
+                return true;
+            else
+                return false;
+        });
+    }
 }
 exports.default = UserManager;

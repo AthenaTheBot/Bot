@@ -35,10 +35,6 @@ class UserManager {
     return await this.dbManager.removeDocument("users", id);
   }
 
-  /* 
-    TODO: Fetch user using db manager.
-    TODO: Implement cache system.
-  */
   async fetch(
     id: string,
     createUserIfNotExists?: boolean
@@ -54,6 +50,22 @@ class UserManager {
     }
 
     return user;
+  }
+
+  async updateUser(id: string, mongoQuery: object): Promise<boolean> {
+    let user = (await this.dbManager.getDocument("users", id)) as User;
+    if (!user) {
+      user = (await this.create(id)) as User;
+      if (!user) return false;
+    }
+
+    const success = await this.dbManager.updateDocument(
+      "users",
+      user._id,
+      mongoQuery
+    );
+    if (success) return true;
+    else return false;
   }
 }
 

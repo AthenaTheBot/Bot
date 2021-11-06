@@ -26,6 +26,7 @@ exports.default = new Event_1.default("interactionCreate", (client, interactionD
     }
     interactionData.guild.data = guild;
     interactionData.member.data = user;
+    interactionData.isInteraction = true;
     const command = client.commandManager.getCommand(interactionData.commandName);
     command === null || command === void 0 ? void 0 : command.exec(client, interactionData, args);
     return true;

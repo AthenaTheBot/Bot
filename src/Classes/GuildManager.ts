@@ -57,6 +57,22 @@ class GuildManager {
 
     return guild;
   }
+
+  async updateGuild(id: string, mongoQuery: object): Promise<boolean> {
+    let guild = (await this.dbManager.getDocument("guilds", id)) as Guild;
+    if (!guild) {
+      guild = (await this.create(id)) as Guild;
+      if (!guild) return false;
+    }
+
+    const success = await this.dbManager.updateDocument(
+      "guilds",
+      guild._id,
+      mongoQuery
+    );
+    if (success) return true;
+    else return false;
+  }
 }
 
 export default GuildManager;

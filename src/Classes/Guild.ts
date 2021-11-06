@@ -36,7 +36,10 @@ class Guild {
     }
 
     this.modules = {
-      moderationModule: {},
+      moderationModule: {
+        adminRole: null,
+        modRole: null,
+      },
       funModule: {},
       utilsModule: {},
     };

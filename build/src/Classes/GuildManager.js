@@ -59,5 +59,20 @@ class GuildManager {
             return guild;
         });
     }
+    updateGuild(id, mongoQuery) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let guild = (yield this.dbManager.getDocument("guilds", id));
+            if (!guild) {
+                guild = (yield this.create(id));
+                if (!guild)
+                    return false;
+            }
+            const success = yield this.dbManager.updateDocument("guilds", guild._id, mongoQuery);
+            if (success)
+                return true;
+            else
+                return false;
+        });
+    }
 }
 exports.default = GuildManager;
