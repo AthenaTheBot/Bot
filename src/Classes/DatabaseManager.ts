@@ -44,7 +44,7 @@ class DatabaseManager {
     }
   }
 
-  applyDBQuertToObject(obj: any, path: string | string[], value: any): any {
+  applySetQueryToObject(obj: any, path: string | string[], value: any): any {
     let first;
     let rest;
     if (Array.isArray(path)) {
@@ -60,9 +60,67 @@ class DatabaseManager {
       ...obj,
       [first]:
         rest.length > 0
-          ? this.applyDBQuertToObject(obj[first], rest, value)
+          ? this.applySetQueryToObject(obj[first], rest, value)
           : value,
     };
+  }
+
+  // TODO: Create a method which performs push operations for documents.
+  applyPushQueryToObject(obj: any, path: string | string[], value: any): any {
+    let first;
+    let rest;
+    if (Array.isArray(path)) {
+      first = path[0];
+      rest = path.filter((x) => x !== path[0]);
+    } else {
+      const p = path.split(".");
+      first = p[0];
+      rest = p.filter((x) => x !== p[0]);
+    }
+
+    return {
+      ...obj,
+      [first]:
+        rest.length > 0
+          ? this.applyPushQueryToObject(obj[first], rest, value)
+          : [...obj[first], value],
+    };
+  }
+
+  // TODO: Apply all valid mongodb queries to the document
+  applyDBQueryToObject(document: object, query: object): object {
+    const queryTypes = Object.getOwnPropertyNames(query);
+    const q = <any>query;
+
+    // Apply Set Query
+    if (queryTypes.includes("$set")) {
+      const setOperations = Object.getOwnPropertyNames(q["$set"]);
+      for (var i = 0; i < setOperations.length; i++) {
+        document = this.applySetQueryToObject(
+          document,
+          setOperations[i],
+          q["$set"][setOperations[i]]
+        );
+      }
+    }
+
+    // Apply Push Query
+    if (queryTypes.includes("$push")) {
+      const pushOperations = Object.getOwnPropertyNames(q["$push"]);
+      for (var i = 0; i < pushOperations.length; i++) {
+        const value = q["$push"][pushOperations[i]];
+        const val = Array.isArray(value) ? value : [value];
+        for (var y = 0; y < val.length; y++) {
+          document = this.applyPushQueryToObject(
+            document,
+            pushOperations[i],
+            val[y]
+          );
+        }
+      }
+    }
+
+    return document;
   }
 
   async createDocument(collection: string, document: object): Promise<boolean> {
@@ -119,7 +177,14 @@ class DatabaseManager {
         .collection(collection)
         .updateOne({ _id: documentId }, query);
 
-      this.documentCache.find((x) => x?._id === documentId);
+      // Check if document exists on cache.
+      const document = this.documentCache.find((x) => x._id === documentId);
+
+      // If document is valid then apply queris to db cache.
+      if (document) {
+      } else {
+        // Else push the new document to document cache.
+      }
 
       return true;
     } catch (err) {

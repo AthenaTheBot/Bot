@@ -43,7 +43,7 @@ class DatabaseManager {
             }
         });
     }
-    applyDBQuertToObject(obj, path, value) {
+    applySetQueryToObject(obj, path, value) {
         let first;
         let rest;
         if (Array.isArray(path)) {
@@ -56,8 +56,45 @@ class DatabaseManager {
             rest = p.filter((x) => x !== p[0]);
         }
         return Object.assign(Object.assign({}, obj), { [first]: rest.length > 0
-                ? this.applyDBQuertToObject(obj[first], rest, value)
+                ? this.applySetQueryToObject(obj[first], rest, value)
                 : value });
+    }
+    applyPushQueryToObject(obj, path, value) {
+        let first;
+        let rest;
+        if (Array.isArray(path)) {
+            first = path[0];
+            rest = path.filter((x) => x !== path[0]);
+        }
+        else {
+            const p = path.split(".");
+            first = p[0];
+            rest = p.filter((x) => x !== p[0]);
+        }
+        return Object.assign(Object.assign({}, obj), { [first]: rest.length > 0
+                ? this.applyPushQueryToObject(obj[first], rest, value)
+                : [...obj[first], value] });
+    }
+    applyDBQueryToObject(document, query) {
+        const queryTypes = Object.getOwnPropertyNames(query);
+        const q = query;
+        if (queryTypes.includes("$set")) {
+            const setOperations = Object.getOwnPropertyNames(q["$set"]);
+            for (var i = 0; i < setOperations.length; i++) {
+                document = this.applySetQueryToObject(document, setOperations[i], q["$set"][setOperations[i]]);
+            }
+        }
+        if (queryTypes.includes("$push")) {
+            const pushOperations = Object.getOwnPropertyNames(q["$push"]);
+            for (var i = 0; i < pushOperations.length; i++) {
+                const value = q["$push"][pushOperations[i]];
+                const val = Array.isArray(value) ? value : [value];
+                for (var y = 0; y < val.length; y++) {
+                    document = this.applyPushQueryToObject(document, pushOperations[i], val[y]);
+                }
+            }
+        }
+        return document;
     }
     createDocument(collection, document) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -105,7 +142,11 @@ class DatabaseManager {
                 this.connection
                     .collection(collection)
                     .updateOne({ _id: documentId }, query);
-                this.documentCache.find((x) => (x === null || x === void 0 ? void 0 : x._id) === documentId);
+                const document = this.documentCache.find((x) => x._id === documentId);
+                if (document) {
+                }
+                else {
+                }
                 return true;
             }
             catch (err) {
