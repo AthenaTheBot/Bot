@@ -17,8 +17,6 @@ export default new Event(
       .split(guild.settings.prefix)
       .pop();
 
-    console.log(client.commandManager.isValidCommand(commandName));
-
     // Check wheter the comamnd is valid or not
     if (!client.commandManager.isValidCommand(commandName)) return false;
 

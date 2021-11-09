@@ -15,6 +15,7 @@ exports.default = (commandManager) => {
         if (song.length === 0)
             return false;
         const res = yield client.player.searchSong(args.join(" "));
+        console.log(res);
         return true;
     }));
 };

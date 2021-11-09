@@ -15,6 +15,8 @@ export default (commandManager: CommandManager) => {
 
       const res = await client.player.searchSong(args.join(" "));
 
+      console.log(res);
+
       return true;
     }
   );

@@ -19,22 +19,22 @@ const Song_1 = __importDefault(require("./Song"));
 class Player {
     constructor() {
         this.guildQueues = [];
-        this.regExps = {
-            youtubeVideo: new RegExp(/^https?:\/\/(?:(?:www|m)\.)?(?:youtube\.com\/watch(?:\?v=|\?.+?&v=)|youtu\.be\/)([a-z0-9_-]+)$/i),
-            spotifyPlaylist: new RegExp(/^https?:\/\/(?:open|play)\.spotify\.com\/user\/([\w\d]+)\/playlist\/[\w\d]+$/i),
-            spotifyTrack: new RegExp(/^https?:\/\/(?:open|play)\.spotify\.com\/track\/[\w\d]+$/i),
+        this.baseURLs = {
+            spTrack: "open.spotify.com/track/",
+            spPlaylist: "open.spotify.com/playlist/",
+            spAlbum: "open.spotify.com/album/",
         };
         this.utils = new Utils_1.default();
     }
     searchSong(query) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (query.match(this.regExps.spotifyTrack)) {
+            if (query.trim().indexOf(this.baseURLs.spTrack) > 0) {
                 const spotifyData = yield spotify_url_info_1.default.getData(query.trim());
                 if (!spotifyData)
                     return null;
-                query = spotifyData;
+                query = spotifyData.name;
             }
-            else if (query.match(this.regExps.spotifyPlaylist)) {
+            else if (query.trim().indexOf(this.baseURLs.spotifyPlaylist) > 0) {
                 return null;
             }
             const result = (yield (0, ytsr_1.default)(query.trim(), { limit: 2 })).items.filter((x) => x.type === "video")[0];
