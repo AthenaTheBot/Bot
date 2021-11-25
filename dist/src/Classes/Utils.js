@@ -8,7 +8,7 @@ class Utils {
             this.configPath = configPath;
         }
         else {
-            this.configPath = (0, path_1.join)(__dirname, "..", "..", "config.json");
+            this.configPath = (0, path_1.join)(__dirname, "..", "..", "..", "config.json");
         }
     }
     loadConfig() {

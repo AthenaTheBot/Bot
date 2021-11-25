@@ -47,8 +47,8 @@ class EventManager {
     for (var i = 0; i < this.events.length; i++) {
       const event = this.events[i];
       try {
-        this.client.on(event.name, (data) => {
-          event.exec(this.client, data);
+        this.client.on(event.name, async (data) => {
+          await event.exec(this.client, data);
         });
       } catch (err) {
         this.client.logger.error(

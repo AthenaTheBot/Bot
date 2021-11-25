@@ -5,20 +5,24 @@ import ytsr from "ytsr";
 // Classes
 import Utils from "./Utils";
 import Song from "./Song";
+import Logger from "./Logger";
 
 class Player {
-  guildQueues: object;
-  baseURLs: any;
+  private guildQueues: Map<string, object>;
   private utils: Utils;
+  private logger: Logger;
+  readonly baseURLs: any;
 
   constructor() {
-    this.guildQueues = [];
+    this.guildQueues = new Map();
+    this.logger = new Logger();
+    this.utils = new Utils();
+
     this.baseURLs = {
       spTrack: "open.spotify.com/track/",
       spPlaylist: "open.spotify.com/playlist/",
       spAlbum: "open.spotify.com/album/",
     };
-    this.utils = new Utils();
   }
 
   async searchSong(query: string): Promise<Song | null> {

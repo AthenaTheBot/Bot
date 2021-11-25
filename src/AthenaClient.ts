@@ -1,7 +1,7 @@
 // Modules
 import { Client, Intents } from "discord.js";
 
-import { configInterface } from "./Interfaces";
+import { configInterface } from "./Classes/Utils";
 
 // Classes
 import Logger from "./Classes/Logger";

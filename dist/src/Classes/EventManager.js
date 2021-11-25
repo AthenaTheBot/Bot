@@ -63,9 +63,9 @@ class EventManager {
         for (var i = 0; i < this.events.length; i++) {
             const event = this.events[i];
             try {
-                this.client.on(event.name, (data) => {
-                    event.exec(this.client, data);
-                });
+                this.client.on(event.name, (data) => __awaiter(this, void 0, void 0, function* () {
+                    yield event.exec(this.client, data);
+                }));
             }
             catch (err) {
                 this.client.logger.error(`An error happened while loading event ${event.name}. ${this.client.config.debugMode

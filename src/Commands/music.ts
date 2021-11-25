@@ -1,3 +1,13 @@
+import {
+  AudioPlayerStatus,
+  createAudioPlayer,
+  createAudioResource,
+  entersState,
+  joinVoiceChannel,
+  StreamType,
+  VoiceConnectionStatus,
+} from "@discordjs/voice";
+import { VoiceChannel } from "discord.js";
 import CommandManager from "../Classes/CommandManager";
 
 export default (commandManager: CommandManager) => {
@@ -10,13 +20,6 @@ export default (commandManager: CommandManager) => {
     [],
     ["SEND_MESSAGES"],
     async (client, data, args): Promise<boolean> => {
-      const song = args.join(" ");
-      if (song.length === 0) return false;
-
-      const res = await client.player.searchSong(args.join(" "));
-
-      console.log(res);
-
       return true;
     }
   );

@@ -2,17 +2,29 @@
 import { join } from "path";
 import { readFileSync } from "fs";
 
+interface configInterface {
+  debugMode: boolean;
+  bot: {
+    token: string;
+    activity: string;
+  };
+  webhooks: {
+    error: string;
+  };
+  db_url: string;
+}
+
 class Utils {
   configPath: string;
   constructor(configPath?: string) {
     if (configPath) {
       this.configPath = configPath;
     } else {
-      this.configPath = join(__dirname, "..", "..", "config.json");
+      this.configPath = join(__dirname, "..", "..", "..", "config.json");
     }
   }
 
-  loadConfig(): object {
+  loadConfig(): configInterface {
     return JSON.parse(readFileSync(this.configPath, { encoding: "utf-8" }));
   }
 
@@ -29,3 +41,4 @@ class Utils {
 }
 
 export default Utils;
+export { configInterface };

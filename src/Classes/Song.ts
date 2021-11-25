@@ -1,3 +1,10 @@
+import {
+  AudioResource,
+  createAudioResource,
+  demuxProbe,
+} from "@discordjs/voice";
+import { raw as ytdl } from "youtube-dl-exec";
+
 class Song {
   title: string;
   description: string;

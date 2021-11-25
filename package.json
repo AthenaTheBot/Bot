@@ -2,10 +2,8 @@
   "name": "athena",
   "version": "3.0.0",
   "description": "Simple multi-functional discord bot.",
-  "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "main": "dist/index.js",
+  "scripts": {},
   "keywords": [
     "discord",
     "bot",
@@ -16,15 +14,19 @@
   "author": "Tuna Sayin",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/voice": "^0.7.2",
+    "@discordjs/opus": "^0.5.3",
+    "@discordjs/voice": "^0.7.5",
     "bufferutil": "^4.0.5",
     "cross-fetch": "^3.1.4",
     "dayjs": "^1.10.7",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
     "erlpack": "github:discord/erlpack",
+    "ffmpeg-static": "^4.4.0",
     "mongoose": "^6.0.8",
+    "prism-media": "^1.3.2",
     "spotify-url-info": "^2.2.3",
+    "tweetnacl": "^1.0.3",
     "utf-8-validate": "^5.0.7",
     "youtube-dl-exec": "^1.3.3",
     "ytsr": "^3.5.3",

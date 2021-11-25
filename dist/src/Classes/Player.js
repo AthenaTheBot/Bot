@@ -16,15 +16,17 @@ const spotify_url_info_1 = __importDefault(require("spotify-url-info"));
 const ytsr_1 = __importDefault(require("ytsr"));
 const Utils_1 = __importDefault(require("./Utils"));
 const Song_1 = __importDefault(require("./Song"));
+const Logger_1 = __importDefault(require("./Logger"));
 class Player {
     constructor() {
-        this.guildQueues = [];
+        this.guildQueues = new Map();
+        this.logger = new Logger_1.default();
+        this.utils = new Utils_1.default();
         this.baseURLs = {
             spTrack: "open.spotify.com/track/",
             spPlaylist: "open.spotify.com/playlist/",
             spAlbum: "open.spotify.com/album/",
         };
-        this.utils = new Utils_1.default();
     }
     searchSong(query) {
         return __awaiter(this, void 0, void 0, function* () {

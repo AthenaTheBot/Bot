@@ -8,7 +8,7 @@ import Logger from "./Logger";
 import Utils from "./Utils";
 
 // Interfaces
-import { configInterface } from "../Interfaces";
+import { configInterface } from "../Classes/Utils";
 
 class ErrorHandler {
   readonly errorFolder: string;
