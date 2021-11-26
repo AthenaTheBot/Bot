@@ -190,7 +190,8 @@ class Command extends BaseCommand {
   async playSong(client, msg, guildState, skipCommand) {
     async function startedPlaying(playing, guildState) {
       const Embed = new MessageEmbed();
-      if (!playing) msg.reply({ embeds: [Embed.setDescription(locale.ERROR)] });
+      if (!playing)
+        msg.reply({ embeds: [Embed.setDescription(guildState.locale.ERROR)] });
       else {
         if (guildState.queue[0].msgSent) return;
 
@@ -252,7 +253,7 @@ class Command extends BaseCommand {
       }
 
       if (newState.status == AudioPlayerStatus.AutoPaused) {
-        guildState.voiceChannel = msg.guild.me.voice.channel;
+        guildState.voiceChannel = msg?.guild?.me?.voice?.channel;
       }
 
       if (newState.status == AudioPlayerStatus.Idle) {
@@ -281,7 +282,7 @@ class Command extends BaseCommand {
         guildState.playing = false;
         setTimeout(() => {
           const newGuildState = client.songStates.get(guildState.guild.id);
-          if (!newGuildState.playing)
+          if (!newGuildState?.playing)
             client.songStates.delete(guildState.guild.id);
         }, 5 * 60 * 1000);
       }

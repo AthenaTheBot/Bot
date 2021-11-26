@@ -40,7 +40,7 @@ class Command extends BaseCommand {
     if (guildState.queue.length == 0) {
       client.songStates.delete(msg.guild.id);
       getVoiceConnection(msg.guild.id)?.destroy();
-      msg.react("👍");
+      msg.reply("👍");
       return;
     }
 
@@ -48,7 +48,7 @@ class Command extends BaseCommand {
 
     playCommand.playSong(client, msg, guildState, true);
 
-    msg.react("👍");
+    msg.reply("👍");
   }
 }
 

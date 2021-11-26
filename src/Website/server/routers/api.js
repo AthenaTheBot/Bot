@@ -68,7 +68,7 @@ const getUserGuilds = async (sesKey) => {
 
   setTimeout(() => {
     guildsCache.delete(sesKey);
-  }, 60 * 1000);
+  }, 5 * 1000);
 
   return userCurrentGuilds;
 };

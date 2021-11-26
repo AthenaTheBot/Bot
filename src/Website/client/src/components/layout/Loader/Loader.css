@@ -2,6 +2,20 @@
   text-align: center;
 }
 
+@keyframes loaderDisabledAnim {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.loader-disabled {
+  animation: loaderDisabledAnim 600ms forwards;
+}
+
 .spinner p {
   margin: 5px;
   padding: 5px;

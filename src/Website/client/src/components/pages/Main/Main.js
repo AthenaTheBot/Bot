@@ -25,7 +25,8 @@ const Main = () => {
           </h1>
           <p>
             Athena is a multi-functional discord bot that offers many services
-            for free such as playing any song you desire with night core effect.
+            for free such as playing any song you desire or making moderation of
+            your server easier.
           </p>
         </div>
       </header>
@@ -38,8 +39,7 @@ const Main = () => {
                 <h1>Music</h1>
                 <p>
                   Athena has a powerful music module which you can listen to
-                  music from youtube you can even add some filters (bass boost,
-                  8d, etc.).
+                  music from Youtube and Spotify.
                 </p>
               </div>
             </div>

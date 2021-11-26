@@ -6,9 +6,12 @@ import "./Loader.css";
 const Loader = ({ active, coverAllPage, loaderMsg }) => {
   useEffect(() => {
     if (!active) {
-      document.getElementById("loader").classList.add("disabled");
+      document.getElementById("loader").classList.add("loader-disabled");
+      setTimeout(() => {
+        document.getElementById("loader").classList.add("disabled");
+      }, 610);
     } else {
-      document.getElementById("loader").classList.remove("disabled");
+      document.getElementById("loader").classList.remove("loader-disabled");
     }
 
     if (coverAllPage) {

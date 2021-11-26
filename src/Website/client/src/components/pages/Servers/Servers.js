@@ -1,5 +1,6 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import Cookie from "js-cookie";
 import userContext from "../../../context/user/userContext";
 import Navbar from "../../layout/Navbar/Navbar";
 import Footer from "../../layout/Footer/Footer";
@@ -14,17 +15,18 @@ const Commands = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) return window.location.replace("/oauth/login");
+    if (userServers) return setLoading(false);
 
-    const func = async () => {
-      await getUserServers();
-      setLoading(false);
-    };
+    const session = Cookie.get("session");
 
-    func();
-  }, []);
+    if (!user && !session)
+      return window.location.replace("/oauth/login?redirect=dashboard");
+    else if (!user && session) {
+      // Wait
+      getUserServers();
+    }
+  });
 
-  // TODO: message
   return (
     <Fragment>
       <Helmet>

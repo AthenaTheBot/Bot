@@ -6,17 +6,30 @@ const encryptor = require("simple-encryptor")(
 const DiscordOauth2 = require("discord-oauth2");
 const Athena = require("../../../Athena");
 
-const oauth = new DiscordOauth2({
-  clientId: Athena.user.id,
-  clientSecret: Athena.config.DASHBOARD.CLIENT_SECRET,
-  redirectUri: Athena.config.DASHBOARD.REDIRECT_URI,
-});
-
 router.get("/login", (req, res) => {
+  let redirect;
+  switch (req.query?.redirect) {
+    case "dashboard":
+      redirect = "dashboard";
+      break;
+
+    case "commands":
+      redirect = "commands";
+      break;
+
+    case "home":
+      redirect = "home";
+      break;
+
+    default:
+      redirect = "home";
+      break;
+  }
+
   res.redirect(
     Athena.config.DASHBOARD.LOGIN_LINK.replace(
       "$REDIRECTURI",
-      Athena.config.DASHBOARD.REDIRECT_URI
+      Athena.config.DASHBOARD.REDIRECT_URI.concat("?redirect=" + redirect)
     ).replace("$CLIENTID", Athena.user.id)
   );
 });
@@ -28,6 +41,33 @@ router.get("/logout", (req, res) => {
 
 router.get("/callback", async (req, res) => {
   if (!req.query?.code) return res.redirect("/");
+
+  let redirect;
+  switch (req.query?.redirect) {
+    case "dashboard":
+      redirect = "dashboard";
+      break;
+
+    case "commands":
+      redirect = "commands";
+      break;
+
+    case "home":
+      redirect = "home";
+      break;
+
+    default:
+      redirect = "home";
+      break;
+  }
+
+  const oauth = new DiscordOauth2({
+    clientId: Athena.user.id,
+    clientSecret: Athena.config.DASHBOARD.CLIENT_SECRET,
+    redirectUri: Athena.config.DASHBOARD.REDIRECT_URI.concat(
+      "?redirect=" + redirect
+    ),
+  });
 
   const tokenData = await oauth
     .tokenRequest({
@@ -54,7 +94,19 @@ router.get("/callback", async (req, res) => {
     expires: new Date(Date.now() + expiresInHour * 3600000),
   });
 
-  res.redirect("/");
+  switch (req.query?.redirect) {
+    case "dashboard":
+      return res.redirect("/dashboard");
+
+    case "commands":
+      return res.redirect("/commands");
+
+    case "home":
+      return res.redirect("/");
+
+    default:
+      res.redirect("/");
+  }
 });
 
 module.exports = router;
