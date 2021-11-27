@@ -88,6 +88,8 @@ module.exports = class Event {
           }
         }
 
+        interaction.isInteraction = true;
+
         command.run(client, interaction, args, commandLocale.content);
 
         if (client.config.DASHBOARD.CLIENT_ID != client.user.id) return;

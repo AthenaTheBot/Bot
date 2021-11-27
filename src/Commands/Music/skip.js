@@ -28,6 +28,8 @@ class Command extends BaseCommand {
 
     if (args[0] && isNaN(args[0])) return msg.reply(locale.INVALID_AMOUNT);
 
+    if (args[0] <= 0) return msg.reply(locale.INVALID_AMOUNT);
+
     guildState.playing = false;
 
     if (!args[0]) guildState.queue.shift();

@@ -253,7 +253,8 @@ class Command extends BaseCommand {
       }
 
       if (newState.status == AudioPlayerStatus.AutoPaused) {
-        guildState.voiceChannel = msg?.guild?.me?.voice?.channel;
+        if (msg?.guild?.me?.voice?.channel)
+          guildState.voiceChannel = msg.guild?.me.voice.channel;
       }
 
       if (newState.status == AudioPlayerStatus.Idle) {

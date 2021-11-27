@@ -6,6 +6,8 @@ module.exports = class Event {
   }
 
   async run(client, guild) {
+    if (client.config.DEBUG) return;
+
     const Embed = new MessageEmbed().setColor("GREEN").setTimestamp();
 
     if (guild.available)

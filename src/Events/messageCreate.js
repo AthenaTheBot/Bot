@@ -13,8 +13,8 @@ module.exports = class Event {
 
     if (guildData?.data && userData?.preferences) {
       if (
-        msg.content.includes(`<@!${client.user.id}>`) ||
-        msg.content.includes(`<@!${client.user.id}>`)
+        msg.content.startsWith(`<@!${client.user.id}>`) ||
+        msg.content === `<@!${client.user.id}>`
       )
         return msg.reply(
           `**Prefix**: \`${guildData.data.preferences.prefix}\``
