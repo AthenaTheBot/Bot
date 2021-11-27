@@ -6,7 +6,7 @@ class Command extends BaseCommand {
     super({
       name: "invite",
       aliases: [],
-      description: "Sens the invite link of Athena.",
+      description: "Sends the invite link of Athena.",
       category: "Misc",
       usage: null,
       options: [],
@@ -23,7 +23,7 @@ class Command extends BaseCommand {
       locale.MSG.replace("$url", "https://athena.bot/invite")
     );
 
-    return msg.reply(Embed).catch((err) => {});
+    return msg.reply({ embeds: [Embed] }).catch((err) => {});
   }
 }
 
