@@ -23,7 +23,7 @@ class Command extends BaseCommand {
       locale.MSG.replace("$url", "https://athena.bot/invite")
     );
 
-    return msg.reply(defaultEmbed).catch((err) => {});
+    return msg.reply(Embed).catch((err) => {});
   }
 }
 
