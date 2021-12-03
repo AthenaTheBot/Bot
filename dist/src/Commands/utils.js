@@ -1,13 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = (commandManager) => {
-    commandManager.registerCommand("ping", [], "Simple ping pong command whether to check bot is online or not.", [], 4, [], ["SEND_MESSAGES"], (client, data, args) => {
-        try {
-            data.reply("Pong!");
-        }
-        catch (err) {
-            return false;
-        }
+    commandManager.registerCommand("ping", [], "Simple ping pong command whether to check bot is online or not.", [], 4, [], ["SEND_MESSAGES"], (commandData) => {
+        commandData.respond("Pong!");
         return true;
     });
 };

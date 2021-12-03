@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionData } from "discord.js";
 import AthenaClient from "../AthenaClient";
+import { CommandData } from "./CommandData";
 
 class Command {
   name: string;
@@ -9,11 +10,7 @@ class Command {
   cooldown: number;
   requiredPerms: string[];
   requiredBotPerms: string[];
-  exec: (
-    client: AthenaClient,
-    data: any,
-    args: any[]
-  ) => boolean | Promise<boolean>;
+  exec: (commandData: CommandData) => boolean | Promise<boolean>;
 
   constructor(
     name: string,
@@ -23,11 +20,7 @@ class Command {
     cooldown: number,
     requiredPerms: string[],
     requiredBotPerms: string[],
-    exec: (
-      client: AthenaClient,
-      data: any,
-      args: any[]
-    ) => boolean | Promise<boolean>
+    exec: (commandData: CommandData) => boolean | Promise<boolean>
   ) {
     this.name = name;
     this.aliases = aliases;

@@ -1,8 +1,11 @@
 import Event from "../Classes/Event";
+import { CommandData, CommandDataTypes } from "../Classes/CommandData";
 
 export default new Event(
   "messageCreate",
   async (client, msgData): Promise<boolean> => {
+    if (msgData.author.bot || !msgData.guild) return false;
+
     // Fetch user and guilld data with a force arguement passed.
     const guild = await client.guildManager.fetch(msgData.guild.id, true);
     const user = await client.userManager.fetch(msgData.author.id, true);
@@ -15,26 +18,24 @@ export default new Event(
       .trim()
       .split(" ")[0]
       .split(guild.settings.prefix)
-      .pop();
+      .pop()
+      .toLowerCase();
 
     // Check wheter the comamnd is valid or not
     if (!client.commandManager.isValidCommand(commandName)) return false;
 
-    // Parse message aruements from the message content
-    const args = msgData.content.trim().split(/ +/).slice(1);
-
-    // Attaching guild and user data to the guild and user object.
-    msgData.guild.data = guild;
-    msgData.member.data = user;
-
-    // Attaching extra data to indicate command that the data passed is not a interaction
-    msgData.isInteraction = false;
-
     // Get the command data through command manager
     const command = client.commandManager.getCommand(commandName);
 
+    // Command data
+    const commandData = new CommandData(client, {
+      type: CommandDataTypes.Message,
+      data: msgData,
+      db: { user: user, guild: guild },
+    });
+
     // Execute command
-    command?.exec(client, msgData, args);
+    command?.exec(commandData);
 
     return true;
   }

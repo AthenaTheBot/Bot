@@ -31,9 +31,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CommandData = exports.CommandManager = void 0;
 const fs_1 = require("fs");
 const path_1 = require("path");
 const Command_1 = __importDefault(require("./Command"));
+const CommandData_1 = __importDefault(require("./CommandData"));
+exports.CommandData = CommandData_1.default;
 class CommandManager {
     constructor(client) {
         this.client = client;
@@ -81,4 +84,5 @@ class CommandManager {
         return ((this.commands.find((x) => x.name == cmdName || x.aliases.includes(cmdName))) || null);
     }
 }
+exports.CommandManager = CommandManager;
 exports.default = CommandManager;

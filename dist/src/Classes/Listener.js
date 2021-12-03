@@ -11,6 +11,7 @@ class GuildQueue {
         else {
             this.queue = [];
         }
+        this.listening = false;
     }
 }
 exports.default = GuildQueue;

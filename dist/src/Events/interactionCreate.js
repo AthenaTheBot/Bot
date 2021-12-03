@@ -13,21 +13,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Event_1 = __importDefault(require("../Classes/Event"));
+const CommandData_1 = require("../Classes/CommandData");
 exports.default = new Event_1.default("interactionCreate", (client, interactionData) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!interactionData.guild)
+        return false;
     const guild = yield client.guildManager.fetch(interactionData.guild.id, true);
     const user = yield client.userManager.fetch(interactionData.user.id, true);
     if (!guild || !user)
         return false;
     if (!client.commandManager.isValidCommand(interactionData.commandName))
         return false;
-    const args = [];
-    for (var i = 0; i < interactionData.options.data.length; i++) {
-        args.push(interactionData.options.data[i].value);
-    }
-    interactionData.guild.data = guild;
-    interactionData.member.data = user;
-    interactionData.isInteraction = true;
     const command = client.commandManager.getCommand(interactionData.commandName);
-    command === null || command === void 0 ? void 0 : command.exec(client, interactionData, args);
+    const commandData = new CommandData_1.CommandData(client, {
+        type: CommandData_1.CommandDataTypes.Interaction,
+        data: interactionData,
+        db: { user: user, guild: guild },
+    });
+    command === null || command === void 0 ? void 0 : command.exec(commandData);
     return true;
 }));

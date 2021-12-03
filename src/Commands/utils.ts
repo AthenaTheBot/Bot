@@ -1,4 +1,4 @@
-import CommandManager from "../Classes/CommandManager";
+import { CommandManager, CommandData } from "../Classes/CommandManager";
 
 export default (commandManager: CommandManager) => {
   commandManager.registerCommand(
@@ -9,12 +9,9 @@ export default (commandManager: CommandManager) => {
     4,
     [],
     ["SEND_MESSAGES"],
-    (client, data, args): boolean => {
-      try {
-        data.reply("Pong!");
-      } catch (err) {
-        return false;
-      }
+    (commandData: CommandData): boolean => {
+      commandData.respond("Pong!");
+
       return true;
     }
   );

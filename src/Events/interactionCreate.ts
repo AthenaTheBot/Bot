@@ -1,12 +1,11 @@
 import Event from "../Classes/Event";
-import {
-  CommandInteractionOption,
-  CommandInteractionOptionResolver,
-} from "discord.js";
+import { CommandData, CommandDataTypes } from "../Classes/CommandData";
 
 export default new Event(
   "interactionCreate",
   async (client, interactionData): Promise<boolean> => {
+    if (!interactionData.guild) return false;
+
     // Fetch user and guilld data with a force arguement passed.
     const guild = await client.guildManager.fetch(
       interactionData.guild.id,
@@ -21,28 +20,20 @@ export default new Event(
     if (!client.commandManager.isValidCommand(interactionData.commandName))
       return false;
 
-    // Initializing args array.
-    const args: CommandInteractionOption[] = [];
-
-    // Parsing all arguements from interaction data
-    for (var i = 0; i < interactionData.options.data.length; i++) {
-      args.push(interactionData.options.data[i].value);
-    }
-
-    // Attaching guild and user data to the guild and user object.
-    interactionData.guild.data = guild;
-    interactionData.member.data = user;
-
-    // Attaching extra data to indicate command that the data passed is a interaction
-    interactionData.isInteraction = true;
-
     // Get the command data through command manager.
     const command = client.commandManager.getCommand(
       interactionData.commandName
     );
 
+    // Command data
+    const commandData = new CommandData(client, {
+      type: CommandDataTypes.Interaction,
+      data: interactionData,
+      db: { user: user, guild: guild },
+    });
+
     // Execute command
-    command?.exec(client, interactionData, args);
+    command?.exec(commandData);
     return true;
   }
 );

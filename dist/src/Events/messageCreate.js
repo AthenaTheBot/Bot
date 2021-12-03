@@ -13,7 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Event_1 = __importDefault(require("../Classes/Event"));
+const CommandData_1 = require("../Classes/CommandData");
 exports.default = new Event_1.default("messageCreate", (client, msgData) => __awaiter(void 0, void 0, void 0, function* () {
+    if (msgData.author.bot || !msgData.guild)
+        return false;
     const guild = yield client.guildManager.fetch(msgData.guild.id, true);
     const user = yield client.userManager.fetch(msgData.author.id, true);
     if (!guild || !user)
@@ -22,14 +25,16 @@ exports.default = new Event_1.default("messageCreate", (client, msgData) => __aw
         .trim()
         .split(" ")[0]
         .split(guild.settings.prefix)
-        .pop();
+        .pop()
+        .toLowerCase();
     if (!client.commandManager.isValidCommand(commandName))
         return false;
-    const args = msgData.content.trim().split(/ +/).slice(1);
-    msgData.guild.data = guild;
-    msgData.member.data = user;
-    msgData.isInteraction = false;
     const command = client.commandManager.getCommand(commandName);
-    command === null || command === void 0 ? void 0 : command.exec(client, msgData, args);
+    const commandData = new CommandData_1.CommandData(client, {
+        type: CommandData_1.CommandDataTypes.Message,
+        data: msgData,
+        db: { user: user, guild: guild },
+    });
+    command === null || command === void 0 ? void 0 : command.exec(commandData);
     return true;
 }));

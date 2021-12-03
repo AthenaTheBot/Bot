@@ -1,4 +1,4 @@
-import CommandManager from "../Classes/CommandManager";
+import { CommandManager, CommandData } from "../Classes/CommandManager";
 import { MessageEmbed } from "discord.js";
 
 export default (commandManager: CommandManager) => {
@@ -18,49 +18,43 @@ export default (commandManager: CommandManager) => {
     5,
     ["ADMINISTRATOR"],
     ["EMBED_LINKS"],
-    async (client, data, args): Promise<boolean> => {
+    async (commandData: CommandData): Promise<boolean> => {
       // Initalizing embed object
       const Embed = new MessageEmbed().setColor("AQUA");
 
       // If there is no arguement specified send the current prefix else set prefix.
-      if (args.length === 0) {
+      if (commandData.args.length === 0) {
         try {
-          data.reply({
-            embeds: [
-              Embed.setDescription(
-                "My current command prefix is: `" +
-                  data.guild.data.settings.prefix +
-                  "`"
-              ),
-            ],
-          });
+          commandData.respond(
+            Embed.setDescription(
+              "My current command prefix is: `" +
+                commandData.db.guild.settings.prefix +
+                "`"
+            )
+          );
         } catch (err) {
           return false;
         }
         return true;
       } else {
-        const success = await client.dbManager.updateDocument(
+        const success = await commandData.client.dbManager.updateDocument(
           "guilds",
-          data.guild.id,
-          { $set: { "settings.prefix": args[0] } }
+          commandData.guild.id,
+          { $set: { "settings.prefix": commandData.args[0] } }
         );
 
         if (success) {
-          data.reply({
-            embeds: [
-              Embed.setDescription(
-                "Successfully set server prefix as `" + args[0] + "`"
-              ),
-            ],
-          });
+          commandData.respond(
+            Embed.setDescription(
+              "Successfully set server prefix as `" + commandData.args[0] + "`"
+            )
+          );
         } else {
-          data.reply({
-            embeds: [
-              Embed.setColor("RED").setDescription(
-                "An error occured while trying to set server prefix"
-              ),
-            ],
-          });
+          commandData.respond(
+            Embed.setColor("RED").setDescription(
+              "An error occured while trying to set server prefix"
+            )
+          );
         }
         return true;
       }
@@ -83,46 +77,47 @@ export default (commandManager: CommandManager) => {
     4,
     ["ADMINISTRATOR"],
     ["EMBED_LINKS"],
-    async (client, data, args): Promise<boolean> => {
+    async (commandData): Promise<boolean> => {
       let mentionedRole;
-      if (data.isInteraction) {
+
+      if (commandData.type === "Interaction") {
+        mentionedRole = await commandData.guild.roles.fetch(
+          commandData.args[0]
+        );
       } else {
-        mentionedRole = data.mentions.roles.first();
+        mentionedRole = commandData.raw.mentions.roles.first();
       }
 
       if (!mentionedRole?.id)
-        return data.reply({
-          embeds: [
-            new MessageEmbed()
-              .setColor("RED")
-              .setDescription("Please specify a valid role."),
-          ],
-        });
+        return commandData.respond(
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("Please specify a valid role.")
+        );
 
-      const success = await client.guildManager.updateGuild(data.guild.id, {
-        $set: { "modules.moderationModule.adminRole": mentionedRole.id },
-      });
+      const success = await commandData.client.guildManager.updateGuild(
+        commandData.guild.id,
+        {
+          $set: { "modules.moderationModule.adminRole": mentionedRole.id },
+        }
+      );
 
       if (success) {
-        data.reply({
-          embeds: [
-            new MessageEmbed()
-              .setColor("GREEN")
-              .setDescription(
-                `Successfully set admin role as <@&${mentionedRole.id}>`
-              ),
-          ],
-        });
+        commandData.respond(
+          new MessageEmbed()
+            .setColor("GREEN")
+            .setDescription(
+              `Successfully set admin role as <@&${mentionedRole.id}>`
+            )
+        );
       } else {
-        return data.reply({
-          embeds: [
-            new MessageEmbed()
-              .setColor("RED")
-              .setDescription(
-                "An unexpected error occured while updating admin role, please try again in a minute."
-              ),
-          ],
-        });
+        return commandData.respond(
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription(
+              "An unexpected error occured while updating admin role, please try again in a minute."
+            )
+        );
       }
 
       return true;
@@ -145,46 +140,47 @@ export default (commandManager: CommandManager) => {
     4,
     ["ADMINISTRATOR"],
     ["EMBED_LINKS"],
-    async (client, data, args): Promise<boolean> => {
+    async (commandData: CommandData): Promise<boolean> => {
       let mentionedRole;
-      if (data.isInteraction) {
+
+      if (commandData.type === "Interaction") {
+        mentionedRole = await commandData.guild.roles.fetch(
+          commandData.args[0]
+        );
       } else {
-        mentionedRole = data.mentions.roles.first();
+        mentionedRole = commandData.raw.mentions.roles.first();
       }
 
       if (!mentionedRole?.id)
-        return data.reply({
-          embeds: [
-            new MessageEmbed()
-              .setColor("RED")
-              .setDescription("Please specify a valid role."),
-          ],
-        });
+        return commandData.respond(
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription("Please specify a valid role.")
+        );
 
-      const success = await client.guildManager.updateGuild(data.guild.id, {
-        $set: { "modules.moderationModule.modRole": mentionedRole.id },
-      });
+      const success = await commandData.client.guildManager.updateGuild(
+        commandData.guild.id,
+        {
+          $set: { "modules.moderationModule.modRole": mentionedRole.id },
+        }
+      );
 
       if (success) {
-        data.reply({
-          embeds: [
-            new MessageEmbed()
-              .setColor("GREEN")
-              .setDescription(
-                `Successfully set mod role as <@&${mentionedRole.id}>`
-              ),
-          ],
-        });
+        commandData.respond(
+          new MessageEmbed()
+            .setColor("GREEN")
+            .setDescription(
+              `Successfully set mod role as <@&${mentionedRole.id}>`
+            )
+        );
       } else {
-        return data.reply({
-          embeds: [
-            new MessageEmbed()
-              .setColor("RED")
-              .setDescription(
-                "An unexpected error occured while updating admin role, please try again in a minute."
-              ),
-          ],
-        });
+        return commandData.respond(
+          new MessageEmbed()
+            .setColor("RED")
+            .setDescription(
+              "An unexpected error occured while updating mod role, please try again in a minute."
+            )
+        );
       }
 
       return true;
