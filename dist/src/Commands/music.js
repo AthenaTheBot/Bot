@@ -27,7 +27,7 @@ exports.default = (commandManager) => {
             commandData.client.player.listeners.set(commandData.guild.id, serverListener);
             return commandData.respond("Added to queue " + song.title);
         }
-        commandData.client.player.serveGuild(commandData.guild, commandData.author.voice.channel.id, commandData.channel.id, song);
+        commandData.client.player.serveGuild(commandData.guild.id, commandData.author.voice.channel.id, commandData.channel.id, commandData.guild.voiceAdapterCreator, song);
         commandData.respond("Playing now: " + song.title);
         return true;
     }));
@@ -35,6 +35,54 @@ exports.default = (commandManager) => {
         const connection = (0, voice_1.getVoiceConnection)(commandData.guild.id);
         connection === null || connection === void 0 ? void 0 : connection.destroy();
         commandData.respond("Ok!");
+        return true;
+    }));
+    commandManager.registerCommand("skip", ["s"], "Skips to another song in the queue.", [
+        {
+            type: "NUMBER",
+            name: "Songs amount",
+            description: "Songs amount to skip in the queue",
+            required: false,
+        },
+    ], 4, [], ["SEND_MESSAGES"], (commandData) => __awaiter(void 0, void 0, void 0, function* () {
+        let songAmount = commandData.args[0];
+        if (!songAmount || isNaN(songAmount))
+            songAmount = 1;
+        const isOk = yield commandData.client.player.skipSong(commandData.guild.id, songAmount);
+        if (!isOk) {
+            commandData.client.player.destroyStream(commandData.guild.id);
+            return commandData.respond("There isn't any song left to play so leaving from your voice channel.");
+        }
+        else {
+        }
+        commandData.respond("Skipping " + songAmount + " song.");
+        return true;
+    }));
+    commandManager.registerCommand("queue", ["q"], "Shows current song queue.", [], 4, [], ["SEND_MESSAGES"], (commandData) => __awaiter(void 0, void 0, void 0, function* () {
+        const guild = commandData.client.player.listeners.get(commandData.guild.id);
+        if (!guild)
+            return commandData.respond("Guild not found!");
+        console.log(guild.queue);
+        return true;
+    }));
+    commandManager.registerCommand("pause", ["p"], "Pauses currently playing song.", [], 4, [], ["SEND_MESSAGES"], (commandData) => __awaiter(void 0, void 0, void 0, function* () {
+        const isOk = yield commandData.client.player.pauseStream(commandData.guild.id);
+        if (isOk) {
+            commandData.respond("Ok!");
+        }
+        else {
+            commandData.respond("Error");
+        }
+        return true;
+    }));
+    commandManager.registerCommand("resume", ["rs"], "Resumes paused song.", [], 4, [], ["SEND_MESSAGES"], (commandData) => __awaiter(void 0, void 0, void 0, function* () {
+        const isOk = yield commandData.client.player.resumeStream(commandData.guild.id);
+        if (isOk) {
+            commandData.respond("Ok!");
+        }
+        else {
+            commandData.respond("Error");
+        }
         return true;
     }));
 };

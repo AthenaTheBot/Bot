@@ -63,6 +63,9 @@ class Player {
     streamSong(guildId, song) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
+                const listener = this.listeners.get(guildId);
+                if (!listener)
+                    return;
                 const connection = (0, voice_1.getVoiceConnection)(guildId);
                 if (!connection)
                     return;
@@ -72,6 +75,7 @@ class Player {
                     return;
                 player.play(resource);
                 connection.subscribe(player);
+                listener.player = player;
                 player.on("stateChange", (oldS, newS) => {
                     if (newS.status === "idle") {
                         resolve();
@@ -80,31 +84,82 @@ class Player {
             }));
         });
     }
-    serveGuild(guild, voiceChannel, textChannel, song) {
+    serveGuild(guildId, voiceChannel, textChannel, voiceAdapterCreator, song) {
         return __awaiter(this, void 0, void 0, function* () {
-            let voiceConnection = (0, voice_1.getVoiceConnection)(guild.id) ||
+            let voiceConnection = (0, voice_1.getVoiceConnection)(guildId) ||
                 (yield (0, voice_1.joinVoiceChannel)({
-                    guildId: guild.id,
+                    guildId: guildId,
                     channelId: voiceChannel,
-                    adapterCreator: guild.voiceAdapterCreator,
+                    adapterCreator: voiceAdapterCreator,
                 }));
             if (!voiceConnection)
                 return;
-            let listenter = this.listeners.get(guild.id);
+            let listenter = this.listeners.get(guildId);
             if (!listenter) {
-                this.listeners.set(guild.id, new Listener_1.default(guild.id, voiceChannel, textChannel));
-                listenter = new Listener_1.default(guild.id, voiceChannel, textChannel);
+                this.listeners.set(guildId, new Listener_1.default(guildId, voiceChannel, textChannel, voiceAdapterCreator));
+                listenter = new Listener_1.default(guildId, voiceChannel, textChannel, voiceAdapterCreator);
             }
-            listenter.queue.push(song);
+            if (song) {
+                listenter.queue.push(song);
+            }
+            else {
+                if (listenter.queue.length <= 0)
+                    return;
+                song = listenter.queue[0];
+            }
             while (listenter.queue.length > 0) {
                 listenter.listening = true;
-                this.listeners.set(guild.id, listenter);
-                yield this.streamSong(guild.id, listenter.queue[0]);
+                this.listeners.set(guildId, listenter);
+                yield this.streamSong(guildId, listenter.queue[0]);
                 listenter.queue.shift();
                 if (listenter.queue.length === 0)
                     listenter.listening = false;
-                this.listeners.set(guild.id, listenter);
+                this.listeners.set(guildId, listenter);
             }
+        });
+    }
+    destroyStream(guildId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const connection = yield (0, voice_1.getVoiceConnection)(guildId);
+            connection === null || connection === void 0 ? void 0 : connection.destroy();
+            this.listeners.delete(guildId);
+        });
+    }
+    skipSong(guildId, songsToSkip) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const listener = this.listeners.get(guildId);
+            if (!listener)
+                return false;
+            for (var i = 0; i < songsToSkip; i++) {
+                listener.queue.shift();
+            }
+            if (listener.queue.length <= 0)
+                return false;
+            const connection = yield (0, voice_1.getVoiceConnection)(guildId);
+            if (!connection)
+                return false;
+            this.serveGuild(listener.guildId, listener.voiceChannel, listener.textChannel, listener.voiceAdapterCreator);
+            return true;
+        });
+    }
+    pauseStream(guildId) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            const listener = this.listeners.get(guildId);
+            if (!listener)
+                return false;
+            (_a = listener.player) === null || _a === void 0 ? void 0 : _a.pause();
+            return true;
+        });
+    }
+    resumeStream(guildId) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            const listener = this.listeners.get(guildId);
+            if (!listener)
+                return false;
+            (_a = listener.player) === null || _a === void 0 ? void 0 : _a.unpause();
+            return true;
         });
     }
 }
