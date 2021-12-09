@@ -13,6 +13,10 @@ export default new Event(
     // If still guild and user data are not proper then do nothing.
     if (!guild || !user) return false;
 
+    // Check if message starts with server prefix
+    if (!msgData.content.trim().startsWith(guild?.settings?.prefix))
+      return false;
+
     // Parse command name from the message content
     const commandName = msgData.content
       .trim()
@@ -27,8 +31,11 @@ export default new Event(
     // Get the command data through command manager
     const command = client.commandManager.getCommand(commandName);
 
+    // If command is not valid do not execute the command
+    if (!command) return false;
+
     // Command data
-    const commandData = new CommandData(client, {
+    const commandData = new CommandData(command, client, {
       type: CommandDataTypes.Message,
       data: msgData,
       db: { user: user, guild: guild },

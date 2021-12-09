@@ -29,10 +29,12 @@
     "spotify-url-info": "^2.2.3",
     "tweetnacl": "^1.0.3",
     "utf-8-validate": "^5.0.7",
+    "uuid": "^8.3.2",
     "ytsr": "^3.5.3",
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
-    "@types/node": "^16.10.2"
+    "@types/node": "^16.10.2",
+    "@types/uuid": "^8.3.3"
   }
 }

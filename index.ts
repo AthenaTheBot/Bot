@@ -8,3 +8,12 @@ const Athena = new AthenaClient(AthenaUtils.loadConfig());
 
 // Init
 Athena.initalize();
+
+// Monitoring errors
+process.on("uncaughtExceptionMonitor", (err) => {
+  Athena.errorHandler.recordError(err);
+});
+
+process.on("unhandledRejection", (err) => {
+  Athena.errorHandler.recordError(err as Error);
+});

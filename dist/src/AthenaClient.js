@@ -22,6 +22,7 @@ const CommandManager_1 = __importDefault(require("./Classes/CommandManager"));
 const PresenceManager_1 = __importDefault(require("./Classes/PresenceManager"));
 const GuildManager_1 = __importDefault(require("./Classes/GuildManager"));
 const UserManager_1 = __importDefault(require("./Classes/UserManager"));
+const LocaleManager_1 = __importDefault(require("./Classes/LocaleManager"));
 const Player_1 = __importDefault(require("./Classes/Player"));
 class AthenaClient extends discord_js_1.Client {
     constructor(config) {
@@ -40,7 +41,8 @@ class AthenaClient extends discord_js_1.Client {
         this.presenceManager = new PresenceManager_1.default(this);
         this.guildManager = new GuildManager_1.default(this.dbManager);
         this.userManager = new UserManager_1.default(this.dbManager);
-        this.player = new Player_1.default();
+        this.localeManager = new LocaleManager_1.default();
+        this.player = new Player_1.default(this);
         this.errorHandler = new ErrorHandler_1.default(this.config);
         this.logger = new Logger_1.default();
         this.utils = new Utils_1.default();
@@ -55,6 +57,7 @@ class AthenaClient extends discord_js_1.Client {
             });
             yield this.eventManager.registerEventsFromEventFolder();
             yield this.commandManager.registerCommandsFromCommandFolder();
+            yield this.localeManager.loadLocales();
             this.eventManager.listenEvents();
             try {
                 yield this.login(this.config.bot.token);

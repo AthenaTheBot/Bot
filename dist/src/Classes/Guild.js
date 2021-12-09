@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Guild = void 0;
 var languages;
 (function (languages) {
-    languages["EN_US"] = "en-US";
-    languages["TR_TR"] = "tr-TR";
+    languages["EN_US"] = "en_US";
+    languages["TR_TR"] = "tr_TR";
 })(languages || (languages = {}));
 class Guild {
     constructor(id, settings) {

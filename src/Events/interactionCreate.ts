@@ -25,8 +25,11 @@ export default new Event(
       interactionData.commandName
     );
 
+    // If command is not valid do not execute the command
+    if (!command) return false;
+
     // Command data
-    const commandData = new CommandData(client, {
+    const commandData = new CommandData(command, client, {
       type: CommandDataTypes.Interaction,
       data: interactionData,
       db: { user: user, guild: guild },

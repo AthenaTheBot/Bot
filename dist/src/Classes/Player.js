@@ -16,15 +16,12 @@ const spotify_url_info_1 = __importDefault(require("spotify-url-info"));
 const ytsr_1 = __importDefault(require("ytsr"));
 const voice_1 = require("@discordjs/voice");
 const play_dl_1 = require("play-dl");
-const Utils_1 = __importDefault(require("./Utils"));
 const Song_1 = __importDefault(require("./Song"));
 const Listener_1 = __importDefault(require("./Listener"));
-const Logger_1 = __importDefault(require("./Logger"));
 class Player {
-    constructor() {
+    constructor(client) {
+        this.client = client;
         this.listeners = new Map();
-        this.logger = new Logger_1.default();
-        this.utils = new Utils_1.default();
         this.baseURLs = {
             spTrack: "open.spotify.com/track/",
             spPlaylist: "open.spotify.com/playlist/",
@@ -46,7 +43,7 @@ class Player {
             if (!result)
                 return null;
             else {
-                return new Song_1.default(result.title, result.description, this.utils.parseDuration(result.duration), result.url);
+                return new Song_1.default(result.title, result.description, this.client.utils.parseDuration(result.duration), result.url);
             }
         });
     }
@@ -62,7 +59,7 @@ class Player {
     }
     streamSong(guildId, song) {
         return __awaiter(this, void 0, void 0, function* () {
-            return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
                 const listener = this.listeners.get(guildId);
                 if (!listener)
                     return;
@@ -76,46 +73,69 @@ class Player {
                 player.play(resource);
                 connection.subscribe(player);
                 listener.player = player;
+                connection.on(voice_1.VoiceConnectionStatus.Disconnected, () => {
+                    reject();
+                });
                 player.on("stateChange", (oldS, newS) => {
-                    if (newS.status === "idle") {
+                    if (newS.status === voice_1.AudioPlayerStatus.Idle) {
                         resolve();
                     }
+                });
+                player.on("error", (err) => {
+                    reject(err);
                 });
             }));
         });
     }
     serveGuild(guildId, voiceChannel, textChannel, voiceAdapterCreator, song) {
         return __awaiter(this, void 0, void 0, function* () {
-            let voiceConnection = (0, voice_1.getVoiceConnection)(guildId) ||
-                (yield (0, voice_1.joinVoiceChannel)({
-                    guildId: guildId,
-                    channelId: voiceChannel,
-                    adapterCreator: voiceAdapterCreator,
-                }));
-            if (!voiceConnection)
-                return;
-            let listenter = this.listeners.get(guildId);
-            if (!listenter) {
-                this.listeners.set(guildId, new Listener_1.default(guildId, voiceChannel, textChannel, voiceAdapterCreator));
-                listenter = new Listener_1.default(guildId, voiceChannel, textChannel, voiceAdapterCreator);
-            }
-            if (song) {
-                listenter.queue.push(song);
-            }
-            else {
-                if (listenter.queue.length <= 0)
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                let voiceConnection = (0, voice_1.getVoiceConnection)(guildId) ||
+                    (yield (0, voice_1.joinVoiceChannel)({
+                        guildId: guildId,
+                        channelId: voiceChannel,
+                        adapterCreator: voiceAdapterCreator,
+                    }));
+                if (!voiceConnection)
                     return;
-                song = listenter.queue[0];
-            }
-            while (listenter.queue.length > 0) {
-                listenter.listening = true;
-                this.listeners.set(guildId, listenter);
-                yield this.streamSong(guildId, listenter.queue[0]);
-                listenter.queue.shift();
-                if (listenter.queue.length === 0)
-                    listenter.listening = false;
-                this.listeners.set(guildId, listenter);
-            }
+                let listenter = this.listeners.get(guildId);
+                if (!listenter) {
+                    this.listeners.set(guildId, new Listener_1.default(guildId, voiceChannel, textChannel, voiceAdapterCreator));
+                    listenter = new Listener_1.default(guildId, voiceChannel, textChannel, voiceAdapterCreator);
+                }
+                if (song) {
+                    listenter.queue.push(song);
+                }
+                else {
+                    if (listenter.queue.length <= 0)
+                        return;
+                    song = listenter.queue[0];
+                }
+                while (listenter.queue.length > 0) {
+                    try {
+                        listenter.listening = true;
+                        this.listeners.set(guildId, listenter);
+                        yield this.streamSong(guildId, listenter.queue[0]);
+                        listenter.queue.shift();
+                        if (listenter.queue.length === 0) {
+                            resolve();
+                            listenter.listening = false;
+                        }
+                        this.listeners.set(guildId, listenter);
+                    }
+                    catch (err) {
+                        this.destroyStream(guildId);
+                        if (err) {
+                            reject();
+                            this.client.errorHandler.recordError(err);
+                        }
+                        else {
+                            resolve();
+                        }
+                        break;
+                    }
+                }
+            }));
         });
     }
     destroyStream(guildId) {

@@ -18,16 +18,18 @@ var CommandDataTypes;
 })(CommandDataTypes || (CommandDataTypes = {}));
 exports.CommandDataTypes = CommandDataTypes;
 class CommandData {
-    constructor(client, source) {
+    constructor(command, client, source) {
         var _a, _b, _c;
         this.client = client;
         if (source.type) {
             this.raw = source.data;
             this.type = source.type;
+            this.command = command;
             this.author = (_a = source.data) === null || _a === void 0 ? void 0 : _a.member;
             this.guild = (_b = source.data) === null || _b === void 0 ? void 0 : _b.guild;
             this.channel = (_c = source.data) === null || _c === void 0 ? void 0 : _c.channel;
             this.db = source.db;
+            this.locales = this.client.localeManager.getCategoryLocale(this.db.guild.settings.language || this.client.config.defaults.language);
             if (this.type === CommandDataTypes.Message) {
                 this.args = this.raw.content.trim().split(/ +/).slice(1);
             }
@@ -43,9 +45,12 @@ class CommandData {
             throw new Error("Cannot create command data instance without a data type.");
         }
     }
-    respond(message) {
+    respond(message, sendAsEmbed) {
         return __awaiter(this, void 0, void 0, function* () {
             let respondData;
+            message = sendAsEmbed
+                ? new discord_js_1.MessageEmbed().setColor("#5865F2").setDescription(message)
+                : message;
             let payload = message instanceof discord_js_1.MessageEmbed
                 ? { embeds: [(message === null || message === void 0 ? void 0 : message.color) ? message : message.setColor("#5865F2")] }
                 : message;

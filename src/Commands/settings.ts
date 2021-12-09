@@ -17,24 +17,22 @@ export default (commandManager: CommandManager) => {
     ],
     5,
     ["ADMINISTRATOR"],
-    ["EMBED_LINKS"],
+    ["SEND_MESSAGES", "EMBED_LINKS"],
     async (commandData: CommandData): Promise<boolean> => {
-      // Initalizing embed object
-      const Embed = new MessageEmbed().setColor("AQUA");
-
       // If there is no arguement specified send the current prefix else set prefix.
       if (commandData.args.length === 0) {
         try {
           commandData.respond(
-            Embed.setDescription(
-              "My current command prefix is: `" +
-                commandData.db.guild.settings.prefix +
-                "`"
-            )
+            commandData.locales.CURRENT_PREFIX.replace(
+              "$prefix",
+              commandData.db.guild.settings.prefix
+            ),
+            true
           );
         } catch (err) {
           return false;
         }
+
         return true;
       } else {
         const success = await commandData.client.dbManager.updateDocument(
@@ -44,17 +42,9 @@ export default (commandManager: CommandManager) => {
         );
 
         if (success) {
-          commandData.respond(
-            Embed.setDescription(
-              "Successfully set server prefix as `" + commandData.args[0] + "`"
-            )
-          );
+          commandData.respond(commandData.locales.SUCCESS, true);
         } else {
-          commandData.respond(
-            Embed.setColor("RED").setDescription(
-              "An error occured while trying to set server prefix"
-            )
-          );
+          commandData.respond(commandData.locales.ERROR, true);
         }
         return true;
       }
@@ -88,12 +78,10 @@ export default (commandManager: CommandManager) => {
         mentionedRole = commandData.raw.mentions.roles.first();
       }
 
-      if (!mentionedRole?.id)
-        return commandData.respond(
-          new MessageEmbed()
-            .setColor("RED")
-            .setDescription("Please specify a valid role.")
-        );
+      if (!mentionedRole?.id) {
+        commandData.respond(commandData.locales.SPECIFY_ROLE, true);
+        return false;
+      }
 
       const success = await commandData.client.guildManager.updateGuild(
         commandData.guild.id,
@@ -103,21 +91,9 @@ export default (commandManager: CommandManager) => {
       );
 
       if (success) {
-        commandData.respond(
-          new MessageEmbed()
-            .setColor("GREEN")
-            .setDescription(
-              `Successfully set admin role as <@&${mentionedRole.id}>`
-            )
-        );
+        commandData.respond(commandData.locales.SUCCESS, true);
       } else {
-        return commandData.respond(
-          new MessageEmbed()
-            .setColor("RED")
-            .setDescription(
-              "An unexpected error occured while updating admin role, please try again in a minute."
-            )
-        );
+        return commandData.respond(commandData.locales.ERROR, true);
       }
 
       return true;
@@ -151,12 +127,10 @@ export default (commandManager: CommandManager) => {
         mentionedRole = commandData.raw.mentions.roles.first();
       }
 
-      if (!mentionedRole?.id)
-        return commandData.respond(
-          new MessageEmbed()
-            .setColor("RED")
-            .setDescription("Please specify a valid role.")
-        );
+      if (!mentionedRole?.id) {
+        commandData.respond(commandData.locales.SPECIFY_ROLE, true);
+        return false;
+      }
 
       const success = await commandData.client.guildManager.updateGuild(
         commandData.guild.id,
@@ -166,21 +140,10 @@ export default (commandManager: CommandManager) => {
       );
 
       if (success) {
-        commandData.respond(
-          new MessageEmbed()
-            .setColor("GREEN")
-            .setDescription(
-              `Successfully set mod role as <@&${mentionedRole.id}>`
-            )
-        );
+        commandData.respond(commandData.locales.SUCCESS, true);
       } else {
-        return commandData.respond(
-          new MessageEmbed()
-            .setColor("RED")
-            .setDescription(
-              "An unexpected error occured while updating mod role, please try again in a minute."
-            )
-        );
+        commandData.respond(commandData.locales.ERROR, true);
+        return false;
       }
 
       return true;

@@ -1,6 +1,7 @@
 // Modules
 import { writeFileSync } from "fs";
 import { join } from "path";
+import { v4 as uuid } from "uuid";
 import fetch from "cross-fetch";
 
 // Classes
@@ -22,7 +23,7 @@ class ErrorHandler {
     if (errorFolder) {
       this.errorFolder = errorFolder;
     } else {
-      this.errorFolder = join(__dirname, "..", "..", "errors");
+      this.errorFolder = join(__dirname, "..", "..", "..", "errors");
     }
 
     this.logger = new Logger();
@@ -30,10 +31,14 @@ class ErrorHandler {
   }
 
   recordError(error: Error): boolean {
+    const errorId = uuid();
+
+    Object.assign(error, { id: errorId });
+
     try {
       writeFileSync(
-        join(this.errorFolder, error.name),
-        this.utils.parseError(error),
+        join(this.errorFolder, errorId + ".athena_error"),
+        this.utils.parseError(error, false),
         {
           encoding: "utf-8",
         }
@@ -41,19 +46,21 @@ class ErrorHandler {
     } catch (err) {
       this.logger.error(
         `An error occured while trying to save a error record file. \n ${this.utils.parseError(
-          <Error>err
+          <Error>err,
+          true
         )}`
       );
       return false;
     }
 
-    this.logger.warn(`Recorded an error with name [${error.name}].`);
+    this.logger.warn(`Recorded an error with name ${error.name} (${errorId}).`);
     return true;
   }
 
   reportError(error: Error): boolean {
     fetch(this.config.webhooks.error, {
       method: "POST",
+
       headers: {
         "Content-Type": "application/json",
       },

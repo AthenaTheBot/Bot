@@ -8,9 +8,9 @@ import {
   PartialDMChannel,
   TextChannel,
   ThreadChannel,
-  User as DJSUser,
 } from "discord.js";
 import AthenaClient from "../AthenaClient";
+import Command from "./Command";
 import Guild from "./Guild";
 import User from "./User";
 
@@ -24,6 +24,7 @@ class CommandData {
 
   raw: any;
   type: CommandDataTypes;
+  command: Command;
   args: string[];
   author: GuildMember | null;
   guild: DJSGuild;
@@ -39,7 +40,10 @@ class CommandData {
     guild: Guild;
   };
 
+  locales: any;
+
   constructor(
+    command: Command,
     client: AthenaClient,
     source: {
       type: CommandDataTypes;
@@ -53,11 +57,16 @@ class CommandData {
       // General Variables
       this.raw = source.data;
       this.type = source.type;
+      this.command = command;
       this.author = source.data?.member;
       this.guild = source.data?.guild as any;
       this.channel = source.data?.channel;
 
       this.db = source.db;
+
+      this.locales = this.client.localeManager.getCategoryLocale(
+        this.db.guild.settings.language || this.client.config.defaults.language
+      );
 
       // Arguement parsing
       if (this.type === CommandDataTypes.Message) {
@@ -76,8 +85,14 @@ class CommandData {
     }
   }
 
-  async respond(message: string | MessageEmbed): Promise<any> {
+  async respond(
+    message: string | MessageEmbed,
+    sendAsEmbed?: boolean
+  ): Promise<any> {
     let respondData;
+    message = sendAsEmbed
+      ? new MessageEmbed().setColor("#5865F2").setDescription(message as string)
+      : message;
     let payload =
       message instanceof MessageEmbed
         ? { embeds: [message?.color ? message : message.setColor("#5865F2")] }

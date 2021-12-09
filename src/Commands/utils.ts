@@ -10,7 +10,7 @@ export default (commandManager: CommandManager) => {
     [],
     ["SEND_MESSAGES"],
     (commandData: CommandData): boolean => {
-      commandData.respond("Pong!");
+      commandData.respond(commandData.locales.PONG);
 
       return true;
     }

@@ -8,27 +8,25 @@ import {
   createAudioPlayer,
   createAudioResource,
   AudioResource,
-  demuxProbe,
   StreamType,
+  AudioPlayerStatus,
+  VoiceConnectionStatus,
 } from "@discordjs/voice";
 import { stream } from "play-dl";
 
 // Classes
-import Utils from "./Utils";
 import Song from "./Song";
 import Listenter from "./Listener";
-import Logger from "./Logger";
+import AthenaClient from "../AthenaClient";
 
 class Player {
+  private client: AthenaClient;
   public listeners: Map<string, Listenter>;
-  private utils: Utils;
-  private logger: Logger;
   readonly baseURLs: any;
 
-  constructor() {
+  constructor(client: AthenaClient) {
+    this.client = client;
     this.listeners = new Map();
-    this.logger = new Logger();
-    this.utils = new Utils();
 
     this.baseURLs = {
       spTrack: "open.spotify.com/track/",
@@ -55,7 +53,7 @@ class Player {
       return new Song(
         result.title,
         result.description,
-        this.utils.parseDuration(result.duration),
+        this.client.utils.parseDuration(result.duration),
         result.url
       );
     }
@@ -72,7 +70,7 @@ class Player {
   }
 
   async streamSong(guildId: string, song: Song): Promise<void> {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       const listener = this.listeners.get(guildId);
 
       if (!listener) return;
@@ -92,10 +90,20 @@ class Player {
 
       listener.player = player;
 
+      // Connection events
+      connection.on(VoiceConnectionStatus.Disconnected, () => {
+        reject();
+      });
+
+      // Player events
       player.on("stateChange", (oldS, newS) => {
-        if (newS.status === "idle") {
+        if (newS.status === AudioPlayerStatus.Idle) {
           resolve();
         }
+      });
+
+      player.on("error", (err) => {
+        reject(err);
       });
     });
   }
@@ -106,48 +114,65 @@ class Player {
     textChannel: string,
     voiceAdapterCreator: any,
     song?: Song
-  ) {
-    let voiceConnection =
-      getVoiceConnection(guildId) ||
-      (await joinVoiceChannel({
-        guildId: guildId,
-        channelId: voiceChannel,
-        adapterCreator: voiceAdapterCreator,
-      }));
+  ): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      let voiceConnection =
+        getVoiceConnection(guildId) ||
+        (await joinVoiceChannel({
+          guildId: guildId,
+          channelId: voiceChannel,
+          adapterCreator: voiceAdapterCreator,
+        }));
 
-    if (!voiceConnection) return;
+      if (!voiceConnection) return;
 
-    let listenter = this.listeners.get(guildId);
+      let listenter = this.listeners.get(guildId);
 
-    if (!listenter) {
-      this.listeners.set(
-        guildId,
-        new Listenter(guildId, voiceChannel, textChannel, voiceAdapterCreator)
-      );
-      listenter = new Listenter(
-        guildId,
-        voiceChannel,
-        textChannel,
-        voiceAdapterCreator
-      );
-    }
+      if (!listenter) {
+        this.listeners.set(
+          guildId,
+          new Listenter(guildId, voiceChannel, textChannel, voiceAdapterCreator)
+        );
+        listenter = new Listenter(
+          guildId,
+          voiceChannel,
+          textChannel,
+          voiceAdapterCreator
+        );
+      }
 
-    if (song) {
-      listenter.queue.push(song);
-    } else {
-      if (listenter.queue.length <= 0) return;
+      if (song) {
+        listenter.queue.push(song);
+      } else {
+        if (listenter.queue.length <= 0) return;
 
-      song = listenter.queue[0];
-    }
+        song = listenter.queue[0];
+      }
 
-    while (listenter.queue.length > 0) {
-      listenter.listening = true;
-      this.listeners.set(guildId, listenter);
-      await this.streamSong(guildId, listenter.queue[0]);
-      listenter.queue.shift();
-      if (listenter.queue.length === 0) listenter.listening = false;
-      this.listeners.set(guildId, listenter);
-    }
+      while (listenter.queue.length > 0) {
+        try {
+          listenter.listening = true;
+          this.listeners.set(guildId, listenter);
+          await this.streamSong(guildId, listenter.queue[0]);
+          listenter.queue.shift();
+          if (listenter.queue.length === 0) {
+            resolve();
+            listenter.listening = false;
+          }
+          this.listeners.set(guildId, listenter);
+        } catch (err) {
+          this.destroyStream(guildId);
+
+          if (err) {
+            reject();
+            this.client.errorHandler.recordError(err as Error);
+          } else {
+            resolve();
+          }
+          break;
+        }
+      }
+    });
   }
 
   async destroyStream(guildId: string): Promise<void> {

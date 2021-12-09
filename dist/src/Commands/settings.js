@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const discord_js_1 = require("discord.js");
 exports.default = (commandManager) => {
     commandManager.registerCommand("prefix", [], "Change the prefix of Athena for your server and use the best fit for your server!", [
         {
@@ -18,13 +17,10 @@ exports.default = (commandManager) => {
             description: "The prefix that you want to set",
             required: false,
         },
-    ], 5, ["ADMINISTRATOR"], ["EMBED_LINKS"], (commandData) => __awaiter(void 0, void 0, void 0, function* () {
-        const Embed = new discord_js_1.MessageEmbed().setColor("AQUA");
+    ], 5, ["ADMINISTRATOR"], ["SEND_MESSAGES", "EMBED_LINKS"], (commandData) => __awaiter(void 0, void 0, void 0, function* () {
         if (commandData.args.length === 0) {
             try {
-                commandData.respond(Embed.setDescription("My current command prefix is: `" +
-                    commandData.db.guild.settings.prefix +
-                    "`"));
+                commandData.respond(commandData.locales.CURRENT_PREFIX.replace("$prefix", commandData.db.guild.settings.prefix), true);
             }
             catch (err) {
                 return false;
@@ -34,10 +30,10 @@ exports.default = (commandManager) => {
         else {
             const success = yield commandData.client.dbManager.updateDocument("guilds", commandData.guild.id, { $set: { "settings.prefix": commandData.args[0] } });
             if (success) {
-                commandData.respond(Embed.setDescription("Successfully set server prefix as `" + commandData.args[0] + "`"));
+                commandData.respond(commandData.locales.SUCCESS, true);
             }
             else {
-                commandData.respond(Embed.setColor("RED").setDescription("An error occured while trying to set server prefix"));
+                commandData.respond(commandData.locales.ERROR, true);
             }
             return true;
         }
@@ -57,22 +53,18 @@ exports.default = (commandManager) => {
         else {
             mentionedRole = commandData.raw.mentions.roles.first();
         }
-        if (!(mentionedRole === null || mentionedRole === void 0 ? void 0 : mentionedRole.id))
-            return commandData.respond(new discord_js_1.MessageEmbed()
-                .setColor("RED")
-                .setDescription("Please specify a valid role."));
+        if (!(mentionedRole === null || mentionedRole === void 0 ? void 0 : mentionedRole.id)) {
+            commandData.respond(commandData.locales.SPECIFY_ROLE, true);
+            return false;
+        }
         const success = yield commandData.client.guildManager.updateGuild(commandData.guild.id, {
             $set: { "modules.moderationModule.adminRole": mentionedRole.id },
         });
         if (success) {
-            commandData.respond(new discord_js_1.MessageEmbed()
-                .setColor("GREEN")
-                .setDescription(`Successfully set admin role as <@&${mentionedRole.id}>`));
+            commandData.respond(commandData.locales.SUCCESS, true);
         }
         else {
-            return commandData.respond(new discord_js_1.MessageEmbed()
-                .setColor("RED")
-                .setDescription("An unexpected error occured while updating admin role, please try again in a minute."));
+            return commandData.respond(commandData.locales.ERROR, true);
         }
         return true;
     }));
@@ -91,22 +83,19 @@ exports.default = (commandManager) => {
         else {
             mentionedRole = commandData.raw.mentions.roles.first();
         }
-        if (!(mentionedRole === null || mentionedRole === void 0 ? void 0 : mentionedRole.id))
-            return commandData.respond(new discord_js_1.MessageEmbed()
-                .setColor("RED")
-                .setDescription("Please specify a valid role."));
+        if (!(mentionedRole === null || mentionedRole === void 0 ? void 0 : mentionedRole.id)) {
+            commandData.respond(commandData.locales.SPECIFY_ROLE, true);
+            return false;
+        }
         const success = yield commandData.client.guildManager.updateGuild(commandData.guild.id, {
             $set: { "modules.moderationModule.modRole": mentionedRole.id },
         });
         if (success) {
-            commandData.respond(new discord_js_1.MessageEmbed()
-                .setColor("GREEN")
-                .setDescription(`Successfully set mod role as <@&${mentionedRole.id}>`));
+            commandData.respond(commandData.locales.SUCCESS, true);
         }
         else {
-            return commandData.respond(new discord_js_1.MessageEmbed()
-                .setColor("RED")
-                .setDescription("An unexpected error occured while updating mod role, please try again in a minute."));
+            commandData.respond(commandData.locales.ERROR, true);
+            return false;
         }
         return true;
     }));

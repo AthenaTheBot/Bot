@@ -13,9 +13,10 @@ import CommandManager from "./Classes/CommandManager";
 import PresenceManager from "./Classes/PresenceManager";
 import GuildManager from "./Classes/GuildManager";
 import UserManager from "./Classes/UserManager";
+import LocaleManager from "./Classes/LocaleManager";
 import Player from "./Classes/Player";
 
-/** Athena client class
+/** Athena base client class
  * @extends Client
  */
 class AthenaClient extends Client {
@@ -28,6 +29,7 @@ class AthenaClient extends Client {
   presenceManager: PresenceManager;
   guildManager: GuildManager;
   userManager: UserManager;
+  localeManager: LocaleManager;
 
   // Player
   player: Player;
@@ -59,9 +61,10 @@ class AthenaClient extends Client {
     this.presenceManager = new PresenceManager(this);
     this.guildManager = new GuildManager(this.dbManager);
     this.userManager = new UserManager(this.dbManager);
+    this.localeManager = new LocaleManager();
 
     // Player
-    this.player = new Player();
+    this.player = new Player(this);
 
     // Handlers
     this.errorHandler = new ErrorHandler(this.config);
@@ -85,6 +88,8 @@ class AthenaClient extends Client {
     await this.eventManager.registerEventsFromEventFolder();
 
     await this.commandManager.registerCommandsFromCommandFolder();
+
+    await this.localeManager.loadLocales();
 
     this.eventManager.listenEvents();
 

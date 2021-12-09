@@ -24,7 +24,9 @@ exports.default = new Event_1.default("interactionCreate", (client, interactionD
     if (!client.commandManager.isValidCommand(interactionData.commandName))
         return false;
     const command = client.commandManager.getCommand(interactionData.commandName);
-    const commandData = new CommandData_1.CommandData(client, {
+    if (!command)
+        return false;
+    const commandData = new CommandData_1.CommandData(command, client, {
         type: CommandData_1.CommandDataTypes.Interaction,
         data: interactionData,
         db: { user: user, guild: guild },

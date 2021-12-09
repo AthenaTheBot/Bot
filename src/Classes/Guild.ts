@@ -1,6 +1,6 @@
 enum languages {
-  EN_US = "en-US",
-  TR_TR = "tr-TR",
+  EN_US = "en_US",
+  TR_TR = "tr_TR",
 }
 
 interface GuildOptionsInterface {

@@ -8,3 +8,9 @@ const Utils_1 = __importDefault(require("./src/Classes/Utils"));
 const AthenaUtils = new Utils_1.default();
 const Athena = new AthenaClient_1.default(AthenaUtils.loadConfig());
 Athena.initalize();
+process.on("uncaughtExceptionMonitor", (err) => {
+    Athena.errorHandler.recordError(err);
+});
+process.on("unhandledRejection", (err) => {
+    Athena.errorHandler.recordError(err);
+});

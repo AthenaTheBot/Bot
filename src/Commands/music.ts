@@ -1,5 +1,4 @@
 import { CommandManager, CommandData } from "../Classes/CommandManager";
-import { getVoiceConnection } from "@discordjs/voice";
 
 export default (commandManager: CommandManager) => {
   commandManager.registerCommand(
@@ -9,22 +8,24 @@ export default (commandManager: CommandManager) => {
     [],
     4,
     [],
-    ["SEND_MESSAGES"],
+    ["SEND_MESSAGES", "EMBED_MESSAGES"],
     async (commandData: CommandData): Promise<boolean> => {
       const songRequest = commandData.args.join(" ");
 
-      if (!songRequest) return commandData.respond("Error! no song query");
+      if (!songRequest)
+        return commandData.respond(commandData.locales.SPECIFY_SONG, true);
 
       const song = await commandData.client.player.searchSong(songRequest);
 
-      if (!song) return commandData.respond("Song not found!");
+      if (!song)
+        return commandData.respond(commandData.locales.SONG_NOT_FOUND, true);
 
       const serverListener = commandData.client.player.listeners.get(
         commandData.guild.id
       );
 
       if (!commandData?.author?.voice?.channel?.id)
-        return commandData.respond("Join a voice channel");
+        return commandData.respond(commandData.locales.JOIN_VC, true);
 
       if (serverListener && serverListener?.listening) {
         serverListener.queue.push(song);
@@ -32,20 +33,49 @@ export default (commandManager: CommandManager) => {
           commandData.guild.id,
           serverListener
         );
-        return commandData.respond("Added to queue " + song.title);
+        return commandData.respond(
+          commandData.locales.ADDED_TO_QUEUE.replace(
+            "$song_title",
+            song.title
+          ).replace("$song_url", song.url),
+          true
+        );
       }
 
-      commandData.client.player.serveGuild(
-        commandData.guild.id,
-        commandData.author.voice.channel.id,
-        commandData.channel.id,
-        commandData.guild.voiceAdapterCreator,
-        song
+      commandData.respond(
+        commandData.locales.NOW_PLAYING.replace(
+          "$song_title",
+          song.title
+        ).replace("$song_url", song.url),
+        true
       );
 
-      commandData.respond("Playing now: " + song.title);
+      try {
+        await commandData.client.player.serveGuild(
+          commandData.guild.id,
+          commandData.author.voice.channel.id,
+          commandData.channel.id,
+          commandData.guild.voiceAdapterCreator,
+          song
+        );
 
-      return true;
+        setTimeout(() => {
+          if (
+            commandData.client.player.listeners.get(commandData.guild.id)
+              ?.listening
+          )
+            return true;
+          else {
+            commandData.client.player.destroyStream(commandData.guild.id);
+          }
+        }, 20 * 1000);
+
+        return true;
+      } catch (err) {
+        commandData.channel.send(commandData.locales.PLAY_ERROR);
+
+        return false;
+      }
     }
   );
 
@@ -58,11 +88,9 @@ export default (commandManager: CommandManager) => {
     [],
     ["SEND_MESSAGES"],
     async (commandData: CommandData): Promise<boolean> => {
-      const connection = getVoiceConnection(commandData.guild.id);
+      commandData.client.player.destroyStream(commandData.guild.id);
 
-      connection?.destroy();
-
-      commandData.respond("Ok!");
+      commandData.respond("👍");
 
       return true;
     }
@@ -95,13 +123,14 @@ export default (commandManager: CommandManager) => {
 
       if (!isOk) {
         commandData.client.player.destroyStream(commandData.guild.id);
-        return commandData.respond(
-          "There isn't any song left to play so leaving from your voice channel."
-        );
+        commandData.respond(commandData.locales.EMPTY_SONG_QUEUE, true);
+        return true;
       } else {
       }
 
-      commandData.respond("Skipping " + songAmount + " song.");
+      commandData.respond(
+        commandData.locales.SKIPPING_SONG.replace("$count", songAmount)
+      );
 
       return true;
     }
@@ -120,10 +149,12 @@ export default (commandManager: CommandManager) => {
         commandData.guild.id
       );
 
-      if (!guild) return commandData.respond("Guild not found!");
+      if (!guild) {
+        commandData.respond(commandData.locales.QUEUE_NOT_FOUND, true);
+        return false;
+      }
 
-      console.log(guild.queue);
-
+      // TODO: Show queue
       return true;
     }
   );
@@ -142,9 +173,10 @@ export default (commandManager: CommandManager) => {
       );
 
       if (isOk) {
-        commandData.respond("Ok!");
+        commandData.respond("👍");
       } else {
-        commandData.respond("Error");
+        commandData.respond(commandData.locales.ERROR, true);
+        return false;
       }
 
       return true;
@@ -165,9 +197,10 @@ export default (commandManager: CommandManager) => {
       );
 
       if (isOk) {
-        commandData.respond("Ok!");
+        commandData.respond("👍");
       } else {
-        commandData.respond("Error");
+        commandData.respond(commandData.locales.ERROR, true);
+        return false;
       }
 
       return true;

@@ -11,6 +11,9 @@ interface configInterface {
   webhooks: {
     error: string;
   };
+  defaults: {
+    language: string;
+  };
   db_url: string;
 }
 
@@ -28,8 +31,25 @@ class Utils {
     return JSON.parse(readFileSync(this.configPath, { encoding: "utf-8" }));
   }
 
-  parseError(error: Error): string {
-    return `\n──────────────────────────────────────────────────\n[\x1b[41mERROR NAME\x1b[0m]: ${error.name} \n\n[\x1b[41mERROR MESSAGE\x1b[0m]:  ${error.message} \n\n[\x1b[41mERROR STACK\x1b[0m]: ${error.stack}\n──────────────────────────────────────────────────`;
+  parseError(error: Error, addColors?: boolean): string {
+    let errorString =
+      "[$color_redERROR MESSAGE$color_reset]: $error_name\n\n[$color_redERROR MESSAGE$color_reset]: $error_message\n\n[$color_redERROR STACK$color_reset]: $error_stack"
+        .replace("$error_name", error.name)
+        .replace("$error_message", error.message)
+        .replace("$error_stack", error.stack || "None");
+
+    if ((error as any)?.id)
+      errorString = `[ERROR ID]: ${(error as any)?.id}\n\n`.concat(errorString);
+
+    if (addColors) {
+      return errorString
+        .replaceAll("$color_red", "\x1b[31m")
+        .replaceAll("$color_reset", "\x1b[0m");
+    } else {
+      return errorString
+        .replaceAll("$color_red", "")
+        .replaceAll("$color_reset", "");
+    }
   }
 
   parseDuration(dur: string): number {
