@@ -9,7 +9,7 @@ class LocaleManager {
     if (localesPath) {
       this.localesPath = localesPath;
     } else {
-      this.localesPath = path.join(__dirname, "..", "..", "..", "Locales");
+      this.localesPath = path.join(__dirname, "..", "..", "..", "locales");
     }
 
     this.locales = {};
