@@ -2,6 +2,8 @@
 import Logger from "./Logger";
 import DatabaseManager from "./DatabaseManager";
 import User, { UserOptionsInterface } from "./User";
+import { Permissions } from "./PermissionResolver";
+import { GuildMember, TextChannel } from "discord.js";
 
 class UserManager {
   private logger: Logger;
@@ -66,6 +68,34 @@ class UserManager {
     );
     if (success) return true;
     else return false;
+  }
+
+  getAllPerms(user: GuildMember, channel: TextChannel): Permissions[] {
+    const athenaPerms: any[] = [];
+
+    user.roles.cache.forEach((role) => {
+      role.permissions.toArray().forEach((perm) => {
+        if (!athenaPerms.includes(perm)) athenaPerms.push(perm);
+      });
+    });
+
+    user
+      ?.permissionsIn(channel)
+      .toArray()
+      .forEach((item) => {
+        if (!athenaPerms.includes(item)) athenaPerms.push(item);
+      });
+
+    if (user?.voice?.channel) {
+      user
+        ?.permissionsIn(user.voice.channel)
+        .toArray()
+        .forEach((item) => {
+          if (!athenaPerms.includes(item)) athenaPerms.push(item);
+        });
+    }
+
+    return athenaPerms;
   }
 }
 

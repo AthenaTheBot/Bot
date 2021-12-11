@@ -35,6 +35,8 @@ export default new Event(
       db: { user: user, guild: guild },
     });
 
+    if (!commandData.executeable) return false;
+
     // Execute command
     command?.exec(commandData);
     return true;

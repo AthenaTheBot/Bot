@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionData } from "discord.js";
-import AthenaClient from "../AthenaClient";
 import { CommandData } from "./CommandData";
+import { PermissionResolver, Permissions } from "./PermissionResolver";
 
 class Command {
   name: string;
@@ -8,8 +8,8 @@ class Command {
   description: string;
   options: ApplicationCommandOptionData[];
   cooldown: number;
-  requiredPerms: string[];
-  requiredBotPerms: string[];
+  requiredPerms: PermissionResolver;
+  requiredBotPerms: PermissionResolver;
   exec: (commandData: CommandData) => boolean | Promise<boolean>;
 
   constructor(
@@ -18,8 +18,8 @@ class Command {
     description: string,
     options: ApplicationCommandOptionData[],
     cooldown: number,
-    requiredPerms: string[],
-    requiredBotPerms: string[],
+    requiredPerms: Permissions[],
+    requiredBotPerms: Permissions[],
     exec: (commandData: CommandData) => boolean | Promise<boolean>
   ) {
     this.name = name;
@@ -27,8 +27,8 @@ class Command {
     this.description = description;
     this.options = options;
     this.cooldown = cooldown;
-    this.requiredPerms = requiredPerms;
-    this.requiredBotPerms = requiredBotPerms;
+    this.requiredPerms = new PermissionResolver(requiredPerms);
+    this.requiredBotPerms = new PermissionResolver(requiredBotPerms);
 
     this.exec = exec;
   }

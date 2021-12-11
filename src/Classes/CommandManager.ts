@@ -6,6 +6,7 @@ import { join } from "path";
 import Command from "./Command";
 import AthenaClient from "../AthenaClient";
 import CommandData from "./CommandData";
+import { Permissions } from "./PermissionResolver";
 
 import { ApplicationCommandOptionData } from "discord.js";
 
@@ -24,8 +25,8 @@ class CommandManager {
     description: string,
     options: ApplicationCommandOptionData[],
     cooldown: number,
-    requiredPerms: string[],
-    requiredBotPerms: string[],
+    requiredPerms: Permissions[],
+    requiredBotPerms: Permissions[],
     exec: (commandData: CommandData) => boolean | Promise<boolean>
   ) {
     if (this.isValidCommand(name)) return;

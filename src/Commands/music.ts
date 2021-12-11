@@ -1,4 +1,7 @@
 import { CommandManager, CommandData } from "../Classes/CommandManager";
+import { Permissions } from "../Classes/PermissionResolver";
+
+// TODO Commands: delsong
 
 export default (commandManager: CommandManager) => {
   commandManager.registerCommand(
@@ -8,7 +11,12 @@ export default (commandManager: CommandManager) => {
     [],
     4,
     [],
-    ["SEND_MESSAGES", "EMBED_MESSAGES"],
+    [
+      Permissions.SEND_MESSAGES,
+      Permissions.EMBED_LINKS,
+      Permissions.SPEAK,
+      Permissions.CONNECT,
+    ],
     async (commandData: CommandData): Promise<boolean> => {
       const songRequest = commandData.args.join(" ");
 
@@ -86,7 +94,7 @@ export default (commandManager: CommandManager) => {
     [],
     4,
     [],
-    ["SEND_MESSAGES"],
+    [Permissions.SEND_MESSAGES],
     async (commandData: CommandData): Promise<boolean> => {
       commandData.client.player.destroyStream(commandData.guild.id);
 
@@ -110,7 +118,7 @@ export default (commandManager: CommandManager) => {
     ],
     4,
     [],
-    ["SEND_MESSAGES"],
+    [Permissions.SEND_MESSAGES],
     async (commandData: CommandData): Promise<boolean> => {
       let songAmount = commandData.args[0] as any;
 
@@ -143,7 +151,7 @@ export default (commandManager: CommandManager) => {
     [],
     4,
     [],
-    ["SEND_MESSAGES"],
+    [Permissions.SEND_MESSAGES],
     async (commandData: CommandData): Promise<boolean> => {
       const guild = commandData.client.player.listeners.get(
         commandData.guild.id
@@ -166,7 +174,7 @@ export default (commandManager: CommandManager) => {
     [],
     4,
     [],
-    ["SEND_MESSAGES"],
+    [Permissions.SEND_MESSAGES],
     async (commandData: CommandData): Promise<boolean> => {
       const isOk = await commandData.client.player.pauseStream(
         commandData.guild.id
@@ -190,7 +198,7 @@ export default (commandManager: CommandManager) => {
     [],
     4,
     [],
-    ["SEND_MESSAGES"],
+    [Permissions.SEND_MESSAGES],
     async (commandData: CommandData): Promise<boolean> => {
       const isOk = await commandData.client.player.resumeStream(
         commandData.guild.id

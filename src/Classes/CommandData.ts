@@ -42,6 +42,9 @@ class CommandData {
 
   locales: any;
 
+  executeable: boolean;
+  executeFailReason: string | null;
+
   constructor(
     command: Command,
     client: AthenaClient,
@@ -67,6 +70,30 @@ class CommandData {
       this.locales = this.client.localeManager.getCategoryLocale(
         this.db.guild.settings.language || this.client.config.defaults.language
       );
+
+      this.executeable = true;
+      this.executeFailReason = null;
+
+      // Get Athena's Perms
+      const athenaPerms = this.client.userManager.getAllPerms(
+        this.guild.me as GuildMember,
+        this.channel as TextChannel
+      );
+
+      const userPerms = this.client.userManager.getAllPerms(
+        this.author as GuildMember,
+        this.channel as TextChannel
+      );
+
+      if (!this.command.requiredBotPerms.checkRequirements(athenaPerms)[0]) {
+        this.executeable = false;
+        this.executeFailReason = "BOT_INSUFFICIENT_PERMS";
+      }
+
+      if (!this.command.requiredBotPerms.checkRequirements(userPerms)[0]) {
+        this.executeable = false;
+        this.executeFailReason = "USER_INSUFFICIENT_PERMS";
+      }
 
       // Arguement parsing
       if (this.type === CommandDataTypes.Message) {

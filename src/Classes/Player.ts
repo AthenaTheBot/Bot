@@ -176,9 +176,11 @@ class Player {
   }
 
   async destroyStream(guildId: string): Promise<void> {
-    const connection = await getVoiceConnection(guildId);
+    try {
+      const connection = await getVoiceConnection(guildId);
 
-    connection?.destroy();
+      connection?.destroy();
+    } catch (err) {}
 
     this.listeners.delete(guildId);
   }

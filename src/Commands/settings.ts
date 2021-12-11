@@ -1,5 +1,5 @@
 import { CommandManager, CommandData } from "../Classes/CommandManager";
-import { MessageEmbed } from "discord.js";
+import { Permissions } from "../Classes/PermissionResolver";
 
 export default (commandManager: CommandManager) => {
   // Prefix command
@@ -16,10 +16,9 @@ export default (commandManager: CommandManager) => {
       },
     ],
     5,
-    ["ADMINISTRATOR"],
-    ["SEND_MESSAGES", "EMBED_LINKS"],
+    [Permissions.ADMINISTRATOR],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
-      // If there is no arguement specified send the current prefix else set prefix.
       if (commandData.args.length === 0) {
         try {
           commandData.respond(
@@ -51,7 +50,6 @@ export default (commandManager: CommandManager) => {
     }
   );
 
-  // Admin role command
   commandManager.registerCommand(
     "adminrole",
     [],
@@ -65,8 +63,8 @@ export default (commandManager: CommandManager) => {
       },
     ],
     4,
-    ["ADMINISTRATOR"],
-    ["EMBED_LINKS"],
+    [Permissions.ADMINISTRATOR],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData): Promise<boolean> => {
       let mentionedRole;
 
@@ -100,7 +98,6 @@ export default (commandManager: CommandManager) => {
     }
   );
 
-  // Mod role command
   commandManager.registerCommand(
     "modrole",
     [],
@@ -114,8 +111,8 @@ export default (commandManager: CommandManager) => {
       },
     ],
     4,
-    ["ADMINISTRATOR"],
-    ["EMBED_LINKS"],
+    [Permissions.ADMINISTRATOR],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
       let mentionedRole;
 

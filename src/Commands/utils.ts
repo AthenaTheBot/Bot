@@ -1,4 +1,7 @@
 import { CommandManager, CommandData } from "../Classes/CommandManager";
+import { Permissions } from "../Classes/PermissionResolver";
+
+// TODO Commands: afk, ascii, avatar, help, invite
 
 export default (commandManager: CommandManager) => {
   commandManager.registerCommand(
@@ -8,7 +11,7 @@ export default (commandManager: CommandManager) => {
     [],
     4,
     [],
-    ["SEND_MESSAGES"],
+    [Permissions.SEND_MESSAGES],
     (commandData: CommandData): boolean => {
       commandData.respond(commandData.locales.PONG);
 

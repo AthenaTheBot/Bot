@@ -41,6 +41,12 @@ export default new Event(
       db: { user: user, guild: guild },
     });
 
+    if (!commandData.executeable) {
+      if (commandData.executeFailReason == "USER_INSUFFICIENT_PERMS")
+        commandData.respond(commandData.locales.INSUFFICIENT_PERMS, false);
+      return false;
+    }
+
     // Execute command
     command?.exec(commandData);
 

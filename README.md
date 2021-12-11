@@ -4,10 +4,10 @@ Multi-functional discord bot with a cool dashboard and lots of features; music, 
 
 ## Bot Todo:
 
-- Better permission check.
-- Better error recording system.
+- Stats poster.
+- Check if playing in music commands.
+- Check if there is any channel and valid user
 - Support for youtube/spotify playlist in music system.
-- Timeout for music system.
 
 ## Website Todo
 

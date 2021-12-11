@@ -1,4 +1,5 @@
 {
   "ERROR": "An unexpected error occured while working on that action, please try again later or [contact us](https://athena.bot/support).",
-  "SUCCESS": "Action completed successfully."
+  "SUCCESS": "Action completed successfully.",
+  "USER_PERMS_INSUFFICIENT": "You don't have enough perms to use this command, *sorry dude its not about me ask server owner to give you perms*."
 }
