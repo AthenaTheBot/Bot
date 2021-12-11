@@ -84,6 +84,10 @@ class LocaleManager {
   updateCommandLocale(command: string, content: object): void {
     return;
   }
+
+  getAvaiableLocales(): string[] {
+    return Object.getOwnPropertyNames(this.locales);
+  }
 }
 
 export default LocaleManager;

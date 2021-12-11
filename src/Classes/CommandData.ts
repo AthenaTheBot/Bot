@@ -8,6 +8,7 @@ import {
   PartialDMChannel,
   TextChannel,
   ThreadChannel,
+  MessagePayload,
 } from "discord.js";
 import AthenaClient from "../AthenaClient";
 import Command from "./Command";
@@ -131,30 +132,43 @@ class CommandData {
   }
 
   async respond(
-    message: string | MessageEmbed,
+    respondPayload: string | MessageEmbed | MessageEmbed[] | any,
     sendAsEmbed?: boolean
   ): Promise<any> {
-    let respondData;
-    message = sendAsEmbed
-      ? new MessageEmbed().setColor("#5865F2").setDescription(message as string)
-      : message;
-    let payload =
-      message instanceof MessageEmbed
-        ? { embeds: [message?.color ? message : message.setColor("#5865F2")] }
-        : message;
+    let payload: any;
 
-    try {
-      if (this.type === CommandDataTypes.Interaction) {
-        respondData = await this.raw.reply(payload);
-      } else {
-        respondData = await this.raw.channel.send(payload);
-      }
-    } catch (err) {
-      console.error(err);
-      respondData = null;
+    if (typeof respondPayload === "string") {
+      if (sendAsEmbed) {
+        payload = {
+          embeds: [
+            new MessageEmbed()
+              .setColor("#5865F2")
+              .setDescription(respondPayload.trim()),
+          ],
+        };
+      } else payload = respondPayload;
+    } else if (Array.isArray(respondPayload)) {
+      payload = {
+        embeds: [...respondPayload.filter((x) => x instanceof MessageEmbed)],
+      };
+    } else if (respondPayload instanceof MessageEmbed) {
+      payload = { embeds: [respondPayload] };
+    } else {
+      payload = respondPayload;
     }
 
-    return respondData;
+    let returnData;
+    try {
+      if (this.type === CommandDataTypes.Interaction) {
+        returnData = await this.raw.reply(payload);
+      } else {
+        returnData = await this.raw.channel.send(payload);
+      }
+    } catch (err) {
+      returnData = null;
+    }
+
+    return returnData;
   }
 }
 

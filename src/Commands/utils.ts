@@ -1,7 +1,9 @@
 import { CommandManager, CommandData } from "../Classes/CommandManager";
 import { Permissions } from "../Classes/PermissionResolver";
+import figlet from "figlet";
+import { MessageEmbed } from "discord.js";
 
-// TODO Commands: afk, ascii, avatar, help, invite
+// TODO Commands: afk
 
 export default (commandManager: CommandManager) => {
   commandManager.registerCommand(
@@ -15,6 +17,147 @@ export default (commandManager: CommandManager) => {
     (commandData: CommandData): boolean => {
       commandData.respond(commandData.locales.PONG);
 
+      return true;
+    }
+  );
+
+  commandManager.registerCommand(
+    "ascii",
+    [],
+    "Sends the ascii format of the given text.",
+    [
+      {
+        type: "STRING",
+        name: "Text",
+        description: "A text to convert into ascii format",
+        required: true,
+      },
+    ],
+    4,
+    [],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+    (commandData: CommandData): boolean => {
+      const text = commandData.args.join(" ");
+
+      if (!text) {
+        commandData.respond(commandData.locales.WRONG_COMMAND_USAGE, true);
+        return false;
+      }
+
+      if (text.length > 63) {
+        commandData.respond(commandData.locales.TOO_BIG_TEXT, true);
+        return false;
+      }
+
+      // TODO: Fix return bug.
+      figlet(text, (err, result) => {
+        if (err) {
+          commandData.respond(commandData.locales.ERROR, true);
+          return false;
+        }
+
+        commandData.respond("```\n" + result + "\n```");
+      });
+
+      return true;
+    }
+  );
+
+  commandManager.registerCommand(
+    "avatar",
+    [],
+    "Sends the avatar of the given user.",
+    [
+      {
+        type: "USER",
+        name: "User",
+        description: "User to see avatar from.",
+        required: true,
+      },
+    ],
+    4,
+    [],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+    async (commandData: CommandData): Promise<boolean> => {
+      let targetUser;
+
+      if (commandData.type === "Interaction") {
+        targetUser =
+          (await commandData.guild.members.fetch(commandData.args[0])) || null;
+      } else {
+        targetUser =
+          commandData.raw.mentions.members.first()?.id || commandData.args[0];
+
+        if (targetUser)
+          targetUser =
+            (await commandData.guild.members.fetch(targetUser)) || null;
+      }
+
+      if (!targetUser) {
+        commandData.respond(commandData.locales.SPECIFY_USER, true);
+        return false;
+      }
+
+      const Embed = new MessageEmbed()
+        .setColor("#5865F2")
+        .setTimestamp()
+        .setTitle(
+          commandData.locales.AVATAR_TITLE.replace(
+            "$user",
+            commandData.author?.user.tag
+          )
+        )
+        .setImage(
+          targetUser.displayAvatarURL({
+            dynamic: true,
+            size: 4096,
+            format: "png",
+          })
+        );
+
+      commandData.respond(Embed);
+
+      return true;
+    }
+  );
+
+  commandManager.registerCommand(
+    "invite",
+    [],
+    "Sends the invite link of Athena.",
+    [],
+    4,
+    [],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+    async (commandData: CommandData): Promise<boolean> => {
+      commandData.respond(commandData.locales.INVITE_LINK, true);
+
+      return true;
+    }
+  );
+
+  // TODO: Better help command
+  commandManager.registerCommand(
+    "help",
+    [],
+    "Shows basic information about Athena great for the ones who don't know Athena.",
+    [],
+    4,
+    [],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+    async (commandData: CommandData): Promise<boolean> => {
+      const Embed = new MessageEmbed()
+        .setThumbnail(
+          commandData.client.user?.displayAvatarURL({
+            format: "png",
+            size: 4096,
+          }) as any
+        )
+        .setTitle(commandData.locales.HELP_TITLE)
+        .setDescription(commandData.locales.HELP_BODY)
+        .setColor("#5865F2");
+
+      commandData.respond(Embed);
       return true;
     }
   );

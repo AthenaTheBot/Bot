@@ -14,6 +14,9 @@ interface configInterface {
   defaults: {
     language: string;
   };
+  api_keys: {
+    KSOFT: string;
+  };
   db_url: string;
 }
 

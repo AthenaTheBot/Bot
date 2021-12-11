@@ -1,3 +1,8 @@
 {
-  "PONG": "Pong!"
+  "PONG": "Pong!",
+  "TOO_BIG_TEXT": "Too big text message was recieved, this command can only take up to 63 charaters.",
+  "AVATAR_TITLE": "$user's avatar",
+  "INVITE_LINK": "[Click to invite Athena to your server!](https://athena.bot/invite)",
+  "HELP_TITLE": "General Information",
+  "HELP_BODY": "Athena is a multi-purpose discord bot that aims serve almost every function of a discord bot can perform for free.\n\nThere are lots of commands that you can interact with on Athena, you can see the list of all commands on our website.\n\n**Links**: \n [Our Website](https://athena.bot)\n[Commands Page](https://athena.bot/commands)\n[Invite Athena](https://athena.bot/invite)\n[Support Server](https://athena.bot/support)"
 }

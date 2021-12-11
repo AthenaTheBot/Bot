@@ -43,7 +43,7 @@ export default new Event(
     // If debug mode is enabled log the execution of the command
     if (client.config.debugMode) {
       client.logger.log(
-        `Command ${command.name} has been executed by user ${interactionData.author.tag} (${interactionData.author.id})`
+        `Command ${command.name} has been executed by user ${interactionData.member.user.tag} (${interactionData.member.user.id})`
       );
     }
 

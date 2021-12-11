@@ -1,8 +1,9 @@
 import { CommandManager, CommandData } from "../Classes/CommandManager";
 import { Permissions } from "../Classes/PermissionResolver";
 
+// TODO Commands: language
+
 export default (commandManager: CommandManager) => {
-  // Prefix command
   commandManager.registerCommand(
     "prefix",
     [],
@@ -45,6 +46,69 @@ export default (commandManager: CommandManager) => {
         } else {
           commandData.respond(commandData.locales.ERROR, true);
         }
+        return true;
+      }
+    }
+  );
+
+  commandManager.registerCommand(
+    "language",
+    [],
+    "Changes the language of Athena",
+    [
+      {
+        type: "STRING",
+        name: "Language",
+        description: "The langauge that you want to set",
+        required: false,
+      },
+    ],
+    5,
+    [Permissions.ADMINISTRATOR],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+    async (commandData: CommandData): Promise<boolean> => {
+      if (commandData.args.length === 0) {
+        try {
+          commandData.respond(
+            commandData.locales.CURRENT_LANGUAGE.replace(
+              "$language",
+              commandData.db.guild.settings.language
+            ),
+            true
+          );
+        } catch (err) {
+          return false;
+        }
+
+        return true;
+      } else {
+        const availableLanguage =
+          commandData.client.localeManager.getAvaiableLocales();
+
+        if (!availableLanguage.includes(commandData.args[0])) {
+          commandData.respond(
+            commandData.locales.INVALID_LOCALE.replace(
+              "$locales",
+              availableLanguage.join(", ")
+            ),
+            true
+          );
+          return false;
+        }
+
+        const success = await commandData.client.dbManager.updateDocument(
+          "guilds",
+          commandData.guild.id,
+          { $set: { "settings.language": commandData.args[0] } }
+        );
+
+        if (success) {
+          commandData.respond(commandData.locales.SUCCESS, true);
+        } else {
+          commandData.respond(commandData.locales.ERROR, true);
+          return false;
+        }
+
         return true;
       }
     }

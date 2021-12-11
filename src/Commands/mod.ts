@@ -2,7 +2,7 @@ import { TextChannel } from "discord.js";
 import { CommandManager, CommandData } from "../Classes/CommandManager";
 import { Permissions } from "../Classes/PermissionResolver";
 
-// TODO Commands: clear, slowmode, warn, delwarn, setwarn?
+// TODO Commands:  warn, delwarn, setwarn?
 
 export default (commandManager: CommandManager) => {
   commandManager.registerCommand(
@@ -29,15 +29,14 @@ export default (commandManager: CommandManager) => {
 
       if (commandData.type === "Interaction") {
         targetUser =
-          (await commandData.guild.members.cache.get(commandData.args[0])) ||
-          null;
+          (await commandData.guild.members.fetch(commandData.args[0])) || null;
       } else {
         targetUser =
           commandData.raw.mentions.members.first()?.id || commandData.args[0];
 
         if (targetUser)
           targetUser =
-            (await commandData.guild.members.cache.get(targetUser)) || null;
+            (await commandData.guild.members.fetch(targetUser)) || null;
       }
 
       if (!targetUser) {
@@ -108,15 +107,14 @@ export default (commandManager: CommandManager) => {
 
       if (commandData.type === "Interaction") {
         targetUser =
-          (await commandData.guild.members.cache.get(commandData.args[0])) ||
-          null;
+          (await commandData.guild.members.fetch(commandData.args[0])) || null;
       } else {
         targetUser =
           commandData.raw.mentions.members.first()?.id || commandData.args[0];
 
         if (targetUser)
           targetUser =
-            (await commandData.guild.members.cache.get(targetUser)) || null;
+            (await commandData.guild.members.fetch(targetUser)) || null;
       }
 
       if (!targetUser) {
@@ -171,7 +169,7 @@ export default (commandManager: CommandManager) => {
       {
         type: "STRING",
         name: "Timeout",
-        description: "Timeout duration for this channel (ex: 10s).",
+        description: "Timeout duration for this text channel (ex: 10s).",
         required: true,
       },
     ],
@@ -206,7 +204,6 @@ export default (commandManager: CommandManager) => {
       let timeout: string = commandData.args[0];
 
       if (!isNaN(parseInt(timeout))) timeout = timeout + "s";
-
       if (timeout === "off") timeout = "_0_";
 
       // Putting ; between keywords
@@ -249,13 +246,73 @@ export default (commandManager: CommandManager) => {
         return false;
       }
 
-      // TODO:
-      if (resultVal >= 21600) return false;
+      // TODO: Warn users instead of assiging max value
+      if (resultVal >= 21600) resultVal = 21600;
 
       try {
         (commandData.channel as TextChannel).setRateLimitPerUser(resultVal);
       } catch (err) {
         commandData.respond(commandData.locales.ERROR, false);
+        return false;
+      }
+
+      commandData.respond(commandData.locales.SUCCESS, true);
+
+      return true;
+    }
+  );
+
+  commandManager.registerCommand(
+    "clear",
+    ["purge"],
+    "Clears the specified amount of message in the text channel.",
+    [
+      {
+        type: "NUMBER",
+        name: "Amount",
+        description: "Amount of messages to delete in this text channel.",
+        required: true,
+      },
+    ],
+    4,
+    [Permissions.MANAGE_MESSAGES],
+    [
+      Permissions.SEND_MESSAGES,
+      Permissions.EMBED_LINKS,
+      Permissions.MANAGE_MESSAGES,
+    ],
+    async (commandData: CommandData): Promise<boolean> => {
+      if (
+        !commandData.args[0] ||
+        isNaN(parseInt(commandData.args[0])) ||
+        commandData.args[0] == "0"
+      ) {
+        commandData.respond(commandData.locales.WRONG_COMMAND_USAGE, true);
+        return false;
+      }
+
+      let messageAmount = parseInt(commandData.args[0]);
+      const actions = [];
+
+      while (true) {
+        if (messageAmount <= 100) {
+          actions.push(messageAmount);
+          break;
+        } else {
+          actions.push(100);
+          messageAmount -= 100;
+        }
+      }
+
+      for (var i = 0; i < actions.length; i++) {
+        try {
+          (commandData.channel as TextChannel).bulkDelete(actions[i], true);
+
+          actions.shift();
+        } catch (err) {
+          commandData.respond(commandData.locales.ERROR, false);
+          break;
+        }
       }
 
       commandData.respond(commandData.locales.SUCCESS, true);

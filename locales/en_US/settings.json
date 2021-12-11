@@ -1,3 +1,5 @@
 {
-  "CURRENT_PREFIX": "Athena's current prefix here is: `$prefix`"
+  "CURRENT_PREFIX": "Athena's current prefix here is: `$prefix`",
+  "CURRENT_LANGUAGE": "Athena's current language here is: `$language`",
+  "INVALID_LOCALE": "You have specified an invalid language option. Valid language(s): `$locales`"
 }
