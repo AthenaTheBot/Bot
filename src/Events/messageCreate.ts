@@ -42,13 +42,22 @@ export default new Event(
     });
 
     if (!commandData.executeable) {
-      if (commandData.executeFailReason == "USER_INSUFFICIENT_PERMS")
-        commandData.respond(commandData.locales.INSUFFICIENT_PERMS, false);
+      if (commandData.executeFail) console.log(commandData.executeFail.perms);
+      if (commandData.executeFail?.reason == "USER_INSUFFICIENT_PERMS") {
+        commandData.respond(commandData.locales.USER_INSUFFICIENT_PERMS, false);
+      }
       return false;
     }
 
     // Execute command
     command?.exec(commandData);
+
+    // If debug mode is enabled log the execution of the command
+    if (client.config.debugMode) {
+      client.logger.log(
+        `Command ${command.name} has been executed by user ${msgData.author.tag} (${msgData.author.id})`
+      );
+    }
 
     return true;
   }

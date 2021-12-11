@@ -13,6 +13,7 @@ import AthenaClient from "../AthenaClient";
 import Command from "./Command";
 import Guild from "./Guild";
 import User from "./User";
+import { Permissions } from "./PermissionResolver";
 
 enum CommandDataTypes {
   Interaction = "Interaction",
@@ -43,7 +44,13 @@ class CommandData {
   locales: any;
 
   executeable: boolean;
-  executeFailReason: string | null;
+  executeFail:
+    | {
+        reason: string;
+        perms: Permissions[] | null;
+      }
+    | undefined
+    | null;
 
   constructor(
     command: Command,
@@ -72,7 +79,6 @@ class CommandData {
       );
 
       this.executeable = true;
-      this.executeFailReason = null;
 
       // Get Athena's Perms
       const athenaPerms = this.client.userManager.getAllPerms(
@@ -85,14 +91,26 @@ class CommandData {
         this.channel as TextChannel
       );
 
-      if (!this.command.requiredBotPerms.checkRequirements(athenaPerms)[0]) {
+      const [athenaPassed, athenaFailPerms] =
+        this.command.requiredBotPerms.checkRequirements(athenaPerms);
+
+      const [userPassed, userFailPerms] =
+        this.command.requiredBotPerms.checkRequirements(userPerms);
+
+      if (!athenaPassed) {
         this.executeable = false;
-        this.executeFailReason = "BOT_INSUFFICIENT_PERMS";
+        this.executeFail = {
+          reason: "BOT_INSUFFICIENT_PERMS",
+          perms: athenaFailPerms,
+        };
       }
 
-      if (!this.command.requiredBotPerms.checkRequirements(userPerms)[0]) {
+      if (!userPassed) {
         this.executeable = false;
-        this.executeFailReason = "USER_INSUFFICIENT_PERMS";
+        this.executeFail = {
+          reason: "USER_INSUFFICIENT_PERMS",
+          perms: userFailPerms,
+        };
       }
 
       // Arguement parsing
