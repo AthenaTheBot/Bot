@@ -7,5 +7,9 @@
   "PLAY_ERROR": "An unexpected error has occured while playing a song in your voice channel, please try playing this song again or [contact us](https://athena.bot/support).",
   "EMPTY_SONG_QUEUE": "There isn't any song left to play so leaving from your voice channel.",
   "SKIPPING_SONG": "Skipping $count song(s) in song queue..",
-  "QUEUE_NOT_FOUND": "Song queue not found."
+  "QUEUE_NOT_FOUND": "Song queue not found.",
+  "NOT_PLAYING": "Athena is not playing a song right now.",
+  "SONG_QUEUE": "Song Queue",
+  "CURRENTLY_PLAYING": "Currently Playing",
+  "NOT_SAME_VC": "In order to control Athena you have to be in same voice channel as Athena"
 }

@@ -228,7 +228,7 @@ export default (commandManager: CommandManager) => {
 
         if (isNaN(val) && updated === "_0_") return processedValues.push(0);
         if (!isNaN(val) && val > 0) return processedValues.push(val);
-        else processedValues.push(null);
+        else processedValues.push(undefined);
       });
 
       let resultVal = 0;
@@ -240,6 +240,8 @@ export default (commandManager: CommandManager) => {
           break;
         }
       }
+
+      console.log(resultVal);
 
       if (resultVal == -1) {
         commandData.respond(commandData.locales.WRONG_COMMAND_USAGE, true);

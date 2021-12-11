@@ -229,6 +229,10 @@ class Player {
 
     return true;
   }
+
+  isPlaying(guildId: string): boolean {
+    return this.listeners.get(guildId)?.listening || false;
+  }
 }
 
 export default Player;

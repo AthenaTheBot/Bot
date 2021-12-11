@@ -36,6 +36,14 @@ export default (commandManager: CommandManager) => {
         return commandData.respond(commandData.locales.JOIN_VC, true);
 
       if (serverListener && serverListener?.listening) {
+        if (
+          commandData.author?.voice?.channel?.id !=
+          commandData.guild?.me?.voice?.channel?.id
+        ) {
+          commandData.respond(commandData.locales.NOT_SAME_VC, true);
+          return false;
+        }
+
         serverListener.queue.push(song);
         commandData.client.player.listeners.set(
           commandData.guild.id,
@@ -94,8 +102,21 @@ export default (commandManager: CommandManager) => {
     [],
     4,
     [],
-    [Permissions.SEND_MESSAGES],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
+      if (!commandData.client.player.isPlaying(commandData.guild.id)) {
+        commandData.respond(commandData.locales.NOT_PLAYING, true);
+        return false;
+      }
+
+      if (
+        commandData.author?.voice?.channel?.id !=
+        commandData.guild?.me?.voice?.channel?.id
+      ) {
+        commandData.respond(commandData.locales.NOT_SAME_VC, true);
+        return false;
+      }
+
       commandData.client.player.destroyStream(commandData.guild.id);
 
       commandData.respond("👍");
@@ -118,8 +139,21 @@ export default (commandManager: CommandManager) => {
     ],
     4,
     [],
-    [Permissions.SEND_MESSAGES],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
+      if (!commandData.client.player.isPlaying(commandData.guild.id)) {
+        commandData.respond(commandData.locales.NOT_PLAYING, true);
+        return false;
+      }
+
+      if (
+        commandData.author?.voice?.channel?.id !=
+        commandData.guild?.me?.voice?.channel?.id
+      ) {
+        commandData.respond(commandData.locales.NOT_SAME_VC, true);
+        return false;
+      }
+
       let songAmount = commandData.args[0] as any;
 
       if (!songAmount || isNaN(songAmount)) songAmount = 1;
@@ -151,8 +185,21 @@ export default (commandManager: CommandManager) => {
     [],
     4,
     [],
-    [Permissions.SEND_MESSAGES],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
+      if (!commandData.client.player.isPlaying(commandData.guild.id)) {
+        commandData.respond(commandData.locales.NOT_PLAYING, true);
+        return false;
+      }
+
+      if (
+        commandData.author?.voice?.channel?.id !=
+        commandData.guild?.me?.voice?.channel?.id
+      ) {
+        commandData.respond(commandData.locales.NOT_SAME_VC, true);
+        return false;
+      }
+
       const guild = commandData.client.player.listeners.get(
         commandData.guild.id
       );
@@ -162,7 +209,23 @@ export default (commandManager: CommandManager) => {
         return false;
       }
 
-      // TODO: Show queue
+      let queue: string[] = [];
+
+      for (var i = 0; i < guild.queue.length; i++) {
+        queue.push(
+          `${i + 1} - [${guild.queue[i].title}](${guild.queue[i].url}) ${
+            i == 0 ? `- **${commandData.locales.CURRENTLY_PLAYING}**` : ""
+          }`
+        );
+      }
+
+      commandData.respond(
+        `**${commandData.guild.name}** - ${
+          commandData.locales.SONG_QUEUE
+        }\n───────────────────────────────────\n${queue.join("\n")}`,
+        true
+      );
+
       return true;
     }
   );
@@ -174,8 +237,21 @@ export default (commandManager: CommandManager) => {
     [],
     4,
     [],
-    [Permissions.SEND_MESSAGES],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
+      if (!commandData.client.player.isPlaying(commandData.guild.id)) {
+        commandData.respond(commandData.locales.NOT_PLAYING, true);
+        return false;
+      }
+
+      if (
+        commandData.author?.voice?.channel?.id !=
+        commandData.guild?.me?.voice?.channel?.id
+      ) {
+        commandData.respond(commandData.locales.NOT_SAME_VC, true);
+        return false;
+      }
+
       const isOk = await commandData.client.player.pauseStream(
         commandData.guild.id
       );
@@ -198,8 +274,21 @@ export default (commandManager: CommandManager) => {
     [],
     4,
     [],
-    [Permissions.SEND_MESSAGES],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
+      if (!commandData.client.player.isPlaying(commandData.guild.id)) {
+        commandData.respond(commandData.locales.NOT_PLAYING, true);
+        return false;
+      }
+
+      if (
+        commandData.author?.voice?.channel?.id !=
+        commandData.guild?.me?.voice?.channel?.id
+      ) {
+        commandData.respond(commandData.locales.NOT_SAME_VC, true);
+        return false;
+      }
+
       const isOk = await commandData.client.player.resumeStream(
         commandData.guild.id
       );
