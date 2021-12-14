@@ -56,20 +56,6 @@ class ErrorHandler {
     this.logger.warn(`Recorded an error with name ${error.name} (${errorId}).`);
     return true;
   }
-
-  reportError(error: Error): boolean {
-    fetch(this.config.webhooks.error, {
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        content: `[ERROR NAME]: \`\`\`${error.name}\`\`\` \n \n [ERROR MESSAGE] \`\`\`${error.message}\`\`\` \n \n [ERROR STACK] \`\`\`${error.stack}\`\`\``,
-      }),
-    });
-    return true;
-  }
 }
 
 export default ErrorHandler;
