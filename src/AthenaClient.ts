@@ -17,6 +17,7 @@ import LocaleManager from "./Classes/LocaleManager";
 import CooldownManager from "./Classes/CooldownManager";
 import Player from "./Classes/Player";
 import StatPoster from "./Classes/StatPoster";
+import ActionLogger from "./Classes/ActionLogger";
 
 /** Athena base client class
  * @extends Client
@@ -39,6 +40,9 @@ class AthenaClient extends Client {
 
   // Stats Poster
   statPoster: StatPoster;
+
+  // Action Logger
+  actionLogger: ActionLogger;
 
   // Handlers
   errorHandler: ErrorHandler;
@@ -75,6 +79,9 @@ class AthenaClient extends Client {
 
     // Stat Poster
     this.statPoster = new StatPoster(this, this.config.bot.statPostInterval);
+
+    // Action Logger
+    this.actionLogger = new ActionLogger(this);
 
     // Handlers
     this.errorHandler = new ErrorHandler(this.config);
@@ -118,7 +125,7 @@ class AthenaClient extends Client {
       },
     ]);
 
-    this.statPoster.startPosting();
+    //this.statPoster.startPosting();
 
     return true;
   }

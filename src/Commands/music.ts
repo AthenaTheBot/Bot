@@ -104,11 +104,6 @@ export default (commandManager: CommandManager) => {
     [],
     [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
-      if (!commandData.client.player.isPlaying(commandData.guild.id)) {
-        commandData.respond(commandData.locales.NOT_PLAYING, true);
-        return false;
-      }
-
       if (
         commandData.author?.voice?.channel?.id !=
         commandData.guild?.me?.voice?.channel?.id

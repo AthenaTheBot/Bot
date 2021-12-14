@@ -17,7 +17,9 @@ interface configInterface {
     activity: string;
     statPostInterval: number;
   };
-  webhooks: {
+  channels: {
+    command: string;
+    guild: string;
     error: string;
   };
   defaults: {

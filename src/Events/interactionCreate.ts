@@ -45,6 +45,12 @@ export default new Event(
       client.logger.log(
         `Command ${command.name} has been executed by user ${interactionData.member.user.tag} (${interactionData.member.user.id})`
       );
+    } else {
+      client.actionLogger.logCommand(
+        commandData.command.name,
+        commandData.args,
+        (commandData?.author as any).id
+      );
     }
 
     return true;
