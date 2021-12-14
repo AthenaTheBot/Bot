@@ -1,6 +1,5 @@
 // Modules
 import spotify from "spotify-url-info";
-import { Guild } from "discord.js";
 import ytsr from "ytsr";
 import {
   getVoiceConnection,

@@ -1,0 +1,10 @@
+{
+  "ERROR": "O aksiyon üzerinde çalışılırken beklenmedik bir hata meydana geldi, lütfen tekrar deneyin ya da [bize ulaşın](https://athena.bot/support).",
+  "SUCCESS": "Aksiyon başarı ile gerçekleştirildi!",
+  "BOT_INSUFFICIENT_PERMS": "Athena O aksiyonu yerine getirmek için yeterli yetkilere sahip değil, lütfen Athena'nın rol yetkilerini/rol sıralamasını kontrol edin.",
+  "USER_INSUFFICIENT_PERMS": "O işlemi yapmak için yeterli yetkilere sahip değilsin.",
+  "SPECIFY_ROLE": "Lütfen, geçerli bir rol belirtin.",
+  "SPECIFY_USER": "Lütfen geçerli bir kullanıcı belirtin (*o kişiden bahsedin yada id sini yazın*).",
+  "WRONG_COMMAND_USAGE": "Bu komutu yanlış kullandınız, lütfen [sitemiz](https://athena.bot/commands) üzerinde bu komut hakkında daha fazla bilgi alın.",
+  "COOLDOWN_WARNING": "Woah, bu komutu çok fazla kere kullandınız, lütfen bir kez daha kullanmak için biraz bekleyin."
+}

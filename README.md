@@ -4,8 +4,7 @@ Multi-functional discord bot with a cool dashboard and lots of features; music, 
 
 ## Bot Todo:
 
-- Stats poster.
-- Cooldown manager.
+- More propper permission resolver class.
 - Check if there is any channel and valid user.
 - Support for youtube/spotify playlist in music system.
 

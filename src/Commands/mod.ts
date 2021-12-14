@@ -241,8 +241,6 @@ export default (commandManager: CommandManager) => {
         }
       }
 
-      console.log(resultVal);
-
       if (resultVal == -1) {
         commandData.respond(commandData.locales.WRONG_COMMAND_USAGE, true);
         return false;

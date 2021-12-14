@@ -1,0 +1,5 @@
+{
+  "CURRENT_PREFIX": "Athena'nın şuanki ön eki: `$prefix`",
+  "CURRENT_LANGUAGE": "Athena'nın şuanki dili: `$language`",
+  "INVALID_LOCALE": "Geçersiz bir dil opsiyonu belirttiniz. Geçerli dil opsiyonları: `$locales`"
+}

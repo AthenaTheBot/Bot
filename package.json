@@ -3,7 +3,9 @@
   "version": "3.0.0",
   "description": "Simple multi-functional discord bot.",
   "main": "dist/index.js",
-  "scripts": {},
+  "scripts": {
+    "build": "webpack --config webpack.config.js"
+  },
   "keywords": [
     "discord",
     "bot",

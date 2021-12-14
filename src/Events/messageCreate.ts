@@ -1,5 +1,6 @@
 import Event from "../Classes/Event";
 import { CommandData, CommandDataTypes } from "../Classes/CommandData";
+import { Permissions } from "../Classes/PermissionResolver";
 
 export default new Event(
   "messageCreate",
@@ -41,6 +42,31 @@ export default new Event(
       db: { user: user, guild: guild },
     });
 
+    // Check if user is in cooldown
+    const isInCooldown = client.cooldownManager.isInCooldown(
+      msgData.author.id,
+      command.name
+    );
+
+    if (isInCooldown) {
+      const isWarnSent = client.cooldownManager.isWarnSent(
+        msgData.author.id,
+        command.name
+      );
+      if (
+        !isWarnSent &&
+        !commandData.executeFail?.perms?.includes(Permissions.SEND_MESSAGES)
+      ) {
+        commandData.respond(commandData.locales.COOLDOWN_WARNING);
+        client.cooldownManager.updateWarnSent(
+          msgData.author.id,
+          command.name,
+          true
+        );
+      }
+      return false;
+    }
+
     if (!commandData.executeable) {
       if (commandData.executeFail) console.log(commandData.executeFail.perms);
       if (commandData.executeFail?.reason == "USER_INSUFFICIENT_PERMS") {
@@ -51,6 +77,13 @@ export default new Event(
 
     // Execute command
     command?.exec(commandData);
+
+    // Add cooldown to user
+    client.cooldownManager.addCooldown(
+      msgData.author.id,
+      command.name,
+      command.cooldown
+    );
 
     // If debug mode is enabled log the execution of the command
     if (client.config.debugMode) {

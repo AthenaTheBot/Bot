@@ -11,7 +11,7 @@ export default (commandManager: CommandManager) => {
     [],
     "Simple ping pong command whether to check bot is online or not.",
     [],
-    4,
+    1,
     [],
     [Permissions.SEND_MESSAGES],
     (commandData: CommandData): boolean => {
@@ -33,7 +33,7 @@ export default (commandManager: CommandManager) => {
         required: true,
       },
     ],
-    4,
+    3,
     [],
     [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     (commandData: CommandData): boolean => {
@@ -75,7 +75,7 @@ export default (commandManager: CommandManager) => {
         required: true,
       },
     ],
-    4,
+    2,
     [],
     [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
@@ -126,7 +126,7 @@ export default (commandManager: CommandManager) => {
     [],
     "Sends the invite link of Athena.",
     [],
-    4,
+    1,
     [],
     [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
@@ -142,7 +142,7 @@ export default (commandManager: CommandManager) => {
     [],
     "Shows basic information about Athena great for the ones who don't know Athena.",
     [],
-    4,
+    1,
     [],
     [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {

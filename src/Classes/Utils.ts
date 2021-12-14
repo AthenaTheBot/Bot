@@ -2,11 +2,20 @@
 import { join } from "path";
 import { readFileSync } from "fs";
 
+interface Botlist {
+  name: string;
+  url: string;
+  header: any;
+  body: any;
+  token: string;
+}
+
 interface configInterface {
   debugMode: boolean;
   bot: {
     token: string;
     activity: string;
+    statPostInterval: number;
   };
   webhooks: {
     error: string;
@@ -17,6 +26,7 @@ interface configInterface {
   api_keys: {
     KSOFT: string;
   };
+  botlists: Botlist[];
   db_url: string;
 }
 
@@ -60,6 +70,14 @@ class Utils {
     const min = parseInt(minSecond[0]) as number;
     const sec = parseInt(minSecond[1]) as number;
     return min * 60 + sec;
+  }
+
+  async sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, ms);
+    });
   }
 }
 

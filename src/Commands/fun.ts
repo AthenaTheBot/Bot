@@ -4,6 +4,8 @@ import { MessageAttachment, MessageEmbed } from "discord.js";
 import canvacord from "canvacord";
 import fetch from "cross-fetch";
 
+// TODO Commands: comment
+
 export default (commandManager: CommandManager) => {
   commandManager.registerCommand(
     "cat",

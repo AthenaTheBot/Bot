@@ -1,0 +1,15 @@
+{
+  "SPECIFY_SONG": "Lütfen, çalmak için bir şarkı belirtin. (*youtube video/spotify şarkı linkleri şuanlık desteklenmektedir*)",
+  "SONG_NOT_FOUND": "Şarkı bulunamadı, belkide farklı bir anahtar kelime ile aramalı?",
+  "JOIN_VC": "Şarkı çalmak için bir sesli kanala girin.",
+  "ADDED_TO_QUEUE": "Şarkı, sıraya eklendi: [$song_title]($song_url).",
+  "NOW_PLAYING": "Şarkı şuanda çalınıyor: [$song_title]($song_url).",
+  "PLAY_ERROR": "Ses kanalınızda şarkı çalınırken bir hata meydana geldi, lütfen şarkıyı tekrar çalmayı deneyin ya da [bize ulaşın](https://athena.bot/support).",
+  "EMPTY_SONG_QUEUE": "Çalmak için şarkı kalmadığı için ses kanalınızdan ayrılınıyor.",
+  "SKIPPING_SONG": "$count song(s) tane şarkı, sırasında geçiliyor..",
+  "QUEUE_NOT_FOUND": "Şarkı sırası bulunamadı.",
+  "NOT_PLAYING": "Athena şuanda şarkı çalmıyor.",
+  "SONG_QUEUE": "Şarkı Sırası",
+  "CURRENTLY_PLAYING": "Şuanda Çalıyor",
+  "NOT_SAME_VC": "Athena'yı kontrol edebilmek için Athena ile aynı ses kanalında olmalısınız."
+}

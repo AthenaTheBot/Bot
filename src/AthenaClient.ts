@@ -14,7 +14,9 @@ import PresenceManager from "./Classes/PresenceManager";
 import GuildManager from "./Classes/GuildManager";
 import UserManager from "./Classes/UserManager";
 import LocaleManager from "./Classes/LocaleManager";
+import CooldownManager from "./Classes/CooldownManager";
 import Player from "./Classes/Player";
+import StatPoster from "./Classes/StatPoster";
 
 /** Athena base client class
  * @extends Client
@@ -30,9 +32,13 @@ class AthenaClient extends Client {
   guildManager: GuildManager;
   userManager: UserManager;
   localeManager: LocaleManager;
+  cooldownManager: CooldownManager;
 
   // Player
   player: Player;
+
+  // Stats Poster
+  statPoster: StatPoster;
 
   // Handlers
   errorHandler: ErrorHandler;
@@ -62,9 +68,13 @@ class AthenaClient extends Client {
     this.guildManager = new GuildManager(this.dbManager);
     this.userManager = new UserManager(this.dbManager);
     this.localeManager = new LocaleManager();
+    this.cooldownManager = new CooldownManager();
 
     // Player
     this.player = new Player(this);
+
+    // Stat Poster
+    this.statPoster = new StatPoster(this, this.config.bot.statPostInterval);
 
     // Handlers
     this.errorHandler = new ErrorHandler(this.config);
@@ -107,6 +117,8 @@ class AthenaClient extends Client {
         type: "LISTENING",
       },
     ]);
+
+    this.statPoster.startPosting();
 
     return true;
   }

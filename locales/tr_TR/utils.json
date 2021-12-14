@@ -1,0 +1,8 @@
+{
+  "PONG": "Pong!",
+  "TOO_BIG_TEXT": "Çok büyük yazı alındı, bu komut sadece 63 karater yazı alabilmektedir.",
+  "AVATAR_TITLE": "$user'nın avatarı",
+  "INVITE_LINK": "[Athena'yı sunucunda davet etmek için tıkla!](https://athena.bot/invite)",
+  "HELP_TITLE": "Genel Bilgi",
+  "HELP_BODY": "Athena, bir discord botunun gerçekleştirebileceği hemen hemen her işlevi bedava yerine getirmeyi amaçlayan çok amaçlı bir discord botudur.\n\nAthena'da etkileşime girebileceğiniz birçok komut var, tüm komutların listesini web sitemizde görebilirsiniz.\n\n**Linkler**: \n [Websitemiz](https://athena.bot)\n[Komutlar Sayfası](https://athena.bot/commands)\n[Athena'yı Davet Et](https://athena.bot/invite)\n[Destek Sunucusu](https://athena.bot/support)"
+}

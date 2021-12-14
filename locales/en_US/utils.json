@@ -1,6 +1,6 @@
 {
   "PONG": "Pong!",
-  "TOO_BIG_TEXT": "Too big text message was recieved, this command can only take up to 63 charaters.",
+  "TOO_BIG_TEXT": "Too big text was recieved, this command can only take up to 63 charaters.",
   "AVATAR_TITLE": "$user's avatar",
   "INVITE_LINK": "[Click to invite Athena to your server!](https://athena.bot/invite)",
   "HELP_TITLE": "General Information",
