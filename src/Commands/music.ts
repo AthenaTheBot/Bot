@@ -9,7 +9,7 @@ export default (commandManager: CommandManager) => {
     ["p"],
     "Play song in a voice channel.",
     [],
-    4,
+    2,
     [],
     [
       Permissions.SEND_MESSAGES,
@@ -100,10 +100,15 @@ export default (commandManager: CommandManager) => {
     ["dc"],
     "Disconnects from voice channel if exits.",
     [],
-    4,
+    2,
     [],
     [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
+      if (!commandData?.guild?.me?.voice?.channel) {
+        commandData.respond(commandData.locales.NOT_IN_VC, true);
+        return false;
+      }
+
       if (
         commandData.author?.voice?.channel?.id !=
         commandData.guild?.me?.voice?.channel?.id
@@ -132,7 +137,7 @@ export default (commandManager: CommandManager) => {
         required: false,
       },
     ],
-    4,
+    2,
     [],
     [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
@@ -178,7 +183,7 @@ export default (commandManager: CommandManager) => {
     ["q"],
     "Shows current song queue.",
     [],
-    4,
+    1,
     [],
     [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
@@ -230,7 +235,7 @@ export default (commandManager: CommandManager) => {
     ["p"],
     "Pauses currently playing song.",
     [],
-    4,
+    2,
     [],
     [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
@@ -267,7 +272,7 @@ export default (commandManager: CommandManager) => {
     ["rs"],
     "Resumes paused song.",
     [],
-    4,
+    2,
     [],
     [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {

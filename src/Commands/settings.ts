@@ -1,8 +1,6 @@
 import { CommandManager, CommandData } from "../Classes/CommandManager";
 import { Permissions } from "../Classes/PermissionResolver";
 
-// TODO Commands: language
-
 export default (commandManager: CommandManager) => {
   commandManager.registerCommand(
     "prefix",

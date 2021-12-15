@@ -2,7 +2,10 @@ const fs = require("fs");
 const path = require("path");
 const args = process.argv.slice(2, process.argv.length);
 const { Permissions } = require("./dist/src/Classes/PermissionResolver");
+
+let buildFolder = path.join(__dirname, "dist");
 let commandsFolder = path.join(__dirname, "dist", "src", "commands");
+let localesFolder = path.join(__dirname, "locales");
 
 const buildCommands = async () => {
   const commandFiles = await fs.readdirSync(commandsFolder);
@@ -70,9 +73,80 @@ const buildCommands = async () => {
   return true;
 };
 
-const build = () => {
+function copyFileSync(source, target) {
+  var targetFile = target;
+
+  // If target is a directory, a new file with the same name will be created
+  if (fs.existsSync(target)) {
+    if (fs.lstatSync(target).isDirectory()) {
+      targetFile = path.join(target, path.basename(source));
+    }
+  }
+
+  fs.writeFileSync(targetFile, fs.readFileSync(source));
+}
+
+function copyFolderRecursiveSync(source, target) {
+  var files = [];
+
+  // Check if folder needs to be created or integrated
+  var targetFolder = path.join(target, path.basename(source));
+  if (!fs.existsSync(targetFolder)) {
+    fs.mkdirSync(targetFolder);
+  }
+
+  // Copy
+  if (fs.lstatSync(source).isDirectory()) {
+    files = fs.readdirSync(source);
+    files.forEach(function (file) {
+      var curSource = path.join(source, file);
+      if (fs.lstatSync(curSource).isDirectory()) {
+        copyFolderRecursiveSync(curSource, targetFolder);
+      } else {
+        copyFileSync(curSource, targetFolder);
+      }
+    });
+  }
+}
+
+const build = async () => {
   // TODO: Use webpack to bundler all javascript files into one file
   // ! https://stackoverflow.com/questions/34474651/typescript-compile-to-single-file
+
+  const baseFolderPath = path.join(__dirname, "..", "Athena-Build");
+
+  if (await fs.existsSync(baseFolderPath)) {
+    console.log(
+      `Found one build folder in ${baseFolderPath}, please remove that folder before getting another build.`
+    );
+
+    return false;
+  }
+
+  fs.mkdirSync(baseFolderPath);
+
+  // Copy base folder
+  copyFolderRecursiveSync(buildFolder, baseFolderPath);
+
+  // Copy locales
+  copyFolderRecursiveSync(localesFolder, baseFolderPath);
+
+  // Copy package and lock files
+  fs.copyFileSync(
+    path.join(__dirname, "package.json"),
+    path.join(baseFolderPath, "package.json")
+  );
+
+  fs.copyFileSync(
+    path.join(__dirname, "yarn.lock"),
+    path.join(baseFolderPath, "yarn.lock")
+  );
+
+  // Copy config file
+  fs.copyFileSync(
+    path.join(__dirname, "config.build.json"),
+    path.join(baseFolderPath, "config.json")
+  );
 
   return true;
 };

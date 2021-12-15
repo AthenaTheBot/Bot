@@ -11,5 +11,6 @@
   "NOT_PLAYING": "Athena şuanda şarkı çalmıyor.",
   "SONG_QUEUE": "Şarkı Sırası",
   "CURRENTLY_PLAYING": "Şuanda Çalıyor",
-  "NOT_SAME_VC": "Athena'yı kontrol edebilmek için Athena ile aynı ses kanalında olmalısınız."
+  "NOT_SAME_VC": "Athena'yı kontrol edebilmek için Athena ile aynı ses kanalında olmalısınız.",
+  "NOT_IN_VC": "Athena şuanda bir sesli kanalda bulunuyor."
 }

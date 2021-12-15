@@ -11,5 +11,6 @@
   "NOT_PLAYING": "Athena is not playing a song right now.",
   "SONG_QUEUE": "Song Queue",
   "CURRENTLY_PLAYING": "Currently Playing",
-  "NOT_SAME_VC": "In order to control Athena you have to be in same voice channel as Athena"
+  "NOT_SAME_VC": "In order to control Athena you have to be in same voice channel as Athena",
+  "NOT_IN_VC": "Athena currently isn't in a voice channel."
 }

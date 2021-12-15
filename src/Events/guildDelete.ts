@@ -6,8 +6,8 @@ export default new Event(
     if (client.config.debugMode) return false;
 
     client.actionLogger.logGuild(
-      guild.name,
       guild.id,
+      guild.name,
       guild.memberCount,
       guild.ownerId,
       false

@@ -1,4 +1,3 @@
-import fetch from "cross-fetch";
 import AthenaClient from "../AthenaClient";
 import { MessageEmbed, TextChannel } from "discord.js";
 
