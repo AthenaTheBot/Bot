@@ -8,7 +8,14 @@ export default (commandManager: CommandManager) => {
     "play",
     ["p"],
     "Play song in a voice channel.",
-    [],
+    [
+      {
+        type: "STRING",
+        name: "Song",
+        description: "Song title/url",
+        required: true,
+      },
+    ],
     2,
     [],
     [
@@ -132,7 +139,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "NUMBER",
-        name: "Songs amount",
+        name: "Song amount",
         description: "Songs amount to skip in the queue",
         required: false,
       },

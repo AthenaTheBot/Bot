@@ -201,8 +201,8 @@
     ],
     "description": "Play song in a voice channel.",
     "category": "music",
-    "usage": "",
-    "cooldown": 4,
+    "usage": "<Song>",
+    "cooldown": 2,
     "required_perms": [],
     "required_bot_perms": [
       "SEND_MESSAGES",
@@ -219,7 +219,7 @@
     "description": "Disconnects from voice channel if exits.",
     "category": "music",
     "usage": "",
-    "cooldown": 4,
+    "cooldown": 2,
     "required_perms": [],
     "required_bot_perms": [
       "SEND_MESSAGES",
@@ -233,8 +233,8 @@
     ],
     "description": "Skips to another song in the queue.",
     "category": "music",
-    "usage": "<Songs amount>",
-    "cooldown": 4,
+    "usage": "<Song amount>",
+    "cooldown": 2,
     "required_perms": [],
     "required_bot_perms": [
       "SEND_MESSAGES",
@@ -249,7 +249,7 @@
     "description": "Shows current song queue.",
     "category": "music",
     "usage": "",
-    "cooldown": 4,
+    "cooldown": 1,
     "required_perms": [],
     "required_bot_perms": [
       "SEND_MESSAGES",
@@ -264,7 +264,7 @@
     "description": "Pauses currently playing song.",
     "category": "music",
     "usage": "",
-    "cooldown": 4,
+    "cooldown": 2,
     "required_perms": [],
     "required_bot_perms": [
       "SEND_MESSAGES",
@@ -279,7 +279,7 @@
     "description": "Resumes paused song.",
     "category": "music",
     "usage": "",
-    "cooldown": 4,
+    "cooldown": 2,
     "required_perms": [],
     "required_bot_perms": [
       "SEND_MESSAGES",
