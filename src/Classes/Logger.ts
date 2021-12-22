@@ -28,6 +28,7 @@ class Logger {
     this.utils = new Utils();
   }
 
+  // TODO: $bold, $color string modifiers.
   private _log(tag: string, msg: string) {
     const date = dayjs(Date.now()).format("DD/MM/YYYY hh:mm");
     console.log(`[${date}] ${tag} ${msg}`);

@@ -18,6 +18,7 @@ import CooldownManager from "./Classes/CooldownManager";
 import Player from "./Classes/Player";
 import StatPoster from "./Classes/StatPoster";
 import ActionLogger from "./Classes/ActionLogger";
+import TerminalHandler from "./Classes/TerminalHandler";
 
 /** Athena base client class
  * @extends Client
@@ -46,6 +47,7 @@ class AthenaClient extends Client {
 
   // Handlers
   errorHandler: ErrorHandler;
+  terminalHandler: TerminalHandler;
 
   // Utils
   logger: Logger;
@@ -85,6 +87,7 @@ class AthenaClient extends Client {
 
     // Handlers
     this.errorHandler = new ErrorHandler(this.config);
+    this.terminalHandler = new TerminalHandler(this);
 
     // Utils
     this.logger = new Logger();
@@ -118,6 +121,8 @@ class AthenaClient extends Client {
       return false;
     }
 
+    this.terminalHandler.listenTerminal();
+
     this.presenceManager.setPresence([
       {
         name: this.config.bot.activity,
@@ -125,7 +130,7 @@ class AthenaClient extends Client {
       },
     ]);
 
-    //this.statPoster.startPosting();
+    this.statPoster.startPosting();
 
     return true;
   }

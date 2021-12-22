@@ -334,7 +334,7 @@
   {
     "name": "modrole",
     "aliases": [],
-    "description": "Command for setting admin role.",
+    "description": "Command for setting mod role.",
     "category": "settings",
     "usage": "<Role>",
     "cooldown": 4,

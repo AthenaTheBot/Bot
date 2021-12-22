@@ -1,8 +1,7 @@
 // Modules
-import { writeFileSync } from "fs";
+import { writeFileSync, existsSync, mkdirSync } from "fs";
 import { join } from "path";
 import { v4 as uuid } from "uuid";
-import fetch from "cross-fetch";
 
 // Classes
 import Logger from "./Logger";
@@ -34,6 +33,10 @@ class ErrorHandler {
     const errorId = uuid();
 
     Object.assign(error, { id: errorId });
+
+    const errorFolderExists = existsSync(this.errorFolder);
+
+    if (!errorFolderExists) mkdirSync(this.errorFolder);
 
     try {
       writeFileSync(

@@ -148,6 +148,9 @@ const build = async () => {
     path.join(baseFolderPath, "config.json")
   );
 
+  // Create error folder
+  fs.mkdirSync(path.join(__dirname, "errors"));
+
   return true;
 };
 

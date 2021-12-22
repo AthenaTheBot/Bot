@@ -163,12 +163,12 @@ export default (commandManager: CommandManager) => {
   commandManager.registerCommand(
     "modrole",
     [],
-    "Command for setting admin role.",
+    "Command for setting mod role.",
     [
       {
         type: "ROLE",
         name: "Role",
-        description: "The role that you want to set as bot admin.",
+        description: "The role that you want to set as bot mod.",
         required: true,
       },
     ],
