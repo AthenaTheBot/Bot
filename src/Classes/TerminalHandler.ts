@@ -11,6 +11,7 @@ class TerminalHandler {
     // TODO: Move commands to a file
     process.stdin.on("data", (data) => {
       const command = data.toString().trim();
+      if (command.length == 0) return;
       switch (command) {
         case "guild-count":
           this.client.logger.log(
@@ -64,6 +65,13 @@ class TerminalHandler {
           this.client.logger.log(
             `Uptime: ${days} days, ${hours} hourds, ${minutes} minutes, ${seconds} seconds, ${miliseconds} miliseconds`
           );
+          break;
+
+        case "memory-usage":
+          const memUsage = process.memoryUsage();
+          const usage = (memUsage.heapTotal / 1000000).toFixed(2);
+
+          this.client.logger.log(`Approximate Memory Usage: ${usage} MB`);
           break;
 
         default:

@@ -1,5 +1,5 @@
 // Modules
-import { writeFileSync, existsSync, mkdirSync } from "fs";
+import { writeFileSync, existsSync, mkdirSync, readdirSync } from "fs";
 import { join } from "path";
 import { v4 as uuid } from "uuid";
 
@@ -27,6 +27,26 @@ class ErrorHandler {
 
     this.logger = new Logger();
     this.utils = new Utils();
+  }
+
+  async checkErrors(notify: boolean): Promise<string[] | null> {
+    const errorFiles = readdirSync(this.errorFolder).filter((file) =>
+      file.endsWith(".athena_error")
+    );
+    const errors = [];
+    for (var i = 0; i < errorFiles.length; i++) {
+      errors.push(
+        errorFiles[i].slice(0, errorFiles.length - "athena_error".length)
+      );
+    }
+
+    if (notify && errors.length) {
+      this.logger.warn(
+        `Found ${errors.length} error file(s) in errors folder from recent session.`
+      );
+    }
+
+    return errors.length === 0 ? null : errors;
   }
 
   recordError(error: Error): boolean {

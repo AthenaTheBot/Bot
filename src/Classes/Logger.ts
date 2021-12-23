@@ -14,16 +14,16 @@ class Logger {
 
   constructor(dTag?: string, stag?: string, wtag?: string, etag?: string) {
     if (dTag) this.defaultTag = dTag;
-    else this.defaultTag = "\x1b[47m\x1b[30m LOG \x1b[0m";
+    else this.defaultTag = " LOG ".bgWhite.black;
 
     if (stag) this.successTag = stag;
-    else this.successTag = "\x1b[42m\x1b[30m SUCCESS \x1b[0m";
+    else this.successTag = " SUCCESS ".bgGreen.black;
 
     if (wtag) this.warnTag = wtag;
-    else this.warnTag = "\x1b[43m\x1b[30m WARN \x1b[0m";
+    else this.warnTag = " WARN ".bgYellow.black;
 
     if (etag) this.errorTag = etag;
-    else this.errorTag = "\x1b[41m\x1b[30m ERROR \x1b[0m";
+    else this.errorTag = " ERROR ".bgRed.black;
 
     this.utils = new Utils();
   }

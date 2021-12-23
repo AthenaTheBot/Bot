@@ -1,7 +1,9 @@
 // Modules
+import figlet from "figlet";
+import colors from "colors";
 import { Client, Intents } from "discord.js";
 
-import { configInterface } from "./Classes/Utils";
+colors.enable();
 
 // Classes
 import Logger from "./Classes/Logger";
@@ -19,6 +21,7 @@ import Player from "./Classes/Player";
 import StatPoster from "./Classes/StatPoster";
 import ActionLogger from "./Classes/ActionLogger";
 import TerminalHandler from "./Classes/TerminalHandler";
+import { configInterface } from "./Classes/Utils";
 
 /** Athena base client class
  * @extends Client
@@ -96,6 +99,26 @@ class AthenaClient extends Client {
 
   /** Function that initalizes the client of Athena */
   async initalize(): Promise<boolean> {
+    console.clear();
+
+    await new Promise((resolve) => {
+      figlet(
+        "ATHENA",
+        {
+          width: 400,
+          horizontalLayout: "full",
+        },
+        (err, result) => {
+          if (result) {
+            console.log(result.red);
+          }
+          resolve(null);
+        }
+      );
+    });
+
+    this.errorHandler.checkErrors(true);
+
     this.dbManager.connect().then((success) => {
       if (success)
         this.logger.success("Successfully connected to database server.");
