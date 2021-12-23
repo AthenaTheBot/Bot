@@ -149,7 +149,7 @@ const build = async () => {
   );
 
   // Create error folder
-  fs.mkdirSync(path.join(__dirname, "errors"));
+  fs.mkdirSync(path.join(baseFolderPath, "errors"));
 
   return true;
 };
