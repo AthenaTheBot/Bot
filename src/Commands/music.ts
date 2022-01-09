@@ -310,4 +310,104 @@ export default (commandManager: CommandManager) => {
       return true;
     }
   );
+
+  commandManager.registerCommand(
+    "loop",
+    ["rs"],
+    "Resumes paused song.",
+    [],
+    2,
+    [],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+    async (commandData: CommandData): Promise<boolean> => {
+      if (!commandData.client.player.isPlaying(commandData.guild.id)) {
+        commandData.respond(commandData.locales.NOT_PLAYING, true);
+        return false;
+      }
+
+      if (
+        commandData.author?.voice?.channel?.id !=
+        commandData.guild?.me?.voice?.channel?.id
+      ) {
+        commandData.respond(commandData.locales.NOT_SAME_VC, true);
+        return false;
+      }
+
+      const guild = commandData.client.player.listeners.get(
+        commandData.guild.id
+      );
+
+      if (!guild) {
+        commandData.respond(commandData.locales.QUEUE_NOT_FOUND, true);
+        return false;
+      }
+
+      if (guild.loop) {
+        guild.loop = false;
+        commandData.respond(commandData.locales.LOOP_DISABLED, true);
+      } else {
+        guild.loop = true;
+        commandData.respond(commandData.locales.LOOP_ENABLED, true);
+      }
+
+      return true;
+    }
+  );
+
+  commandManager.registerCommand(
+    "delsong",
+    ["ds"],
+    "Deletes a specific song from the music queue.",
+    [
+      {
+        type: "NUMBER",
+        name: "Song id",
+        description: "Song that you want to delete",
+        required: true,
+      },
+    ],
+    2,
+    [],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+    async (commandData: CommandData): Promise<boolean> => {
+      if (!commandData.args[0] || isNaN(commandData.args[0] as any))
+        return commandData.respond(commandData.locales.WRONG_COMMAND_USAGE);
+
+      if (!commandData.client.player.isPlaying(commandData.guild.id)) {
+        commandData.respond(commandData.locales.NOT_PLAYING, true);
+        return false;
+      }
+
+      if (
+        commandData.author?.voice?.channel?.id !=
+        commandData.guild?.me?.voice?.channel?.id
+      ) {
+        commandData.respond(commandData.locales.NOT_SAME_VC, true);
+        return false;
+      }
+
+      const guild = commandData.client.player.listeners.get(
+        commandData.guild.id
+      );
+
+      if (!guild) {
+        commandData.respond(commandData.locales.QUEUE_NOT_FOUND, true);
+        return false;
+      }
+
+      const isOk = await commandData.client.player.delSongFromQueue(
+        commandData.guild.id,
+        commandData.args[0] as any
+      );
+
+      if (isOk) {
+        commandData.respond(commandData.locales.SUCCESS, true);
+        return true;
+      }
+
+      commandData.respond(commandData.locales.ERROR, true);
+
+      return true;
+    }
+  );
 };

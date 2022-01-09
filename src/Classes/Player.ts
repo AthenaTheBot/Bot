@@ -15,12 +15,12 @@ import { stream } from "play-dl";
 
 // Classes
 import Song from "./Song";
-import Listenter from "./Listener";
+import Listener from "./Listener";
 import AthenaClient from "../AthenaClient";
 
 class Player {
   private client: AthenaClient;
-  public listeners: Map<string, Listenter>;
+  public listeners: Map<string, Listener>;
   readonly baseURLs: any;
 
   constructor(client: AthenaClient) {
@@ -125,14 +125,14 @@ class Player {
 
       if (!voiceConnection) return;
 
-      let listenter = this.listeners.get(guildId);
+      let listener = this.listeners.get(guildId);
 
-      if (!listenter) {
+      if (!listener) {
         this.listeners.set(
           guildId,
-          new Listenter(guildId, voiceChannel, textChannel, voiceAdapterCreator)
+          new Listener(guildId, voiceChannel, textChannel, voiceAdapterCreator)
         );
-        listenter = new Listenter(
+        listener = new Listener(
           guildId,
           voiceChannel,
           textChannel,
@@ -141,24 +141,27 @@ class Player {
       }
 
       if (song) {
-        listenter.queue.push(song);
+        listener.queue.push(song);
       } else {
-        if (listenter.queue.length <= 0) return;
+        if (listener.queue.length <= 0) return;
 
-        song = listenter.queue[0];
+        song = listener.queue[0];
       }
 
-      while (listenter.queue.length > 0) {
+      while (listener.queue.length > 0) {
         try {
-          listenter.listening = true;
-          this.listeners.set(guildId, listenter);
-          await this.streamSong(guildId, listenter.queue[0]);
-          listenter.queue.shift();
-          if (listenter.queue.length === 0) {
-            resolve();
-            listenter.listening = false;
+          listener.listening = true;
+          this.listeners.set(guildId, listener);
+          await this.streamSong(guildId, listener.queue[0]);
+          if (listener.loop) {
+            listener.queue.push(listener.queue[0]);
           }
-          this.listeners.set(guildId, listenter);
+          listener.queue.shift();
+          if (listener.queue.length === 0) {
+            resolve();
+            listener.listening = false;
+          }
+          this.listeners.set(guildId, listener);
         } catch (err) {
           this.destroyStream(guildId);
 
@@ -189,7 +192,18 @@ class Player {
 
     if (!listener) return false;
 
+    if (listener.queue.length <= songsToSkip && !listener.loop) return false;
+
+    if (listener.loop && listener.queue.length <= songsToSkip) {
+      while (songsToSkip >= listener.queue.length) {
+        songsToSkip = -listener.queue.length;
+      }
+
+      if (songsToSkip > 0) songsToSkip--;
+    }
+
     for (var i = 0; i < songsToSkip; i++) {
+      if (listener.loop) listener.queue.push(listener.queue[i]);
       listener.queue.shift();
     }
 
@@ -225,6 +239,33 @@ class Player {
     if (!listener) return false;
 
     listener.player?.unpause();
+
+    return true;
+  }
+
+  async delSongFromQueue(guildId: string, songId: number): Promise<boolean> {
+    const listener = this.listeners.get(guildId);
+
+    if (!listener) return false;
+
+    if (songId - 1 > listener.queue.length) {
+      return false;
+    }
+
+    listener.queue.splice(songId - 1, 1);
+
+    const connection = await getVoiceConnection(guildId);
+
+    if (!connection) return false;
+
+    if (songId - 1 == 0) {
+      this.serveGuild(
+        listener.guildId,
+        listener.voiceChannel,
+        listener.textChannel,
+        listener.voiceAdapterCreator
+      );
+    }
 
     return true;
   }

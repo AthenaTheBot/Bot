@@ -5,6 +5,7 @@ class GuildQueue {
   guildId: string;
   voiceChannel: string;
   textChannel: string;
+  loop: boolean;
   queue: Song[];
   listening: boolean;
   voiceAdapterCreator: any;
@@ -20,6 +21,7 @@ class GuildQueue {
     this.guildId = id;
     this.voiceChannel = voiceChannel;
     this.textChannel = textChannel;
+    this.loop = false;
     this.voiceAdapterCreator = voiceAdapterCreator;
     this.player = null;
 
