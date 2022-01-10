@@ -287,6 +287,36 @@
     ]
   },
   {
+    "name": "loop",
+    "aliases": [
+      "rs"
+    ],
+    "description": "Toggles loop in song queue.",
+    "category": "music",
+    "usage": "",
+    "cooldown": 2,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "delsong",
+    "aliases": [
+      "ds"
+    ],
+    "description": "Deletes a specific song from the song queue.",
+    "category": "music",
+    "usage": "<Song id>",
+    "cooldown": 2,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
     "name": "prefix",
     "aliases": [],
     "description": "Change the prefix of Athena for your server and use the best fit for your server!",

@@ -1,22 +1,46 @@
 const fs = require("fs");
 const path = require("path");
-const args = process.argv.slice(2, process.argv.length);
+const commander = require("commander");
+const util = require("util");
+const exec = util.promisify(require("child_process").exec);
+const program = new commander.Command();
 const { Permissions } = require("./dist/src/Classes/PermissionResolver");
+require("colors").enable();
 
 let buildFolder = path.join(__dirname, "dist");
 let commandsFolder = path.join(__dirname, "dist", "src", "commands");
 let localesFolder = path.join(__dirname, "locales");
 
+program.version("1.0.0");
+
+program
+  .command("build")
+  .option("--commands", "Gets a new build of commands")
+  .description("Gets a new build of Athena.")
+  .action(({ commands }) => {
+    if (commands) {
+      buildCommands();
+    } else {
+      buildBot();
+    }
+  });
+
+program.log = (msg) => {
+  console.log("[" + "athena-build".bgBlue + "]:", msg.trim());
+};
+
 const buildCommands = async () => {
   const commandFiles = await fs.readdirSync(commandsFolder);
   const commands = [];
 
+  program.log("Reading current Athena build files.");
+
   for (var i = 0; i < commandFiles.length; i++) {
-    const exec = await import(
+    const execFile = await import(
       "file:///" + path.join(commandsFolder, commandFiles[i])
     );
 
-    exec.default.default({
+    execFile.default.default({
       registerCommand: (
         cmdName,
         cmdAliases,
@@ -56,6 +80,8 @@ const buildCommands = async () => {
     });
   }
 
+  program.log("Writing commands build file.");
+
   try {
     fs.writeFileSync(
       path.join(__dirname, "commands.json"),
@@ -63,12 +89,12 @@ const buildCommands = async () => {
       "utf-8"
     );
   } catch (err) {
-    console.log("An error occured while writing commands data file.");
-    console.log(err);
+    program.log("An error occured while writing commands data file.");
+    program.log(err);
     return false;
   }
 
-  console.log("Successfully wrote commands data file.");
+  program.log("CommandsS file write process has finished.");
 
   return true;
 };
@@ -109,15 +135,29 @@ function copyFolderRecursiveSync(source, target) {
   }
 }
 
-const build = async () => {
-  // TODO: Use webpack to bundler all javascript files into one file
-  // ! https://stackoverflow.com/questions/34474651/typescript-compile-to-single-file
+const buildBot = async () => {
+  program.log("Compiling typescript code...");
+
+  // Firstly get a new build of Athena
+  const { stdout, stderr } = await exec("tsc");
+
+  if (stderr) {
+    program.log("An error occured while compiling typescript code.");
+    program.log(stderr);
+    return;
+  }
+
+  if (stdout) console.log(stdout);
+
+  program.log("Code compilation is done.");
+
+  program.log("Writing new build files of Athena.");
 
   const baseFolderPath = path.join(__dirname, "..", "Athena-Build");
 
   if (await fs.existsSync(baseFolderPath)) {
-    console.log(
-      `Found one build folder in ${baseFolderPath}, please remove that folder before getting another build.`
+    program.log(
+      `Found one build folder in "${baseFolderPath}", please remove that folder before getting another build.`
     );
 
     return false;
@@ -151,12 +191,9 @@ const build = async () => {
   // Create error folder
   fs.mkdirSync(path.join(baseFolderPath, "errors"));
 
+  program.log("Bot code compilation has finished.");
+
   return true;
 };
 
-// TODO: Detailed arguement parsing
-if (args.includes("--build-commands")) {
-  buildCommands();
-} else {
-  build();
-}
+program.parse();

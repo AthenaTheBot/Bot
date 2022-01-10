@@ -314,7 +314,7 @@ export default (commandManager: CommandManager) => {
   commandManager.registerCommand(
     "loop",
     ["rs"],
-    "Resumes paused song.",
+    "Toggles loop in song queue.",
     [],
     2,
     [],
@@ -357,7 +357,7 @@ export default (commandManager: CommandManager) => {
   commandManager.registerCommand(
     "delsong",
     ["ds"],
-    "Deletes a specific song from the music queue.",
+    "Deletes a specific song from the song queue.",
     [
       {
         type: "NUMBER",
