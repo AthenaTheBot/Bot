@@ -79,19 +79,7 @@ export default (commandManager: CommandManager) => {
     [],
     [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
-      let targetUser;
-
-      if (commandData.type === "Interaction") {
-        targetUser =
-          (await commandData.guild.members.fetch(commandData.args[0])) || null;
-      } else {
-        targetUser =
-          commandData.raw.mentions.members.first()?.id || commandData.args[0];
-
-        if (targetUser)
-          targetUser =
-            (await commandData.guild.members.fetch(targetUser)) || null;
-      }
+      const targetUser = await commandData.parseUserFromArgs(0);
 
       if (!targetUser) {
         commandData.respond(commandData.locales.SPECIFY_USER, true);

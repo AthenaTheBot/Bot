@@ -1,4 +1,7 @@
 {
+  "REASON_NOT_SPECIFIED": "Reason was not specified.",
   "ACTION_DONE_BY": "Action done by \"$user\".",
-  "WARNED_USER": "**$user** has been warned for **$reason**. Current warn count: **$warn_count**"
+  "WARNED_USER": "**$user** has been warned for **$reason**. Current warn count: **$warn_count**",
+  "WARN_KICKED_USER": "**$user** has been warned **$times** and kicked from the server.",
+  "WARN_BANNED_USER": "**$user** has been warned **$times** and banned from the server."
 }

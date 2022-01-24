@@ -8,7 +8,8 @@ import {
   PartialDMChannel,
   TextChannel,
   ThreadChannel,
-  MessagePayload,
+  GuildMember as DJSMember,
+  Role as DJSRole,
 } from "discord.js";
 import AthenaClient from "../AthenaClient";
 import Command from "./Command";
@@ -128,6 +129,48 @@ class CommandData {
       throw new Error(
         "Cannot create command data instance without a data type."
       );
+    }
+  }
+
+  async parseUserFromArgs(index: number): Promise<DJSMember | null> {
+    if (!this.args[index]) return null;
+
+    let userId = null;
+
+    if (
+      this.type === CommandDataTypes.Interaction ||
+      !isNaN(this.args[index] as any)
+    )
+      userId = this.args[index];
+    else userId = this.args[index].slice(3, this.args[index].length - 1);
+
+    try {
+      const user = (await this.guild.members.cache.get(userId)) || null;
+
+      return user;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  async parseRoleFromArgs(index: number): Promise<DJSRole | null> {
+    if (!this.args[index]) return null;
+
+    let roleId = null;
+
+    if (
+      this.type === CommandDataTypes.Interaction ||
+      !isNaN(this.args[index] as any)
+    )
+      roleId = this.args[index];
+    else roleId = this.args[index].slice(3, this.args[index].length - 1);
+
+    try {
+      const role = (await this.guild.roles.cache.get(roleId)) || null;
+
+      return role;
+    } catch (err) {
+      return null;
     }
   }
 

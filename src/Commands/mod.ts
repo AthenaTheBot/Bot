@@ -18,7 +18,7 @@ export default (commandManager: CommandManager) => {
         required: true,
       },
     ],
-    4,
+    1,
     [Permissions.KICK_MEMBERS],
     [
       Permissions.SEND_MESSAGES,
@@ -26,19 +26,7 @@ export default (commandManager: CommandManager) => {
       Permissions.KICK_MEMBERS,
     ],
     async (commandData: CommandData): Promise<boolean> => {
-      let targetUser;
-
-      if (commandData.type === "Interaction") {
-        targetUser =
-          (await commandData.guild.members.fetch(commandData.args[0])) || null;
-      } else {
-        targetUser =
-          commandData.raw.mentions.members.first()?.id || commandData.args[0];
-
-        if (targetUser)
-          targetUser =
-            (await commandData.guild.members.fetch(targetUser)) || null;
-      }
+      const targetUser = await commandData.parseUserFromArgs(0);
 
       if (!targetUser) {
         commandData.respond(commandData.locales.SPECIFY_USER, true);
@@ -96,7 +84,7 @@ export default (commandManager: CommandManager) => {
         required: true,
       },
     ],
-    4,
+    1,
     [Permissions.BAN_MEMBERS],
     [
       Permissions.SEND_MESSAGES,
@@ -104,19 +92,7 @@ export default (commandManager: CommandManager) => {
       Permissions.BAN_MEMBERS,
     ],
     async (commandData: CommandData): Promise<boolean> => {
-      let targetUser;
-
-      if (commandData.type === "Interaction") {
-        targetUser =
-          (await commandData.guild.members.fetch(commandData.args[0])) || null;
-      } else {
-        targetUser =
-          commandData.raw.mentions.members.first()?.id || commandData.args[0];
-
-        if (targetUser)
-          targetUser =
-            (await commandData.guild.members.fetch(targetUser)) || null;
-      }
+      const targetUser = await commandData.parseUserFromArgs(0);
 
       if (!targetUser) {
         commandData.respond(commandData.locales.SPECIFY_USER, true);
@@ -174,7 +150,7 @@ export default (commandManager: CommandManager) => {
         required: true,
       },
     ],
-    4,
+    1,
     [Permissions.MANAGE_CHANNELS],
     [
       Permissions.SEND_MESSAGES,
@@ -275,7 +251,7 @@ export default (commandManager: CommandManager) => {
         required: true,
       },
     ],
-    4,
+    1,
     [Permissions.MANAGE_MESSAGES],
     [
       Permissions.SEND_MESSAGES,
@@ -334,7 +310,7 @@ export default (commandManager: CommandManager) => {
         required: true,
       },
     ],
-    4,
+    1,
     [
       Permissions.MANAGE_MESSAGES,
       Permissions.KICK_MEMBERS,
@@ -348,19 +324,7 @@ export default (commandManager: CommandManager) => {
       Permissions.BAN_MEMBERS,
     ],
     async (commandData: CommandData): Promise<boolean> => {
-      let targetUser: any;
-
-      if (commandData.type === "Interaction") {
-        targetUser =
-          (await commandData.guild.members.fetch(commandData.args[0])) || null;
-      } else {
-        targetUser =
-          commandData.raw.mentions.members.first()?.id || commandData.args[0];
-
-        if (targetUser)
-          targetUser =
-            (await commandData.guild.members.fetch(targetUser)) || null;
-      }
+      const targetUser = await commandData.parseUserFromArgs(0);
 
       if (!targetUser) {
         commandData.respond(commandData.locales.SPECIFY_USER, true);
@@ -387,7 +351,9 @@ export default (commandManager: CommandManager) => {
         return false;
       }
 
-      const reason = commandData.args.slice(1).join(" ");
+      let reason =
+        commandData.args.slice(1).join(" ") ||
+        commandData.locales.REASON_NOT_SPECIFIED;
 
       let userWarn =
         commandData.db.guild.modules.moderationModule?.warnings?.find(
@@ -415,7 +381,7 @@ export default (commandManager: CommandManager) => {
       ) {
         targetUser.kick(
           "User has been warned for " +
-            commandData.client.config.actions.warnBanCount +
+            commandData.client.config.actions.warnKickCount +
             " times."
         );
         commandData.respond(
@@ -423,7 +389,8 @@ export default (commandManager: CommandManager) => {
             "$user",
             targetUser.user.username,
             true
-          )
+          ).replace("$times", commandData.client.config.actions.warnKickCount),
+          true
         );
 
         return true;
@@ -442,9 +409,15 @@ export default (commandManager: CommandManager) => {
           commandData.locales.WARN_BANNED_USER.replace(
             "$user",
             targetUser.user.username
-          ),
+          ).replace("$times", commandData.client.config.actions.warnBanCount),
           true
         );
+
+        commandData.client.guildManager.updateGuild(commandData.guild.id, {
+          $pull: {
+            "modules.moderationModule.warnings": { id: targetUser.id },
+          },
+        });
 
         return true;
       }
@@ -458,6 +431,69 @@ export default (commandManager: CommandManager) => {
           .replace("$warn_count", userWarn.warnings.length),
         true
       );
+
+      return true;
+    }
+  );
+
+  commandManager.registerCommand(
+    "reswarn",
+    ["resetwarn", "resetwarning"],
+    "Resets the warnings of that user.",
+    [
+      {
+        type: "USER",
+        name: "User",
+        description: "User",
+        required: true,
+      },
+    ],
+    1,
+    [Permissions.MANAGE_MESSAGES],
+    [
+      Permissions.SEND_MESSAGES,
+      Permissions.EMBED_LINKS,
+      Permissions.MANAGE_MESSAGES,
+    ],
+    async (commandData: CommandData): Promise<boolean> => {
+      const targetUser = await commandData.parseUserFromArgs(0);
+
+      if (!targetUser) {
+        commandData.respond(commandData.locales.SPECIFY_USER, true);
+        return false;
+      }
+
+      const authorRoleHiearchy =
+        commandData.author?.roles?.highest?.rawPosition || 0;
+
+      const targetRoleHiearchy = targetUser?.roles?.highest?.rawPosition || 0;
+
+      const guildOwner = await commandData.guild.fetchOwner();
+
+      if (
+        targetRoleHiearchy >= authorRoleHiearchy &&
+        guildOwner?.id !== commandData?.author?.id
+      ) {
+        commandData.respond(commandData.locales.USER_INSUFFICIENT_PERMS, true);
+        return false;
+      }
+
+      const userWarning =
+        commandData.db.guild.modules.moderationModule?.warnings?.find(
+          (x) => x.id == targetUser.id
+        );
+
+      if (userWarning) {
+        userWarning.warnings = [];
+        commandData.client.guildManager.updateGuild(commandData.guild.id, {
+          $set: {
+            "modules.moderationModule.warnings":
+              commandData.db.guild.modules.moderationModule?.warnings,
+          },
+        });
+      }
+
+      commandData.respond(commandData.locales.SUCCESS, true);
 
       return true;
     }

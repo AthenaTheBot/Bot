@@ -128,15 +128,7 @@ export default (commandManager: CommandManager) => {
     [Permissions.ADMINISTRATOR],
     [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData): Promise<boolean> => {
-      let mentionedRole;
-
-      if (commandData.type === "Interaction") {
-        mentionedRole = await commandData.guild.roles.fetch(
-          commandData.args[0]
-        );
-      } else {
-        mentionedRole = commandData.raw.mentions.roles.first();
-      }
+      const mentionedRole = await commandData.parseRoleFromArgs(0);
 
       if (!mentionedRole?.id) {
         commandData.respond(commandData.locales.SPECIFY_ROLE, true);
@@ -176,15 +168,7 @@ export default (commandManager: CommandManager) => {
     [Permissions.ADMINISTRATOR],
     [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
-      let mentionedRole;
-
-      if (commandData.type === "Interaction") {
-        mentionedRole = await commandData.guild.roles.fetch(
-          commandData.args[0]
-        );
-      } else {
-        mentionedRole = commandData.raw.mentions.roles.first();
-      }
+      const mentionedRole = await commandData.parseRoleFromArgs(0);
 
       if (!mentionedRole?.id) {
         commandData.respond(commandData.locales.SPECIFY_ROLE, true);

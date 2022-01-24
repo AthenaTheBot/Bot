@@ -1,3 +1,4 @@
+import { MessageEmbed } from "discord.js";
 import { CommandManager, CommandData } from "../Classes/CommandManager";
 import { Permissions } from "../Classes/PermissionResolver";
 
@@ -204,11 +205,17 @@ export default (commandManager: CommandManager) => {
         );
       }
 
+      const queueEmbed = new MessageEmbed();
+
+      queueEmbed
+        .setColor("#5865F2")
+        .setTitle(
+          `${commandData.guild.name} - ${commandData.locales.SONG_QUEUE}`
+        )
+        .setDescription(queue.join("\n"));
+
       commandData.respond(
-        `**${commandData.guild.name}** - ${
-          commandData.locales.SONG_QUEUE
-        }\n───────────────────────────────────\n${queue.join("\n")}`,
-        true
+        queueEmbed,
       );
 
       return true;
