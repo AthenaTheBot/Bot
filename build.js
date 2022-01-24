@@ -94,7 +94,7 @@ const buildCommands = async () => {
     return false;
   }
 
-  program.log("CommandsS file write process has finished.");
+  program.log("Commands file write process has finished.");
 
   return true;
 };

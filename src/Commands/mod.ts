@@ -1,6 +1,7 @@
 import { TextChannel } from "discord.js";
 import { CommandManager, CommandData } from "../Classes/CommandManager";
 import { Permissions } from "../Classes/PermissionResolver";
+import UserWarning from "../Classes/UserWarning";
 
 // TODO Commands:  warn, delwarn, setwarn?
 
@@ -316,6 +317,147 @@ export default (commandManager: CommandManager) => {
       }
 
       commandData.respond(commandData.locales.SUCCESS, true);
+
+      return true;
+    }
+  );
+
+  commandManager.registerCommand(
+    "warn",
+    [],
+    "Warns mentioned user.",
+    [
+      {
+        type: "USER",
+        name: "User",
+        description: "The user that you want to warn.",
+        required: true,
+      },
+    ],
+    4,
+    [
+      Permissions.MANAGE_MESSAGES,
+      Permissions.KICK_MEMBERS,
+      Permissions.BAN_MEMBERS,
+    ],
+    [
+      Permissions.SEND_MESSAGES,
+      Permissions.EMBED_LINKS,
+      Permissions.MANAGE_MESSAGES,
+      Permissions.KICK_MEMBERS,
+      Permissions.BAN_MEMBERS,
+    ],
+    async (commandData: CommandData): Promise<boolean> => {
+      let targetUser: any;
+
+      if (commandData.type === "Interaction") {
+        targetUser =
+          (await commandData.guild.members.fetch(commandData.args[0])) || null;
+      } else {
+        targetUser =
+          commandData.raw.mentions.members.first()?.id || commandData.args[0];
+
+        if (targetUser)
+          targetUser =
+            (await commandData.guild.members.fetch(targetUser)) || null;
+      }
+
+      if (!targetUser) {
+        commandData.respond(commandData.locales.SPECIFY_USER, true);
+        return false;
+      }
+
+      const authorRoleHiearchy =
+        commandData.author?.roles?.highest?.rawPosition || 0;
+
+      const targetRoleHiearchy = targetUser?.roles?.highest?.rawPosition || 0;
+
+      const guildOwner = await commandData.guild.fetchOwner();
+
+      if (
+        targetRoleHiearchy >= authorRoleHiearchy &&
+        guildOwner?.id !== commandData?.author?.id
+      ) {
+        commandData.respond(commandData.locales.USER_INSUFFICIENT_PERMS, true);
+        return false;
+      }
+
+      if (!targetUser.kickable && !targetUser.bannable) {
+        commandData.respond(commandData.locales.BOT_INSUFFICIENT_PERMS, true);
+        return false;
+      }
+
+      const reason = commandData.args.slice(1).join(" ");
+
+      let userWarn =
+        commandData.db.guild.modules.moderationModule?.warnings?.find(
+          (x) => x.id == targetUser.id
+        );
+
+      if (userWarn) {
+        userWarn.warnings.push(reason);
+      } else {
+        userWarn = new UserWarning(targetUser.id);
+        userWarn.warnings.push(reason);
+        commandData.db.guild.modules.moderationModule?.warnings?.push(userWarn);
+      }
+
+      commandData.client.guildManager.updateGuild(commandData.guild.id, {
+        $set: {
+          "modules.moderationModule.warnings":
+            commandData.db.guild.modules.moderationModule?.warnings,
+        },
+      });
+
+      if (
+        userWarn.warnings.length ==
+        commandData.client.config.actions.warnKickCount
+      ) {
+        targetUser.kick(
+          "User has been warned for " +
+            commandData.client.config.actions.warnBanCount +
+            " times."
+        );
+        commandData.respond(
+          commandData.locales.WARN_KICKED_USER.replace(
+            "$user",
+            targetUser.user.username,
+            true
+          )
+        );
+
+        return true;
+      } else if (
+        userWarn.warnings.length ==
+        commandData.client.config.actions.warnBanCount
+      ) {
+        targetUser.ban({
+          reason:
+            "User has been warned for " +
+            commandData.client.config.actions.warnBanCount +
+            " times.",
+        });
+
+        commandData.respond(
+          commandData.locales.WARN_BANNED_USER.replace(
+            "$user",
+            targetUser.user.username
+          ),
+          true
+        );
+
+        return true;
+      }
+
+      commandData.respond(
+        commandData.locales.WARNED_USER.replace(
+          "$user",
+          targetUser.user.username
+        )
+          .replace("$reason", userWarn.warnings[userWarn.warnings.length - 1])
+          .replace("$warn_count", userWarn.warnings.length),
+        true
+      );
 
       return true;
     }

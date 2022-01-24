@@ -70,7 +70,7 @@ export default (commandManager: CommandManager) => {
     async (commandData: CommandData): Promise<boolean> => {
       const data = await fetch("https://api.ksoft.si/images/random-meme", {
         headers: {
-          Authorization: `Bearer ${commandData.client.config.api_keys.KSOFT}`,
+          Authorization: `Bearer ${commandData.client.config.apiKeys.KSOFT}`,
         },
       }).then((res) => res.json());
 

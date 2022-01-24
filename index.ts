@@ -4,7 +4,12 @@ import Utils from "./src/Classes/Utils";
 
 // Initializing modules
 const AthenaUtils = new Utils();
-const Athena = new AthenaClient(AthenaUtils.loadConfig());
+
+// Loading config
+const AthenaConfig = AthenaUtils.loadConfig();
+
+// Initializing Athena instance
+const Athena = new AthenaClient(AthenaConfig);
 
 // Init
 Athena.initalize();
@@ -17,3 +22,5 @@ process.on("uncaughtExceptionMonitor", (err) => {
 process.on("unhandledRejection", (err) => {
   Athena.errorHandler.recordError(err as Error);
 });
+
+export { AthenaConfig };

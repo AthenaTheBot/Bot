@@ -1,9 +1,10 @@
 // Classes
 import Logger from "./Logger";
 import DatabaseManager from "./DatabaseManager";
-import User, { UserOptionsInterface } from "./User";
+import User from "./User";
 import { Permissions } from "./PermissionResolver";
 import { GuildMember, TextChannel } from "discord.js";
+import { UserOpitons } from "../constants";
 
 class UserManager {
   private logger: Logger;
@@ -14,10 +15,7 @@ class UserManager {
     this.dbManager = dbManager;
   }
 
-  async create(
-    id: string,
-    options?: UserOptionsInterface
-  ): Promise<User | null> {
+  async create(id: string, options?: UserOpitons): Promise<User | null> {
     const user = new User(id, options);
     const success = await this.dbManager.createDocument("users", user);
     if (success) return user;

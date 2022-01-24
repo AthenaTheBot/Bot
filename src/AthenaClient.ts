@@ -11,7 +11,7 @@ import DatabaseManager from "./Classes/DatabaseManager";
 import Utils from "./Classes/Utils";
 import EventManager from "./Classes/EventManager";
 import ErrorHandler from "./Classes/ErrorHandler";
-import CommandManager from "./Classes/CommandManager";
+import CommandManager, { CommandData } from "./Classes/CommandManager";
 import PresenceManager from "./Classes/PresenceManager";
 import GuildManager from "./Classes/GuildManager";
 import UserManager from "./Classes/UserManager";
@@ -21,13 +21,13 @@ import Player from "./Classes/Player";
 import StatPoster from "./Classes/StatPoster";
 import ActionLogger from "./Classes/ActionLogger";
 import TerminalHandler from "./Classes/TerminalHandler";
-import { configInterface } from "./Classes/Utils";
+import { Config } from "./constants";
 
 /** Athena base client class
  * @extends Client
  */
 class AthenaClient extends Client {
-  readonly config: configInterface;
+  readonly config: Config;
 
   // Managers
   dbManager: DatabaseManager;
@@ -56,7 +56,7 @@ class AthenaClient extends Client {
   logger: Logger;
   utils: Utils;
 
-  constructor(config: configInterface) {
+  constructor(config: Config) {
     super({
       intents: [
         Intents.FLAGS.GUILDS,
@@ -70,7 +70,7 @@ class AthenaClient extends Client {
     this.config = config;
 
     // Managers
-    this.dbManager = new DatabaseManager(this.config.db_url);
+    this.dbManager = new DatabaseManager(this.config.dbUrl);
     this.eventManager = new EventManager(this);
     this.commandManager = new CommandManager(this);
     this.presenceManager = new PresenceManager(this);
@@ -89,7 +89,7 @@ class AthenaClient extends Client {
     this.actionLogger = new ActionLogger(this);
 
     // Handlers
-    this.errorHandler = new ErrorHandler(this.config);
+    this.errorHandler = new ErrorHandler();
     this.terminalHandler = new TerminalHandler(this);
 
     // Utils
@@ -156,6 +156,19 @@ class AthenaClient extends Client {
     this.statPoster.startPosting();
 
     return true;
+  }
+
+  async executeCommand(
+    commandName: string,
+    commandData: CommandData
+  ): Promise<boolean> {
+    const command = this.commandManager.getCommand(commandName);
+
+    if (!command) return false;
+
+    const success = await command.exec(commandData);
+
+    return success;
   }
 }
 

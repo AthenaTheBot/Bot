@@ -1,36 +1,7 @@
 // Modules
 import { join } from "path";
-import { readFileSync } from "fs";
-
-interface Botlist {
-  name: string;
-  url: string;
-  header: any;
-  body: any;
-  token: string;
-}
-
-interface configInterface {
-  debugMode: boolean;
-  bot: {
-    token: string;
-    activity: string;
-    statPostInterval: number;
-  };
-  channels: {
-    command: string;
-    guild: string;
-    error: string;
-  };
-  defaults: {
-    language: string;
-  };
-  api_keys: {
-    KSOFT: string;
-  };
-  botlists: Botlist[];
-  db_url: string;
-}
+import { readFile, readFileSync } from "fs";
+import { Botlist, Config } from "../constants";
 
 class Utils {
   configPath: string;
@@ -42,8 +13,15 @@ class Utils {
     }
   }
 
-  loadConfig(): configInterface {
-    return JSON.parse(readFileSync(this.configPath, { encoding: "utf-8" }));
+  loadConfig(): Config {
+    try {
+      const config = JSON.parse(
+        readFileSync(this.configPath, { encoding: "utf-8" })
+      ) as Config;
+      return config;
+    } catch (err) {
+      throw err;
+    }
   }
 
   parseError(error: Error, addColors?: boolean): string {
@@ -84,4 +62,3 @@ class Utils {
 }
 
 export default Utils;
-export { configInterface };

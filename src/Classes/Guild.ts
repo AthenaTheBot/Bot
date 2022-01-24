@@ -1,45 +1,27 @@
-enum languages {
-  EN_US = "en_US",
-  TR_TR = "tr_TR",
-}
-
-interface GuildOptionsInterface {
-  premium?: boolean;
-  prefix?: string;
-  language?: languages;
-}
+import { GuildOptions, GuildModules } from "../constants";
+import { AthenaConfig } from "../../index";
 
 class Guild {
   _id: string;
-  settings: GuildOptionsInterface;
-  modules: object;
+  settings: GuildOptions;
+  modules: GuildModules;
 
-  constructor(id: string, settings?: GuildOptionsInterface) {
+  constructor(id: string, settings?: GuildOptions, modules?: GuildModules) {
     this._id = id;
-    this.settings = {};
-    if (settings?.premium) {
-      this.settings.premium = settings.premium;
-    } else {
-      this.settings.premium = false;
-    }
 
-    if (settings?.prefix) {
-      this.settings.prefix = settings.prefix;
-    } else {
-      this.settings.prefix = "at!";
-    }
-
-    if (settings?.language) {
-      this.settings.language = settings.language;
-    } else {
-      this.settings.language = languages.EN_US;
-    }
+    this.settings = {
+      premium: settings?.premium || false,
+      prefix: settings?.prefix || AthenaConfig.defaults.prefix,
+      language: settings?.language || AthenaConfig.defaults.language,
+    };
 
     this.modules = {
       moderationModule: {
-        adminRole: null,
-        modRole: null,
+        adminRole: modules?.moderationModule?.adminRole || null,
+        modRole: modules?.moderationModule?.adminRole || null,
+        warnings: modules?.moderationModule?.warnings || [],
       },
+
       funModule: {},
       utilsModule: {},
     };
@@ -47,4 +29,4 @@ class Guild {
 }
 
 export default Guild;
-export { GuildOptionsInterface, Guild };
+export { Guild };

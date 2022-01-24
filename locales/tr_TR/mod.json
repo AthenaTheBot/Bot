@@ -1,3 +1,4 @@
 {
-  "ACTION_DONE_BY": "İşlem \"$user\" tarafından gerçekleştirildi."
+  "ACTION_DONE_BY": "İşlem \"$user\" tarafından gerçekleştirildi.",
+  "WARNED_USER": "**$user**, **$reason** sebebinden dolayı uyarıldı. Şuan ki uyarı sayısı: **$warn_count**"
 }

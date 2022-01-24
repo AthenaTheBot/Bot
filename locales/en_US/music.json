@@ -4,7 +4,7 @@
   "JOIN_VC": "Join in a voice channel to play song.",
   "ADDED_TO_QUEUE": "Song has been added to the song queue: [$song_title]($song_url).",
   "NOW_PLAYING": "Now playing song: [$song_title]($song_url).",
-  "PLAY_ERROR": "An unexpected error has occured while playing a song in your voice channel, please try playing this song again or [contact us](https://athena.bot/support).",
+  "PLAY_ERROR": "An unexpected error has occured while playing [$song_title]($song_url) in your voice channel, please try playing this song again or [contact us](https://athena.bot/support).",
   "EMPTY_SONG_QUEUE": "There isn't any song left to play so leaving from your voice channel.",
   "SKIPPING_SONG": "Skipping $count song(s) in song queue..",
   "QUEUE_NOT_FOUND": "Song queue not found.",

@@ -1,8 +1,6 @@
 import { CommandManager, CommandData } from "../Classes/CommandManager";
 import { Permissions } from "../Classes/PermissionResolver";
 
-// TODO Commands: delsong
-
 export default (commandManager: CommandManager) => {
   commandManager.registerCommand(
     "play",
@@ -65,38 +63,18 @@ export default (commandManager: CommandManager) => {
         );
       }
 
-      commandData.respond(
-        commandData.locales.NOW_PLAYING.replace(
-          "$song_title",
-          song.title
-        ).replace("$song_url", song.url),
-        true
-      );
-
       try {
         await commandData.client.player.serveGuild(
           commandData.guild.id,
           commandData.author.voice.channel.id,
           commandData.channel.id,
           commandData.guild.voiceAdapterCreator,
+          commandData.locales,
           song
         );
 
-        setTimeout(() => {
-          if (
-            commandData.client.player.listeners.get(commandData.guild.id)
-              ?.listening
-          )
-            return true;
-          else {
-            commandData.client.player.destroyStream(commandData.guild.id);
-          }
-        }, 20 * 1000);
-
         return true;
       } catch (err) {
-        commandData.channel.send(commandData.locales.PLAY_ERROR);
-
         return false;
       }
     }

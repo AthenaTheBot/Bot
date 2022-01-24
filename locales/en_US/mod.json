@@ -1,3 +1,4 @@
 {
-  "ACTION_DONE_BY": "Action done by \"$user\"."
+  "ACTION_DONE_BY": "Action done by \"$user\".",
+  "WARNED_USER": "**$user** has been warned for **$reason**. Current warn count: **$warn_count**"
 }

@@ -7,18 +7,12 @@ import { v4 as uuid } from "uuid";
 import Logger from "./Logger";
 import Utils from "./Utils";
 
-// Interfaces
-import { configInterface } from "../Classes/Utils";
-
 class ErrorHandler {
   readonly errorFolder: string;
-  private config: configInterface;
   private logger: Logger;
   private utils: Utils;
 
-  constructor(config: configInterface, errorFolder?: string) {
-    this.config = config;
-
+  constructor(errorFolder?: string) {
     if (errorFolder) {
       this.errorFolder = errorFolder;
     } else {
@@ -31,13 +25,11 @@ class ErrorHandler {
 
   async checkErrors(notify: boolean): Promise<string[] | null> {
     const errorFiles = readdirSync(this.errorFolder).filter((file) =>
-      file.endsWith(".athena_error")
+      file.endsWith(".log")
     );
     const errors = [];
     for (var i = 0; i < errorFiles.length; i++) {
-      errors.push(
-        errorFiles[i].slice(0, errorFiles.length - "athena_error".length)
-      );
+      errors.push(errorFiles[i].slice(0, errorFiles.length - "log".length));
     }
 
     if (notify && errors.length) {
@@ -49,7 +41,7 @@ class ErrorHandler {
     return errors.length === 0 ? null : errors;
   }
 
-  recordError(error: Error): boolean {
+  recordError(error: Error = new Error("Unknown Error")): boolean {
     const errorId = uuid();
 
     Object.assign(error, { id: errorId });
@@ -60,7 +52,7 @@ class ErrorHandler {
 
     try {
       writeFileSync(
-        join(this.errorFolder, errorId + ".athena_error"),
+        join(this.errorFolder, errorId + ".log"),
         this.utils.parseError(error, false),
         {
           encoding: "utf-8",

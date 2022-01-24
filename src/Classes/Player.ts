@@ -17,6 +17,7 @@ import { stream } from "play-dl";
 import Song from "./Song";
 import Listener from "./Listener";
 import AthenaClient from "../AthenaClient";
+import { MessageEmbed, TextChannel } from "discord.js";
 
 class Player {
   private client: AthenaClient;
@@ -43,9 +44,9 @@ class Player {
       return null;
     }
 
-    const result = (await ytsr(query.trim(), { limit: 2 })).items.filter(
-      (x) => x.type === "video"
-    )[0] as any;
+    const result = (
+      await ytsr(query.trim(), { limit: 2, safeSearch: true })
+    ).items.filter((x) => x.type === "video")[0] as any;
 
     if (!result) return null;
     else {
@@ -59,7 +60,7 @@ class Player {
   }
 
   async createPlayerResource(song: Song): Promise<AudioResource | null> {
-    const source = await stream(song.url, { quality: 2 });
+    const source = await stream(song.url, { quality: 2 }).catch((err) => null);
 
     if (!source?.stream) return null;
 
@@ -72,16 +73,16 @@ class Player {
     return new Promise(async (resolve, reject) => {
       const listener = this.listeners.get(guildId);
 
-      if (!listener) return;
+      if (!listener) return reject(new Error("NO_LISTENER"));
 
       const connection = getVoiceConnection(guildId);
 
-      if (!connection) return;
+      if (!connection) return reject(new Error("NO_CONNECTION"));
 
       const player = createAudioPlayer();
       const resource = await this.createPlayerResource(song);
 
-      if (!resource) return;
+      if (!resource) return reject(new Error("NO_RESOURCE"));
 
       player.play(resource);
 
@@ -91,7 +92,7 @@ class Player {
 
       // Connection events
       connection.on(VoiceConnectionStatus.Disconnected, () => {
-        reject();
+        reject(new Error("BOT_DICSONNECTED"));
       });
 
       // Player events
@@ -112,8 +113,21 @@ class Player {
     voiceChannel: string,
     textChannel: string,
     voiceAdapterCreator: any,
+    locales: object,
     song?: Song
   ): Promise<void> {
+    const sendMsg = async (msg: string): Promise<void> => {
+      try {
+        const channel = (await this.client.channels.fetch(
+          textChannel
+        )) as TextChannel;
+        const msgEmbed = new MessageEmbed()
+          .setColor("#5865F2")
+          .setDescription(msg);
+        channel.send({ embeds: [msgEmbed] });
+      } catch (err) {}
+    };
+
     return new Promise(async (resolve, reject) => {
       let voiceConnection =
         getVoiceConnection(guildId) ||
@@ -130,13 +144,20 @@ class Player {
       if (!listener) {
         this.listeners.set(
           guildId,
-          new Listener(guildId, voiceChannel, textChannel, voiceAdapterCreator)
+          new Listener(
+            guildId,
+            voiceChannel,
+            textChannel,
+            voiceAdapterCreator,
+            locales
+          )
         );
         listener = new Listener(
           guildId,
           voiceChannel,
           textChannel,
-          voiceAdapterCreator
+          voiceAdapterCreator,
+          locales
         );
       }
 
@@ -151,7 +172,13 @@ class Player {
       while (listener.queue.length > 0) {
         try {
           listener.listening = true;
-          this.listeners.set(guildId, listener);
+          this.listeners.set(listener.guildId, listener);
+          sendMsg(
+            (listener.locales as any).NOW_PLAYING.replace(
+              "$song_title",
+              listener.queue[0].title
+            ).replace("$song_url", listener.queue[0].url)
+          );
           await this.streamSong(guildId, listener.queue[0]);
           if (listener.loop) {
             listener.queue.push(listener.queue[0]);
@@ -160,18 +187,46 @@ class Player {
           if (listener.queue.length === 0) {
             resolve();
             listener.listening = false;
+            this.listeners.set(listener.guildId, listener);
+            setTimeout(() => {
+              const newListener = this.listeners.get(guildId);
+              if (!newListener || !newListener?.listening) {
+                this.destroyStream(guildId);
+              }
+            }, 30 * 1000);
           }
-          this.listeners.set(guildId, listener);
         } catch (err) {
-          this.destroyStream(guildId);
-
-          if (err) {
-            reject();
-            this.client.errorHandler.recordError(err as Error);
-          } else {
+          if ((err as Error).message == "BOT_DISCONNECTED") {
+            this.destroyStream(guildId);
+            listener.listening = false;
             resolve();
+            break;
+          } else if ((err as Error).message == "NO_RESOURCE") {
+            sendMsg(
+              (listener.locales as any).PLAY_ERROR.replace(
+                "$song_title",
+                listener.queue[0].title
+              ).replace("$song_url", listener.queue[0].url)
+            );
+            listener.queue.shift();
+            this.listeners.set(listener.guildId, listener);
+            if (listener.queue.length == 0) {
+              listener.listening = false;
+              this.listeners.set(listener.guildId, listener);
+              reject();
+              setTimeout(() => {
+                const newListener = this.listeners.get(guildId);
+                if (!newListener || !newListener?.listening) {
+                  this.destroyStream(guildId);
+                }
+              }, 30 * 1000);
+            }
+          } else {
+            this.destroyStream(guildId);
+            listener.listening = false;
+            reject(err);
+            break;
           }
-          break;
         }
       }
     });
@@ -217,7 +272,8 @@ class Player {
       listener.guildId,
       listener.voiceChannel,
       listener.textChannel,
-      listener.voiceAdapterCreator
+      listener.voiceAdapterCreator,
+      listener.locales
     );
 
     return true;
@@ -263,7 +319,8 @@ class Player {
         listener.guildId,
         listener.voiceChannel,
         listener.textChannel,
-        listener.voiceAdapterCreator
+        listener.voiceAdapterCreator,
+        listener.locales
       );
     }
 
