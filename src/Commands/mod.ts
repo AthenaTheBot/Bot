@@ -311,15 +311,10 @@ export default (commandManager: CommandManager) => {
       },
     ],
     1,
-    [
-      Permissions.MANAGE_MESSAGES,
-      Permissions.KICK_MEMBERS,
-      Permissions.BAN_MEMBERS,
-    ],
+    [Permissions.KICK_MEMBERS, Permissions.BAN_MEMBERS],
     [
       Permissions.SEND_MESSAGES,
       Permissions.EMBED_LINKS,
-      Permissions.MANAGE_MESSAGES,
       Permissions.KICK_MEMBERS,
       Permissions.BAN_MEMBERS,
     ],
@@ -449,12 +444,8 @@ export default (commandManager: CommandManager) => {
       },
     ],
     1,
-    [Permissions.MANAGE_MESSAGES],
-    [
-      Permissions.SEND_MESSAGES,
-      Permissions.EMBED_LINKS,
-      Permissions.MANAGE_MESSAGES,
-    ],
+    [Permissions.KICK_MEMBERS, Permissions.BAN_MEMBERS],
+    [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
       const targetUser = await commandData.parseUserFromArgs(0);
 

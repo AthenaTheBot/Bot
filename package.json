@@ -4,8 +4,8 @@
   "description": "Simple multi-functional discord bot.",
   "main": "dist/index.js",
   "scripts": {
-    "build-commands": "node build.js --build-commands",
-    "build": "node build.js"
+    "build-commands": "node build.js build --commands",
+    "build": "node build.js build"
   },
   "keywords": [
     "discord",
