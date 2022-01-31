@@ -214,9 +214,7 @@ export default (commandManager: CommandManager) => {
         )
         .setDescription(queue.join("\n"));
 
-      commandData.respond(
-        queueEmbed,
-      );
+      commandData.respond(queueEmbed);
 
       return true;
     }

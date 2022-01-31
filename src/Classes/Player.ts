@@ -45,7 +45,7 @@ class Player {
     }
 
     const result = (
-      await ytsr(query.trim(), { limit: 2, safeSearch: true })
+      await ytsr(query.trim(), { limit: 2, safeSearch: false })
     ).items.filter((x) => x.type === "video")[0] as any;
 
     if (!result) return null;

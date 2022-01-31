@@ -120,8 +120,7 @@ class DatabaseManager {
 
   async getDocument(
     collection: string,
-    documentId: string | number,
-    getFromCacheIfExists = true
+    documentId: string | number
   ): Promise<object | null> {
     try {
       const document = await this.connection
