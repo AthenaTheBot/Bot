@@ -1,5 +1,5 @@
 import { GuildOptions, GuildModules } from "../constants";
-import { AthenaConfig } from "../../index";
+import { AthenaConfig } from "../index";
 
 class Guild {
   _id: string;

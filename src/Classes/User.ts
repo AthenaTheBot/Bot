@@ -1,5 +1,5 @@
 import { UserOpitons } from "../constants";
-import { AthenaConfig } from "../../index";
+import { AthenaConfig } from "../index";
 
 class User {
   _id: string;

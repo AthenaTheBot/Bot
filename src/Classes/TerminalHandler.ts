@@ -8,7 +8,6 @@ class TerminalHandler {
   }
 
   listenTerminal(): void {
-    // TODO: Move commands to a file
     process.stdin.on("data", (data) => {
       const command = data.toString().trim();
       if (command.length == 0) return;

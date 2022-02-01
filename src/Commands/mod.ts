@@ -3,8 +3,6 @@ import { CommandManager, CommandData } from "../Classes/CommandManager";
 import { Permissions } from "../Classes/PermissionResolver";
 import UserWarning from "../Classes/UserWarning";
 
-// TODO Commands:  warn, delwarn, setwarn?
-
 export default (commandManager: CommandManager) => {
   commandManager.registerCommand(
     "kick",
