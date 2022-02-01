@@ -16,7 +16,7 @@ class ErrorHandler {
     if (errorFolder) {
       this.errorFolder = errorFolder;
     } else {
-      this.errorFolder = join(__dirname, "..", "..", "..", "errors");
+      this.errorFolder = join(__dirname, "..", "..", "errors");
     }
 
     this.logger = new Logger();

@@ -9,7 +9,7 @@ class Utils {
     if (configPath) {
       this.configPath = configPath;
     } else {
-      this.configPath = join(__dirname, "..", "..", "..", "config.json");
+      this.configPath = join(__dirname, "..", "..", "config.json");
     }
   }
 
