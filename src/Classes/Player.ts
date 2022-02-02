@@ -92,7 +92,7 @@ class Player {
 
       // Connection events
       connection.on(VoiceConnectionStatus.Disconnected, () => {
-        reject(new Error("BOT_DICSONNECTED"));
+        reject(new Error("BOT_DISCONNECTED"));
       });
 
       // Player events

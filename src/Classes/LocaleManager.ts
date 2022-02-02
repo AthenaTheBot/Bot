@@ -9,7 +9,7 @@ class LocaleManager {
     if (localesPath) {
       this.localesPath = localesPath;
     } else {
-      this.localesPath = path.join(__dirname, "..", "..", "..", "locales");
+      this.localesPath = path.join(__dirname, "..", "..", "locales");
     }
 
     this.locales = {};
@@ -47,7 +47,9 @@ class LocaleManager {
 
         Object.assign(this.locales, { [avaialbeLocales[i]]: localeData });
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log("An error occured while loading a locale");
+    }
   }
 
   getCategoryLocale(language: string, category?: string): object {
