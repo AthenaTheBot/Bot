@@ -14,5 +14,6 @@
   "NOT_SAME_VC": "In order to control Athena you have to be in same voice channel as Athena",
   "NOT_IN_VC": "Athena currently isn't in a voice channel.",
   "LOOP_ENABLED": "Loop has been enabled.",
-  "LOOP_DISABLED": "Loop has been disabled."
+  "LOOP_DISABLED": "Loop has been disabled.",
+  "NOT_ENOUGH_USER": "Stopped playing song due to the inactiviy in voice channel."
 }

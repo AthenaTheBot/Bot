@@ -13,11 +13,18 @@ import {
 } from "@discordjs/voice";
 import { stream } from "play-dl";
 
+// TODO: Better error message esepcially for age restricred videos.
+
 // Classes
 import Song from "./Song";
 import Listener from "./Listener";
 import AthenaClient from "../AthenaClient";
-import { MessageEmbed, TextChannel } from "discord.js";
+import {
+  ClientUser,
+  MessageEmbed,
+  TextChannel,
+  VoiceChannel,
+} from "discord.js";
 
 class Player {
   private client: AthenaClient;
@@ -89,6 +96,22 @@ class Player {
       connection.subscribe(player);
 
       listener.player = player;
+
+      // Check member count in voice channel
+      setInterval(async () => {
+        const vc = (await this.client.channels.cache.get(
+          connection.joinConfig.channelId as string
+        )) as VoiceChannel;
+        if (vc) {
+          const memberCount =
+            vc.members.filter(
+              (x) => x.id != (this.client.user as ClientUser)?.id
+            ).size || 0;
+          if (memberCount <= 0) {
+            reject(new Error("NOT_ENOUGH_USER"));
+          }
+        }
+      }, 2 * 30 * 1000);
 
       // Connection events
       connection.on(VoiceConnectionStatus.Disconnected, () => {
@@ -199,8 +222,15 @@ class Player {
           if ((err as Error).message == "BOT_DISCONNECTED") {
             this.destroyStream(guildId);
             listener.listening = false;
+            listener.queue = [];
             resolve();
             break;
+          } else if ((err as Error).message == "NOT_ENOUGH_USER") {
+            this.destroyStream(guildId);
+            listener.listening = false;
+            listener.queue = [];
+            sendMsg((listener.locales as any).NOT_ENOUGH_USER);
+            resolve();
           } else if ((err as Error).message == "NO_RESOURCE") {
             sendMsg(
               (listener.locales as any).PLAY_ERROR.replace(

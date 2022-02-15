@@ -14,5 +14,6 @@
   "NOT_SAME_VC": "Athena'yı kontrol edebilmek için Athena ile aynı ses kanalında olmalısınız.",
   "NOT_IN_VC": "Athena şuanda bir sesli kanalda bulunuyor.",
   "LOOP_ENABLED": "Döngü açıldı.",
-  "LOOP_DISABLED": "Döngü kapatıldı."
+  "LOOP_DISABLED": "Döngü kapatıldı.",
+  "NOT_ENOUGH_USER": "Ses kanalındaki hareketsizlik sebebiyle şarkı durduruldu."
 }

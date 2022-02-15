@@ -4,11 +4,11 @@ const commander = require("commander");
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 const program = new commander.Command();
-const { Permissions } = require("./dist/src/Classes/PermissionResolver");
+const { Permissions } = require("./dist/Classes/PermissionResolver");
 require("colors").enable();
 
 let buildFolder = path.join(__dirname, "dist");
-let commandsFolder = path.join(__dirname, "dist", "src", "commands");
+let commandsFolder = path.join(__dirname, "dist", "commands");
 let localesFolder = path.join(__dirname, "locales");
 
 program.version("1.0.0");
