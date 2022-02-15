@@ -108,7 +108,7 @@ class Player {
               (x) => x.id != (this.client.user as ClientUser)?.id
             ).size || 0;
           if (memberCount <= 0) {
-            reject(new Error("NOT_ENOUGH_USER"));
+            reject(new Error("INACTIVE_VC"));
           }
         }
       }, 2 * 30 * 1000);
@@ -225,11 +225,11 @@ class Player {
             listener.queue = [];
             resolve();
             break;
-          } else if ((err as Error).message == "NOT_ENOUGH_USER") {
+          } else if ((err as Error).message == "INACTIVE_VC") {
             this.destroyStream(guildId);
             listener.listening = false;
             listener.queue = [];
-            sendMsg((listener.locales as any).NOT_ENOUGH_USER);
+            sendMsg((listener.locales as any).INACTIVE_VC);
             resolve();
           } else if ((err as Error).message == "NO_RESOURCE") {
             sendMsg(
