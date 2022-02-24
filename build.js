@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("fs-extra");
 const path = require("path");
 const commander = require("commander");
 const util = require("util");
@@ -11,13 +11,13 @@ let buildFolder = path.join(__dirname, "dist");
 let commandsFolder = path.join(__dirname, "dist", "commands");
 let localesFolder = path.join(__dirname, "locales");
 
-program.version("1.0.0");
+program.version("1.0.2");
 
 program
   .command("build")
   .option("--commands", "Gets a new build of commands")
   .description("Gets a new build of Athena.")
-  .action(({ commands }) => {
+  .action(async ({ commands }) => {
     if (commands) {
       buildCommands();
     } else {
@@ -27,6 +27,12 @@ program
 
 program.log = (msg) => {
   console.log("[" + "athena-build".bgBlue + "]:", msg.trim());
+};
+
+program.panicQuit = (reason) => {
+  program.log(reason);
+
+  process.exit(1);
 };
 
 const buildCommands = async () => {
@@ -89,51 +95,11 @@ const buildCommands = async () => {
       "utf-8"
     );
   } catch (err) {
-    program.log("An error occured while writing commands data file.");
-    program.log(err);
-    return false;
+    program.panicQuit("An error occured while writing commands data file.");
   }
 
   program.log("Commands file write process has finished.");
-
-  return true;
 };
-
-function copyFileSync(source, target) {
-  var targetFile = target;
-
-  // If target is a directory, a new file with the same name will be created
-  if (fs.existsSync(target)) {
-    if (fs.lstatSync(target).isDirectory()) {
-      targetFile = path.join(target, path.basename(source));
-    }
-  }
-
-  fs.writeFileSync(targetFile, fs.readFileSync(source));
-}
-
-function copyFolderRecursiveSync(source, target) {
-  var files = [];
-
-  // Check if folder needs to be created or integrated
-  var targetFolder = path.join(target, path.basename(source));
-  if (!fs.existsSync(targetFolder)) {
-    fs.mkdirSync(targetFolder);
-  }
-
-  // Copy
-  if (fs.lstatSync(source).isDirectory()) {
-    files = fs.readdirSync(source);
-    files.forEach(function (file) {
-      var curSource = path.join(source, file);
-      if (fs.lstatSync(curSource).isDirectory()) {
-        copyFolderRecursiveSync(curSource, targetFolder);
-      } else {
-        copyFileSync(curSource, targetFolder);
-      }
-    });
-  }
-}
 
 const buildBot = async () => {
   program.log("Compiling typescript code...");
@@ -142,9 +108,7 @@ const buildBot = async () => {
   const { stdout, stderr } = await exec("tsc");
 
   if (stderr) {
-    program.log("An error occured while compiling typescript code.");
-    program.log(stderr);
-    return;
+    program.panicQuit("An error occured while compiling typescript code.");
   }
 
   if (stdout) console.log(stdout);
@@ -156,44 +120,68 @@ const buildBot = async () => {
   const baseFolderPath = path.join(__dirname, "..", "Athena-Build");
 
   if (await fs.existsSync(baseFolderPath)) {
-    program.log(
-      `Found one build folder in "${baseFolderPath}", please remove that folder before getting another build.`
-    );
+    program.log("Found an old build folder, removing it..");
 
-    return false;
+    await fs.rm(baseFolderPath).catch(() => {
+      program.panicQuit(
+        "An error occured while removing old build folder, please remove the old build folder before building Athena."
+      );
+    });
+
+    program.log("Removed old build folder.");
   }
 
-  fs.mkdirSync(baseFolderPath);
+  await fs.ensureDir(baseFolderPath).catch(() => {
+    program.panicQuit("An error occuredw while creating build folder.");
+  });
 
   // Copy base folder
-  copyFolderRecursiveSync(buildFolder, baseFolderPath);
+  await fs.copy(buildFolder, path.join(baseFolderPath, "dist")).catch(() => {
+    program.panicQuit("An error occured while copying build files.");
+  });
 
   // Copy locales
-  copyFolderRecursiveSync(localesFolder, baseFolderPath);
+  await fs
+    .copy(localesFolder, path.join(baseFolderPath, "locales"))
+    .catch(() => {
+      program.panicQuit("An error occured while copying locale folders.");
+    });
 
   // Copy package and lock files
-  fs.copyFileSync(
-    path.join(__dirname, "package.json"),
-    path.join(baseFolderPath, "package.json")
-  );
+  await fs
+    .copyFile(
+      path.join(__dirname, "package.json"),
+      path.join(baseFolderPath, "package.json")
+    )
+    .catch(() => {
+      program.panicQuit("An error occured while copying package.json file.");
+    });
 
-  fs.copyFileSync(
-    path.join(__dirname, "yarn.lock"),
-    path.join(baseFolderPath, "yarn.lock")
-  );
+  await fs
+    .copyFile(
+      path.join(__dirname, "yarn.lock"),
+      path.join(baseFolderPath, "yarn.lock")
+    )
+    .catch(() => {
+      program.panicQuit("An error occured while copying yarn.lock file.");
+    });
 
   // Copy config file
-  fs.copyFileSync(
-    path.join(__dirname, "config.build.json"),
-    path.join(baseFolderPath, "config.json")
-  );
+  await fs
+    .copyFile(
+      path.join(__dirname, "config.build.json"),
+      path.join(baseFolderPath, "config.json")
+    )
+    .catch(() => {
+      program.panicQuit("An error occured while copying config file.");
+    });
 
   // Create error folder
-  fs.mkdirSync(path.join(baseFolderPath, "errors"));
+  await fs.mkdir(path.join(baseFolderPath, "errors")).catch(() => {
+    program.panicQuit("An error occured while creating errors directory.");
+  });
 
   program.log("Bot code compilation has finished.");
-
-  return true;
 };
 
 program.parse();
