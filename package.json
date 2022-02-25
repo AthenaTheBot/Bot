@@ -1,9 +1,10 @@
 {
   "name": "athena",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Simple multi-functional discord bot.",
   "main": "dist/index.js",
   "scripts": {
+    "start": "tsc && node dist/index.js",
     "build-commands": "node build.js build --commands",
     "build": "node build.js build"
   },
@@ -18,11 +19,11 @@
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
     "@discordjs/voice": "^0.7.5",
+    "axios": "^0.26.0",
     "bufferutil": "^4.0.5",
     "canvacord": "^5.2.3",
     "colors": "^1.4.0",
     "commander": "^8.3.0",
-    "cross-fetch": "^3.1.4",
     "dayjs": "^1.10.7",
     "discord.js": "^13.1.0",
     "erlpack": "github:discord/erlpack",

@@ -1,4 +1,4 @@
-import fetch from "cross-fetch";
+import axios from "axios";
 import AthenaClient from "../AthenaClient";
 
 /**
@@ -25,7 +25,7 @@ class StatPoster {
       if (!this.client?.guilds?.cache?.size) return false;
 
       try {
-        await fetch(
+        await axios(
           botlist.url.replace("$client_id", (this.client.user as any).id),
           {
             method: "POST",
@@ -35,7 +35,7 @@ class StatPoster {
                 JSON.stringify(botlist.header).replace("$token", botlist.token)
               ),
             },
-            body: JSON.stringify(botlist.body).replace(
+            data: JSON.stringify(botlist.body).replace(
               "$guild_count",
               (this.client?.guilds?.cache as any).size
             ),

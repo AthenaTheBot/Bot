@@ -2,7 +2,7 @@ import { CommandManager, CommandData } from "../Classes/CommandManager";
 import { Permissions } from "../Classes/PermissionResolver";
 import { MessageAttachment, MessageEmbed } from "discord.js";
 import canvacord from "canvacord";
-import fetch from "cross-fetch";
+import axios from "axios";
 
 // TODO Commands: comment
 
@@ -16,9 +16,9 @@ export default (commandManager: CommandManager) => {
     [],
     [Permissions.SEND_MESSAGES, Permissions.ATTACH_FILES],
     async (commandData: CommandData): Promise<boolean> => {
-      const data = await fetch(
-        "https://api.thecatapi.com/v1/images/search"
-      ).then((res) => res.json());
+      const data = await axios
+        .get("https://api.thecatapi.com/v1/images/search")
+        .then((res) => res?.data);
 
       if (!data) {
         commandData.respond(commandData.locales.ERROR, true);
@@ -42,9 +42,9 @@ export default (commandManager: CommandManager) => {
     [],
     [Permissions.SEND_MESSAGES, Permissions.ATTACH_FILES],
     async (commandData: CommandData): Promise<boolean> => {
-      const data = await fetch("https://dog.ceo/api/breeds/image/random").then(
-        (res) => res.json()
-      );
+      const data = await axios
+        .get("https://dog.ceo/api/breeds/image/random")
+        .then((res) => res?.data);
 
       if (!data) {
         commandData.respond(commandData.locales.ERROR, true);
@@ -68,11 +68,12 @@ export default (commandManager: CommandManager) => {
     [],
     [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
     async (commandData: CommandData): Promise<boolean> => {
-      const data = await fetch("https://api.ksoft.si/images/random-meme", {
+      const data = await axios("https://api.ksoft.si/images/random-meme", {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${commandData.client.config.apiKeys.KSOFT}`,
         },
-      }).then((res) => res.json());
+      }).then((res) => res?.data);
 
       if (!data) {
         commandData.respond(commandData.locales.ERROR, true);
@@ -80,13 +81,13 @@ export default (commandManager: CommandManager) => {
       }
 
       const Embed = new MessageEmbed();
-      Embed.setAuthor(data.author)
+      Embed.setAuthor({ name: data.author })
         .setURL(data.source)
         .setTitle(data.title)
         .setImage(data.image_url)
-        .setFooter(
-          `👍 ${data.upvotes} | 👎 ${data.downvotes} | 💬 ${data.comments}`
-        );
+        .setFooter({
+          text: `👍 ${data.upvotes} | 👎 ${data.downvotes} | 💬 ${data.comments}`,
+        });
 
       commandData.respond(Embed);
 
