@@ -7,7 +7,6 @@ import {
   createAudioPlayer,
   createAudioResource,
   AudioResource,
-  StreamType,
   AudioPlayerStatus,
   VoiceConnectionStatus,
 } from "@discordjs/voice";
@@ -72,7 +71,7 @@ class Player {
     if (!source?.stream) return null;
 
     return createAudioResource(source.stream, {
-      inputType: StreamType.Arbitrary,
+      inputType: source.type,
     });
   }
 

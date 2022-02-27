@@ -42,16 +42,13 @@ class StatPoster {
           }
         );
       } catch (err) {
-        this.client.errorHandler.recordError(err as Error);
         error = true;
         break;
       }
     }
 
     if (error) {
-      this.client.logger.warn(
-        "Guild count post process wasn't completed unsuccessfully."
-      );
+      this.client.logger.warn("An error occured while posting bot stats.");
       return false;
     }
 
