@@ -42,26 +42,31 @@ class Player {
   }
 
   async searchSong(query: string): Promise<Song | null> {
-    if (query.trim().indexOf(this.baseURLs.spTrack) > 0) {
-      const spotifyData = await spotify.getData(query.trim());
-      if (!spotifyData) return null;
-      query = spotifyData.name;
-    } else if (query.trim().indexOf(this.baseURLs.spotifyPlaylist) > 0) {
+    try {
+      if (query.trim().indexOf(this.baseURLs.spTrack) > 0) {
+        const spotifyData = await spotify.getData(query.trim());
+        if (!spotifyData) return null;
+        query = spotifyData.name;
+      } else if (query.trim().indexOf(this.baseURLs.spotifyPlaylist) > 0) {
+        return null;
+      }
+
+      const result = (
+        await ytsr(query.trim(), { limit: 2, safeSearch: false })
+      ).items.filter((x) => x.type === "video")[0] as any;
+
+      if (!result) return null;
+      else {
+        return new Song(
+          result.title,
+          result.description,
+          this.client.utils.parseDuration(result.duration),
+          result.url
+        );
+      }
+    } catch (err) {
+      this.client.errorHandler.recordError(err as Error);
       return null;
-    }
-
-    const result = (
-      await ytsr(query.trim(), { limit: 2, safeSearch: false })
-    ).items.filter((x) => x.type === "video")[0] as any;
-
-    if (!result) return null;
-    else {
-      return new Song(
-        result.title,
-        result.description,
-        this.client.utils.parseDuration(result.duration),
-        result.url
-      );
     }
   }
 

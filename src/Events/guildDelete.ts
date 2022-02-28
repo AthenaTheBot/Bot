@@ -9,9 +9,9 @@ export default new Event(
 
     client.actionLogger.logGuild(
       guild.id,
-      guild.name,
-      guild.memberCount,
-      guild.ownerId,
+      guild.name || "guild_not_available",
+      guild.memberCount || "guild_not_available",
+      guild.ownerId || "guild_not_available",
       false
     );
 
