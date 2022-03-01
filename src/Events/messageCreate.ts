@@ -1,6 +1,6 @@
-import Event from "../Classes/Event";
-import { CommandData, CommandDataTypes } from "../Classes/CommandData";
-import { Permissions } from "../Classes/PermissionResolver";
+import Event from "../Structures/Event";
+import { CommandData, CommandDataTypes } from "../Structures/CommandData";
+import { Permissions } from "../Modules/PermissionResolver";
 
 export default new Event(
   "messageCreate",

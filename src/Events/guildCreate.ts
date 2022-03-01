@@ -1,4 +1,4 @@
-import Event from "../Classes/Event";
+import Event from "../Structures/Event";
 
 export default new Event(
   "guildCreate",

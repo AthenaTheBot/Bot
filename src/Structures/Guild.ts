@@ -20,6 +20,7 @@ class Guild {
         adminRole: modules?.moderationModule?.adminRole || null,
         modRole: modules?.moderationModule?.adminRole || null,
         warnings: modules?.moderationModule?.warnings || [],
+        autoRole: modules?.moderationModule?.autoRole || null,
       },
 
       funModule: {},

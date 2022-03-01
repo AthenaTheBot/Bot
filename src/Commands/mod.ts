@@ -1,7 +1,7 @@
-import { TextChannel } from "discord.js";
-import { CommandManager, CommandData } from "../Classes/CommandManager";
-import { Permissions } from "../Classes/PermissionResolver";
-import UserWarning from "../Classes/UserWarning";
+import { Role, TextChannel } from "discord.js";
+import { CommandManager, CommandData } from "../Modules/CommandManager";
+import { Permissions } from "../Modules/PermissionResolver";
+import UserWarning from "../Structures/UserWarning";
 
 export default (commandManager: CommandManager) => {
   commandManager.registerCommand(

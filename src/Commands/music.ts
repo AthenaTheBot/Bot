@@ -1,6 +1,6 @@
 import { MessageEmbed } from "discord.js";
-import { CommandManager, CommandData } from "../Classes/CommandManager";
-import { Permissions } from "../Classes/PermissionResolver";
+import { CommandManager, CommandData } from "../Modules/CommandManager";
+import { Permissions } from "../Modules/PermissionResolver";
 
 export default (commandManager: CommandManager) => {
   commandManager.registerCommand(

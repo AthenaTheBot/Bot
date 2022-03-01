@@ -6,21 +6,21 @@ import { Client, Intents } from "discord.js";
 colors.enable();
 
 // Classes
-import Logger from "./Classes/Logger";
-import DatabaseManager from "./Classes/DatabaseManager";
-import Utils from "./Classes/Utils";
-import EventManager from "./Classes/EventManager";
-import ErrorHandler from "./Classes/ErrorHandler";
-import CommandManager, { CommandData } from "./Classes/CommandManager";
-import PresenceManager from "./Classes/PresenceManager";
-import GuildManager from "./Classes/GuildManager";
-import UserManager from "./Classes/UserManager";
-import LocaleManager from "./Classes/LocaleManager";
-import CooldownManager from "./Classes/CooldownManager";
-import Player from "./Classes/Player";
-import StatPoster from "./Classes/StatPoster";
-import ActionLogger from "./Classes/ActionLogger";
-import TerminalHandler from "./Classes/TerminalHandler";
+import Logger from "./Modules/Logger";
+import DatabaseManager from "./Modules/DatabaseManager";
+import Utils from "./Modules/Utils";
+import EventManager from "./Modules/EventManager";
+import ErrorHandler from "./Modules/ErrorHandler";
+import CommandManager, { CommandData } from "./Modules/CommandManager";
+import PresenceManager from "./Modules/PresenceManager";
+import GuildManager from "./Modules/GuildManager";
+import UserManager from "./Modules/UserManager";
+import LocaleManager from "./Modules/LocaleManager";
+import CooldownManager from "./Modules/CooldownManager";
+import Player from "./Modules/Player";
+import StatPoster from "./Modules/StatPoster";
+import ActionLogger from "./Modules/ActionLogger";
+import TerminalHandler from "./Modules/TerminalHandler";
 import { Config } from "./constants";
 
 /** Athena base client class

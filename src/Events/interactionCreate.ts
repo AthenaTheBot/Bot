@@ -1,5 +1,5 @@
-import Event from "../Classes/Event";
-import { CommandData, CommandDataTypes } from "../Classes/CommandData";
+import Event from "../Structures/Event";
+import { CommandData, CommandDataTypes } from "../Structures/CommandData";
 
 export default new Event(
   "interactionCreate",

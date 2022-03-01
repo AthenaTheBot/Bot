@@ -1,6 +1,6 @@
 // Main Modules
 import AthenaClient from "./AthenaClient";
-import Utils from "./Classes/Utils";
+import Utils from "./Modules/Utils";
 
 // Initializing modules
 const AthenaUtils = new Utils();
