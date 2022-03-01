@@ -7,6 +7,9 @@ import { v4 as uuid } from "uuid";
 import Logger from "./Logger";
 import Utils from "./Utils";
 
+/**
+ * Helper class for handling errors occured in Athena.
+ */
 class ErrorHandler {
   readonly errorFolder: string;
   private logger: Logger;

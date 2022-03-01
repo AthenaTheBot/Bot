@@ -4,6 +4,9 @@ import dayjs from "dayjs";
 // Classes
 import Utils from "./Utils";
 
+/**
+ * Helper class for logging.
+ */
 class Logger {
   readonly defaultTag: string;
   readonly successTag: string;

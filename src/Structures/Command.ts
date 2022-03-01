@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionData } from "discord.js";
 import { CommandData } from "./CommandData";
-import { PermissionResolver, Permissions } from "../Modules/PermissionResolver";
+import { Permissions } from "../constants";
+import PermissionResolver from "../Modules/PermissionResolver";
 
 class Command {
   name: string;

@@ -2,10 +2,12 @@
 import Logger from "./Logger";
 import DatabaseManager from "./DatabaseManager";
 import User from "../Structures/User";
-import { Permissions } from "./PermissionResolver";
 import { GuildMember, TextChannel } from "discord.js";
-import { UserOpitons } from "../constants";
+import { UserOpitons, Permissions } from "../constants";
 
+/**
+ * Handles all of the users of Athena.
+ */
 class UserManager {
   private logger: Logger;
   private dbManager: DatabaseManager;

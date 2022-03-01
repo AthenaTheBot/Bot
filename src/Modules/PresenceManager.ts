@@ -1,6 +1,9 @@
 import AthenaClient from "../AthenaClient";
 import { ActivitiesOptions } from "discord.js";
 
+/**
+ * Manages the presence of Athena.
+ */
 class PrecenceManager {
   client: AthenaClient;
   intervalAmount?: number;

@@ -1,6 +1,9 @@
 import fs from "fs";
 import path from "path";
 
+/**
+ * Handles locale file registiration and locale fetching.
+ */
 class LocaleManager {
   localesPath: string;
   locales: object;

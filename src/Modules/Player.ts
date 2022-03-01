@@ -25,6 +25,9 @@ import {
   VoiceChannel,
 } from "discord.js";
 
+/**
+ * Handles all of the global actions related with voice
+ */
 class Player {
   private client: AthenaClient;
   public listeners: Map<string, Listener>;

@@ -1,5 +1,8 @@
 import AthenaClient from "../AthenaClient";
 
+/**
+ * Listens terminal commands.
+ */
 class TerminalHandler {
   client: AthenaClient;
 

@@ -15,12 +15,12 @@ const Athena = new AthenaClient(AthenaConfig);
 Athena.initalize();
 
 // Monitoring errors
-process.on("uncaughtExceptionMonitor", (err) => {
+process.on("uncaughtExceptionMonitor", (err: Error) => {
   Athena.errorHandler.recordError(err);
 });
 
-process.on("unhandledRejection", (err) => {
-  Athena.errorHandler.recordError(err as Error);
+process.on("unhandledRejection", (err: Error) => {
+  Athena.errorHandler.recordError(err);
 });
 
 export { AthenaConfig };

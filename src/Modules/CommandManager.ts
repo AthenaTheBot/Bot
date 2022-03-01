@@ -6,10 +6,13 @@ import { join } from "path";
 import Command from "../Structures/Command";
 import AthenaClient from "../AthenaClient";
 import CommandData from "../Structures/CommandData";
-import { Permissions } from "./PermissionResolver";
+import { Permissions } from "../constants";
 
 import { ApplicationCommandOptionData } from "discord.js";
 
+/**
+ * Handles command registirations and command related events.
+ */
 class CommandManager {
   client: AthenaClient;
   commands: Command[];

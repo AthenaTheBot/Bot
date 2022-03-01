@@ -3,6 +3,9 @@ import { join } from "path";
 import { readFileSync } from "fs";
 import { Config } from "../constants";
 
+/**
+ * Utility functions and other stuff.
+ */
 class Utils {
   configPath: string;
   constructor(configPath?: string) {

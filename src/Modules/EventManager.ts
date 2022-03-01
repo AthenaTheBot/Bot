@@ -6,6 +6,9 @@ import { join } from "path";
 import AthenaClient from "../AthenaClient";
 import Event from "../Structures/Event";
 
+/**
+ * Handles all of the event registirations also listens the registered events and executes them when they get triggered.
+ */
 class EventManager {
   client: AthenaClient;
   eventsFolder: string;

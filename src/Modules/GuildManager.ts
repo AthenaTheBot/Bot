@@ -10,6 +10,9 @@ import DatabaseManager from "./DatabaseManager";
 import Guild from "../Structures/Guild";
 import { GuildOptions } from "../constants";
 
+/**
+ * Handles all of the guilds
+ */
 class GuildManager {
   private logger: Logger;
   private dbManager: DatabaseManager;

@@ -1,6 +1,6 @@
-import { Role, TextChannel } from "discord.js";
 import { CommandManager, CommandData } from "../Modules/CommandManager";
-import { Permissions } from "../Modules/PermissionResolver";
+import { TextChannel } from "discord.js";
+import { Permissions } from "../constants";
 import UserWarning from "../Structures/UserWarning";
 
 export default (commandManager: CommandManager) => {

@@ -1,6 +1,9 @@
 import { GuildMember } from "discord.js";
 import { Permissions, TextPerms, VoicePerms, RolePerms } from "../constants";
 
+/**
+ * Helper class for converting permissions
+ */
 class PermissionResolver {
   all: Permissions[];
 
@@ -100,4 +103,3 @@ class PermissionResolver {
 }
 
 export default PermissionResolver;
-export { PermissionResolver, Permissions, TextPerms, VoicePerms, RolePerms };

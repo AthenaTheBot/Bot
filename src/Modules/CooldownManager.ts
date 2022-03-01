@@ -1,5 +1,8 @@
 import { UserCooldown, CooldownCommand } from "../Structures/Cooldown";
 
+/**
+ * Manages all cooldowns related with command usage.
+ */
 class CooldownManager {
   cooldowns: UserCooldown[];
 

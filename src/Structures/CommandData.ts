@@ -11,11 +11,11 @@ import {
   GuildMember as DJSMember,
   Role as DJSRole,
 } from "discord.js";
+import { Permissions } from "../constants";
 import AthenaClient from "../AthenaClient";
 import Command from "./Command";
 import Guild from "./Guild";
 import User from "./User";
-import { Permissions } from "../Modules/PermissionResolver";
 
 enum CommandDataTypes {
   Interaction = "Interaction",

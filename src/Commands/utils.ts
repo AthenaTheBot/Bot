@@ -1,7 +1,7 @@
 import { CommandManager, CommandData } from "../Modules/CommandManager";
-import { Permissions } from "../Modules/PermissionResolver";
-import figlet from "figlet";
+import { Permissions } from "../constants";
 import { MessageEmbed } from "discord.js";
+import figlet from "figlet";
 
 // TODO Commands: afk
 

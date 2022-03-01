@@ -2,7 +2,7 @@ import axios from "axios";
 import AthenaClient from "../AthenaClient";
 
 /**
- * Posts current stats to discord bot sites.
+ * Posts current stats to discord bot list sites.
  */
 class StatPoster {
   client: AthenaClient;

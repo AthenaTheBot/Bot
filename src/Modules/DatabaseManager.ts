@@ -9,6 +9,9 @@ dayjs.extend(localizedFormat);
 import Logger from "./Logger";
 
 // TODO: Ready state
+/**
+ * Helps for connecting to the database and editing docuemnts etc.
+ */
 class DatabaseManager {
   url: string;
   connected: boolean;

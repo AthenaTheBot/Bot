@@ -1,6 +1,9 @@
 import AthenaClient from "../AthenaClient";
 import { MessageEmbed, TextChannel } from "discord.js";
 
+/**
+ * Helper class for logging command usage and guild join/remove related actions.
+ */
 class ActionLogger {
   client: AthenaClient;
 

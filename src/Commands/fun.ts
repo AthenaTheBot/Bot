@@ -1,6 +1,6 @@
 import { CommandManager, CommandData } from "../Modules/CommandManager";
-import { Permissions } from "../Modules/PermissionResolver";
 import { MessageAttachment, MessageEmbed } from "discord.js";
+import { Permissions } from "../constants";
 import canvacord from "canvacord";
 import axios from "axios";
 
