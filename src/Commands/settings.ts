@@ -23,7 +23,7 @@ export default (commandManager: CommandManager) => {
           commandData.respond(
             commandData.locales.CURRENT_PREFIX.replace(
               "$prefix",
-              commandData.db.guild.settings.prefix
+              commandData.db.guild.modules.settings.prefix
             ),
             true
           );
@@ -36,7 +36,7 @@ export default (commandManager: CommandManager) => {
         const success = await commandData.client.dbManager.updateDocument(
           "guilds",
           commandData.guild.id,
-          { $set: { "settings.prefix": commandData.args[0] } }
+          { $set: { "modules.settings.prefix": commandData.args[0] } }
         );
 
         if (success) {
@@ -70,7 +70,7 @@ export default (commandManager: CommandManager) => {
           commandData.respond(
             commandData.locales.CURRENT_LANGUAGE.replace(
               "$language",
-              commandData.db.guild.settings.language
+              commandData.db.guild.modules.settings.language
             ),
             true
           );
@@ -97,7 +97,7 @@ export default (commandManager: CommandManager) => {
         const success = await commandData.client.dbManager.updateDocument(
           "guilds",
           commandData.guild.id,
-          { $set: { "settings.language": commandData.args[0] } }
+          { $set: { "modules.settings.language": commandData.args[0] } }
         );
 
         if (success) {
@@ -138,7 +138,7 @@ export default (commandManager: CommandManager) => {
       const success = await commandData.client.guildManager.updateGuild(
         commandData.guild.id,
         {
-          $set: { "modules.moderationModule.adminRole": mentionedRole.id },
+          $set: { "modules.moderation.adminRole": mentionedRole.id },
         }
       );
 
@@ -178,7 +178,7 @@ export default (commandManager: CommandManager) => {
       const success = await commandData.client.guildManager.updateGuild(
         commandData.guild.id,
         {
-          $set: { "modules.moderationModule.modRole": mentionedRole.id },
+          $set: { "modules.moderation.modRole": mentionedRole.id },
         }
       );
 

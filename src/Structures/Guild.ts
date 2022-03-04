@@ -1,30 +1,27 @@
-import { GuildOptions, GuildModules } from "../constants";
+import { GuildModules } from "../constants";
 import { AthenaConfig } from "../index";
 
 class Guild {
   _id: string;
-  settings: GuildOptions;
   modules: GuildModules;
 
-  constructor(id: string, settings?: GuildOptions, modules?: GuildModules) {
+  constructor(id: string, modules?: GuildModules) {
     this._id = id;
 
-    this.settings = {
-      premium: settings?.premium || false,
-      prefix: settings?.prefix || AthenaConfig.defaults.prefix,
-      language: settings?.language || AthenaConfig.defaults.language,
-    };
-
     this.modules = {
-      moderationModule: {
-        adminRole: modules?.moderationModule?.adminRole || null,
-        modRole: modules?.moderationModule?.adminRole || null,
-        warnings: modules?.moderationModule?.warnings || [],
-        autoRole: modules?.moderationModule?.autoRole || null,
+      settings: {
+        prefix: modules?.settings?.prefix || AthenaConfig.defaults.prefix,
+        language: modules?.settings?.language || AthenaConfig.defaults.language,
+      },
+      moderation: {
+        adminRole: modules?.moderation?.adminRole || null,
+        modRole: modules?.moderation?.adminRole || null,
+        autoRole: modules?.moderation?.autoRole || null,
+        warnings: modules?.moderation?.warnings || [],
       },
 
-      funModule: {},
-      utilsModule: {},
+      fun: {},
+      utils: {},
     };
   }
 }

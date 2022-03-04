@@ -8,13 +8,12 @@ dayjs.extend(localizedFormat);
 // Classes
 import Logger from "./Logger";
 
-// TODO: Ready state
 /**
  * Helps for connecting to the database and editing docuemnts etc.
  */
 class DatabaseManager {
   url: string;
-  connected: boolean;
+  ready: boolean;
   connection: Connection;
   private logger: Logger;
 
@@ -26,7 +25,7 @@ class DatabaseManager {
         "Cannot create database manager instance without a database url."
       );
     }
-    this.connected = false;
+    this.ready = false;
     this.connection = mongoose.connection;
 
     this.logger = new Logger();
@@ -35,7 +34,7 @@ class DatabaseManager {
   async connect(): Promise<boolean> {
     try {
       await mongoose.connect(this.url);
-      this.connected = true;
+      this.ready = true;
       return true;
     } catch (err) {
       this.logger.error(
@@ -47,7 +46,7 @@ class DatabaseManager {
 
   async createDocument(collection: string, document: object): Promise<boolean> {
     let d = <any>document;
-    if (!this.connected || !d?._id) return false;
+    if (!this.ready || !d?._id) return false;
 
     const itemExists =
       (await this.connection
@@ -77,7 +76,7 @@ class DatabaseManager {
     documentId: string | number,
     query: any
   ): Promise<boolean> {
-    if (!this.connected) return false;
+    if (!this.ready) return false;
 
     const time = dayjs().format("L LT");
     if (Object.keys(query).includes("$set")) {
@@ -108,7 +107,7 @@ class DatabaseManager {
     collection: string,
     documentId: string | number
   ): Promise<boolean> {
-    if (!this.connected) return false;
+    if (!this.ready) return false;
 
     try {
       await this.connection

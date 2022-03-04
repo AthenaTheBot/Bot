@@ -5,7 +5,7 @@ export default new Event(
   "guildMemberAdd",
   async (client, member: GuildMember): Promise<boolean> => {
     const guildData = await client.guildManager.fetch(member.guild.id, true);
-    const autoRole = guildData?.modules?.moderationModule?.autoRole;
+    const autoRole = guildData?.modules?.moderation?.autoRole;
 
     if (autoRole) {
       const role = member.guild.roles.cache.get(autoRole) as Role;

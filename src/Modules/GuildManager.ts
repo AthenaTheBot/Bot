@@ -8,7 +8,7 @@ dayjs.extend(localizedFormat);
 import Logger from "./Logger";
 import DatabaseManager from "./DatabaseManager";
 import Guild from "../Structures/Guild";
-import { GuildOptions } from "../constants";
+import { GuildModules } from "../constants";
 
 /**
  * Handles all of the guilds
@@ -22,8 +22,8 @@ class GuildManager {
     this.dbManager = dbManager;
   }
 
-  async create(id: string, options?: GuildOptions): Promise<Guild | null> {
-    const guild = new Guild(id, options);
+  async create(id: string, modules?: GuildModules): Promise<Guild | null> {
+    const guild = new Guild(id, modules);
     const success = await this.dbManager.createDocument("guilds", guild);
     if (success) return guild;
     else {
@@ -47,11 +47,7 @@ class GuildManager {
     createGuildIfNotExists?: boolean
   ): Promise<Guild | null> {
     const guildDocument = await (<any>this.dbManager.getDocument("guilds", id));
-    const guild = new Guild(
-      guildDocument?._id,
-      guildDocument?.settings,
-      guildDocument?.modules
-    );
+    const guild = new Guild(guildDocument?._id, guildDocument?.modules);
     if (!guild._id) {
       if (createGuildIfNotExists) {
         return await this.create(id);

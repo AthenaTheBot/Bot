@@ -77,7 +77,8 @@ class CommandData {
       this.db = source.db;
 
       this.locales = this.client.localeManager.getCategoryLocale(
-        this.db.guild.settings.language || this.client.config.defaults.language
+        this.db.guild.modules.settings.language ||
+          this.client.config.defaults.language
       );
 
       this.executeable = true;

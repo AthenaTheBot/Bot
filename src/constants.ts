@@ -35,21 +35,19 @@ interface Botlist {
   token: string;
 }
 
-interface GuildOptions {
-  premium?: boolean;
-  prefix?: string;
-  language?: LanguageOptions;
-}
-
 interface GuildModules {
-  moderationModule?: {
+  settings: {
+    prefix: string;
+    language: LanguageOptions;
+  };
+  moderation: {
     adminRole?: string | null;
     modRole?: string | null;
     warnings?: UserWarning[];
     autoRole: string | null;
   };
-  funModule?: {};
-  utilsModule?: {};
+  fun?: {};
+  utils?: {};
 }
 
 interface UserOpitons {
@@ -159,7 +157,6 @@ enum RolePerms {
 export {
   Config,
   Botlist,
-  GuildOptions,
   UserOpitons,
   GuildModules,
   LanguageOptions,

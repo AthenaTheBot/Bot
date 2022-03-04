@@ -348,23 +348,22 @@ export default (commandManager: CommandManager) => {
         commandData.args.slice(1).join(" ") ||
         commandData.locales.REASON_NOT_SPECIFIED;
 
-      let userWarn =
-        commandData.db.guild.modules.moderationModule?.warnings?.find(
-          (x) => x.id == targetUser.id
-        );
+      let userWarn = commandData.db.guild.modules.moderation?.warnings?.find(
+        (x) => x.id == targetUser.id
+      );
 
       if (userWarn) {
         userWarn.warnings.push(reason);
       } else {
         userWarn = new UserWarning(targetUser.id);
         userWarn.warnings.push(reason);
-        commandData.db.guild.modules.moderationModule?.warnings?.push(userWarn);
+        commandData.db.guild.modules.moderation?.warnings?.push(userWarn);
       }
 
       commandData.client.guildManager.updateGuild(commandData.guild.id, {
         $set: {
-          "modules.moderationModule.warnings":
-            commandData.db.guild.modules.moderationModule?.warnings,
+          "modules.moderation.warnings":
+            commandData.db.guild.modules.moderation?.warnings,
         },
       });
 
@@ -408,7 +407,7 @@ export default (commandManager: CommandManager) => {
 
         commandData.client.guildManager.updateGuild(commandData.guild.id, {
           $pull: {
-            "modules.moderationModule.warnings": { id: targetUser.id },
+            "modules.moderation.warnings": { id: targetUser.id },
           },
         });
 
@@ -468,7 +467,7 @@ export default (commandManager: CommandManager) => {
       }
 
       const userWarning =
-        commandData.db.guild.modules.moderationModule?.warnings?.find(
+        commandData.db.guild.modules.moderation?.warnings?.find(
           (x) => x.id == targetUser.id
         );
 
@@ -476,8 +475,8 @@ export default (commandManager: CommandManager) => {
         userWarning.warnings = [];
         commandData.client.guildManager.updateGuild(commandData.guild.id, {
           $set: {
-            "modules.moderationModule.warnings":
-              commandData.db.guild.modules.moderationModule?.warnings,
+            "modules.moderation.warnings":
+              commandData.db.guild.modules.moderation?.warnings,
           },
         });
       }

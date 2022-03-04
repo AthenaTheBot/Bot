@@ -15,14 +15,14 @@ export default new Event(
     if (!guild || !user) return false;
 
     // Check if message starts with server prefix
-    if (!msgData.content.trim().startsWith(guild?.settings?.prefix))
+    if (!msgData.content.trim().startsWith(guild?.modules?.settings?.prefix))
       return false;
 
     // Parse command name from the message content
     const commandName = msgData.content
       .trim()
       .split(" ")[0]
-      .split(guild.settings.prefix)
+      .split(guild?.modules?.settings?.prefix)
       .pop()
       .toLowerCase();
 
