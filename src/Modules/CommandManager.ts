@@ -8,7 +8,11 @@ import AthenaClient from "../AthenaClient";
 import CommandData from "../Structures/CommandData";
 import { Permissions } from "../constants";
 
-import { ApplicationCommandOptionData } from "discord.js";
+import {
+  ApplicationCommand,
+  ApplicationCommandDataResolvable,
+  ApplicationCommandOptionData,
+} from "discord.js";
 
 /**
  * Handles command registirations and command related events.
@@ -22,7 +26,7 @@ class CommandManager {
     this.commands = [];
   }
 
-  registerCommand(
+  async registerCommand(
     name: string,
     aliases: string[],
     description: string,
@@ -47,16 +51,42 @@ class CommandManager {
       )
     );
 
-    this.client.application?.commands.create({
+    const commandPayload: ApplicationCommandDataResolvable = {
       name: name,
       description: description,
       type: "CHAT_INPUT",
       options: options,
-      defaultPermission: requiredPerms.length == 0 ? true : false,
+      defaultPermission: true,
+    };
+
+    // Replace special characters and spaces with _ to prevent from api errors.
+    commandPayload.options?.forEach((option) => {
+      option.name = option.name.toLowerCase().replaceAll(/[^a-zA-Z0-9]/g, "_");
     });
+
+    if (this.client.config.debug.enabled) {
+      const debugGuild =
+        (await this.client.guilds.cache.get(this.client.config.debug.guild)) ||
+        (await this.client.guilds.fetch(this.client.config.debug.guild));
+
+      if (debugGuild) {
+        await debugGuild.commands.create(commandPayload);
+      }
+    } else {
+      await this.client.application?.commands.create(commandPayload);
+    }
   }
 
   async registerCommandsFromCommandFolder(): Promise<object> {
+    const cachedCommands: ApplicationCommand[] = [];
+    (await this.client.application?.commands.fetch())?.forEach((x) =>
+      cachedCommands.push(x)
+    );
+
+    for (let i = 0; i < cachedCommands.length; i++) {
+      await cachedCommands[i].delete();
+    }
+
     const commandFiles = await readdirSync(
       join(__dirname, "..", "Commands"),
       "utf-8"

@@ -1,5 +1,11 @@
 // Modules
-import { writeFileSync, existsSync, mkdirSync, readdirSync } from "fs";
+import {
+  writeFileSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  ensureDirSync,
+} from "fs-extra";
 import { join } from "path";
 import { v4 as uuid } from "uuid";
 
@@ -27,6 +33,8 @@ class ErrorHandler {
   }
 
   async checkErrors(notify: boolean): Promise<string[] | null> {
+    ensureDirSync(this.errorFolder);
+
     const errorFiles = readdirSync(this.errorFolder).filter((file) =>
       file.endsWith(".log")
     );

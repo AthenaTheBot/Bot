@@ -1,5 +1,8 @@
 {
-  "debugMode": true,
+  "debug": {
+    "enabled": true,
+    "guild": ""
+  },
   "bot": {
     "token": "",
     "activity": "/help",

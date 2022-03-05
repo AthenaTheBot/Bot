@@ -16,7 +16,7 @@ class StatPoster {
   }
 
   async postStats(): Promise<boolean> {
-    if (this.client.config.debugMode) return false;
+    if (this.client.config.debug.enabled) return false;
 
     let error = false;
     for (var i = 0; i < this.client.config.botlists.length; i++) {

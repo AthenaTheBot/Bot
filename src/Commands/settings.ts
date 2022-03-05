@@ -9,7 +9,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "STRING",
-        name: "Prefix",
+        name: "prefix",
         description: "The prefix that you want to set",
         required: false,
       },
@@ -56,7 +56,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "STRING",
-        name: "Language",
+        name: "language",
         description: "The langauge that you want to set",
         required: false,
       },
@@ -119,7 +119,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "ROLE",
-        name: "Role",
+        name: "role",
         description: "The role that you want to set as bot admin.",
         required: true,
       },
@@ -159,7 +159,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "ROLE",
-        name: "Role",
+        name: "role",
         description: "The role that you want to set as bot mod.",
         required: true,
       },

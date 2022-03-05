@@ -1,13 +1,16 @@
 import UserWarning from "./Structures/UserWarning";
 
 interface Config {
-  debugMode: boolean;
+  debug: {
+    enabled: boolean;
+    guild: string;
+  };
   bot: {
     token: string;
     activity: string;
     statPostInterval: number;
   };
-  channels: {
+  log: {
     command: string;
     guild: string;
     error: string;

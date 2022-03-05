@@ -56,7 +56,7 @@ class EventManager {
       } catch (err) {
         this.client.logger.error(
           `An error happened while loading event ${event.name}. ${
-            this.client.config.debugMode
+            this.client.config.debug.enabled
               ? "\n \n" + this.client.utils.parseError(<Error>err)
               : ""
           }`

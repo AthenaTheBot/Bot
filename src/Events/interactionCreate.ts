@@ -6,6 +6,12 @@ export default new Event(
   async (client, interactionData): Promise<boolean> => {
     if (!interactionData.guild) return false;
 
+    // Check wheter the comamnd is valid or not.
+    if (!client.commandManager.isValidCommand(interactionData.commandName))
+      return false;
+
+    await interactionData.deferReply();
+
     // Fetch user and guilld data with a force arguement passed.
     const guild = await client.guildManager.fetch(
       interactionData.guild.id,
@@ -15,10 +21,6 @@ export default new Event(
 
     // If still guild and user data are not proper then do nothing.
     if (!guild || !user) return false;
-
-    // Check wheter the comamnd is valid or not.
-    if (!client.commandManager.isValidCommand(interactionData.commandName))
-      return false;
 
     // Get the command data through command manager.
     const command = client.commandManager.getCommand(
@@ -41,7 +43,7 @@ export default new Event(
     command?.exec(commandData);
 
     // If debug mode is enabled log the execution of the command
-    if (client.config.debugMode) {
+    if (client.config.debug.enabled) {
       client.logger.log(
         `Command ${command.name} has been executed by user ${interactionData.member.user.tag} (${interactionData.member.user.id})`
       );

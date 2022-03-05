@@ -3,7 +3,7 @@ import Event from "../Structures/Event";
 export default new Event(
   "guildDelete",
   async (client, guild): Promise<boolean> => {
-    if (client.config.debugMode) return false;
+    if (client.config.debug.enabled) return false;
 
     client.guildManager.delete(guild.id);
 

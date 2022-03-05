@@ -105,6 +105,13 @@
   resolved "https://registry.yarnpkg.com/@types/figlet/-/figlet-1.5.4.tgz#54a426d63e921a9bca44102c5b1b1f206fa56d93"
   integrity sha512-cskPTju7glYgzvkJy/hftqw7Fen3fsd0yrPOqcbBLJu+YdDQuA438akS1g+2XVKGzsQOnXGV2I9ePv6xUBnKMQ==
 
+"@types/fs-extra@^9.0.13":
+  version "9.0.13"
+  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-9.0.13.tgz#7594fbae04fe7f1918ce8b3d213f74ff44ac1f45"
+  integrity sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/node-fetch@^2.5.12":
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.6.1.tgz#8f127c50481db65886800ef496f20bbf15518975"

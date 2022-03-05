@@ -130,8 +130,6 @@ class AthenaClient extends Client {
 
     await this.eventManager.registerEventsFromEventFolder();
 
-    await this.commandManager.registerCommandsFromCommandFolder();
-
     await this.localeManager.loadLocales();
 
     this.eventManager.listenEvents();
@@ -141,8 +139,10 @@ class AthenaClient extends Client {
       this.logger.success("Successfully logged in to discord account.");
     } catch (err) {
       this.logger.error("Failed while trying to login into discord account.");
-      return false;
+      process.exit(1);
     }
+
+    await this.commandManager.registerCommandsFromCommandFolder();
 
     this.terminalHandler.listenTerminal();
 

@@ -204,7 +204,7 @@ class CommandData {
     let returnData;
     try {
       if (this.type === CommandDataTypes.Interaction) {
-        returnData = await this.raw.reply(payload);
+        returnData = await this.raw.editReply(payload);
       } else {
         returnData = await this.raw.channel.send(payload);
       }

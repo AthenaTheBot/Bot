@@ -117,13 +117,13 @@ export default (commandManager: CommandManager) => {
   );
 
   commandManager.registerCommand(
-    "hitler",
+    "worsethanhitler",
     [],
     "Worse than hitler",
     [
       {
         type: "USER",
-        name: "User",
+        name: "user",
         description: "The user that you want to use in this meme.",
         required: true,
       },
@@ -194,7 +194,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "USER",
-        name: "User",
+        name: "user",
         description: "The user that you want to use in this meme.",
         required: true,
       },
@@ -232,7 +232,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "USER",
-        name: "User",
+        name: "user",
         description: "The user that you want to use in this meme.",
         required: true,
       },
@@ -267,7 +267,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "USER",
-        name: "User",
+        name: "user",
         description: "The user that you want to use in this meme.",
         required: true,
       },
@@ -302,7 +302,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "USER",
-        name: "User",
+        name: "user",
         description: "The user that you want to use in this meme.",
         required: true,
       },

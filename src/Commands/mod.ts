@@ -11,7 +11,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "USER",
-        name: "User",
+        name: "user",
         description: "The user that you want to kick from the server.",
         required: true,
       },
@@ -77,7 +77,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "USER",
-        name: "User",
+        name: "user",
         description: "The user that you want to ban from the server.",
         required: true,
       },
@@ -143,7 +143,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "STRING",
-        name: "Timeout",
+        name: "timeout",
         description: "Timeout duration for this text channel (ex: 10s).",
         required: true,
       },
@@ -244,7 +244,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "NUMBER",
-        name: "Amount",
+        name: "amount",
         description: "Amount of messages to delete in this text channel.",
         required: true,
       },
@@ -303,7 +303,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "USER",
-        name: "User",
+        name: "user",
         description: "The user that you want to warn.",
         required: true,
       },
@@ -435,8 +435,8 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "USER",
-        name: "User",
-        description: "User",
+        name: "user",
+        description: "User to reset the warnigs",
         required: true,
       },
     ],

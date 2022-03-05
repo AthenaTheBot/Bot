@@ -86,7 +86,7 @@ export default new Event(
     );
 
     // If debug mode is enabled log the execution of the command
-    if (client.config.debugMode) {
+    if (client.config.debug.enabled) {
       client.logger.log(
         `Command ${command.name} has been executed by user ${msgData.author.tag} (${msgData.author.id})`
       );

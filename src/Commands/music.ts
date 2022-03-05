@@ -10,7 +10,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "STRING",
-        name: "Song",
+        name: "song",
         description: "Song title/url",
         required: true,
       },
@@ -118,9 +118,9 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "NUMBER",
-        name: "Song amount",
+        name: "song_amount",
         description: "Songs amount to skip in the queue",
-        required: false,
+        required: true,
       },
     ],
     2,
@@ -344,7 +344,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "NUMBER",
-        name: "Song id",
+        name: "song_id",
         description: "Song that you want to delete",
         required: true,
       },

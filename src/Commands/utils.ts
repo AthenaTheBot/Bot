@@ -28,7 +28,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "STRING",
-        name: "Text",
+        name: "text",
         description: "A text to convert into ascii format",
         required: true,
       },
@@ -70,7 +70,7 @@ export default (commandManager: CommandManager) => {
     [
       {
         type: "USER",
-        name: "User",
+        name: "user",
         description: "User to see avatar from.",
         required: true,
       },

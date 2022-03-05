@@ -14,7 +14,7 @@ class ActionLogger {
   async logCommand(name: string, args: string[], user: string): Promise<void> {
     (
       this.client.channels.cache.get(
-        this.client.config.channels.command
+        this.client.config.log.command
       ) as TextChannel
     ).send({
       embeds: [
@@ -39,7 +39,7 @@ class ActionLogger {
   ): Promise<void> {
     (
       this.client.channels.cache.get(
-        this.client.config.channels.guild
+        this.client.config.log.guild
       ) as TextChannel
     ).send({
       embeds: [
