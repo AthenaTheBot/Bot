@@ -4,14 +4,14 @@ const commander = require("commander");
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 const program = new commander.Command();
-const { Permissions } = require("./dist/Classes/PermissionResolver");
+let Permissions = null;
 require("colors").enable();
 
 let buildFolder = path.join(__dirname, "dist");
 let commandsFolder = path.join(__dirname, "dist", "commands");
 let localesFolder = path.join(__dirname, "locales");
 
-program.version("1.0.2");
+program.version("1.0.3");
 
 program
   .command("build")
@@ -114,6 +114,8 @@ const buildBot = async () => {
   if (stdout) console.log(stdout);
 
   program.log("Code compilation is done.");
+
+  Permissions = require("./dist/Modules/PermissionResolver");
 
   program.log("Writing new build files of Athena.");
 
