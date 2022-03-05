@@ -8,7 +8,7 @@ const AthenaUtils = new Utils();
 // Loading config
 const AthenaConfig = AthenaUtils.loadConfig();
 
-// Initializing Athena instance
+// Creating Athena instance
 const Athena = new AthenaClient(AthenaConfig);
 
 // Init

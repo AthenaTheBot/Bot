@@ -2,7 +2,7 @@ import axios from "axios";
 import AthenaClient from "../AthenaClient";
 
 /**
- * Posts current stats to discord bot list sites.
+ * Posts bot stats to discord bot list sites.
  */
 class StatPoster {
   client: AthenaClient;
@@ -18,7 +18,8 @@ class StatPoster {
   async postStats(): Promise<boolean> {
     if (this.client.config.debug.enabled) return false;
 
-    let error = false;
+    let postStatErrors = [];
+
     for (var i = 0; i < this.client.config.botlists.length; i++) {
       const botlist = this.client.config.botlists[i];
 
@@ -42,17 +43,24 @@ class StatPoster {
           }
         );
       } catch (err) {
-        error = true;
-        break;
+        postStatErrors.push({
+          site: botlist.name,
+          error: err,
+        });
       }
     }
 
-    if (error) {
-      this.client.logger.warn("An error occured while posting bot stats.");
-      return false;
+    if (postStatErrors.length > 0) {
+      for (let i = 0; i < postStatErrors.length; i++) {
+        this.client.logger.warn(
+          `An error occured while posting bot stats to the site ${postStatErrors[i].site}`
+        );
+      }
     }
 
-    this.client.logger.success("Successfully posted guild count to bot lists.");
+    this.client.logger.success(
+      "Finished posting guild counts to the bot lists."
+    );
 
     return true;
   }

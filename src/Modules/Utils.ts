@@ -1,6 +1,6 @@
 // Modules
 import { join } from "path";
-import { readFileSync } from "fs";
+import { readJsonSync } from "fs-extra";
 import { Config } from "../constants";
 
 /**
@@ -18,9 +18,7 @@ class Utils {
 
   loadConfig(): Config {
     try {
-      const config = JSON.parse(
-        readFileSync(this.configPath, { encoding: "utf-8" })
-      ) as Config;
+      const config = readJsonSync(this.configPath) as Config;
       return config;
     } catch (err) {
       throw err;
