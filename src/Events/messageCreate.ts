@@ -68,7 +68,6 @@ export default new Event(
     }
 
     if (!commandData.executeable) {
-      if (commandData.executeFail) console.log(commandData.executeFail.perms);
       if (commandData.executeFail?.reason == "USER_INSUFFICIENT_PERMS") {
         commandData.respond(commandData.locales.USER_INSUFFICIENT_PERMS, false);
       }

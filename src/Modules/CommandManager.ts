@@ -26,6 +26,23 @@ class CommandManager {
     this.commands = [];
   }
 
+  async removeGlobalCommands(): Promise<void> {
+    const cachedCommands: ApplicationCommand[] = [];
+    (await this.client.application?.commands.fetch())?.forEach((x) =>
+      cachedCommands.push(x)
+    );
+
+    for (let i = 0; i < cachedCommands.length; i++) {
+      await cachedCommands[i].delete().catch((err) => {
+        this.client.logger.warn(
+          `An error occued while removing a global slash command: ${cachedCommands[i].name}`
+        );
+      });
+    }
+
+    this.client.logger.success("Removed all old slash commands.");
+  }
+
   async registerCommand(
     name: string,
     aliases: string[],
@@ -35,8 +52,8 @@ class CommandManager {
     requiredPerms: Permissions[],
     requiredBotPerms: Permissions[],
     exec: (commandData: CommandData) => boolean | Promise<boolean>
-  ) {
-    if (this.isValidCommand(name)) return;
+  ): Promise<boolean> {
+    if (this.isValidCommand(name)) return false;
 
     this.commands.push(
       new Command(
@@ -56,7 +73,7 @@ class CommandManager {
       description: description,
       type: "CHAT_INPUT",
       options: options,
-      defaultPermission: true,
+      defaultPermission: requiredPerms.length == 0 ? true : false,
     };
 
     // Replace special characters and spaces with _ to prevent from api errors.
@@ -70,37 +87,68 @@ class CommandManager {
         (await this.client.guilds.fetch(this.client.config.debug.guild));
 
       if (debugGuild) {
-        await debugGuild.commands.create(commandPayload);
-      }
+        const success = await debugGuild.commands
+          .create(commandPayload)
+          .then(() => true)
+          .catch(() => false);
+
+        return success;
+      } else return false;
     } else {
-      await this.client.application?.commands.create(commandPayload);
+      const success = (await this.client.application?.commands
+        .create(commandPayload)
+        .then(() => true)
+        .catch(() => false)) as boolean;
+
+      return success;
     }
   }
 
   async registerCommandsFromCommandFolder(): Promise<object> {
-    const cachedCommands: ApplicationCommand[] = [];
-    (await this.client.application?.commands.fetch())?.forEach((x) =>
-      cachedCommands.push(x)
-    );
-
-    for (let i = 0; i < cachedCommands.length; i++) {
-      await cachedCommands[i].delete();
-    }
-
     const commandFiles = await readdirSync(
       join(__dirname, "..", "Commands"),
       "utf-8"
     );
+
     for (var i = 0; i < commandFiles.length; i++) {
       const commandsFile = commandFiles[i];
-      const commands = await import(
+      const commands: Command[] = await import(
         join(__dirname, "..", "Commands", commandsFile)
-      ).then((x) => {
-        if (typeof x?.default !== "function") return null;
-        else return x.default;
-      });
+      )
+        .then((exportData) => {
+          const commandExportNames = Object.getOwnPropertyNames(
+            exportData
+          ).filter((x) => x !== "__esModule" && x !== "default");
+          const commandExports: Command[] = [];
 
-      if (commands) commands(this);
+          commandExportNames.forEach((name) => {
+            if (exportData[name] && exportData[name] instanceof Command) {
+              commandExports.push(exportData[name]);
+            }
+          });
+
+          return commandExports;
+        })
+        .catch((err) => []);
+
+      for (let i = 0; i < commands.length; i++) {
+        const command = commands[i];
+
+        this.registerCommand(
+          command.name,
+          command.aliases,
+          command.description,
+          command.options,
+          command.cooldown,
+          command.requiredPerms.convertPermsToIndexNums(
+            command.requiredPerms.all
+          ),
+          command.requiredBotPerms.convertPermsToIndexNums(
+            command.requiredBotPerms.all
+          ),
+          command.exec
+        );
+      }
     }
     return this.commands;
   }

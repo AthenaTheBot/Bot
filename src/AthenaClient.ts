@@ -142,6 +142,9 @@ class AthenaClient extends Client {
       process.exit(1);
     }
 
+    if (!this.config.debug.enabled)
+      await this.commandManager.removeGlobalCommands();
+
     await this.commandManager.registerCommandsFromCommandFolder();
 
     this.terminalHandler.listenTerminal();

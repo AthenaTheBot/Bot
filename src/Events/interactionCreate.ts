@@ -10,6 +10,7 @@ export default new Event(
     if (!client.commandManager.isValidCommand(interactionData.commandName))
       return false;
 
+    // Defer the interaction
     await interactionData.deferReply();
 
     // Fetch user and guilld data with a force arguement passed.
