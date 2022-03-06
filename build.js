@@ -35,54 +35,75 @@ program.panicQuit = (reason) => {
   process.exit(1);
 };
 
+const compileSourceCode = async () => {
+  program.log("Compiling typescript code...");
+
+  const { stdout, stderr } = await exec("tsc");
+
+  if (stderr) {
+    program.panicQuit("An error occured while compiling typescript code.");
+  }
+
+  if (stdout) console.log(stdout);
+
+  program.log("Successfully compiled typescript code.");
+
+  return;
+};
+
 const buildCommands = async () => {
+  await compileSourceCode();
+
   const commandFiles = await fs.readdirSync(commandsFolder);
   const commands = [];
 
   program.log("Reading current Athena build files.");
 
-  for (var i = 0; i < commandFiles.length; i++) {
-    const execFile = await import(
+  for (let i = 0; i < commandFiles.length; i++) {
+    const commandFile = await import(
       "file:///" + path.join(commandsFolder, commandFiles[i])
-    );
+    ).then((commandExports) => {
+      const commandExportNames = Object.getOwnPropertyNames(
+        commandExports
+      ).filter((x) => x !== "__esModule" && x !== "default");
+      const exports = [];
 
-    execFile.default.default({
-      registerCommand: (
-        cmdName,
-        cmdAliases,
-        cmdDesc,
-        cmdUsage,
-        cmdCooldown,
-        cmdRequiredPerms,
-        cmdRequiredBotPerms
-      ) => {
-        const usages = [];
+      for (let i = 0; i < commandExportNames.length; i++) {
+        if (commandExports[commandExportNames[i]]) {
+          exports.push(commandExports[commandExportNames[i]]);
+        }
+      }
 
-        cmdUsage.forEach((usage) => {
-          usages.push(`<${usage.name}>`);
-        });
+      return exports;
+    });
 
-        const requiredPerms = [];
-        cmdRequiredPerms.forEach((perm) => {
-          requiredPerms.push(Permissions[perm]);
-        });
+    commandFile.forEach((command) => {
+      const requiredPerms = [];
+      const requiredBotPerms = [];
+      const usages = [];
 
-        const requiredBotPerms = [];
-        cmdRequiredBotPerms.forEach((perm) => {
-          requiredBotPerms.push(Permissions[perm]);
-        });
+      command.requiredPerms.all.forEach((perm) => {
+        requiredPerms.push(perm);
+      });
 
-        commands.push({
-          name: cmdName,
-          aliases: cmdAliases,
-          description: cmdDesc,
-          category: commandFiles[i].replace(".js", ""),
-          usage: usages.join(" "),
-          cooldown: cmdCooldown,
-          required_perms: requiredPerms,
-          required_bot_perms: requiredBotPerms,
-        });
-      },
+      command.requiredBotPerms.all.forEach((perm) => {
+        requiredBotPerms.push(perm);
+      });
+
+      command.options.forEach((option) => {
+        usages.push(`<${option.name}>`);
+      });
+
+      commands.push({
+        name: command.name,
+        aliases: command.aliases,
+        description: command.description,
+        category: commandFiles[i].replace(".js", ""),
+        usage: usages.join(" "),
+        cooldown: command.cooldown,
+        required_perms: requiredPerms,
+        required_bot_perms: requiredBotPerms,
+      });
     });
   }
 
@@ -102,18 +123,7 @@ const buildCommands = async () => {
 };
 
 const buildBot = async () => {
-  program.log("Compiling typescript code...");
-
-  // Firstly get a new build of Athena
-  const { stdout, stderr } = await exec("tsc");
-
-  if (stderr) {
-    program.panicQuit("An error occured while compiling typescript code.");
-  }
-
-  if (stdout) console.log(stdout);
-
-  program.log("Code compilation is done.");
+  await compileSourceCode();
 
   Permissions = require("./dist/Modules/PermissionResolver");
 

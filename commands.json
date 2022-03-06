@@ -1,0 +1,478 @@
+[
+  {
+    "name": "cat",
+    "aliases": [],
+    "description": "Sends random cute cat images.",
+    "category": "fun",
+    "usage": "",
+    "cooldown": 4,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "ATTACH_FILES"
+    ]
+  },
+  {
+    "name": "coinflip",
+    "aliases": [],
+    "description": "Flip the coin see the result..",
+    "category": "fun",
+    "usage": "",
+    "cooldown": 4,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES"
+    ]
+  },
+  {
+    "name": "dog",
+    "aliases": [],
+    "description": "Sends random cute dog images.",
+    "category": "fun",
+    "usage": "",
+    "cooldown": 4,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "ATTACH_FILES"
+    ]
+  },
+  {
+    "name": "jail",
+    "aliases": [],
+    "description": "Put someone in jail.",
+    "category": "fun",
+    "usage": "<User>",
+    "cooldown": 4,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "jokeoverhead",
+    "aliases": [],
+    "description": "Don't just don't make jokes",
+    "category": "fun",
+    "usage": "<user>",
+    "cooldown": 4,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "meme",
+    "aliases": [],
+    "description": "Fetches random memes from reddit.",
+    "category": "fun",
+    "usage": "",
+    "cooldown": 4,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "rip",
+    "aliases": [],
+    "description": "R.I.P",
+    "category": "fun",
+    "usage": "<user>",
+    "cooldown": 4,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "trash",
+    "aliases": [],
+    "description": "Don't be a trash",
+    "category": "fun",
+    "usage": "<user>",
+    "cooldown": 4,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "wanted",
+    "aliases": [],
+    "description": "Try it but a sheriff may find you one time",
+    "category": "fun",
+    "usage": "<user>",
+    "cooldown": 4,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "worsethanhitler",
+    "aliases": [],
+    "description": "Worse than hitler",
+    "category": "fun",
+    "usage": "<user>",
+    "cooldown": 4,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "ban",
+    "aliases": [],
+    "description": "Bans the specified user from guild.",
+    "category": "mod",
+    "usage": "<user>",
+    "cooldown": 1,
+    "required_perms": [
+      "BAN_MEMBERS"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS",
+      "BAN_MEMBERS"
+    ]
+  },
+  {
+    "name": "clear",
+    "aliases": [
+      "purge"
+    ],
+    "description": "Clears the specified amount of message in the text channel.",
+    "category": "mod",
+    "usage": "<amount>",
+    "cooldown": 1,
+    "required_perms": [
+      "MANAGE_MESSAGES"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS",
+      "MANAGE_MESSAGES"
+    ]
+  },
+  {
+    "name": "kick",
+    "aliases": [],
+    "description": "Kicks the specified user from guild.",
+    "category": "mod",
+    "usage": "<user>",
+    "cooldown": 1,
+    "required_perms": [
+      "KICK_MEMBERS"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS",
+      "KICK_MEMBERS"
+    ]
+  },
+  {
+    "name": "reswarn",
+    "aliases": [
+      "resetwarn",
+      "resetwarning"
+    ],
+    "description": "Resets the warnings of that user.",
+    "category": "mod",
+    "usage": "<user>",
+    "cooldown": 1,
+    "required_perms": [
+      "KICK_MEMBERS",
+      "BAN_MEMBERS"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "slowmode",
+    "aliases": [],
+    "description": "Manages the slowmodes in text channels.",
+    "category": "mod",
+    "usage": "<timeout>",
+    "cooldown": 1,
+    "required_perms": [
+      "MANAGE_CHANNELS"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS",
+      "MANAGE_CHANNELS"
+    ]
+  },
+  {
+    "name": "warn",
+    "aliases": [],
+    "description": "Warns mentioned user.",
+    "category": "mod",
+    "usage": "<user>",
+    "cooldown": 1,
+    "required_perms": [
+      "KICK_MEMBERS",
+      "BAN_MEMBERS"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS",
+      "KICK_MEMBERS",
+      "BAN_MEMBERS"
+    ]
+  },
+  {
+    "name": "delsong",
+    "aliases": [
+      "ds"
+    ],
+    "description": "Deletes a specific song from the song queue.",
+    "category": "music",
+    "usage": "<song_id>",
+    "cooldown": 2,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "disconnect",
+    "aliases": [
+      "dc"
+    ],
+    "description": "Disconnects from voice channel if exits.",
+    "category": "music",
+    "usage": "",
+    "cooldown": 2,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "loop",
+    "aliases": [
+      "rs"
+    ],
+    "description": "Toggles loop in song queue.",
+    "category": "music",
+    "usage": "",
+    "cooldown": 2,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "pause",
+    "aliases": [],
+    "description": "Pauses currently playing song.",
+    "category": "music",
+    "usage": "",
+    "cooldown": 2,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "play",
+    "aliases": [
+      "p"
+    ],
+    "description": "Play song in a voice channel.",
+    "category": "music",
+    "usage": "<song>",
+    "cooldown": 2,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS",
+      "SPEAK",
+      "CONNECT"
+    ]
+  },
+  {
+    "name": "queue",
+    "aliases": [
+      "q"
+    ],
+    "description": "Shows current song queue.",
+    "category": "music",
+    "usage": "",
+    "cooldown": 1,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "resume",
+    "aliases": [
+      "rs"
+    ],
+    "description": "Resumes paused song.",
+    "category": "music",
+    "usage": "",
+    "cooldown": 2,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "skip",
+    "aliases": [
+      "s"
+    ],
+    "description": "Skips to another song in the queue.",
+    "category": "music",
+    "usage": "<song_amount>",
+    "cooldown": 2,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "adminrole",
+    "aliases": [],
+    "description": "Command for setting admin role.",
+    "category": "settings",
+    "usage": "<role>",
+    "cooldown": 4,
+    "required_perms": [
+      "ADMINISTRATOR"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "language",
+    "aliases": [],
+    "description": "Changes the language of Athena",
+    "category": "settings",
+    "usage": "<language>",
+    "cooldown": 5,
+    "required_perms": [
+      "ADMINISTRATOR"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "modrole",
+    "aliases": [],
+    "description": "Command for setting mod role.",
+    "category": "settings",
+    "usage": "<role>",
+    "cooldown": 4,
+    "required_perms": [
+      "ADMINISTRATOR"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "prefix",
+    "aliases": [],
+    "description": "Change the prefix of Athena for your server and use the best fit for your server!",
+    "category": "settings",
+    "usage": "<prefix>",
+    "cooldown": 5,
+    "required_perms": [
+      "ADMINISTRATOR"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "ascii",
+    "aliases": [],
+    "description": "Sends the ascii format of the given text.",
+    "category": "utils",
+    "usage": "<text>",
+    "cooldown": 3,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "avatar",
+    "aliases": [],
+    "description": "Sends the avatar of the given user.",
+    "category": "utils",
+    "usage": "<user>",
+    "cooldown": 2,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "help",
+    "aliases": [],
+    "description": "Shows basic information about Athena great for the ones who don't know Athena.",
+    "category": "utils",
+    "usage": "",
+    "cooldown": 1,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "invite",
+    "aliases": [],
+    "description": "Sends the invite link of Athena.",
+    "category": "utils",
+    "usage": "",
+    "cooldown": 1,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "ping",
+    "aliases": [],
+    "description": "Simple ping pong command whether to check bot is online or not.",
+    "category": "utils",
+    "usage": "",
+    "cooldown": 1,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES"
+    ]
+  }
+]
