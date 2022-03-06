@@ -11,7 +11,7 @@ let buildFolder = path.join(__dirname, "dist");
 let commandsFolder = path.join(__dirname, "dist", "commands");
 let localesFolder = path.join(__dirname, "locales");
 
-program.version("1.0.3");
+program.version("1.0.4");
 
 program
   .command("build")
