@@ -63,10 +63,9 @@ export default new Event(
     // If the bot is in production mode save the command usage to the database.
     if (!client.config.debug.enabled) {
       commandUsage.saveUsage();
+      // Send command usage embed to the log channel on Discord.
+      commandUsage.reportUsage();
     }
-
-    // Send command usage embed to the log channel on Discord.
-    commandUsage.reportUsage();
 
     return true;
   }
