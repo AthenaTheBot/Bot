@@ -2,6 +2,9 @@
 import { join } from "path";
 import { readJsonSync } from "fs-extra";
 import { Config } from "../constants";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+dayjs.extend(localizedFormat);
 
 /**
  * Utility functions and other stuff.
@@ -27,10 +30,11 @@ class Utils {
 
   parseError(error: Error, addColors?: boolean): string {
     let errorString =
-      "[$color_redERROR MESSAGE$color_reset]: $error_name\n\n[$color_redERROR MESSAGE$color_reset]: $error_message\n\n[$color_redERROR STACK$color_reset]: $error_stack"
+      `[$color_redERROR MESSAGE$color_reset]: $error_name\n\n[$color_redERROR MESSAGE$color_reset]: $error_message\n\n[$color_redERROR STACK$color_reset]: $error_stack\n\n[$color_redERROR DATE$color_reset]: $error_date`
         .replace("$error_name", error.name)
         .replace("$error_message", error.message)
-        .replace("$error_stack", error.stack || "None");
+        .replace("$error_stack", error.stack || "None")
+        .replace("$error_date", dayjs().format("L LTS"));
 
     if ((error as any)?.id)
       errorString = `[ERROR ID]: ${(error as any)?.id}\n\n`.concat(errorString);

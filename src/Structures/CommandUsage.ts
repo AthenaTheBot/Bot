@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { MessageEmbed, TextChannel } from "discord.js";
-import AthenaClient from "../AthenaClient";
 import { Athena } from "../index";
 dayjs.extend(localizedFormat);
 

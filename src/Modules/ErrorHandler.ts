@@ -1,11 +1,5 @@
 // Modules
-import {
-  writeFileSync,
-  existsSync,
-  mkdirSync,
-  readdirSync,
-  ensureDirSync,
-} from "fs-extra";
+import { writeFileSync, readdirSync, ensureDirSync } from "fs-extra";
 import { join } from "path";
 import { v4 as uuid } from "uuid";
 
@@ -53,13 +47,11 @@ class ErrorHandler {
   }
 
   recordError(error: Error = new Error("Unknown Error")): boolean {
+    ensureDirSync(this.errorFolder);
+
     const errorId = uuid();
 
     Object.assign(error, { id: errorId });
-
-    const errorFolderExists = existsSync(this.errorFolder);
-
-    if (!errorFolderExists) mkdirSync(this.errorFolder);
 
     try {
       writeFileSync(
