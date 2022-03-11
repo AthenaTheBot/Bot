@@ -4,7 +4,7 @@ import Event from "../Structures/Event";
 export default new Event(
   "guildCreate",
   async (client, guild): Promise<boolean> => {
-    if (client.config.debug.enabled) return false;
+    //if (client.config.debug.enabled) return false;
 
     client.guildManager.create(guild.id);
 
@@ -21,22 +21,22 @@ export default new Event(
           {
             name: "Id",
             value: `\`${guild?.id || "Not Available"}\``,
-            inline: true,
+            inline: false,
           },
           {
             name: "Name",
             value: `\`${guild?.name || "Not Available"}\``,
-            inline: true,
+            inline: false,
           },
           {
             name: "Member Count",
             value: `\`${guild?.memberCount || "Not Available"}\``,
-            inline: true,
+            inline: false,
           },
           {
             name: "Owner Id",
             value: `\`${guild?.ownerId || "Not Available"}\``,
-            inline: true,
+            inline: false,
           },
         ])
         .setTimestamp();

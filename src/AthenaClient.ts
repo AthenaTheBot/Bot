@@ -52,6 +52,9 @@ class AthenaClient extends Client {
   logger: Logger;
   utils: Utils;
 
+  // States
+  ready: boolean;
+
   constructor(config: Config) {
     super({
       intents: [
@@ -88,6 +91,9 @@ class AthenaClient extends Client {
     // Utils
     this.logger = new Logger();
     this.utils = new Utils();
+
+    // States
+    this.ready = false;
   }
 
   /** Function that initalizes the client of Athena */
@@ -150,6 +156,8 @@ class AthenaClient extends Client {
     ]);
 
     this.statPoster.startPosting();
+
+    this.ready = true;
 
     return true;
   }
