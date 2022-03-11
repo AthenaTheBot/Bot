@@ -44,9 +44,13 @@ class DatabaseManager {
     }
   }
 
-  async createDocument(collection: string, document: object): Promise<boolean> {
+  async createDocument(
+    collection: string,
+    document: object,
+    addLastUpdated = true
+  ): Promise<boolean> {
     let d = <any>document;
-    if (!this.ready || !d?._id) return false;
+    if (!this.ready) return false;
 
     const itemExists =
       (await this.connection
@@ -58,8 +62,10 @@ class DatabaseManager {
     if (itemExists) return false;
 
     // Update last updated column
-    const time = dayjs().format("L LT");
-    Object.assign(document, { lastUpdated: time });
+    if (addLastUpdated) {
+      const time = dayjs().format("L LT");
+      Object.assign(document, { lastUpdated: time });
+    }
 
     try {
       await this.connection.collection(collection).insertOne(document);

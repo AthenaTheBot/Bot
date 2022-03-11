@@ -5,6 +5,11 @@ interface Config {
     enabled: boolean;
     guild: string;
   };
+  colors: {
+    default: string;
+    error: string;
+    success: string;
+  };
   bot: {
     token: string;
     activity: string;

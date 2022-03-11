@@ -19,7 +19,6 @@ import LocaleManager from "./Modules/LocaleManager";
 import CooldownManager from "./Modules/CooldownManager";
 import Player from "./Modules/Player";
 import StatPoster from "./Modules/StatPoster";
-import ActionLogger from "./Modules/ActionLogger";
 import TerminalHandler from "./Modules/TerminalHandler";
 import { Config } from "./constants";
 
@@ -44,9 +43,6 @@ class AthenaClient extends Client {
 
   // Stats Poster
   statPoster: StatPoster;
-
-  // Action Logger
-  actionLogger: ActionLogger;
 
   // Handlers
   errorHandler: ErrorHandler;
@@ -84,9 +80,6 @@ class AthenaClient extends Client {
 
     // Stat Poster
     this.statPoster = new StatPoster(this, this.config.bot.statPostInterval);
-
-    // Action Logger
-    this.actionLogger = new ActionLogger(this);
 
     // Handlers
     this.errorHandler = new ErrorHandler();

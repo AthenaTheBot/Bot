@@ -1,6 +1,7 @@
 import { CommandData, CommandDataTypes } from "../Structures/CommandData";
 import { Permissions } from "../constants";
 import Event from "../Structures/Event";
+import CommandUsage from "../Structures/CommandUsage";
 
 export default new Event(
   "messageCreate",
@@ -75,7 +76,7 @@ export default new Event(
     }
 
     // Execute command
-    command?.exec(commandData);
+    const commandSuccessfull = command?.exec(commandData);
 
     // Add cooldown to user
     client.cooldownManager.addCooldown(
@@ -84,18 +85,22 @@ export default new Event(
       command.cooldown
     );
 
-    // If debug mode is enabled log the execution of the command
-    if (client.config.debug.enabled) {
-      client.logger.log(
-        `Command ${command.name} has been executed by user ${msgData.author.tag} (${msgData.author.id})`
-      );
-    } else {
-      client.actionLogger.logCommand(
-        commandData.command.name,
-        commandData.args,
-        (commandData?.author as any).id
-      );
+    // Crate command usage instance
+    const commandUsage = new CommandUsage(
+      command.name,
+      commandData.args,
+      msgData?.author?.id,
+      commandData.guild.id,
+      await commandSuccessfull
+    );
+
+    // If the bot is in production mode save the command usage to the database.
+    if (!client.config.debug.enabled) {
+      commandUsage.saveUsage();
     }
+
+    // Send command usage embed to the log channel on Discord.
+    commandUsage.reportUsage();
 
     return true;
   }

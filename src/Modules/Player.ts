@@ -126,8 +126,8 @@ class Player {
       });
 
       // Player events
-      player.on("stateChange", (oldS, newS) => {
-        if (newS.status === AudioPlayerStatus.Idle) {
+      player.on("stateChange", (listener) => {
+        if (listener.status === AudioPlayerStatus.Idle) {
           resolve();
         }
       });

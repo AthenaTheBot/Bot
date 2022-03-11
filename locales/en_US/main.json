@@ -5,6 +5,6 @@
   "USER_INSUFFICIENT_PERMS": "You don't have enough perms to do that action.",
   "SPECIFY_ROLE": "Please, sepcify a valid role.",
   "SPECIFY_USER": "Please, specify a valid user (*mention or specify the id of the user*).",
-  "WRONG_COMMAND_USAGE": "You have used this command wrong, please consider getting mode info [on our site](https://athena.bot/commands) about this command",
+  "WRONG_COMMAND_USAGE": "You have used this command wrong, please consider getting more info [on our site](https://athena.bot/commands) about this command",
   "COOLDOWN_WARNING": "Woah, you have used this command too many times, please wait a while to use it again."
 }

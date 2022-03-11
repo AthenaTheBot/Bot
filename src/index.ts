@@ -23,4 +23,4 @@ process.on("unhandledRejection", (err: Error) => {
   Athena.errorHandler.recordError(err);
 });
 
-export { AthenaConfig };
+export { AthenaConfig, Athena };

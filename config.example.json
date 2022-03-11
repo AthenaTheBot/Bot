@@ -3,6 +3,11 @@
     "enabled": true,
     "guild": ""
   },
+  "colors": {
+    "default": "#5865F2",
+    "error": "#ED4245",
+    "success": "#57F287"
+  },
   "bot": {
     "token": "",
     "activity": "/help",

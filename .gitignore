@@ -3,3 +3,4 @@ dist
 config.json
 config.build.json
 errors/*
+commands.json
