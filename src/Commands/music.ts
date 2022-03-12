@@ -1,4 +1,4 @@
-import { CommandManager, CommandData } from "../Modules/CommandManager";
+import { CommandData } from "../Modules/CommandManager";
 import { MessageEmbed } from "discord.js";
 import { Permissions } from "../constants";
 import Command from "../Structures/Command";
@@ -65,13 +65,14 @@ export const play = new Command(
     }
 
     try {
-      await commandData.client.player.serveGuild(
+      commandData.client.player.serveGuild(
         commandData.guild.id,
         commandData.author.voice.channel.id,
         commandData.channel.id,
         commandData.guild.voiceAdapterCreator,
         commandData.locales,
-        song
+        song,
+        commandData
       );
 
       return true;

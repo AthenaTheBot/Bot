@@ -18,6 +18,7 @@ class LocaleManager {
     this.locales = {};
   }
 
+  // Registers every locale inside of locales folder
   async loadLocales(): Promise<void> {
     try {
       const avaialbeLocales: string[] = fs.readdirSync(this.localesPath);
@@ -55,6 +56,7 @@ class LocaleManager {
     }
   }
 
+  // Fetdches a specific locale category
   getCategoryLocale(language: string, category?: string): object {
     const targetLocale = (this.locales as any)[language];
 
@@ -90,6 +92,7 @@ class LocaleManager {
     return;
   }
 
+  // Gets all avaialble locales
   getAvaiableLocales(): string[] {
     return Object.getOwnPropertyNames(this.locales);
   }

@@ -31,6 +31,7 @@ class DatabaseManager {
     this.logger = new Logger();
   }
 
+  // Connects to the database
   async connect(): Promise<boolean> {
     try {
       await mongoose.connect(this.url);
@@ -44,6 +45,7 @@ class DatabaseManager {
     }
   }
 
+  // Creates documents inside of the specified collection
   async createDocument(
     collection: string,
     document: object,
@@ -77,6 +79,7 @@ class DatabaseManager {
     }
   }
 
+  // Updates the target document
   async updateDocument(
     collection: string,
     documentId: string | number,
@@ -127,6 +130,7 @@ class DatabaseManager {
     }
   }
 
+  // Fetches the specified document
   async getDocument(
     collection: string,
     documentId: string | number

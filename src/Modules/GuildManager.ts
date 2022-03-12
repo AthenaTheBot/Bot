@@ -22,6 +22,7 @@ class GuildManager {
     this.dbManager = dbManager;
   }
 
+  // Creates a guild inside of the db
   async create(id: string, modules?: GuildModules): Promise<Guild | null> {
     const guild = new Guild(id, modules);
     const success = await this.dbManager.createDocument("guilds", guild);
@@ -34,14 +35,12 @@ class GuildManager {
     }
   }
 
-  async edit(id: string): Promise<Guild | null> {
-    return null;
-  }
-
+  // Deletes a guild from database
   async delete(id: string): Promise<boolean> {
     return await this.dbManager.removeDocument("guilds", id);
   }
 
+  // Fetches a guild
   async fetch(
     id: string,
     createGuildIfNotExists?: boolean
@@ -59,6 +58,7 @@ class GuildManager {
     return guild;
   }
 
+  // Updates a guild
   async updateGuild(id: string, mongoQuery: object): Promise<boolean> {
     let guild = (await this.dbManager.getDocument("guilds", id)) as Guild;
     if (!guild) {

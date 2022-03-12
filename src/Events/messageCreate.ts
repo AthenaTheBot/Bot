@@ -76,7 +76,7 @@ export default new Event(
     }
 
     // Execute command
-    const commandSuccessfull = command?.exec(commandData);
+    command?.exec(commandData);
 
     // Add cooldown to user
     client.cooldownManager.addCooldown(
@@ -90,8 +90,7 @@ export default new Event(
       command.name,
       commandData.args,
       msgData?.author?.id,
-      commandData.guild.id,
-      await commandSuccessfull
+      commandData.guild.id
     );
 
     // If the bot is in production mode save the command usage to the database.

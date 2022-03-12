@@ -42,22 +42,14 @@ export default new Event(
     if (!commandData.executeable) return false;
 
     // Execute command
-    const commandSuccessfull = command?.exec(commandData);
-
-    // Add cooldown to user
-    client.cooldownManager.addCooldown(
-      interactionData.author.id,
-      command.name,
-      command.cooldown
-    );
+    command?.exec(commandData);
 
     // Crate command usage instance
     const commandUsage = new CommandUsage(
       command.name,
       commandData.args,
-      interactionData?.author?.id,
-      commandData.guild.id,
-      await commandSuccessfull
+      interactionData?.member?.id,
+      commandData?.guild?.id
     );
 
     // If the bot is in production mode save the command usage to the database.

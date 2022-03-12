@@ -10,21 +10,18 @@ class CommandUsage {
   userId: string;
   guildId: string;
   date: string;
-  successfull: boolean;
 
   constructor(
     command: string,
     commandArgs: string[],
     userId: string,
-    guildId: string,
-    successfull: boolean
+    guildId: string
   ) {
     this.command = command;
     this.commandArgs = commandArgs;
     this.userId = userId;
     this.guildId = guildId;
     this.date = dayjs().format("L LT");
-    this.successfull = successfull;
   }
 
   async saveUsage(): Promise<boolean> {
@@ -35,7 +32,6 @@ class CommandUsage {
         userId: this.userId,
         guildId: this.guildId,
         date: this.date,
-        successfull: this.successfull,
       },
       false
     );
@@ -63,11 +59,6 @@ class CommandUsage {
           },
           { name: "User", value: `\`${this.userId}\``, inline: true },
           { name: "Guild", value: `\`${this.guildId}\``, inline: true },
-          {
-            name: "Successfull",
-            value: `\`${this.successfull}\``,
-            inline: true,
-          },
         ])
         .setTimestamp();
 

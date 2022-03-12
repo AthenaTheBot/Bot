@@ -26,10 +26,12 @@ class EventManager {
     this.events = [];
   }
 
+  // Registers event
   registerEvent(eventName: string, eventFunction: () => boolean) {
     this.events.push(new Event(eventName, eventFunction));
   }
 
+  // Reads every event file inside of events folder then registers every exported event from event files.
   async registerEventsFromEventFolder(): Promise<object> {
     const eventFiles = await readdirSync(this.eventsFolder, "utf-8").filter(
       (x) => x.endsWith(".js")
@@ -46,6 +48,7 @@ class EventManager {
     return this.events;
   }
 
+  // Listens registered evenets
   listenEvents() {
     for (var i = 0; i < this.events.length; i++) {
       const event = this.events[i];

@@ -29,10 +29,6 @@ class UserManager {
     }
   }
 
-  async edit(): Promise<User | null> {
-    return null;
-  }
-
   async delete(id: string): Promise<boolean> {
     return await this.dbManager.removeDocument("users", id);
   }

@@ -24,6 +24,7 @@ import {
   TextChannel,
   VoiceChannel,
 } from "discord.js";
+import { CommandData } from "./CommandManager";
 
 /**
  * Handles all of the global actions related with voice
@@ -49,7 +50,11 @@ class Player {
       if (query.trim().indexOf(this.baseURLs.spTrack) > 0) {
         const spotifyData = await spotify.getData(query.trim());
         if (!spotifyData) return null;
-        query = spotifyData.name;
+        const artists: string[] = [];
+        spotifyData?.artists.forEach((artist: any) => {
+          artists.push(artist.name);
+        });
+        query = `${spotifyData.name} ${artists.join(" ")}`;
       } else if (query.trim().indexOf(this.baseURLs.spotifyPlaylist) > 0) {
         return null;
       }
@@ -114,7 +119,7 @@ class Player {
             vc.members.filter(
               (x) => x.id != (this.client.user as ClientUser)?.id
             ).size || 0;
-          if (memberCount <= 0) {
+          if (memberCount <= 0 && !(player as any)?.botDisconnected) {
             reject(new Error("INACTIVE_VC"));
           }
         }
@@ -122,6 +127,7 @@ class Player {
 
       // Connection events
       connection.on(VoiceConnectionStatus.Disconnected, () => {
+        Object.assign(player, { botDisconnected: true });
         reject(new Error("BOT_DISCONNECTED"));
       });
 
@@ -144,18 +150,25 @@ class Player {
     textChannel: string,
     voiceAdapterCreator: any,
     locales: object,
-    song?: Song
+    song?: Song,
+    commandData?: CommandData
   ): Promise<void> {
+    let firstMessage = true;
     const sendMsg = async (msg: string): Promise<void> => {
-      try {
-        const channel = (await this.client.channels.fetch(
-          textChannel
-        )) as TextChannel;
-        const msgEmbed = new MessageEmbed()
-          .setColor("#5865F2")
-          .setDescription(msg);
-        channel.send({ embeds: [msgEmbed] });
-      } catch (err) {}
+      if (firstMessage && commandData) {
+        commandData.respond(msg, true);
+      } else {
+        firstMessage = false;
+        try {
+          const channel = (await this.client.channels.fetch(
+            textChannel
+          )) as TextChannel;
+          const msgEmbed = new MessageEmbed()
+            .setColor("#5865F2")
+            .setDescription(msg);
+          channel.send({ embeds: [msgEmbed] });
+        } catch (err) {}
+      }
     };
 
     return new Promise(async (resolve, reject) => {

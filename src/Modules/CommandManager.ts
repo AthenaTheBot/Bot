@@ -26,6 +26,7 @@ class CommandManager {
     this.commands = [];
   }
 
+  // Removes all globally registered slash commands
   async removeGlobalCommands(): Promise<void> {
     const cachedCommands: ApplicationCommand[] = [];
     (await this.client.application?.commands.fetch())?.forEach((x) =>
@@ -43,6 +44,7 @@ class CommandManager {
     this.client.logger.success("Removed all old slash commands.");
   }
 
+  // Registers a command
   async registerCommand(
     name: string,
     aliases: string[],
@@ -104,6 +106,7 @@ class CommandManager {
     }
   }
 
+  // Reads every command file inside of commands folder then registers every exported command from command files.
   async registerCommandsFromCommandFolder(): Promise<object> {
     const commandFiles = await readdirSync(
       join(__dirname, "..", "Commands"),
@@ -153,10 +156,12 @@ class CommandManager {
     return this.commands;
   }
 
+  // Removes a command (not slash command)
   removeCommand(cmdName: string) {
     this.commands = this.commands.filter((x) => x.name !== cmdName);
   }
 
+  // Checkes wheter the command is valid or not
   isValidCommand(cmdName: string) {
     return this.commands.filter(
       (x) => x.name === cmdName || x.aliases.includes(cmdName)
@@ -165,6 +170,7 @@ class CommandManager {
       : false;
   }
 
+  // Gets command detials
   getCommand(cmdName: string): Command | null {
     return (
       <Command>(

@@ -10,6 +10,7 @@ class CooldownManager {
     this.cooldowns = [];
   }
 
+  // Checks wheter the user is in command cooldown or not
   isInCooldown(userId: string, commandName: string): boolean {
     return this.cooldowns
       .find((x) => x.userId == userId)
@@ -18,6 +19,7 @@ class CooldownManager {
       : false;
   }
 
+  // Checks wheter the cooldown warning is sent or not
   isWarnSent(userId: string, commandName: string): boolean {
     return (
       this.cooldowns
@@ -26,6 +28,7 @@ class CooldownManager {
     );
   }
 
+  // Updates the warnSent state
   updateWarnSent(userId: string, commandName: string, newState: boolean): void {
     const cooldown = this.cooldowns.find((x) => x.userId == userId);
 
@@ -38,6 +41,7 @@ class CooldownManager {
     command.warnSent = newState;
   }
 
+  // Adds command cooldown to a user
   addCooldown(userId: string, commandName: string, duration: number): void {
     let cooldown: any = this.cooldowns.find((x) => x.userId == userId);
 
@@ -53,6 +57,7 @@ class CooldownManager {
     }, duration * 1000);
   }
 
+  // Removes one command cooldown of a user
   removeCooldown(userId: string, commandName: string) {
     const cooldown = this.cooldowns.find((x) => x.userId == userId);
 
@@ -65,6 +70,7 @@ class CooldownManager {
     }
   }
 
+  // Clears all cooldowns of a user
   clearCoolwons(userId: string): void {
     const cooldown = this.cooldowns.find((x) => x.userId == userId);
 

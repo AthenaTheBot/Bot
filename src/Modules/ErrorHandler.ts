@@ -26,6 +26,7 @@ class ErrorHandler {
     this.utils = new Utils();
   }
 
+  // Fetches the error count from older sessions of Athena
   async checkErrors(notify: boolean): Promise<string[] | null> {
     ensureDirSync(this.errorFolder);
 
@@ -46,6 +47,7 @@ class ErrorHandler {
     return errors.length === 0 ? null : errors;
   }
 
+  // Records an error
   recordError(error: Error = new Error("Unknown Error")): boolean {
     ensureDirSync(this.errorFolder);
 
