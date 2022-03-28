@@ -1,4 +1,4 @@
-import { CommandManager, CommandData } from "../Modules/CommandManager";
+import { CommandData } from "../Modules/CommandManager";
 import { Permissions } from "../constants";
 import { MessageEmbed } from "discord.js";
 import figlet from "figlet";

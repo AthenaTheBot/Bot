@@ -112,6 +112,7 @@ class DatabaseManager {
     }
   }
 
+  // Remove document from database
   async removeDocument(
     collection: string,
     documentId: string | number

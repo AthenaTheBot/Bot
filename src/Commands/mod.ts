@@ -1,4 +1,4 @@
-import { CommandManager, CommandData } from "../Modules/CommandManager";
+import { CommandData } from "../Modules/CommandManager";
 import { TextChannel } from "discord.js";
 import { Permissions } from "../constants";
 import UserWarning from "../Structures/UserWarning";

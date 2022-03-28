@@ -1,4 +1,4 @@
-import { CommandManager, CommandData } from "../Modules/CommandManager";
+import { CommandData } from "../Modules/CommandManager";
 import { MessageAttachment, MessageEmbed } from "discord.js";
 import { Permissions } from "../constants";
 import canvacord from "canvacord";
