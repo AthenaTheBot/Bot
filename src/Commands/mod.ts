@@ -174,7 +174,7 @@ export const slowmode = new Command(
 
     let timeout: string = commandData.args[0];
 
-    if (!isNaN(parseInt(timeout))) timeout = timeout + "s";
+    if (!isNaN(timeout as any)) timeout = timeout + "s";
     if (timeout === "off") timeout = "_0_";
 
     // Putting ; between keywords
