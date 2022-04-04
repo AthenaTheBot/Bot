@@ -17,6 +17,7 @@ import GuildManager from "./Modules/GuildManager";
 import UserManager from "./Modules/UserManager";
 import LocaleManager from "./Modules/LocaleManager";
 import CooldownManager from "./Modules/CooldownManager";
+import PollManager from "./Modules/PollManager";
 import Player from "./Modules/Player";
 import StatPoster from "./Modules/StatPoster";
 import TerminalHandler from "./Modules/TerminalHandler";
@@ -37,6 +38,7 @@ class AthenaClient extends Client {
   userManager: UserManager;
   localeManager: LocaleManager;
   cooldownManager: CooldownManager;
+  pollManager: PollManager;
 
   // Player
   player: Player;
@@ -62,6 +64,7 @@ class AthenaClient extends Client {
         Intents.FLAGS.GUILD_MEMBERS,
         Intents.FLAGS.GUILD_MESSAGES,
         Intents.FLAGS.GUILD_VOICE_STATES,
+        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
       ],
     });
 
@@ -77,6 +80,7 @@ class AthenaClient extends Client {
     this.userManager = new UserManager(this.dbManager);
     this.localeManager = new LocaleManager();
     this.cooldownManager = new CooldownManager();
+    this.pollManager = new PollManager();
 
     // Player
     this.player = new Player(this);

@@ -36,6 +36,10 @@ program.panicQuit = (reason) => {
 };
 
 const compileSourceCode = async () => {
+  program.log("Removing old build files...");
+
+  await fs.rm(buildFolder).catch((err) => []);
+
   program.log("Compiling typescript code...");
 
   const { stdout, stderr } = await exec("tsc");
@@ -54,7 +58,9 @@ const compileSourceCode = async () => {
 const buildCommands = async () => {
   await compileSourceCode();
 
-  const commandFiles = await fs.readdirSync(commandsFolder);
+  const commandFiles = await fs
+    .readdirSync(commandsFolder)
+    .filter((x) => x.endsWith(".js"));
   const commands = [];
 
   program.log("Reading current Athena build files.");

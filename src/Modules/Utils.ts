@@ -51,7 +51,8 @@ class Utils {
   }
 
   parseDuration(dur: string): number {
-    const minSecond = dur.trim().split(":");
+    if (!dur) return 0;
+    const minSecond = `${dur}`.trim().split(":");
     const min = parseInt(minSecond[0]) as number;
     const sec = parseInt(minSecond[1]) as number;
     return min * 60 + sec;

@@ -4,5 +4,10 @@
   "AVATAR_TITLE": "$user's avatar",
   "INVITE_LINK": "[Click to invite Athena to your server!](https://athena.bot/invite)",
   "HELP_TITLE": "General Information",
-  "HELP_BODY": "Athena is a multi-purpose discord bot that aims serve almost every function of a discord bot can perform for free.\n\nThere are lots of commands that you can interact with on Athena, you can see the list of all commands on our website.\n\n**Links**: \n [Our Website](https://athena.bot)\n[Commands Page](https://athena.bot/commands)\n[Invite Athena](https://athena.bot/invite)\n[Support Server](https://athena.bot/support)"
+  "HELP_BODY": "Athena is a multi-purpose discord bot that aims serve almost every function of a discord bot can perform for free.\n\nThere are lots of commands that you can interact with on Athena, you can see the list of all commands on our website.\n\n**Links**: \n [Our Website](https://athena.bot)\n[Commands Page](https://athena.bot/commands)\n[Invite Athena](https://athena.bot/invite)\n[Support Server](https://athena.bot/support)",
+  "POLL_NOT_FOUND": "The poll that you have specified has not found!",
+  "POLL_STARTED": "Poll Has Started!",
+  "POLL_ENDED": "Poll Has Ended!",
+  "POLL_BODY_1": "**Question**:\n`$question`\n\n**React with**:\nFor yes: 👍\nFor no: 👎\n\nPoll ends in **`$time`** seconds.",
+  "POLL_BODY_2": "**Question**:\n`$question`\n\n**Poll Results**:\n👍 → `$currentYes`\n👎 → `$currentNo`"
 }

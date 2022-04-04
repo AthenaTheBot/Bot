@@ -149,3 +149,99 @@ export const help = new Command(
     return true;
   }
 );
+
+export const pollCreate = new Command(
+  "poll-create",
+  [],
+  "Create a poll",
+  [
+    {
+      type: "NUMBER",
+      name: "timeout",
+      description: "Specify how much time should poll last (in seconds).",
+      required: true,
+    },
+    {
+      type: "STRING",
+      name: "question",
+      description: "Question to be asked",
+      required: true,
+    },
+  ],
+  5,
+  [Permissions.MANAGE_GUILD],
+  [
+    Permissions.SEND_MESSAGES,
+    Permissions.EMBED_LINKS,
+    Permissions.ADD_REACTIONS,
+  ],
+  async (commandData: CommandData): Promise<boolean> => {
+    const pollTime = commandData.args[0] as any;
+    const question = commandData.args.slice(1).join(" ");
+
+    if (isNaN(pollTime)) {
+      commandData.respond(commandData.locales.WRONG_COMMAND_USAGE, true);
+      return false;
+    }
+
+    const isPollSuccessfull = await commandData.client.pollManager.createPoll(
+      commandData.channel.id,
+      question,
+      pollTime * 1000,
+      commandData.locales
+    );
+
+    if (!isPollSuccessfull) {
+      commandData.respond(commandData.locales.ERROR, true);
+      return false;
+    }
+
+    return true;
+  }
+);
+
+export const pollEnd = new Command(
+  "poll-end",
+  [],
+  "Ends a poll",
+  [
+    {
+      type: "STRING",
+      name: "poll-id",
+      description: "Specify the poll that you want to end.",
+      required: true,
+    },
+  ],
+  4,
+  [Permissions.MANAGE_GUILD],
+  [
+    Permissions.SEND_MESSAGES,
+    Permissions.EMBED_LINKS,
+    Permissions.ADD_REACTIONS,
+  ],
+  async (commandData: CommandData): Promise<boolean> => {
+    if (!commandData.args[0]) {
+      commandData.respond(commandData.locales.WRONG_COMMAND_USAGE), true;
+      return false;
+    }
+
+    const poll = commandData.client.pollManager.getPoll(commandData.args[0]);
+
+    if (!poll) {
+      commandData.respond(commandData.locales.POLL_NOT_FOUND, true);
+      return false;
+    }
+
+    const success = commandData.client.pollManager.endPoll(poll.id);
+
+    if (success) {
+      commandData.respond(commandData.locales.SUCCESS, true);
+    } else {
+      commandData.respond(commandData.locales.ERROR, true);
+
+      return false;
+    }
+
+    return true;
+  }
+);

@@ -42,6 +42,7 @@ class EventManager {
       const event = await import(join(this.eventsFolder, eventFile)).then(
         (d) => d.default
       );
+
       this.events.push(new Event(event.name, event.exec));
     }
 
@@ -53,8 +54,9 @@ class EventManager {
     for (var i = 0; i < this.events.length; i++) {
       const event = this.events[i];
       try {
-        this.client.on(event.name, async (data) => {
-          await event.exec(this.client, data);
+        const _client = this.client;
+        this.client.on(event.name, async function () {
+          await event.exec(_client, arguments[0], arguments[1], arguments[2]);
         });
       } catch (err) {
         this.client.logger.error(

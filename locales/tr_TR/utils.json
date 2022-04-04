@@ -4,5 +4,10 @@
   "AVATAR_TITLE": "$user'nın avatarı",
   "INVITE_LINK": "[Athena'yı sunucunda davet etmek için tıkla!](https://athena.bot/invite)",
   "HELP_TITLE": "Genel Bilgi",
-  "HELP_BODY": "Athena, bir discord botunun gerçekleştirebileceği hemen hemen her işlevi bedava yerine getirmeyi amaçlayan çok amaçlı bir discord botudur.\n\nAthena'da etkileşime girebileceğiniz birçok komut var, tüm komutların listesini web sitemizde görebilirsiniz.\n\n**Linkler**: \n [Websitemiz](https://athena.bot)\n[Komutlar Sayfası](https://athena.bot/commands)\n[Athena'yı Davet Et](https://athena.bot/invite)\n[Destek Sunucusu](https://athena.bot/support)"
+  "HELP_BODY": "Athena, bir discord botunun gerçekleştirebileceği hemen hemen her işlevi bedava yerine getirmeyi amaçlayan çok amaçlı bir discord botudur.\n\nAthena'da etkileşime girebileceğiniz birçok komut var, tüm komutların listesini web sitemizde görebilirsiniz.\n\n**Linkler**: \n [Websitemiz](https://athena.bot)\n[Komutlar Sayfası](https://athena.bot/commands)\n[Athena'yı Davet Et](https://athena.bot/invite)\n[Destek Sunucusu](https://athena.bot/support)",
+  "POLL_NOT_FOUND": "Belirtilen oy bulunamadı!",
+  "POLL_STARTED": "Oylama Başladı!",
+  "POLL_ENDED": "Oylama Bitti!",
+  "POLL_BODY_1": "**Soru**:\n`$question`\n\n**Tepki ver**:\nEvet için: 👍\nHayır için: 👎\n\nOylama **`$time`** saniye içerisinde bitecek.",
+  "POLL_BODY_2": "**Soru**:\n`$question`\n\n**Oylama Sonuçları**:\n👍 → `$currentYes`\n👎 → `$currentNo`"
 }
