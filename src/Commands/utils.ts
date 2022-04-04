@@ -177,9 +177,9 @@ export const pollCreate = new Command(
   ],
   async (commandData: CommandData): Promise<boolean> => {
     const pollTime = commandData.args[0] as any;
-    const question = commandData.args.slice(1).join(" ");
+    const question = commandData.args.slice(1).join(" ").trim();
 
-    if (isNaN(pollTime)) {
+    if (isNaN(pollTime) || !question) {
       commandData.respond(commandData.locales.WRONG_COMMAND_USAGE, true);
       return false;
     }
