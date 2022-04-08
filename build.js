@@ -38,7 +38,10 @@ program.panicQuit = (reason) => {
 const compileSourceCode = async () => {
   program.log("Removing old build files...");
 
-  await fs.rm(buildFolder).catch((err) => []);
+  await fs.rm(buildFolder, { recursive: true, force: true }).catch((err) => {
+    console.log(err.message);
+    process.exit(1);
+  });
 
   program.log("Compiling typescript code...");
 
