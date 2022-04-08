@@ -1,4 +1,5 @@
 import axios from "axios";
+import Utils from "./Utils";
 import AthenaClient from "../AthenaClient";
 
 /**
@@ -68,7 +69,7 @@ class StatPoster {
   async startPosting(): Promise<void> {
     while (this.continue) {
       this.postStats();
-      await this.client.utils.sleep(this.postInterval * 60 * 1000);
+      await Utils.sleep(this.postInterval * 60 * 1000);
     }
   }
 }

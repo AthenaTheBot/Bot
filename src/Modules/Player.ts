@@ -25,6 +25,7 @@ import {
   VoiceChannel,
 } from "discord.js";
 import { CommandData } from "./CommandManager";
+import Utils from "./Utils";
 
 /**
  * Handles all of the global actions related with voice
@@ -109,22 +110,6 @@ class Player {
 
       listener.player = player;
 
-      // Check member count in voice channel
-      setInterval(async () => {
-        const vc = (await this.client.channels.cache.get(
-          connection.joinConfig.channelId as string
-        )) as VoiceChannel;
-        if (vc) {
-          const memberCount =
-            vc.members.filter(
-              (x) => x.id != (this.client.user as ClientUser)?.id
-            ).size || 0;
-          if (memberCount <= 0 && !(player as any)?.botDisconnected) {
-            reject(new Error("INACTIVE_VC"));
-          }
-        }
-      }, 2 * 30 * 1000);
-
       // Connection events
       connection.on(VoiceConnectionStatus.Disconnected, () => {
         Object.assign(player, { botDisconnected: true });
@@ -141,6 +126,24 @@ class Player {
       player.on("error", (err) => {
         reject(err);
       });
+
+      // Check member count in voice channel
+      while (true) {
+        await Utils.sleep(2 * 30 * 1000);
+        const vc = (await this.client.channels.cache.get(
+          connection.joinConfig.channelId as string
+        )) as VoiceChannel;
+        if (vc) {
+          const memberCount =
+            vc.members.filter(
+              (x) => x.id != (this.client.user as ClientUser)?.id
+            ).size || 0;
+          if (memberCount <= 0 && !(player as any)?.botDisconnected) {
+            reject(new Error("INACTIVE_VC"));
+            break;
+          }
+        }
+      }
     });
   }
 
