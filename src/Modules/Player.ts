@@ -113,32 +113,42 @@ class Player {
       // Connection events
       connection.on(VoiceConnectionStatus.Disconnected, () => {
         Object.assign(player, { botDisconnected: true });
+        player.removeAllListeners();
+        (player as any).done = true;
         reject(new Error("BOT_DISCONNECTED"));
       });
 
       // Player events
       player.on("stateChange", (listener) => {
         if (listener.status === AudioPlayerStatus.Idle) {
+          player.removeAllListeners();
+          (player as any).done = true;
           resolve();
         }
       });
 
       player.on("error", (err) => {
+        player.removeAllListeners();
+        (player as any).done = true;
         reject(err);
       });
 
       // Check member count in voice channel
       while (true) {
-        await Utils.sleep(2 * 30 * 1000);
+        await Utils.sleep(15 * 1000);
+
+        if ((player as any)?.done) break;
+
         const vc = (await this.client.channels.cache.get(
           connection.joinConfig.channelId as string
         )) as VoiceChannel;
+
         if (vc) {
           const memberCount =
             vc.members.filter(
               (x) => x.id != (this.client.user as ClientUser)?.id
             ).size || 0;
-          if (memberCount <= 0 && !(player as any)?.botDisconnected) {
+          if (memberCount <= 0 && player.playable.length === 0) {
             reject(new Error("INACTIVE_VC"));
             break;
           }

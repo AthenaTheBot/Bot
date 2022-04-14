@@ -50,20 +50,6 @@
       "header": { "Authorization": "$token" },
       "body": { "guildCount": "$guild_count" },
       "token": ""
-    },
-    {
-      "name": "discordboats",
-      "url": "https://discord.boats/api/bot/$client_id",
-      "header": { "Authorization": "$token" },
-      "body": { "server_count": "$guild_count" },
-      "token": ""
-    },
-    {
-      "name": "discordbotlistcom",
-      "url": "https://discordbotlist.com/api/v1/bots/$client_id/stats",
-      "header": { "Authorization": "$token" },
-      "body": { "guilds": "$guild_count" },
-      "token": ""
     }
   ],
   "dbUrl": "mongodb://localhost:27017/AthenaV3"

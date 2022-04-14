@@ -108,6 +108,7 @@ class AthenaClient extends Client {
       figlet(
         "ATHENA",
         {
+          font: "Speed",
           width: 400,
           horizontalLayout: "full",
         },
