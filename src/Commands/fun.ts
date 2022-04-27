@@ -59,41 +59,41 @@ export const dog = new Command(
   }
 );
 
-export const meme = new Command(
-  "meme",
-  [],
-  "Fetches random memes from reddit.",
-  [],
-  4,
-  [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    const data = await axios("https://api.ksoft.si/images/random-meme", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${commandData.client.config.apiKeys.KSOFT}`,
-      },
-    }).then((res) => res?.data);
+// export const meme = new Command(
+//   "meme",
+//   [],
+//   "Fetches random memes from reddit.",
+//   [],
+//   4,
+//   [],
+//   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+//   async (commandData: CommandData): Promise<boolean> => {
+//     const data = await axios("https://api.ksoft.si/images/random-meme", {
+//       method: "GET",
+//       headers: {
+//         Authorization: `Bearer ${commandData.client.config.apiKeys.KSOFT}`,
+//       },
+//     }).then((res) => res?.data);
 
-    if (!data) {
-      commandData.respond(commandData.locales.ERROR, true);
-      return false;
-    }
+//     if (!data) {
+//       commandData.respond(commandData.locales.ERROR, true);
+//       return false;
+//     }
 
-    const Embed = new MessageEmbed();
-    Embed.setAuthor({ name: data.author })
-      .setURL(data.source)
-      .setTitle(data.title)
-      .setImage(data.image_url)
-      .setFooter({
-        text: `👍 ${data.upvotes} | 👎 ${data.downvotes} | 💬 ${data.comments}`,
-      });
+//     const Embed = new MessageEmbed();
+//     Embed.setAuthor({ name: data.author })
+//       .setURL(data.source)
+//       .setTitle(data.title)
+//       .setImage(data.image_url)
+//       .setFooter({
+//         text: `👍 ${data.upvotes} | 👎 ${data.downvotes} | 💬 ${data.comments}`,
+//       });
 
-    commandData.respond(Embed);
+//     commandData.respond(Embed);
 
-    return true;
-  }
-);
+//     return true;
+//   }
+// );
 
 export const coinflip = new Command(
   "coinflip",

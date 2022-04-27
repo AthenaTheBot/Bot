@@ -1,14 +1,17 @@
 // Modules
-import spotify from "spotify-url-info";
+import fetch from "cross-fetch";
+const spotify = require("spotify-url-info")(fetch);
 import ytsr from "ytsr";
+import { getBasicInfo } from "ytdl-core";
 import {
   getVoiceConnection,
   joinVoiceChannel,
   createAudioPlayer,
   createAudioResource,
   AudioResource,
-  AudioPlayerStatus,
   VoiceConnectionStatus,
+  NoSubscriberBehavior,
+  AudioPlayerStatus,
 } from "@discordjs/voice";
 import { stream } from "play-dl";
 
@@ -40,6 +43,8 @@ class Player {
     this.listeners = new Map();
 
     this.baseURLs = {
+      ytVideo:
+        /(?:https?:\/\/|www\.|m\.|^)youtu(?:be\.com\/watch\?(?:.*?&(?:amp;)?)?v=|\.be\/)([\w‌​\-]+)(?:&(?:amp;)?[\w\?=]*)?/,
       spTrack: "open.spotify.com/track/",
       spPlaylist: "open.spotify.com/playlist/",
       spAlbum: "open.spotify.com/album/",
@@ -48,6 +53,7 @@ class Player {
 
   async searchSong(query: string): Promise<Song | null> {
     try {
+      let result = null;
       if (query.trim().indexOf(this.baseURLs.spTrack) > 0) {
         const spotifyData = await spotify.getData(query.trim());
         if (!spotifyData) return null;
@@ -56,13 +62,32 @@ class Player {
           artists.push(artist.name);
         });
         query = `${spotifyData.name} ${artists.join(" ")}`;
+        result = (
+          await ytsr(query.trim(), { limit: 2, safeSearch: false })
+        ).items.filter((x) => x.type === "video")[0] as any;
       } else if (query.trim().indexOf(this.baseURLs.spotifyPlaylist) > 0) {
         return null;
+      } else if (query.trim().match(this.baseURLs.ytVideo)) {
+        result = await getBasicInfo(query.trim(), {})
+          .then((data) => {
+            if (data?.videoDetails)
+              return {
+                title: data?.videoDetails?.title,
+                description: data?.videoDetails?.description,
+                duration: data?.videoDetails?.lengthSeconds,
+                url: data?.videoDetails?.video_url,
+              };
+            else return null;
+          })
+          .catch((err) => {
+            console.log(err);
+            return null;
+          });
+      } else {
+        result = (
+          await ytsr(query.trim(), { limit: 2, safeSearch: false })
+        ).items.filter((x) => x.type === "video")[0] as any;
       }
-
-      const result = (
-        await ytsr(query.trim(), { limit: 2, safeSearch: false })
-      ).items.filter((x) => x.type === "video")[0] as any;
 
       if (!result) return null;
       else {
@@ -99,7 +124,11 @@ class Player {
 
       if (!connection) return reject(new Error("NO_CONNECTION"));
 
-      const player = createAudioPlayer();
+      const player = createAudioPlayer({
+        behaviors: {
+          noSubscriber: NoSubscriberBehavior.Play,
+        },
+      });
       const resource = await this.createPlayerResource(song);
 
       if (!resource) return reject(new Error("NO_RESOURCE"));
@@ -120,8 +149,7 @@ class Player {
 
       // Player events
       player.on("stateChange", (listener) => {
-        if (listener.status === AudioPlayerStatus.Idle) {
-          player.removeAllListeners();
+        if (player.state.status === AudioPlayerStatus.Idle) {
           (player as any).done = true;
           resolve();
         }
