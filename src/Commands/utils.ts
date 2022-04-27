@@ -92,7 +92,7 @@ export const avatar = new Command(
       .setTitle(
         commandData.locales.AVATAR_TITLE.replace(
           "$user",
-          commandData.author?.user.tag
+          targetUser.displayName
         )
       )
       .setImage(

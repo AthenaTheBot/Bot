@@ -143,10 +143,12 @@ class CommandData {
       !isNaN(this.args[index] as any)
     )
       userId = this.args[index];
-    else userId = this.args[index].slice(3, this.args[index].length - 1);
+    else userId = this.args[index].replace(/\D/g, "");
 
     try {
-      const user = (await this.guild.members.cache.get(userId)) || null;
+      const user =
+        (await this.guild.members.cache.get(userId)) ||
+        (await this.guild.members.fetch(userId));
 
       return user;
     } catch (err) {
@@ -164,10 +166,12 @@ class CommandData {
       !isNaN(this.args[index] as any)
     )
       roleId = this.args[index];
-    else roleId = this.args[index].slice(3, this.args[index].length - 1);
+    else roleId = this.args[index].replace(/\D/g, "");
 
     try {
-      const role = (await this.guild.roles.cache.get(roleId)) || null;
+      const role =
+        (await this.guild.roles.cache.get(roleId)) ||
+        (await this.guild.roles.fetch(roleId));
 
       return role;
     } catch (err) {
