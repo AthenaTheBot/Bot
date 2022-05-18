@@ -163,7 +163,7 @@ class Player {
 
       // Check member count in voice channel
       while (true) {
-        await Utils.sleep(15 * 1000);
+        await Utils.sleep(90 * 1000);
 
         if ((player as any)?.done) break;
 
@@ -176,7 +176,8 @@ class Player {
             vc.members.filter(
               (x) => x.id != (this.client.user as ClientUser)?.id
             ).size || 0;
-          if (memberCount <= 0 && player.playable.length === 0) {
+
+          if (memberCount === 0) {
             reject(new Error("INACTIVE_VC"));
             break;
           }
