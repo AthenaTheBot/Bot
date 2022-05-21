@@ -194,7 +194,7 @@ class CommandData {
               .setDescription(respondPayload.trim()),
           ],
         };
-      } else payload = respondPayload;
+      } else payload = { content: respondPayload };
     } else if (Array.isArray(respondPayload)) {
       payload = {
         embeds: [...respondPayload.filter((x) => x instanceof MessageEmbed)],

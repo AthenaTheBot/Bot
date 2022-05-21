@@ -194,6 +194,8 @@ export const pollCreate = new Command(
     if (!isPollSuccessfull) {
       commandData.respond(commandData.locales.ERROR, true);
       return false;
+    } else {
+      commandData.respond("👍");
     }
 
     return true;

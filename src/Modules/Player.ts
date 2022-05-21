@@ -120,9 +120,22 @@ class Player {
 
       if (!listener) return reject(new Error("NO_LISTENER"));
 
-      const connection = getVoiceConnection(guildId);
+      let connection = getVoiceConnection(guildId);
 
-      if (!connection) return reject(new Error("NO_CONNECTION"));
+      if (!connection) {
+        try {
+          connection = joinVoiceChannel({
+            guildId: guildId,
+            channelId: listener.voiceChannel,
+            selfDeaf: true,
+            adapterCreator: listener.voiceAdapterCreator,
+          });
+
+          if (!connection) throw new Error("Cannot connect to voice channel.");
+        } catch (err) {
+          return reject(new Error("NO_CONNECTION"));
+        }
+      }
 
       const player = createAudioPlayer({
         behaviors: {
@@ -280,44 +293,58 @@ class Player {
               }
             }, 30 * 1000);
           }
-        } catch (err) {
-          if ((err as Error).message == "BOT_DISCONNECTED") {
-            this.destroyStream(guildId);
-            listener.listening = false;
-            listener.queue = [];
-            resolve();
-            break;
-          } else if ((err as Error).message == "INACTIVE_VC") {
-            this.destroyStream(guildId);
-            listener.listening = false;
-            listener.queue = [];
-            sendMsg((listener.locales as any).INACTIVE_VC);
-            resolve();
-          } else if ((err as Error).message == "NO_RESOURCE") {
-            sendMsg(
-              (listener.locales as any).PLAY_ERROR.replace(
-                "$song_title",
-                listener.queue[0].title
-              ).replace("$song_url", listener.queue[0].url)
-            );
-            listener.queue.shift();
-            this.listeners.set(listener.guildId, listener);
-            if (listener.queue.length == 0) {
+        } catch (err: any) {
+          switch (err?.message) {
+            case "BOT_DISCONNECTED":
+              this.destroyStream(guildId);
               listener.listening = false;
+              listener.queue = [];
+              resolve();
+              break;
+
+            case "NO_CONNECTION":
+              this.destroyStream(guildId);
+              listener.listening = false;
+              listener.queue = [];
+              sendMsg((listener.locales as any).JOIN_VC_ERROR);
+              reject(new Error("Cannot connect to voice channel."));
+              break;
+
+            case "INACTIVE_VC":
+              this.destroyStream(guildId);
+              listener.listening = false;
+              listener.queue = [];
+              sendMsg((listener.locales as any).INACTIVE_VC);
+              resolve();
+              break;
+
+            case "NO_RESOURCE":
+              sendMsg(
+                (listener.locales as any).PLAY_ERROR.replace(
+                  "$song_title",
+                  listener.queue[0].title
+                ).replace("$song_url", listener.queue[0].url)
+              );
+              listener.queue.shift();
               this.listeners.set(listener.guildId, listener);
-              reject();
-              setTimeout(() => {
-                const newListener = this.listeners.get(guildId);
-                if (!newListener || !newListener?.listening) {
-                  this.destroyStream(guildId);
-                }
-              }, 30 * 1000);
-            }
-          } else {
-            this.destroyStream(guildId);
-            listener.listening = false;
-            reject(err);
-            break;
+              if (listener.queue.length == 0) {
+                listener.listening = false;
+                this.listeners.set(listener.guildId, listener);
+                resolve();
+                setTimeout(() => {
+                  const newListener = this.listeners.get(guildId);
+                  if (!newListener || !newListener?.listening) {
+                    this.destroyStream(guildId);
+                  }
+                }, 30 * 1000);
+              }
+              break;
+
+            default:
+              this.destroyStream(guildId);
+              listener.listening = false;
+              reject(err);
+              break;
           }
         }
       }

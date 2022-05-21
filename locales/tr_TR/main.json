@@ -1,5 +1,5 @@
 {
-  "ERROR": "O aksiyon üzerinde çalışılırken beklenmedik bir hata meydana geldi, lütfen tekrar deneyin ya da [bize ulaşın](https://athena.bot/support).",
+  "ERROR": "O aksiyon üzerinde çalışılırken bir hata meydana geldi, lütfen tekrar deneyin ya da [bize ulaşın](https://athena.bot/support).",
   "SUCCESS": "Aksiyon başarı ile gerçekleştirildi!",
   "BOT_INSUFFICIENT_PERMS": "Athena O aksiyonu yerine getirmek için yeterli yetkilere sahip değil, lütfen Athena'nın rol yetkilerini/rol sıralamasını kontrol edin.",
   "USER_INSUFFICIENT_PERMS": "O işlemi yapmak için yeterli yetkilere sahip değilsin.",

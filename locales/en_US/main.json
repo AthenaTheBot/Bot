@@ -1,5 +1,5 @@
 {
-  "ERROR": "An unexpected error occured while working on that action, please try again later or [contact us](https://athena.bot/support).",
+  "ERROR": "An error occurred while working on that action, please try again later or [contact us](https://athena.bot/support).",
   "SUCCESS": "Action completed successfully.",
   "BOT_INSUFFICIENT_PERMS": "Athena does not have enough perms to do that action, plase consider checking Athena's role perms/role hiearchy.",
   "USER_INSUFFICIENT_PERMS": "You don't have enough perms to do that action.",

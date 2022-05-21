@@ -52,6 +52,8 @@ class PollManager {
       try {
         const pollMessage = await pollChannel.send({ embeds: [pollEmbed] });
 
+        if (!pollMessage) throw new Error("Cannot send poll message");
+
         await pollMessage.react("👍");
         await pollMessage.react("👎");
 
