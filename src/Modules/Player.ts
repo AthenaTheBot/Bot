@@ -187,7 +187,7 @@ class Player {
         if (vc) {
           const memberCount =
             vc.members.filter(
-              (x) => x.id != (this.client.user as ClientUser)?.id
+              (x) => x.id != (this.client.user as ClientUser)?.id && !x.user.bot
             ).size || 0;
 
           if (memberCount === 0) {
