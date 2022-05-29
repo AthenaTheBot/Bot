@@ -2,7 +2,7 @@
 import fetch from "cross-fetch";
 const spotify = require("spotify-url-info")(fetch);
 import ytsr from "ytsr";
-import { getBasicInfo } from "ytdl-core";
+import ytdl, { getBasicInfo } from "ytdl-core";
 import {
   getVoiceConnection,
   joinVoiceChannel,
@@ -12,8 +12,8 @@ import {
   VoiceConnectionStatus,
   NoSubscriberBehavior,
   AudioPlayerStatus,
+  StreamType,
 } from "@discordjs/voice";
-import { stream } from "play-dl";
 
 // TODO: Better error message esepcially for age restricred videos.
 
@@ -105,13 +105,16 @@ class Player {
   }
 
   async createPlayerResource(song: Song): Promise<AudioResource | null> {
-    const source = await stream(song.url, { quality: 2 }).catch((err) => null);
+    try {
+      const source = ytdl(song.url);
 
-    if (!source?.stream) return null;
-
-    return createAudioResource(source.stream, {
-      inputType: source.type,
-    });
+      return createAudioResource(source, {
+        inputType: StreamType.Arbitrary,
+      });
+    } catch (err: any) {
+      this.client.errorHandler.recordError(err);
+      return null;
+    }
   }
 
   async streamSong(guildId: string, song: Song): Promise<void> {
