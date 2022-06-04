@@ -1,5 +1,7 @@
 import { AudioPlayer } from "@discordjs/voice";
+import { MessageEmbed, TextChannel } from "discord.js";
 import Song from "./Song";
+import { Athena } from "..";
 
 class GuildQueue {
   guildId: string;
@@ -10,14 +12,14 @@ class GuildQueue {
   listening: boolean;
   voiceAdapterCreator: any;
   player: AudioPlayer | null;
-  locales: object;
+  locales: any;
 
   constructor(
     id: string,
     voiceChannel: string,
     textChannel: string,
     voiceAdapterCreator: any,
-    locales: object,
+    locales: any,
     queue?: Song[]
   ) {
     this.guildId = id;
@@ -35,6 +37,33 @@ class GuildQueue {
     }
 
     this.listening = false;
+  }
+
+  async sendMsg(locale: string, localeVariables: any = {}): Promise<void> {
+    let message = this.locales[locale];
+    if (!message) return;
+
+    try {
+      Object.getOwnPropertyNames(localeVariables).forEach((localeVar) => {
+        message = message.replaceAll(localeVar, localeVariables[localeVar]);
+      });
+
+      const embed = new MessageEmbed()
+        .setColor("#5865F2")
+        .setDescription(message);
+
+      const channel =
+        (Athena.channels.cache.get(this.textChannel) as TextChannel) ||
+        ((await Athena.channels.fetch(this.textChannel)) as TextChannel);
+
+      if (!channel) throw new Error("Channel not found");
+
+      channel.send({
+        embeds: [embed],
+      });
+    } catch (err: any) {
+      Athena.errorHandler.recordError(err);
+    }
   }
 }
 

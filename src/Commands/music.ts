@@ -41,38 +41,26 @@ export const play = new Command(
     if (!commandData?.author?.voice?.channel?.id)
       return commandData.respond(commandData.locales.JOIN_VC, true);
 
-    if (serverListener && serverListener?.listening) {
-      if (
-        commandData.author?.voice?.channel?.id !=
+    if (
+      serverListener &&
+      serverListener?.listening &&
+      commandData.author?.voice?.channel?.id !=
         commandData.guild?.me?.voice?.channel?.id
-      ) {
-        commandData.respond(commandData.locales.NOT_SAME_VC, true);
-        return false;
-      }
-
-      serverListener.queue.push(song);
-      commandData.client.player.listeners.set(
-        commandData.guild.id,
-        serverListener
-      );
-      return commandData.respond(
-        commandData.locales.ADDED_TO_QUEUE.replace(
-          "$song_title",
-          song.title
-        ).replace("$song_url", song.url),
-        true
-      );
+    ) {
+      commandData.respond(commandData.locales.NOT_SAME_VC, true);
+      return false;
     }
 
     try {
-      commandData.client.player.serveGuild(
+      commandData.client.player.playSong(
         commandData.guild.id,
-        commandData.author.voice.channel.id,
-        commandData.channel.id,
+        {
+          voice: commandData.author.voice.channel.id,
+          text: commandData.channel.id,
+        },
         commandData.guild.voiceAdapterCreator,
         commandData.locales,
-        song,
-        commandData
+        song
       );
 
       return true;

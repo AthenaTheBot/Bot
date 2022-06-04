@@ -51,7 +51,7 @@ class ErrorHandler {
   recordError(error: Error = new Error("Unknown Error")): boolean {
     ensureDirSync(this.errorFolder);
 
-    const errorId = uuid();
+    const errorId = `${error.name}_${uuid().replaceAll("-", "").slice(0, 6)}`;
 
     Object.assign(error, { id: errorId });
 

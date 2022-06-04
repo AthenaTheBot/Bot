@@ -1,4 +1,6 @@
 import AthenaClient from "../AthenaClient";
+import fs from "fs-extra";
+import path from "path";
 
 /**
  * Listens terminal commands.
@@ -74,6 +76,30 @@ class TerminalHandler {
           const usage = (memUsage.heapTotal / 1000000).toFixed(2);
 
           this.client.logger.log(`Approximate Memory Usage: ${usage} MB`);
+          break;
+
+        case "remove-errors":
+          const errosFolder = path.join(__dirname, "..", "..", "errors");
+          const errorFileCount =
+            fs.readdirSync(errosFolder).filter((x) => x.endsWith(".log"))
+              ?.length || 0;
+
+          if (errorFileCount === 0)
+            return this.client.logger.warn(
+              "There isn't any error file to remove."
+            );
+
+          try {
+            fs.emptyDirSync(errosFolder);
+
+            this.client.logger.success(
+              `Successfully removed ${errorFileCount} error file(s).`
+            );
+          } catch (err) {
+            this.client.logger.error(
+              "An error occured while removing error files."
+            );
+          }
           break;
 
         default:

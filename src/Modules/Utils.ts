@@ -30,7 +30,7 @@ class Utils {
 
   parseError(error: Error, addColors?: boolean): string {
     let errorString =
-      `[$color_redERROR MESSAGE$color_reset]: $error_name\n\n[$color_redERROR MESSAGE$color_reset]: $error_message\n\n[$color_redERROR STACK$color_reset]: $error_stack\n\n[$color_redERROR DATE$color_reset]: $error_date`
+      `[$color_redERROR NAME$color_reset]: $error_name\n\n[$color_redERROR MESSAGE$color_reset]: $error_message\n\n[$color_redERROR DATE$color_reset]: $error_date \n\n[$color_redERROR STACK$color_reset]: $error_stack`
         .replace("$error_name", error.name)
         .replace("$error_message", error.message)
         .replace("$error_stack", error.stack || "None")

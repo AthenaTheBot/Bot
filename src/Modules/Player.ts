@@ -1,38 +1,23 @@
-// Modules
 import fetch from "cross-fetch";
 const spotify = require("spotify-url-info")(fetch);
 import ytsr from "ytsr";
 import ytdl, { getBasicInfo } from "ytdl-core";
-import {
-  getVoiceConnection,
-  joinVoiceChannel,
-  createAudioPlayer,
-  createAudioResource,
-  AudioResource,
-  VoiceConnectionStatus,
-  NoSubscriberBehavior,
-  AudioPlayerStatus,
-  StreamType,
-} from "@discordjs/voice";
-
-// TODO: Better error message esepcially for age restricred videos.
-
-// Classes
 import Song from "../Structures/Song";
 import Listener from "../Structures/Listener";
 import AthenaClient from "../AthenaClient";
 import {
-  ClientUser,
-  MessageEmbed,
-  TextChannel,
-  VoiceChannel,
-} from "discord.js";
-import { CommandData } from "./CommandManager";
+  AudioPlayer,
+  AudioPlayerStatus,
+  createAudioPlayer,
+  createAudioResource,
+  getVoiceConnection,
+  joinVoiceChannel,
+  StreamType,
+  VoiceConnectionStatus,
+} from "@discordjs/voice";
 import Utils from "./Utils";
+import { VoiceChannel } from "discord.js";
 
-/**
- * Handles all of the global actions related with voice
- */
 class Player {
   private client: AthenaClient;
   public listeners: Map<string, Listener>;
@@ -41,7 +26,6 @@ class Player {
   constructor(client: AthenaClient) {
     this.client = client;
     this.listeners = new Map();
-
     this.baseURLs = {
       ytVideo:
         /(?:https?:\/\/|www\.|m\.|^)youtu(?:be\.com\/watch\?(?:.*?&(?:amp;)?)?v=|\.be\/)([\w‌​\-]+)(?:&(?:amp;)?[\w\?=]*)?/,
@@ -80,7 +64,6 @@ class Player {
             else return null;
           })
           .catch((err) => {
-            console.log(err);
             return null;
           });
       } else {
@@ -104,353 +87,278 @@ class Player {
     }
   }
 
-  async createPlayerResource(song: Song): Promise<AudioResource | null> {
-    try {
-      const source = ytdl(song.url);
+  async playSong(
+    guildId: string,
+    channels: { voice: string; text: string },
+    adapter: any,
+    locales: any,
+    song: Song | null
+  ) {
+    let listener = this.listeners.get(guildId);
 
-      return createAudioResource(source, {
-        inputType: StreamType.Arbitrary,
-      });
-    } catch (err: any) {
-      this.client.errorHandler.recordError(err);
-      return null;
+    if (!listener) {
+      listener = new Listener(
+        guildId,
+        channels.voice,
+        channels.text,
+        adapter,
+        locales,
+        []
+      );
+
+      this.listeners.set(
+        guildId,
+        new Listener(
+          guildId,
+          channels.voice,
+          channels.text,
+          adapter,
+          locales,
+          []
+        )
+      );
     }
-  }
 
-  async streamSong(guildId: string, song: Song): Promise<void> {
-    return new Promise(async (resolve, reject) => {
+    if (!listener?.player) listener.player = createAudioPlayer();
+
+    if (listener.queue.length === 0 && !song) return false;
+
+    if (listener.listening && song) {
+      listener.queue.push(song);
+      this.listeners.set(listener.guildId, listener);
+      listener.sendMsg("ADDED_TO_QUEUE", {
+        $song_title: song.title,
+        $song_url: song.url,
+      });
+
+      return null;
+    } else if (listener.listening && !song) return false;
+
+    if (song) listener.queue.push(song);
+
+    this.listeners.set(listener.guildId, listener);
+
+    while (this.listeners.get(guildId)?.queue?.length) {
       const listener = this.listeners.get(guildId);
 
-      if (!listener) return reject(new Error("NO_LISTENER"));
+      if (!listener) break;
 
-      let connection = getVoiceConnection(guildId);
+      const song = this.listeners.get(guildId)?.queue[0];
 
-      if (!connection) {
-        try {
-          connection = joinVoiceChannel({
-            guildId: guildId,
-            channelId: listener.voiceChannel,
-            selfDeaf: true,
-            adapterCreator: listener.voiceAdapterCreator,
-          });
+      if (!song) break;
 
-          if (!connection) throw new Error("Cannot connect to voice channel.");
-        } catch (err) {
-          return reject(new Error("NO_CONNECTION"));
-        }
-      }
+      listener.listening = true;
 
-      const player = createAudioPlayer({
-        behaviors: {
-          noSubscriber: NoSubscriberBehavior.Play,
-        },
-      });
-      const resource = await this.createPlayerResource(song);
+      this.listeners.set(listener.guildId, listener);
 
-      if (!resource) return reject(new Error("NO_RESOURCE"));
+      const result = await new Promise<{ state: string; payload: any }>(
+        async (resolve) => {
+          try {
+            const resource = createAudioResource(await ytdl(song.url), {
+              inputType: StreamType.Arbitrary,
+            });
 
-      player.play(resource);
+            listener.player?.play(resource);
 
-      connection.subscribe(player);
+            const conn = await joinVoiceChannel({
+              guildId: guildId,
+              channelId: channels.voice,
+              adapterCreator: adapter,
+              selfDeaf: true,
+            });
 
-      listener.player = player;
+            conn?.subscribe(listener.player as any);
 
-      // Connection events
-      connection.on(VoiceConnectionStatus.Disconnected, () => {
-        Object.assign(player, { botDisconnected: true });
-        player.removeAllListeners();
-        (player as any).done = true;
-        reject(new Error("BOT_DISCONNECTED"));
-      });
+            listener.sendMsg("NOW_PLAYING", {
+              $song_title: song.title,
+              $song_url: song.url,
+            });
 
-      // Player events
-      player.on("stateChange", (listener) => {
-        if (player.state.status === AudioPlayerStatus.Idle) {
-          (player as any).done = true;
-          resolve();
-        }
-      });
+            conn.on(VoiceConnectionStatus.Disconnected, () => {
+              resolve({
+                state: "DISCONNECTED",
+                payload: null,
+              });
+            });
 
-      player.on("error", (err) => {
-        player.removeAllListeners();
-        (player as any).done = true;
-        reject(err);
-      });
+            listener?.player?.on("stateChange", () => {
+              if (listener.player?.state.status === AudioPlayerStatus.Idle)
+                resolve({
+                  state: "FINISHED",
+                  payload: null,
+                });
+            });
 
-      // Check member count in voice channel
-      while (true) {
-        await Utils.sleep(90 * 1000);
+            listener?.player?.on("error", (err) => {
+              listener.player = null;
+              resolve({
+                state: "ERROR",
+                payload: err,
+              });
+            });
 
-        if ((player as any)?.done) break;
+            while (true) {
+              await Utils.sleep(15 * 1000);
+              const _connection = getVoiceConnection(guildId);
 
-        const vc = (await this.client.channels.cache.get(
-          connection.joinConfig.channelId as string
-        )) as VoiceChannel;
+              if (_connection) {
+                const vcMembers = (
+                  (await this.client.channels.fetch(
+                    listener.voiceChannel
+                  )) as VoiceChannel
+                )?.members.filter((x) => !x.user.bot).size;
 
-        if (vc) {
-          const memberCount =
-            vc.members.filter(
-              (x) => x.id != (this.client.user as ClientUser)?.id && !x.user.bot
-            ).size || 0;
-
-          if (memberCount === 0) {
-            reject(new Error("INACTIVE_VC"));
-            break;
-          }
-        }
-      }
-    });
-  }
-
-  async serveGuild(
-    guildId: string,
-    voiceChannel: string,
-    textChannel: string,
-    voiceAdapterCreator: any,
-    locales: object,
-    song?: Song,
-    commandData?: CommandData
-  ): Promise<void> {
-    let firstMessage = true;
-    const sendMsg = async (msg: string): Promise<void> => {
-      if (firstMessage && commandData) {
-        commandData.respond(msg, true);
-      } else {
-        firstMessage = false;
-        try {
-          const channel = (await this.client.channels.fetch(
-            textChannel
-          )) as TextChannel;
-          const msgEmbed = new MessageEmbed()
-            .setColor("#5865F2")
-            .setDescription(msg);
-          channel.send({ embeds: [msgEmbed] });
-        } catch (err) {}
-      }
-    };
-
-    return new Promise(async (resolve, reject) => {
-      let voiceConnection =
-        getVoiceConnection(guildId) ||
-        (await joinVoiceChannel({
-          guildId: guildId,
-          channelId: voiceChannel,
-          adapterCreator: voiceAdapterCreator,
-        }));
-
-      if (!voiceConnection) return;
-
-      let listener = this.listeners.get(guildId);
-
-      if (!listener) {
-        this.listeners.set(
-          guildId,
-          new Listener(
-            guildId,
-            voiceChannel,
-            textChannel,
-            voiceAdapterCreator,
-            locales
-          )
-        );
-        listener = new Listener(
-          guildId,
-          voiceChannel,
-          textChannel,
-          voiceAdapterCreator,
-          locales
-        );
-      }
-
-      if (song) {
-        listener.queue.push(song);
-      } else {
-        if (listener.queue.length <= 0) return;
-
-        song = listener.queue[0];
-      }
-
-      while (listener.queue.length > 0) {
-        try {
-          listener.listening = true;
-          this.listeners.set(listener.guildId, listener);
-          sendMsg(
-            (listener.locales as any).NOW_PLAYING.replace(
-              "$song_title",
-              listener.queue[0].title
-            ).replace("$song_url", listener.queue[0].url)
-          );
-          await this.streamSong(guildId, listener.queue[0]);
-          if (listener.loop) {
-            listener.queue.push(listener.queue[0]);
-          }
-          listener.queue.shift();
-          if (listener.queue.length === 0) {
-            resolve();
-            listener.listening = false;
-            this.listeners.set(listener.guildId, listener);
-            setTimeout(() => {
-              const newListener = this.listeners.get(guildId);
-              if (!newListener || !newListener?.listening) {
-                this.destroyStream(guildId);
+                if (vcMembers === 0) {
+                  resolve({
+                    state: "INACTIVE",
+                    payload: null,
+                  });
+                  break;
+                }
               }
-            }, 30 * 1000);
-          }
-        } catch (err: any) {
-          switch (err?.message) {
-            case "BOT_DISCONNECTED":
-              this.destroyStream(guildId);
-              listener.listening = false;
-              listener.queue = [];
-              resolve();
-              break;
-
-            case "NO_CONNECTION":
-              this.destroyStream(guildId);
-              listener.listening = false;
-              listener.queue = [];
-              sendMsg((listener.locales as any).JOIN_VC_ERROR);
-              reject(new Error("Cannot connect to voice channel."));
-              break;
-
-            case "INACTIVE_VC":
-              this.destroyStream(guildId);
-              listener.listening = false;
-              listener.queue = [];
-              sendMsg((listener.locales as any).INACTIVE_VC);
-              resolve();
-              break;
-
-            case "NO_RESOURCE":
-              sendMsg(
-                (listener.locales as any).PLAY_ERROR.replace(
-                  "$song_title",
-                  listener.queue[0].title
-                ).replace("$song_url", listener.queue[0].url)
-              );
-              listener.queue.shift();
-              this.listeners.set(listener.guildId, listener);
-              if (listener.queue.length == 0) {
-                listener.listening = false;
-                this.listeners.set(listener.guildId, listener);
-                resolve();
-                setTimeout(() => {
-                  const newListener = this.listeners.get(guildId);
-                  if (!newListener || !newListener?.listening) {
-                    this.destroyStream(guildId);
-                  }
-                }, 30 * 1000);
-              }
-              break;
-
-            default:
-              this.destroyStream(guildId);
-              listener.listening = false;
-              reject(err);
-              break;
+            }
+          } catch (err) {
+            resolve({
+              state: "ERROR",
+              payload: err,
+            });
           }
         }
+      );
+
+      if (result.state === "DISCONNECTED") {
+        this.destroyStream(guildId);
+
+        return;
+      } else if (result.state === "INACTIVE") {
+        this.destroyStream(guildId);
+
+        listener.sendMsg("INACTIVE_VC");
+      } else if (result.state === "ERROR") {
+        this.destroyStream(guildId);
+
+        this.client.errorHandler.recordError(result.payload);
+
+        listener.sendMsg("PLAY_ERROR", {
+          $song_title: song.title,
+          $song_url: song.url,
+        });
+
+        return;
       }
-    });
+
+      if (listener?.loop) listener.queue.push(listener.queue[0]);
+
+      listener?.queue.shift();
+
+      if (listener.queue.length > 0) {
+        listener.listening = false;
+
+        this.listeners.set(listener.guildId, listener);
+      } else {
+        this.destroyStream(guildId);
+      }
+    }
   }
 
-  async destroyStream(guildId: string): Promise<void> {
-    try {
-      const connection = await getVoiceConnection(guildId);
-
-      connection?.destroy();
-    } catch (err) {}
-
-    this.listeners.delete(guildId);
-  }
-
-  async skipSong(guildId: string, songsToSkip: number): Promise<boolean> {
+  isPlaying(guildId: string): boolean {
     const listener = this.listeners.get(guildId);
 
-    if (!listener) return false;
+    return listener?.listening || false;
+  }
 
-    if (listener.queue.length <= songsToSkip && !listener.loop) return false;
+  skipSong(guildId: string, amount: number = 1): boolean {
+    const listener = this.listeners.get(guildId);
 
-    if (listener.loop && listener.queue.length <= songsToSkip) {
-      while (songsToSkip >= listener.queue.length) {
-        songsToSkip = -listener.queue.length;
-      }
+    if (!listener || !listener?.listening || listener.queue.length === 0)
+      return false;
 
-      if (songsToSkip > 0) songsToSkip--;
-    }
-
-    for (var i = 0; i < songsToSkip; i++) {
-      if (listener.loop) listener.queue.push(listener.queue[i]);
+    for (let i = 0; i < amount; i++) {
+      if (listener?.loop) listener.queue.push(listener.queue[0]);
       listener.queue.shift();
     }
 
-    if (listener.queue.length <= 0) return false;
+    if (listener.queue.length > 0) {
+      listener.listening = false;
 
-    const connection = await getVoiceConnection(guildId);
+      this.listeners.set(guildId, listener);
 
-    if (!connection) return false;
+      this.playSong(
+        guildId,
+        { voice: listener.voiceChannel, text: listener.textChannel },
+        listener.voiceAdapterCreator,
+        listener.locales,
+        null
+      );
+    } else {
+      listener.sendMsg("EMPTY_SONG_QUEUE");
 
-    this.serveGuild(
-      listener.guildId,
-      listener.voiceChannel,
-      listener.textChannel,
-      listener.voiceAdapterCreator,
-      listener.locales
-    );
-
-    return true;
-  }
-
-  async pauseStream(guildId: string): Promise<boolean> {
-    const listener = this.listeners.get(guildId);
-
-    if (!listener) return false;
-
-    listener.player?.pause();
+      this.destroyStream(guildId);
+    }
 
     return true;
   }
 
-  async resumeStream(guildId: string): Promise<boolean> {
+  delSongFromQueue(guildId: string, songOrder: number): boolean {
     const listener = this.listeners.get(guildId);
 
     if (!listener) return false;
 
-    listener.player?.unpause();
-
-    return true;
-  }
-
-  async delSongFromQueue(guildId: string, songId: number): Promise<boolean> {
-    const listener = this.listeners.get(guildId);
-
-    if (!listener) return false;
-
-    if (songId - 1 > listener.queue.length) {
+    if (songOrder - 1 > listener.queue.length) {
       return false;
     }
 
-    listener.queue.splice(songId - 1, 1);
+    listener.queue.splice(songOrder - 1, 1);
 
-    const connection = await getVoiceConnection(guildId);
+    const connection = getVoiceConnection(guildId);
 
     if (!connection) return false;
 
-    if (songId - 1 == 0) {
-      this.serveGuild(
-        listener.guildId,
-        listener.voiceChannel,
-        listener.textChannel,
+    if (songOrder - 1 == 0) {
+      listener.listening = false;
+
+      this.listeners.set(guildId, listener);
+
+      this.playSong(
+        guildId,
+        { voice: listener.voiceChannel, text: listener.textChannel },
         listener.voiceAdapterCreator,
-        listener.locales
+        listener.locales,
+        null
       );
     }
 
     return true;
   }
 
-  isPlaying(guildId: string): boolean {
-    return this.listeners.get(guildId)?.listening || false;
+  resumeStream(guildId: string): boolean {
+    const listener = this.listeners.get(guildId);
+
+    if (!listener || !listener?.player) return false;
+
+    (listener.player as AudioPlayer).unpause();
+
+    return true;
+  }
+
+  pauseStream(guildId: string): boolean {
+    const listener = this.listeners.get(guildId);
+
+    if (!listener || !listener?.player) return false;
+
+    (listener.player as AudioPlayer).pause();
+
+    return true;
+  }
+
+  destroyStream(guildId: string): boolean {
+    this.listeners.delete(guildId);
+
+    const conn = getVoiceConnection(guildId);
+
+    if (conn) conn.destroy();
+
+    return true;
   }
 }
 
