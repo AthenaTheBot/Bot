@@ -198,7 +198,7 @@ class Player {
             });
 
             while (true) {
-              await Utils.sleep(15 * 1000);
+              await Utils.sleep(1.5 * 60 * 1000);
               const _connection = getVoiceConnection(guildId);
 
               if (_connection) {
