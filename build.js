@@ -3,8 +3,8 @@ const path = require("path");
 const commander = require("commander");
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
+const AdmZip = require("adm-zip");
 const program = new commander.Command();
-let Permissions = null;
 require("colors").enable();
 
 let buildFolder = path.join(__dirname, "dist");
@@ -134,75 +134,33 @@ const buildCommands = async () => {
 const buildBot = async () => {
   await compileSourceCode();
 
-  Permissions = require("./dist/Modules/PermissionResolver");
+  const zip = new AdmZip();
 
-  program.log("Writing new build files of Athena.");
+  program.log("Writing new build files to a zip file.");
 
-  const baseFolderPath = path.join(__dirname, "..", "Athena-Build");
+  zip.addLocalFolder(buildFolder, "/dist");
 
-  if (await fs.existsSync(baseFolderPath)) {
-    program.log("Found an old build folder, removing it..");
+  zip.addLocalFolder(localesFolder, "/locales");
 
-    await fs.rm(baseFolderPath).catch(() => {
-      program.panicQuit(
-        "An error occured while removing old build folder, please remove the old build folder before building Athena."
-      );
-    });
+  zip.addLocalFile(path.join(__dirname, "package.json"), "", "package.json");
 
-    program.log("Removed old build folder.");
-  }
+  zip.addLocalFile(path.join(__dirname, "yarn.lock"), "", "yarn.lock");
 
-  await fs.ensureDir(baseFolderPath).catch(() => {
-    program.panicQuit("An error occuredw while creating build folder.");
-  });
+  zip.addLocalFile(
+    path.join(__dirname, "config.build.json"),
+    "",
+    "config.json"
+  );
 
-  // Copy base folder
-  await fs.copy(buildFolder, path.join(baseFolderPath, "dist")).catch(() => {
-    program.panicQuit("An error occured while copying build files.");
-  });
+  zip.writeZipPromise(path.join(__dirname, "..", "Athena_Build.zip"));
 
-  // Copy locales
-  await fs
-    .copy(localesFolder, path.join(baseFolderPath, "locales"))
-    .catch(() => {
-      program.panicQuit("An error occured while copying locale folders.");
-    });
-
-  // Copy package and lock files
-  await fs
-    .copyFile(
-      path.join(__dirname, "package.json"),
-      path.join(baseFolderPath, "package.json")
-    )
-    .catch(() => {
-      program.panicQuit("An error occured while copying package.json file.");
-    });
-
-  await fs
-    .copyFile(
-      path.join(__dirname, "yarn.lock"),
-      path.join(baseFolderPath, "yarn.lock")
-    )
-    .catch(() => {
-      program.panicQuit("An error occured while copying yarn.lock file.");
-    });
-
-  // Copy config file
-  await fs
-    .copyFile(
-      path.join(__dirname, "config.build.json"),
-      path.join(baseFolderPath, "config.json")
-    )
-    .catch(() => {
-      program.panicQuit("An error occured while copying config file.");
-    });
-
-  // Create error folder
-  await fs.mkdir(path.join(baseFolderPath, "errors")).catch(() => {
-    program.panicQuit("An error occured while creating errors directory.");
-  });
-
-  program.log("Bot code compilation has finished.");
+  program.log(
+    `Successfully built files! Build file placed in: ${path.join(
+      __dirname,
+      "..",
+      "Athena_Build.zip"
+    )}`
+  );
 };
 
 program.parse();
