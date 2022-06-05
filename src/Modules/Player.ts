@@ -2,6 +2,7 @@ import fetch from "cross-fetch";
 const spotify = require("spotify-url-info")(fetch);
 import ytsr from "ytsr";
 import ytdl, { getBasicInfo } from "ytdl-core";
+import playDl from "play-dl";
 import Song from "../Structures/Song";
 import Listener from "../Structures/Listener";
 import AthenaClient from "../AthenaClient";
@@ -63,9 +64,7 @@ class Player {
               };
             else return null;
           })
-          .catch((err) => {
-            return null;
-          });
+          .catch((err) => null);
       } else {
         result = (
           await ytsr(query.trim(), { limit: 2, safeSearch: false })
@@ -154,8 +153,9 @@ class Player {
       const result = await new Promise<{ state: string; payload: any }>(
         async (resolve) => {
           try {
-            const resource = createAudioResource(await ytdl(song.url), {
-              inputType: StreamType.Arbitrary,
+            const source = await playDl.stream(song.url);
+            const resource = createAudioResource(source.stream, {
+              inputType: source.type,
             });
 
             listener.player?.play(resource);
