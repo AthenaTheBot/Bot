@@ -1,4 +1,4 @@
-import { CommandData } from "../Modules/CommandManager";
+import CommandContext from "../Structures/CommandContext";
 import { Permissions } from "../constants";
 import Command from "../Structures/Command";
 
@@ -17,13 +17,13 @@ export const prefix = new Command(
   5,
   [Permissions.ADMINISTRATOR],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    if (commandData.args.length === 0) {
+  async (ctx: CommandContext): Promise<boolean> => {
+    if (ctx.args.length === 0) {
       try {
-        commandData.respond(
-          commandData.locales.CURRENT_PREFIX.replace(
+        ctx.respond(
+          ctx.locales.CURRENT_PREFIX.replace(
             "$prefix",
-            commandData.db.guild.modules.settings.prefix
+            ctx.db.guild.modules.settings.prefix
           ),
           true
         );
@@ -33,16 +33,16 @@ export const prefix = new Command(
 
       return true;
     } else {
-      const success = await commandData.client.dbManager.updateDocument(
+      const success = await ctx.client.dbManager.updateDocument(
         "guilds",
-        commandData.guild.id,
-        { $set: { "modules.settings.prefix": commandData.args[0] } }
+        ctx.guild.id,
+        { $set: { "modules.settings.prefix": ctx.args[0] } }
       );
 
       if (success) {
-        commandData.respond(commandData.locales.SUCCESS, true);
+        ctx.respond(ctx.locales.SUCCESS, true);
       } else {
-        commandData.respond(commandData.locales.ERROR, true);
+        ctx.respond(ctx.locales.ERROR, true);
       }
       return true;
     }
@@ -64,13 +64,13 @@ export const language = new Command(
   5,
   [Permissions.ADMINISTRATOR],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    if (commandData.args.length === 0) {
+  async (ctx: CommandContext): Promise<boolean> => {
+    if (ctx.args.length === 0) {
       try {
-        commandData.respond(
-          commandData.locales.CURRENT_LANGUAGE.replace(
+        ctx.respond(
+          ctx.locales.CURRENT_LANGUAGE.replace(
             "$language",
-            commandData.db.guild.modules.settings.language
+            ctx.db.guild.modules.settings.language
           ),
           true
         );
@@ -80,12 +80,11 @@ export const language = new Command(
 
       return true;
     } else {
-      const availableLanguage =
-        commandData.client.localeManager.getAvaiableLocales();
+      const availableLanguage = ctx.client.localeManager.getAvaiableLocales();
 
-      if (!availableLanguage.includes(commandData.args[0])) {
-        commandData.respond(
-          commandData.locales.INVALID_LOCALE.replace(
+      if (!availableLanguage.includes(ctx.args[0])) {
+        ctx.respond(
+          ctx.locales.INVALID_LOCALE.replace(
             "$locales",
             availableLanguage.join(", ")
           ),
@@ -94,16 +93,16 @@ export const language = new Command(
         return false;
       }
 
-      const success = await commandData.client.dbManager.updateDocument(
+      const success = await ctx.client.dbManager.updateDocument(
         "guilds",
-        commandData.guild.id,
-        { $set: { "modules.settings.language": commandData.args[0] } }
+        ctx.guild.id,
+        { $set: { "modules.settings.language": ctx.args[0] } }
       );
 
       if (success) {
-        commandData.respond(commandData.locales.SUCCESS, true);
+        ctx.respond(ctx.locales.SUCCESS, true);
       } else {
-        commandData.respond(commandData.locales.ERROR, true);
+        ctx.respond(ctx.locales.ERROR, true);
         return false;
       }
 
@@ -127,25 +126,22 @@ export const adminrole = new Command(
   4,
   [Permissions.ADMINISTRATOR],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData): Promise<boolean> => {
-    const mentionedRole = await commandData.parseRoleFromArgs(0);
+  async (ctx): Promise<boolean> => {
+    const mentionedRole = await ctx.parseRoleFromArgs(0);
 
     if (!mentionedRole?.id) {
-      commandData.respond(commandData.locales.SPECIFY_ROLE, true);
+      ctx.respond(ctx.locales.SPECIFY_ROLE, true);
       return false;
     }
 
-    const success = await commandData.client.guildManager.updateGuild(
-      commandData.guild.id,
-      {
-        $set: { "modules.moderation.adminRole": mentionedRole.id },
-      }
-    );
+    const success = await ctx.client.guildManager.updateGuild(ctx.guild.id, {
+      $set: { "modules.moderation.adminRole": mentionedRole.id },
+    });
 
     if (success) {
-      commandData.respond(commandData.locales.SUCCESS, true);
+      ctx.respond(ctx.locales.SUCCESS, true);
     } else {
-      return commandData.respond(commandData.locales.ERROR, true);
+      return ctx.respond(ctx.locales.ERROR, true);
     }
 
     return true;
@@ -167,25 +163,22 @@ export const modrole = new Command(
   4,
   [Permissions.ADMINISTRATOR],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    const mentionedRole = await commandData.parseRoleFromArgs(0);
+  async (ctx: CommandContext): Promise<boolean> => {
+    const mentionedRole = await ctx.parseRoleFromArgs(0);
 
     if (!mentionedRole?.id) {
-      commandData.respond(commandData.locales.SPECIFY_ROLE, true);
+      ctx.respond(ctx.locales.SPECIFY_ROLE, true);
       return false;
     }
 
-    const success = await commandData.client.guildManager.updateGuild(
-      commandData.guild.id,
-      {
-        $set: { "modules.moderation.modRole": mentionedRole.id },
-      }
-    );
+    const success = await ctx.client.guildManager.updateGuild(ctx.guild.id, {
+      $set: { "modules.moderation.modRole": mentionedRole.id },
+    });
 
     if (success) {
-      commandData.respond(commandData.locales.SUCCESS, true);
+      ctx.respond(ctx.locales.SUCCESS, true);
     } else {
-      commandData.respond(commandData.locales.ERROR, true);
+      ctx.respond(ctx.locales.ERROR, true);
       return false;
     }
 

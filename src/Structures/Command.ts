@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionData } from "discord.js";
-import { CommandData } from "./CommandData";
+import CommandContext from "./CommandContext";
 import { Permissions } from "../constants";
 import PermissionResolver from "../Modules/PermissionResolver";
 
@@ -11,7 +11,7 @@ class Command {
   cooldown: number;
   requiredPerms: PermissionResolver;
   requiredBotPerms: PermissionResolver;
-  exec: (commandData: CommandData) => boolean | Promise<boolean>;
+  exec: (ctx: CommandContext) => boolean | Promise<boolean>;
 
   constructor(
     name: string,
@@ -21,7 +21,7 @@ class Command {
     cooldown: number,
     requiredPerms: Permissions[],
     requiredBotPerms: Permissions[],
-    exec: (commandData: CommandData) => boolean | Promise<boolean>
+    exec: (ctx: CommandContext) => boolean | Promise<boolean>
   ) {
     this.name = name;
     this.aliases = aliases;

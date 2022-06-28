@@ -17,16 +17,16 @@ import Command from "./Command";
 import Guild from "./Guild";
 import User from "./User";
 
-enum CommandDataTypes {
+enum CommandTypes {
   Interaction = "Interaction",
   Message = "Message",
 }
 
-class CommandData {
+class CommandContext {
   client: AthenaClient;
 
   raw: any;
-  type: CommandDataTypes;
+  type: CommandTypes;
   command: Command;
   args: string[];
   author: GuildMember | null;
@@ -58,7 +58,7 @@ class CommandData {
     command: Command,
     client: AthenaClient,
     source: {
-      type: CommandDataTypes;
+      type: CommandTypes;
       data: Message;
       db: { user: User; guild: Guild };
     }
@@ -117,7 +117,7 @@ class CommandData {
       }
 
       // Arguement parsing
-      if (this.type === CommandDataTypes.Message) {
+      if (this.type === CommandTypes.Message) {
         this.args = this.raw.content.trim().split(/ +/).slice(1);
       } else {
         const args = [];
@@ -139,7 +139,7 @@ class CommandData {
     let userId = null;
 
     if (
-      this.type === CommandDataTypes.Interaction ||
+      this.type === CommandTypes.Interaction ||
       !isNaN(this.args[index] as any)
     )
       userId = this.args[index];
@@ -162,7 +162,7 @@ class CommandData {
     let roleId = null;
 
     if (
-      this.type === CommandDataTypes.Interaction ||
+      this.type === CommandTypes.Interaction ||
       !isNaN(this.args[index] as any)
     )
       roleId = this.args[index];
@@ -207,7 +207,7 @@ class CommandData {
 
     let returnData;
     try {
-      if (this.type === CommandDataTypes.Interaction) {
+      if (this.type === CommandTypes.Interaction) {
         returnData = await this.raw.editReply(payload);
       } else {
         returnData = await this.raw.channel.send(payload);
@@ -220,5 +220,5 @@ class CommandData {
   }
 }
 
-export default CommandData;
-export { CommandData, CommandDataTypes };
+export default CommandContext;
+export { CommandContext, CommandTypes };

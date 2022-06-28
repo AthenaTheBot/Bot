@@ -1,4 +1,4 @@
-import { CommandData } from "../Modules/CommandManager";
+import CommandContext from "../Structures/CommandContext";
 import { TextChannel } from "discord.js";
 import { Permissions } from "../constants";
 import UserWarning from "../Structures/UserWarning";
@@ -23,48 +23,44 @@ export const kick = new Command(
     Permissions.EMBED_LINKS,
     Permissions.KICK_MEMBERS,
   ],
-  async (commandData: CommandData): Promise<boolean> => {
-    const targetUser = await commandData.parseUserFromArgs(0);
+  async (ctx: CommandContext): Promise<boolean> => {
+    const targetUser = await ctx.parseUserFromArgs(0);
 
     if (!targetUser) {
-      commandData.respond(commandData.locales.SPECIFY_USER, true);
+      ctx.respond(ctx.locales.SPECIFY_USER, true);
       return false;
     }
 
-    const authorRoleHiearchy =
-      commandData.author?.roles?.highest?.rawPosition || 0;
+    const authorRoleHiearchy = ctx.author?.roles?.highest?.rawPosition || 0;
 
     const targetRoleHiearchy = targetUser?.roles?.highest?.rawPosition || 0;
 
-    const guildOwner = await commandData.guild.fetchOwner();
+    const guildOwner = await ctx.guild.fetchOwner();
 
     if (
       targetRoleHiearchy >= authorRoleHiearchy &&
-      guildOwner?.id !== commandData?.author?.id
+      guildOwner?.id !== ctx?.author?.id
     ) {
-      commandData.respond(commandData.locales.USER_INSUFFICIENT_PERMS, true);
+      ctx.respond(ctx.locales.USER_INSUFFICIENT_PERMS, true);
       return false;
     }
 
     if (!targetUser.kickable) {
-      commandData.respond(commandData.locales.BOT_INSUFFICIENT_PERMS, true);
+      ctx.respond(ctx.locales.BOT_INSUFFICIENT_PERMS, true);
       return false;
     }
 
     try {
       targetUser.kick(
-        commandData.locales.ACTION_DONE_BY.replace(
-          "$user",
-          commandData.author?.id
-        )
+        ctx.locales.ACTION_DONE_BY.replace("$user", ctx.author?.id)
       );
     } catch (err) {
-      commandData.respond(commandData.locales.ERROR, true);
-      commandData.client.errorHandler.recordError(err as Error);
+      ctx.respond(ctx.locales.ERROR, true);
+      ctx.client.errorHandler.recordError(err as Error);
       return false;
     }
 
-    commandData.respond(commandData.locales.SUCCESS, true);
+    ctx.respond(ctx.locales.SUCCESS, true);
 
     return true;
   }
@@ -85,48 +81,44 @@ export const ban = new Command(
   1,
   [Permissions.BAN_MEMBERS],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS, Permissions.BAN_MEMBERS],
-  async (commandData: CommandData): Promise<boolean> => {
-    const targetUser = await commandData.parseUserFromArgs(0);
+  async (ctx: CommandContext): Promise<boolean> => {
+    const targetUser = await ctx.parseUserFromArgs(0);
 
     if (!targetUser) {
-      commandData.respond(commandData.locales.SPECIFY_USER, true);
+      ctx.respond(ctx.locales.SPECIFY_USER, true);
       return false;
     }
 
-    const authorRoleHiearchy =
-      commandData.author?.roles?.highest?.rawPosition || 0;
+    const authorRoleHiearchy = ctx.author?.roles?.highest?.rawPosition || 0;
 
     const targetRoleHiearchy = targetUser?.roles?.highest?.rawPosition || 0;
 
-    const guildOwner = await commandData.guild.fetchOwner();
+    const guildOwner = await ctx.guild.fetchOwner();
 
     if (
       targetRoleHiearchy >= authorRoleHiearchy &&
-      guildOwner?.id !== commandData?.author?.id
+      guildOwner?.id !== ctx?.author?.id
     ) {
-      commandData.respond(commandData.locales.USER_INSUFFICIENT_PERMS, true);
+      ctx.respond(ctx.locales.USER_INSUFFICIENT_PERMS, true);
       return false;
     }
 
     if (!targetUser.bannable) {
-      commandData.respond(commandData.locales.BOT_INSUFFICIENT_PERMS, true);
+      ctx.respond(ctx.locales.BOT_INSUFFICIENT_PERMS, true);
       return false;
     }
 
     try {
       targetUser.ban({
-        reason: commandData.locales.ACTION_DONE_BY.replace(
-          "$user",
-          commandData.author?.id
-        ),
+        reason: ctx.locales.ACTION_DONE_BY.replace("$user", ctx.author?.id),
       });
     } catch (err) {
-      commandData.respond(commandData.locales.ERROR, true);
-      commandData.client.errorHandler.recordError(err as Error);
+      ctx.respond(ctx.locales.ERROR, true);
+      ctx.client.errorHandler.recordError(err as Error);
       return false;
     }
 
-    commandData.respond(commandData.locales.SUCCESS, true);
+    ctx.respond(ctx.locales.SUCCESS, true);
 
     return true;
   }
@@ -151,7 +143,7 @@ export const slowmode = new Command(
     Permissions.EMBED_LINKS,
     Permissions.MANAGE_CHANNELS,
   ],
-  async (commandData: CommandData): Promise<boolean> => {
+  async (ctx: CommandContext): Promise<boolean> => {
     const keywords = [
       {
         key: "s",
@@ -167,12 +159,12 @@ export const slowmode = new Command(
       },
     ];
 
-    if (!commandData.args[0]) {
-      commandData.respond(commandData.locales.WRONG_COMMAND_USAGE, true);
+    if (!ctx.args[0]) {
+      ctx.respond(ctx.locales.WRONG_COMMAND_USAGE, true);
       return false;
     }
 
-    let timeout: string = commandData.args[0];
+    let timeout: string = ctx.args[0];
 
     if (!isNaN(timeout as any)) timeout = timeout + "s";
     if (timeout === "off") timeout = "_0_";
@@ -213,7 +205,7 @@ export const slowmode = new Command(
     }
 
     if (resultVal == -1) {
-      commandData.respond(commandData.locales.WRONG_COMMAND_USAGE, true);
+      ctx.respond(ctx.locales.WRONG_COMMAND_USAGE, true);
       return false;
     }
 
@@ -221,13 +213,13 @@ export const slowmode = new Command(
     if (resultVal >= 21600) resultVal = 21600;
 
     try {
-      (commandData.channel as TextChannel).setRateLimitPerUser(resultVal);
+      (ctx.channel as TextChannel).setRateLimitPerUser(resultVal);
     } catch (err) {
-      commandData.respond(commandData.locales.ERROR, false);
+      ctx.respond(ctx.locales.ERROR, false);
       return false;
     }
 
-    commandData.respond(commandData.locales.SUCCESS, true);
+    ctx.respond(ctx.locales.SUCCESS, true);
 
     return true;
   }
@@ -252,17 +244,13 @@ export const clear = new Command(
     Permissions.EMBED_LINKS,
     Permissions.MANAGE_MESSAGES,
   ],
-  async (commandData: CommandData): Promise<boolean> => {
-    if (
-      !commandData.args[0] ||
-      isNaN(parseInt(commandData.args[0])) ||
-      commandData.args[0] == "0"
-    ) {
-      commandData.respond(commandData.locales.WRONG_COMMAND_USAGE, true);
+  async (ctx: CommandContext): Promise<boolean> => {
+    if (!ctx.args[0] || isNaN(parseInt(ctx.args[0])) || ctx.args[0] == "0") {
+      ctx.respond(ctx.locales.WRONG_COMMAND_USAGE, true);
       return false;
     }
 
-    let messageAmount = parseInt(commandData.args[0]);
+    let messageAmount = parseInt(ctx.args[0]);
     const actions = [];
 
     while (true) {
@@ -277,16 +265,16 @@ export const clear = new Command(
 
     for (var i = 0; i < actions.length; i++) {
       try {
-        (commandData.channel as TextChannel).bulkDelete(actions[i], true);
+        (ctx.channel as TextChannel).bulkDelete(actions[i], true);
 
         actions.shift();
       } catch (err) {
-        commandData.respond(commandData.locales.ERROR, false);
+        ctx.respond(ctx.locales.ERROR, false);
         break;
       }
     }
 
-    commandData.respond(commandData.locales.SUCCESS, true);
+    ctx.respond(ctx.locales.SUCCESS, true);
 
     return true;
   }
@@ -312,39 +300,37 @@ export const warn = new Command(
     Permissions.KICK_MEMBERS,
     Permissions.BAN_MEMBERS,
   ],
-  async (commandData: CommandData): Promise<boolean> => {
-    const targetUser = await commandData.parseUserFromArgs(0);
+  async (ctx: CommandContext): Promise<boolean> => {
+    const targetUser = await ctx.parseUserFromArgs(0);
 
     if (!targetUser) {
-      commandData.respond(commandData.locales.SPECIFY_USER, true);
+      ctx.respond(ctx.locales.SPECIFY_USER, true);
       return false;
     }
 
-    const authorRoleHiearchy =
-      commandData.author?.roles?.highest?.rawPosition || 0;
+    const authorRoleHiearchy = ctx.author?.roles?.highest?.rawPosition || 0;
 
     const targetRoleHiearchy = targetUser?.roles?.highest?.rawPosition || 0;
 
-    const guildOwner = await commandData.guild.fetchOwner();
+    const guildOwner = await ctx.guild.fetchOwner();
 
     if (
       targetRoleHiearchy >= authorRoleHiearchy &&
-      guildOwner?.id !== commandData?.author?.id
+      guildOwner?.id !== ctx?.author?.id
     ) {
-      commandData.respond(commandData.locales.USER_INSUFFICIENT_PERMS, true);
+      ctx.respond(ctx.locales.USER_INSUFFICIENT_PERMS, true);
       return false;
     }
 
     if (!targetUser.kickable && !targetUser.bannable) {
-      commandData.respond(commandData.locales.BOT_INSUFFICIENT_PERMS, true);
+      ctx.respond(ctx.locales.BOT_INSUFFICIENT_PERMS, true);
       return false;
     }
 
     let reason =
-      commandData.args.slice(1).join(" ") ||
-      commandData.locales.REASON_NOT_SPECIFIED;
+      ctx.args.slice(1).join(" ") || ctx.locales.REASON_NOT_SPECIFIED;
 
-    let userWarn = commandData.db.guild.modules.moderation?.warnings?.find(
+    let userWarn = ctx.db.guild.modules.moderation?.warnings?.find(
       (x) => x.id == targetUser.id
     );
 
@@ -353,54 +339,51 @@ export const warn = new Command(
     } else {
       userWarn = new UserWarning(targetUser.id);
       userWarn.warnings.push(reason);
-      commandData.db.guild.modules.moderation?.warnings?.push(userWarn);
+      ctx.db.guild.modules.moderation?.warnings?.push(userWarn);
     }
 
-    commandData.client.guildManager.updateGuild(commandData.guild.id, {
+    ctx.client.guildManager.updateGuild(ctx.guild.id, {
       $set: {
         "modules.moderation.warnings":
-          commandData.db.guild.modules.moderation?.warnings,
+          ctx.db.guild.modules.moderation?.warnings,
       },
     });
 
-    if (
-      userWarn.warnings.length ==
-      commandData.client.config.actions.warnKickCount
-    ) {
+    if (userWarn.warnings.length == ctx.client.config.actions.warnKickCount) {
       targetUser.kick(
         "User has been warned for " +
-          commandData.client.config.actions.warnKickCount +
+          ctx.client.config.actions.warnKickCount +
           " times."
       );
-      commandData.respond(
-        commandData.locales.WARN_KICKED_USER.replace(
+      ctx.respond(
+        ctx.locales.WARN_KICKED_USER.replace(
           "$user",
           targetUser.user.username,
           true
-        ).replace("$times", commandData.client.config.actions.warnKickCount),
+        ).replace("$times", ctx.client.config.actions.warnKickCount),
         true
       );
 
       return true;
     } else if (
-      userWarn.warnings.length == commandData.client.config.actions.warnBanCount
+      userWarn.warnings.length == ctx.client.config.actions.warnBanCount
     ) {
       targetUser.ban({
         reason:
           "User has been warned for " +
-          commandData.client.config.actions.warnBanCount +
+          ctx.client.config.actions.warnBanCount +
           " times.",
       });
 
-      commandData.respond(
-        commandData.locales.WARN_BANNED_USER.replace(
+      ctx.respond(
+        ctx.locales.WARN_BANNED_USER.replace(
           "$user",
           targetUser.user.username
-        ).replace("$times", commandData.client.config.actions.warnBanCount),
+        ).replace("$times", ctx.client.config.actions.warnBanCount),
         true
       );
 
-      commandData.client.guildManager.updateGuild(commandData.guild.id, {
+      ctx.client.guildManager.updateGuild(ctx.guild.id, {
         $pull: {
           "modules.moderation.warnings": { id: targetUser.id },
         },
@@ -409,8 +392,8 @@ export const warn = new Command(
       return true;
     }
 
-    commandData.respond(
-      commandData.locales.WARNED_USER.replace("$user", targetUser.user.username)
+    ctx.respond(
+      ctx.locales.WARNED_USER.replace("$user", targetUser.user.username)
         .replace("$reason", userWarn.warnings[userWarn.warnings.length - 1])
         .replace("$warn_count", userWarn.warnings.length),
       true
@@ -435,44 +418,43 @@ export const reswarn = new Command(
   1,
   [Permissions.KICK_MEMBERS, Permissions.BAN_MEMBERS],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    const targetUser = await commandData.parseUserFromArgs(0);
+  async (ctx: CommandContext): Promise<boolean> => {
+    const targetUser = await ctx.parseUserFromArgs(0);
 
     if (!targetUser) {
-      commandData.respond(commandData.locales.SPECIFY_USER, true);
+      ctx.respond(ctx.locales.SPECIFY_USER, true);
       return false;
     }
 
-    const authorRoleHiearchy =
-      commandData.author?.roles?.highest?.rawPosition || 0;
+    const authorRoleHiearchy = ctx.author?.roles?.highest?.rawPosition || 0;
 
     const targetRoleHiearchy = targetUser?.roles?.highest?.rawPosition || 0;
 
-    const guildOwner = await commandData.guild.fetchOwner();
+    const guildOwner = await ctx.guild.fetchOwner();
 
     if (
       targetRoleHiearchy >= authorRoleHiearchy &&
-      guildOwner?.id !== commandData?.author?.id
+      guildOwner?.id !== ctx?.author?.id
     ) {
-      commandData.respond(commandData.locales.USER_INSUFFICIENT_PERMS, true);
+      ctx.respond(ctx.locales.USER_INSUFFICIENT_PERMS, true);
       return false;
     }
 
-    const userWarning = commandData.db.guild.modules.moderation?.warnings?.find(
+    const userWarning = ctx.db.guild.modules.moderation?.warnings?.find(
       (x) => x.id == targetUser.id
     );
 
     if (userWarning) {
       userWarning.warnings = [];
-      commandData.client.guildManager.updateGuild(commandData.guild.id, {
+      ctx.client.guildManager.updateGuild(ctx.guild.id, {
         $set: {
           "modules.moderation.warnings":
-            commandData.db.guild.modules.moderation?.warnings,
+            ctx.db.guild.modules.moderation?.warnings,
         },
       });
     }
 
-    commandData.respond(commandData.locales.SUCCESS, true);
+    ctx.respond(ctx.locales.SUCCESS, true);
 
     return true;
   }

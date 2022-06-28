@@ -1,4 +1,4 @@
-import { CommandData } from "../Modules/CommandManager";
+import CommandContext from "../Structures/CommandContext";
 import { MessageAttachment, MessageEmbed } from "discord.js";
 import { Permissions } from "../constants";
 import canvacord from "canvacord";
@@ -15,19 +15,19 @@ export const cat = new Command(
   4,
   [],
   [Permissions.SEND_MESSAGES, Permissions.ATTACH_FILES],
-  async (commandData: CommandData): Promise<boolean> => {
+  async (ctx: CommandContext): Promise<boolean> => {
     const data = await axios
       .get("https://api.thecatapi.com/v1/images/search")
       .then((res) => res?.data);
 
     if (!data) {
-      commandData.respond(commandData.locales.ERROR, true);
+      ctx.respond(ctx.locales.ERROR, true);
       return false;
     }
 
     const attachment = new MessageAttachment(data[0].url, "random_cat.png");
 
-    commandData.respond({ files: [attachment] });
+    ctx.respond({ files: [attachment] });
 
     return true;
   }
@@ -41,24 +41,25 @@ export const dog = new Command(
   4,
   [],
   [Permissions.SEND_MESSAGES, Permissions.ATTACH_FILES],
-  async (commandData: CommandData): Promise<boolean> => {
+  async (ctx: CommandContext): Promise<boolean> => {
     const data = await axios
       .get("https://dog.ceo/api/breeds/image/random")
       .then((res) => res?.data);
 
     if (!data) {
-      commandData.respond(commandData.locales.ERROR, true);
+      ctx.respond(ctx.locales.ERROR, true);
       return false;
     }
 
     const attachment = new MessageAttachment(data.message, "random_dog.png");
 
-    commandData.respond({ files: [attachment] });
+    ctx.respond({ files: [attachment] });
 
     return true;
   }
 );
 
+// TODO:
 // export const meme = new Command(
 //   "meme",
 //   [],
@@ -67,16 +68,16 @@ export const dog = new Command(
 //   4,
 //   [],
 //   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-//   async (commandData: CommandData): Promise<boolean> => {
+//   async (ctx: CommandContext): Promise<boolean> => {
 //     const data = await axios("https://api.ksoft.si/images/random-meme", {
 //       method: "GET",
 //       headers: {
-//         Authorization: `Bearer ${commandData.client.config.apiKeys.KSOFT}`,
+//         Authorization: `Bearer ${ctx.client.config.apiKeys.KSOFT}`,
 //       },
 //     }).then((res) => res?.data);
 
 //     if (!data) {
-//       commandData.respond(commandData.locales.ERROR, true);
+//       ctx.respond(ctx.locales.ERROR, true);
 //       return false;
 //     }
 
@@ -89,7 +90,7 @@ export const dog = new Command(
 //         text: `👍 ${data.upvotes} | 👎 ${data.downvotes} | 💬 ${data.comments}`,
 //       });
 
-//     commandData.respond(Embed);
+//     ctx.respond(Embed);
 
 //     return true;
 //   }
@@ -103,13 +104,13 @@ export const coinflip = new Command(
   4,
   [],
   [Permissions.SEND_MESSAGES],
-  async (commandData: CommandData): Promise<boolean> => {
+  async (ctx: CommandContext): Promise<boolean> => {
     const result = Math.round(Math.random());
 
     if (result) {
-      commandData.respond(commandData.locales.TAILS);
+      ctx.respond(ctx.locales.TAILS);
     } else {
-      commandData.respond(commandData.locales.HEADS);
+      ctx.respond(ctx.locales.HEADS);
     }
 
     return true;
@@ -131,11 +132,11 @@ export const worsethanhitler = new Command(
   4,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    const targetUser = await commandData.parseUserFromArgs(0);
+  async (ctx: CommandContext): Promise<boolean> => {
+    const targetUser = await ctx.parseUserFromArgs(0);
 
     if (!targetUser) {
-      commandData.respond(commandData.locales.SPECIFY_USER, true);
+      ctx.respond(ctx.locales.SPECIFY_USER, true);
       return false;
     }
 
@@ -145,7 +146,7 @@ export const worsethanhitler = new Command(
 
     const attachment = new MessageAttachment(hitler, "worseThanHitler.png");
 
-    commandData.respond({ files: [attachment] });
+    ctx.respond({ files: [attachment] });
 
     return true;
   }
@@ -166,11 +167,11 @@ export const jail = new Command(
   4,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    const targetUser = await commandData.parseUserFromArgs(0);
+  async (ctx: CommandContext): Promise<boolean> => {
+    const targetUser = await ctx.parseUserFromArgs(0);
 
     if (!targetUser) {
-      commandData.respond(commandData.locales.SPECIFY_USER, true);
+      ctx.respond(ctx.locales.SPECIFY_USER, true);
       return false;
     }
 
@@ -181,7 +182,7 @@ export const jail = new Command(
 
     const attachment = new MessageAttachment(jail, "jail.png");
 
-    commandData.respond({ files: [attachment] });
+    ctx.respond({ files: [attachment] });
 
     return true;
   }
@@ -202,11 +203,11 @@ export const jokeoverhead = new Command(
   4,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    const targetUser = await commandData.parseUserFromArgs(0);
+  async (ctx: CommandContext): Promise<boolean> => {
+    const targetUser = await ctx.parseUserFromArgs(0);
 
     if (!targetUser) {
-      commandData.respond(commandData.locales.SPECIFY_USER, true);
+      ctx.respond(ctx.locales.SPECIFY_USER, true);
       return false;
     }
 
@@ -216,7 +217,7 @@ export const jokeoverhead = new Command(
 
     const attachment = new MessageAttachment(jokeOverHead, "jokeOverHead.png");
 
-    commandData.respond({ files: [attachment] });
+    ctx.respond({ files: [attachment] });
 
     return true;
   }
@@ -237,11 +238,11 @@ export const rip = new Command(
   4,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    const targetUser = await commandData.parseUserFromArgs(0);
+  async (ctx: CommandContext): Promise<boolean> => {
+    const targetUser = await ctx.parseUserFromArgs(0);
 
     if (!targetUser) {
-      commandData.respond(commandData.locales.SPECIFY_USER, true);
+      ctx.respond(ctx.locales.SPECIFY_USER, true);
       return false;
     }
 
@@ -251,7 +252,7 @@ export const rip = new Command(
 
     const attachment = new MessageAttachment(rip, "rip.png");
 
-    commandData.respond({ files: [attachment] });
+    ctx.respond({ files: [attachment] });
 
     return true;
   }
@@ -272,11 +273,11 @@ export const trash = new Command(
   4,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    const targetUser = await commandData.parseUserFromArgs(0);
+  async (ctx: CommandContext): Promise<boolean> => {
+    const targetUser = await ctx.parseUserFromArgs(0);
 
     if (!targetUser) {
-      commandData.respond(commandData.locales.SPECIFY_USER, true);
+      ctx.respond(ctx.locales.SPECIFY_USER, true);
       return false;
     }
 
@@ -286,7 +287,7 @@ export const trash = new Command(
 
     const attachment = new MessageAttachment(trash, "trash.png");
 
-    commandData.respond({ files: [attachment] });
+    ctx.respond({ files: [attachment] });
 
     return true;
   }
@@ -307,11 +308,11 @@ export const wanter = new Command(
   4,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    const targetUser = await commandData.parseUserFromArgs(0);
+  async (ctx: CommandContext): Promise<boolean> => {
+    const targetUser = await ctx.parseUserFromArgs(0);
 
     if (!targetUser) {
-      commandData.respond(commandData.locales.SPECIFY_USER, true);
+      ctx.respond(ctx.locales.SPECIFY_USER, true);
       return false;
     }
 
@@ -321,7 +322,7 @@ export const wanter = new Command(
 
     const attachment = new MessageAttachment(wanted, "wanted.png");
 
-    commandData.respond({ files: [attachment] });
+    ctx.respond({ files: [attachment] });
 
     return true;
   }

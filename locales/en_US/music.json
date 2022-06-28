@@ -16,5 +16,6 @@
   "NOT_IN_VC": "Athena currently isn't in a voice channel.",
   "LOOP_ENABLED": "Loop has been enabled.",
   "LOOP_DISABLED": "Loop has been disabled.",
-  "INACTIVE_VC": "Disconnected due to the inactivity in the voice channel."
+  "INACTIVE_VC": "Disconnected due to the inactivity in the voice channel.",
+  "LYRIC_NOT_FOUND": "Lyric not found or an error occured, maybe you should try again with other keywords?"
 }

@@ -26,8 +26,11 @@
     "warnKickCount": 3,
     "warnBanCount": 6
   },
-  "apiKeys": {
-    "KSOFT": ""
+  "apis": {
+    "genius": {
+      "baseUrl": "https://api.genius.com/",
+      "token": ""
+    }
   },
   "botlists": [
     {

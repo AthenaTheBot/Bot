@@ -11,7 +11,8 @@ import DatabaseManager from "./Modules/DatabaseManager";
 import Utils from "./Modules/Utils";
 import EventManager from "./Modules/EventManager";
 import ErrorHandler from "./Modules/ErrorHandler";
-import CommandManager, { CommandData } from "./Modules/CommandManager";
+import CommandManager from "./Modules/CommandManager";
+import CommandContext from "./Structures/CommandContext";
 import PresenceManager from "./Modules/PresenceManager";
 import GuildManager from "./Modules/GuildManager";
 import UserManager from "./Modules/UserManager";
@@ -169,13 +170,13 @@ class AthenaClient extends Client {
 
   async executeCommand(
     commandName: string,
-    commandData: CommandData
+    ctx: CommandContext
   ): Promise<boolean> {
     const command = this.commandManager.getCommand(commandName);
 
     if (!command) return false;
 
-    const success = await command.exec(commandData);
+    const success = await command.exec(ctx);
 
     return success;
   }

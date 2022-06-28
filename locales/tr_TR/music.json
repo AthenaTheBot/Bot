@@ -16,5 +16,6 @@
   "NOT_IN_VC": "Athena şuanda bir sesli kanalda bulunuyor.",
   "LOOP_ENABLED": "Döngü açıldı.",
   "LOOP_DISABLED": "Döngü kapatıldı.",
-  "INACTIVE_VC": "Ses kanalındaki hareketsizlik sebebiyle ayrılınıldı."
+  "INACTIVE_VC": "Ses kanalındaki hareketsizlik sebebiyle ayrılınıldı.",
+  "LYRIC_NOT_FOUND": "Şarkı sözleri bulunamadı veya bir hata meydana geldi, belkide farklı kelimeler ile denemelisin?"
 }

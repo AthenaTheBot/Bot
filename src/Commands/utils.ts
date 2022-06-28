@@ -1,4 +1,4 @@
-import { CommandData } from "../Modules/CommandManager";
+import CommandContext from "../Structures/CommandContext";
 import { Permissions } from "../constants";
 import { MessageEmbed } from "discord.js";
 import figlet from "figlet";
@@ -14,8 +14,8 @@ export const ping = new Command(
   1,
   [],
   [Permissions.SEND_MESSAGES],
-  (commandData: CommandData): boolean => {
-    commandData.respond(commandData.locales.PONG);
+  (ctx: CommandContext): boolean => {
+    ctx.respond(ctx.locales.PONG);
 
     return true;
   }
@@ -36,27 +36,27 @@ export const ascii = new Command(
   3,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  (commandData: CommandData): boolean => {
-    const text = commandData.args.join(" ");
+  (ctx: CommandContext): boolean => {
+    const text = ctx.args.join(" ");
 
     if (!text) {
-      commandData.respond(commandData.locales.WRONG_COMMAND_USAGE, true);
+      ctx.respond(ctx.locales.WRONG_COMMAND_USAGE, true);
       return false;
     }
 
     if (text.length > 63) {
-      commandData.respond(commandData.locales.TOO_BIG_TEXT, true);
+      ctx.respond(ctx.locales.TOO_BIG_TEXT, true);
       return false;
     }
 
     // TODO: Fix return bug.
     figlet(text, (err, result) => {
       if (err) {
-        commandData.respond(commandData.locales.ERROR, true);
+        ctx.respond(ctx.locales.ERROR, true);
         return false;
       }
 
-      commandData.respond("```\n" + result + "\n```");
+      ctx.respond("```\n" + result + "\n```");
     });
 
     return true;
@@ -78,11 +78,11 @@ export const avatar = new Command(
   2,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    const targetUser = await commandData.parseUserFromArgs(0);
+  async (ctx: CommandContext): Promise<boolean> => {
+    const targetUser = await ctx.parseUserFromArgs(0);
 
     if (!targetUser) {
-      commandData.respond(commandData.locales.SPECIFY_USER, true);
+      ctx.respond(ctx.locales.SPECIFY_USER, true);
       return false;
     }
 
@@ -90,10 +90,7 @@ export const avatar = new Command(
       .setColor("#5865F2")
       .setTimestamp()
       .setTitle(
-        commandData.locales.AVATAR_TITLE.replace(
-          "$user",
-          targetUser.displayName
-        )
+        ctx.locales.AVATAR_TITLE.replace("$user", targetUser.displayName)
       )
       .setImage(
         targetUser.displayAvatarURL({
@@ -103,7 +100,7 @@ export const avatar = new Command(
         })
       );
 
-    commandData.respond(Embed);
+    ctx.respond(Embed);
 
     return true;
   }
@@ -117,8 +114,8 @@ export const invite = new Command(
   1,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    commandData.respond(commandData.locales.INVITE_LINK, true);
+  async (ctx: CommandContext): Promise<boolean> => {
+    ctx.respond(ctx.locales.INVITE_LINK, true);
 
     return true;
   }
@@ -133,19 +130,19 @@ export const help = new Command(
   1,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
+  async (ctx: CommandContext): Promise<boolean> => {
     const Embed = new MessageEmbed()
       .setThumbnail(
-        commandData.client.user?.displayAvatarURL({
+        ctx.client.user?.displayAvatarURL({
           format: "png",
           size: 4096,
         }) as any
       )
-      .setTitle(commandData.locales.HELP_TITLE)
-      .setDescription(commandData.locales.HELP_BODY)
+      .setTitle(ctx.locales.HELP_TITLE)
+      .setDescription(ctx.locales.HELP_BODY)
       .setColor("#5865F2");
 
-    commandData.respond(Embed);
+    ctx.respond(Embed);
     return true;
   }
 );
@@ -175,27 +172,27 @@ export const pollCreate = new Command(
     Permissions.EMBED_LINKS,
     Permissions.ADD_REACTIONS,
   ],
-  async (commandData: CommandData): Promise<boolean> => {
-    const pollTime = commandData.args[0] as any;
-    const question = commandData.args.slice(1).join(" ").trim();
+  async (ctx: CommandContext): Promise<boolean> => {
+    const pollTime = ctx.args[0] as any;
+    const question = ctx.args.slice(1).join(" ").trim();
 
     if (isNaN(pollTime) || !question) {
-      commandData.respond(commandData.locales.WRONG_COMMAND_USAGE, true);
+      ctx.respond(ctx.locales.WRONG_COMMAND_USAGE, true);
       return false;
     }
 
-    const isPollSuccessfull = await commandData.client.pollManager.createPoll(
-      commandData.channel.id,
+    const isPollSuccessfull = await ctx.client.pollManager.createPoll(
+      ctx.channel.id,
       question,
       pollTime * 1000,
-      commandData.locales
+      ctx.locales
     );
 
     if (!isPollSuccessfull) {
-      commandData.respond(commandData.locales.ERROR, true);
+      ctx.respond(ctx.locales.ERROR, true);
       return false;
     } else {
-      commandData.respond("👍");
+      ctx.respond("👍");
     }
 
     return true;
@@ -221,25 +218,25 @@ export const pollEnd = new Command(
     Permissions.EMBED_LINKS,
     Permissions.ADD_REACTIONS,
   ],
-  async (commandData: CommandData): Promise<boolean> => {
-    if (!commandData.args[0]) {
-      commandData.respond(commandData.locales.WRONG_COMMAND_USAGE), true;
+  async (ctx: CommandContext): Promise<boolean> => {
+    if (!ctx.args[0]) {
+      ctx.respond(ctx.locales.WRONG_COMMAND_USAGE), true;
       return false;
     }
 
-    const poll = commandData.client.pollManager.getPoll(commandData.args[0]);
+    const poll = ctx.client.pollManager.getPoll(ctx.args[0]);
 
     if (!poll) {
-      commandData.respond(commandData.locales.POLL_NOT_FOUND, true);
+      ctx.respond(ctx.locales.POLL_NOT_FOUND, true);
       return false;
     }
 
-    const success = commandData.client.pollManager.endPoll(poll.id);
+    const success = ctx.client.pollManager.endPoll(poll.id);
 
     if (success) {
-      commandData.respond(commandData.locales.SUCCESS, true);
+      ctx.respond(ctx.locales.SUCCESS, true);
     } else {
-      commandData.respond(commandData.locales.ERROR, true);
+      ctx.respond(ctx.locales.ERROR, true);
 
       return false;
     }

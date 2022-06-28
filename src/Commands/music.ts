@@ -1,7 +1,12 @@
-import { CommandData } from "../Modules/CommandManager";
+import CommandContext from "../Structures/CommandContext";
 import { MessageEmbed } from "discord.js";
-import { Permissions } from "../constants";
+import {
+  Permissions,
+  SongSearchResultResponse,
+  SongResponse,
+} from "../constants";
 import Command from "../Structures/Command";
+import fetch from "cross-fetch";
 
 export const play = new Command(
   "play",
@@ -23,43 +28,38 @@ export const play = new Command(
     Permissions.SPEAK,
     Permissions.CONNECT,
   ],
-  async (commandData: CommandData): Promise<boolean> => {
-    const songRequest = commandData.args.join(" ");
+  async (ctx: CommandContext): Promise<boolean> => {
+    const songRequest = ctx.args.join(" ");
 
-    if (!songRequest)
-      return commandData.respond(commandData.locales.SPECIFY_SONG, true);
+    if (!songRequest) return ctx.respond(ctx.locales.SPECIFY_SONG, true);
 
-    const song = await commandData.client.player.searchSong(songRequest);
+    const song = await ctx.client.player.searchSong(songRequest);
 
-    if (!song)
-      return commandData.respond(commandData.locales.SONG_NOT_FOUND, true);
+    if (!song) return ctx.respond(ctx.locales.SONG_NOT_FOUND, true);
 
-    const serverListener = commandData.client.player.listeners.get(
-      commandData.guild.id
-    );
+    const serverListener = ctx.client.player.listeners.get(ctx.guild.id);
 
-    if (!commandData?.author?.voice?.channel?.id)
-      return commandData.respond(commandData.locales.JOIN_VC, true);
+    if (!ctx?.author?.voice?.channel?.id)
+      return ctx.respond(ctx.locales.JOIN_VC, true);
 
     if (
       serverListener &&
       serverListener?.listening &&
-      commandData.author?.voice?.channel?.id !=
-        commandData.guild?.me?.voice?.channel?.id
+      ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id
     ) {
-      commandData.respond(commandData.locales.NOT_SAME_VC, true);
+      ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
 
     try {
-      commandData.client.player.playSong(
-        commandData.guild.id,
+      ctx.client.player.playSong(
+        ctx.guild.id,
         {
-          voice: commandData.author.voice.channel.id,
-          text: commandData.channel.id,
+          voice: ctx.author.voice.channel.id,
+          text: ctx.channel.id,
         },
-        commandData.guild.voiceAdapterCreator,
-        commandData.locales,
+        ctx.guild.voiceAdapterCreator,
+        ctx.locales,
         song
       );
 
@@ -78,23 +78,20 @@ export const disconnect = new Command(
   2,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    if (!commandData?.guild?.me?.voice?.channel) {
-      commandData.respond(commandData.locales.NOT_IN_VC, true);
+  async (ctx: CommandContext): Promise<boolean> => {
+    if (!ctx?.guild?.me?.voice?.channel) {
+      ctx.respond(ctx.locales.NOT_IN_VC, true);
       return false;
     }
 
-    if (
-      commandData.author?.voice?.channel?.id !=
-      commandData.guild?.me?.voice?.channel?.id
-    ) {
-      commandData.respond(commandData.locales.NOT_SAME_VC, true);
+    if (ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id) {
+      ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
 
-    commandData.client.player.destroyStream(commandData.guild.id);
+    ctx.client.player.destroyStream(ctx.guild.id);
 
-    commandData.respond("👍");
+    ctx.respond("👍");
 
     return true;
   }
@@ -115,39 +112,31 @@ export const skip = new Command(
   2,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    if (!commandData.client.player.isPlaying(commandData.guild.id)) {
-      commandData.respond(commandData.locales.NOT_PLAYING, true);
+  async (ctx: CommandContext): Promise<boolean> => {
+    if (!ctx.client.player.isPlaying(ctx.guild.id)) {
+      ctx.respond(ctx.locales.NOT_PLAYING, true);
       return false;
     }
 
-    if (
-      commandData.author?.voice?.channel?.id !=
-      commandData.guild?.me?.voice?.channel?.id
-    ) {
-      commandData.respond(commandData.locales.NOT_SAME_VC, true);
+    if (ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id) {
+      ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
 
-    let songAmount = commandData.args[0] as any;
+    let songAmount = ctx.args[0] as any;
 
     if (!songAmount || isNaN(songAmount)) songAmount = 1;
 
-    const isOk = await commandData.client.player.skipSong(
-      commandData.guild.id,
-      songAmount
-    );
+    const isOk = await ctx.client.player.skipSong(ctx.guild.id, songAmount);
 
     if (!isOk) {
-      commandData.client.player.destroyStream(commandData.guild.id);
-      commandData.respond(commandData.locales.EMPTY_SONG_QUEUE, true);
+      ctx.client.player.destroyStream(ctx.guild.id);
+      ctx.respond(ctx.locales.EMPTY_SONG_QUEUE, true);
       return true;
     } else {
     }
 
-    commandData.respond(
-      commandData.locales.SKIPPING_SONG.replace("$count", songAmount)
-    );
+    ctx.respond(ctx.locales.SKIPPING_SONG.replace("$count", songAmount));
 
     return true;
   }
@@ -161,24 +150,21 @@ export const queue = new Command(
   1,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    if (!commandData.client.player.isPlaying(commandData.guild.id)) {
-      commandData.respond(commandData.locales.NOT_PLAYING, true);
+  async (ctx: CommandContext): Promise<boolean> => {
+    if (!ctx.client.player.isPlaying(ctx.guild.id)) {
+      ctx.respond(ctx.locales.NOT_PLAYING, true);
       return false;
     }
 
-    if (
-      commandData.author?.voice?.channel?.id !=
-      commandData.guild?.me?.voice?.channel?.id
-    ) {
-      commandData.respond(commandData.locales.NOT_SAME_VC, true);
+    if (ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id) {
+      ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
 
-    const guild = commandData.client.player.listeners.get(commandData.guild.id);
+    const guild = ctx.client.player.listeners.get(ctx.guild.id);
 
     if (!guild) {
-      commandData.respond(commandData.locales.QUEUE_NOT_FOUND, true);
+      ctx.respond(ctx.locales.QUEUE_NOT_FOUND, true);
       return false;
     }
 
@@ -187,7 +173,7 @@ export const queue = new Command(
     for (var i = 0; i < guild.queue.length; i++) {
       queue.push(
         `${i + 1} - [${guild.queue[i].title}](${guild.queue[i].url}) ${
-          i == 0 ? `- **${commandData.locales.CURRENTLY_PLAYING}**` : ""
+          i == 0 ? `- **${ctx.locales.CURRENTLY_PLAYING}**` : ""
         }`
       );
     }
@@ -196,10 +182,10 @@ export const queue = new Command(
 
     queueEmbed
       .setColor("#5865F2")
-      .setTitle(`${commandData.guild.name} - ${commandData.locales.SONG_QUEUE}`)
+      .setTitle(`${ctx.guild.name} - ${ctx.locales.SONG_QUEUE}`)
       .setDescription(queue.join("\n"));
 
-    commandData.respond(queueEmbed);
+    ctx.respond(queueEmbed);
 
     return true;
   }
@@ -213,28 +199,23 @@ export const pause = new Command(
   2,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    if (!commandData.client.player.isPlaying(commandData.guild.id)) {
-      commandData.respond(commandData.locales.NOT_PLAYING, true);
+  async (ctx: CommandContext): Promise<boolean> => {
+    if (!ctx.client.player.isPlaying(ctx.guild.id)) {
+      ctx.respond(ctx.locales.NOT_PLAYING, true);
       return false;
     }
 
-    if (
-      commandData.author?.voice?.channel?.id !=
-      commandData.guild?.me?.voice?.channel?.id
-    ) {
-      commandData.respond(commandData.locales.NOT_SAME_VC, true);
+    if (ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id) {
+      ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
 
-    const isOk = await commandData.client.player.pauseStream(
-      commandData.guild.id
-    );
+    const isOk = await ctx.client.player.pauseStream(ctx.guild.id);
 
     if (isOk) {
-      commandData.respond("👍");
+      ctx.respond("👍");
     } else {
-      commandData.respond(commandData.locales.ERROR, true);
+      ctx.respond(ctx.locales.ERROR, true);
       return false;
     }
 
@@ -250,28 +231,23 @@ export const resume = new Command(
   2,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    if (!commandData.client.player.isPlaying(commandData.guild.id)) {
-      commandData.respond(commandData.locales.NOT_PLAYING, true);
+  async (ctx: CommandContext): Promise<boolean> => {
+    if (!ctx.client.player.isPlaying(ctx.guild.id)) {
+      ctx.respond(ctx.locales.NOT_PLAYING, true);
       return false;
     }
 
-    if (
-      commandData.author?.voice?.channel?.id !=
-      commandData.guild?.me?.voice?.channel?.id
-    ) {
-      commandData.respond(commandData.locales.NOT_SAME_VC, true);
+    if (ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id) {
+      ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
 
-    const isOk = await commandData.client.player.resumeStream(
-      commandData.guild.id
-    );
+    const isOk = await ctx.client.player.resumeStream(ctx.guild.id);
 
     if (isOk) {
-      commandData.respond("👍");
+      ctx.respond("👍");
     } else {
-      commandData.respond(commandData.locales.ERROR, true);
+      ctx.respond(ctx.locales.ERROR, true);
       return false;
     }
 
@@ -287,33 +263,30 @@ export const loop = new Command(
   2,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    if (!commandData.client.player.isPlaying(commandData.guild.id)) {
-      commandData.respond(commandData.locales.NOT_PLAYING, true);
+  async (ctx: CommandContext): Promise<boolean> => {
+    if (!ctx.client.player.isPlaying(ctx.guild.id)) {
+      ctx.respond(ctx.locales.NOT_PLAYING, true);
       return false;
     }
 
-    if (
-      commandData.author?.voice?.channel?.id !=
-      commandData.guild?.me?.voice?.channel?.id
-    ) {
-      commandData.respond(commandData.locales.NOT_SAME_VC, true);
+    if (ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id) {
+      ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
 
-    const guild = commandData.client.player.listeners.get(commandData.guild.id);
+    const guild = ctx.client.player.listeners.get(ctx.guild.id);
 
     if (!guild) {
-      commandData.respond(commandData.locales.QUEUE_NOT_FOUND, true);
+      ctx.respond(ctx.locales.QUEUE_NOT_FOUND, true);
       return false;
     }
 
     if (guild.loop) {
       guild.loop = false;
-      commandData.respond(commandData.locales.LOOP_DISABLED, true);
+      ctx.respond(ctx.locales.LOOP_DISABLED, true);
     } else {
       guild.loop = true;
-      commandData.respond(commandData.locales.LOOP_ENABLED, true);
+      ctx.respond(ctx.locales.LOOP_ENABLED, true);
     }
 
     return true;
@@ -335,41 +308,109 @@ export const delsong = new Command(
   2,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-  async (commandData: CommandData): Promise<boolean> => {
-    if (!commandData.args[0] || isNaN(commandData.args[0] as any))
-      return commandData.respond(commandData.locales.WRONG_COMMAND_USAGE);
+  async (ctx: CommandContext): Promise<boolean> => {
+    if (!ctx.args[0] || isNaN(ctx.args[0] as any))
+      return ctx.respond(ctx.locales.WRONG_COMMAND_USAGE);
 
-    if (!commandData.client.player.isPlaying(commandData.guild.id)) {
-      commandData.respond(commandData.locales.NOT_PLAYING, true);
+    if (!ctx.client.player.isPlaying(ctx.guild.id)) {
+      ctx.respond(ctx.locales.NOT_PLAYING, true);
       return false;
     }
 
-    if (
-      commandData.author?.voice?.channel?.id !=
-      commandData.guild?.me?.voice?.channel?.id
-    ) {
-      commandData.respond(commandData.locales.NOT_SAME_VC, true);
+    if (ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id) {
+      ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
 
-    const guild = commandData.client.player.listeners.get(commandData.guild.id);
+    const guild = ctx.client.player.listeners.get(ctx.guild.id);
 
     if (!guild) {
-      commandData.respond(commandData.locales.QUEUE_NOT_FOUND, true);
+      ctx.respond(ctx.locales.QUEUE_NOT_FOUND, true);
       return false;
     }
 
-    const isOk = await commandData.client.player.delSongFromQueue(
-      commandData.guild.id,
-      commandData.args[0] as any
+    const isOk = await ctx.client.player.delSongFromQueue(
+      ctx.guild.id,
+      ctx.args[0] as any
     );
 
     if (isOk) {
-      commandData.respond(commandData.locales.SUCCESS, true);
+      ctx.respond(ctx.locales.SUCCESS, true);
       return true;
     }
 
-    commandData.respond(commandData.locales.ERROR, true);
+    ctx.respond(ctx.locales.ERROR, true);
+
+    return true;
+  }
+);
+
+export const lyrics = new Command(
+  "lyrics",
+  [],
+  "Shows the lyrics of the given or currenty listened song.",
+  [
+    {
+      type: "STRING",
+      name: "song",
+      description: "Song title or song artist to search",
+      required: true,
+    },
+  ],
+  8,
+  [],
+  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  async (ctx: CommandContext): Promise<boolean> => {
+    if (!ctx.args) return ctx.respond(ctx.locales.WRONG_COMMAND_USAGE);
+
+    const searchQuery = ctx.args.join(" ").trim().toLowerCase();
+
+    const searchResult: SongSearchResultResponse | null = await fetch(
+      `${ctx.client.config.apis.genius.baseUrl}/search?q=${searchQuery}`,
+      {
+        headers: {
+          Authorization: `Bearer ${ctx.client.config.apis.genius.token}`,
+        },
+      }
+    )
+      .then((res) => {
+        if (res.status === 200) return res.json();
+        else return null;
+      })
+      .catch((err) => null);
+
+    if (!searchResult) {
+      ctx.respond(ctx.locales.LYRIC_NOT_FOUND);
+
+      return false;
+    }
+
+    const searchResultSongs = searchResult.response.hits.filter(
+      (x) => x.type === "song"
+    );
+
+    if (searchResultSongs.length === 0) {
+      ctx.respond(ctx.locales.LYRIC_NOT_FOUND);
+
+      return false;
+    }
+
+    const song: SongResponse | null = await fetch(
+      `${ctx.client.config.apis.genius.baseUrl}/songs/${searchResultSongs[0].result.id}`
+    )
+      .then((res) => {
+        if (res.status === 200) return res.json();
+        else return null;
+      })
+      .catch((err) => null);
+
+    if (!song) {
+      ctx.respond(ctx.locales.LYRIC_NOT_FOUND);
+
+      return false;
+    }
+
+    ctx.respond(song.response.song);
 
     return true;
   }

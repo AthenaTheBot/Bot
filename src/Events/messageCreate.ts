@@ -1,4 +1,4 @@
-import { CommandData, CommandDataTypes } from "../Structures/CommandData";
+import { CommandContext, CommandTypes } from "../Structures/CommandContext";
 import { Permissions } from "../constants";
 import Event from "../Structures/Event";
 import CommandUsage from "../Structures/CommandUsage";
@@ -37,8 +37,8 @@ export default new Event(
     if (!command) return false;
 
     // Command data
-    const commandData = new CommandData(command, client, {
-      type: CommandDataTypes.Message,
+    const commandData = new CommandContext(command, client, {
+      type: CommandTypes.Message,
       data: msgData,
       db: { user: user, guild: guild },
     });

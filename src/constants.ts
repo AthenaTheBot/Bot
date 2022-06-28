@@ -1,3 +1,4 @@
+import { Interface } from "readline";
 import UserWarning from "./Structures/UserWarning";
 
 interface Config {
@@ -28,8 +29,8 @@ interface Config {
     warnKickCount: number;
     warnBanCount: number;
   };
-  apiKeys: {
-    KSOFT: string;
+  apis: {
+    genius: Api;
   };
   botlists: Botlist[];
   dbUrl: string;
@@ -61,6 +62,45 @@ interface GuildModules {
 interface UserOpitons {
   language?: LanguageOptions;
   premium?: boolean;
+}
+
+interface Api {
+  baseUrl: string;
+  token: string;
+}
+interface SongSearchResultResponse {
+  meta: {
+    status: number;
+  };
+  response: {
+    hits: SongSearchResultResponseHits[];
+  };
+}
+
+interface SongSearchResultResponseHits {
+  highlights: any[];
+  index: string;
+  type: string;
+  result: {
+    id: number;
+    title: string;
+    full_title: string;
+    url: string;
+  };
+}
+
+interface SongResponse {
+  meta: {
+    status: number;
+  };
+  response: {
+    song: {
+      api_path: string;
+      description: {
+        plain: string;
+      };
+    };
+  };
 }
 
 enum LanguageOptions {
@@ -172,4 +212,7 @@ export {
   RolePerms,
   VoicePerms,
   Permissions,
+  SongSearchResultResponse,
+  SongSearchResultResponseHits,
+  SongResponse,
 };

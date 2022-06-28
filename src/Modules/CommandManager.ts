@@ -5,7 +5,7 @@ import { join } from "path";
 // Classes
 import Command from "../Structures/Command";
 import AthenaClient from "../AthenaClient";
-import CommandData from "../Structures/CommandData";
+import CommandContext from "../Structures/CommandContext";
 import { Permissions } from "../constants";
 
 import {
@@ -53,7 +53,7 @@ class CommandManager {
     cooldown: number,
     requiredPerms: Permissions[],
     requiredBotPerms: Permissions[],
-    exec: (commandData: CommandData) => boolean | Promise<boolean>
+    exec: (ctx: CommandContext) => boolean | Promise<boolean>
   ): Promise<boolean> {
     if (this.isValidCommand(name)) return false;
 
@@ -183,4 +183,4 @@ class CommandManager {
 }
 
 export default CommandManager;
-export { CommandManager, CommandData };
+export { CommandManager };
