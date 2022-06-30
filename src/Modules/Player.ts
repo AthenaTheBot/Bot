@@ -111,12 +111,7 @@ class Player {
       if (songs.length > 0) {
         const targetSong = songs[0];
 
-        const html = await fetch(targetSong.result.url, {
-          headers: {
-            "User-Agent":
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:101.0) Gecko/20100101 Firefox/101.0",
-          },
-        })
+        const html = await fetch(targetSong.result.url)
           .then((res) => {
             if (res.status === 200) return res.text();
             else return null;
@@ -127,36 +122,37 @@ class Player {
           const $ = cheerio.load(html);
           let lyrics = "";
 
+          // Parse lyrics from html data
           $("div").each((el) => {
             const element = $($("div").get(el));
             const className = element.attr("class");
             if (className?.startsWith("Lyrics__Container")) {
-              element
-                .children()
-                .children()
-                .each((i) => {
-                  const child = $(element.children().get(i));
-
-                  if (child.attr("class") || child.attr("id")) {
-                    child.html(
-                      child
-                        .html()
-                        ?.replaceAll("<br/>", "\n")
-                        .replaceAll("<br>", "\n") || ""
-                    );
-
-                    lyrics += child.text() + "\n";
-                  }
-                });
+              lyrics = element
+                .html(element?.html()?.replaceAll("<br>", "\n") || "")
+                .text();
             }
           });
+
+          // Remove useless part from lyrics
+          let lyricsArray: any[] = lyrics.split("\n");
+
+          for (let i = 0; i < lyricsArray.length; i++) {
+            if (
+              lyricsArray[i].startsWith("[") &&
+              lyricsArray[i].endsWith("]")
+            ) {
+              lyricsArray[i] = null;
+            }
+          }
+
+          lyricsArray = lyricsArray.filter((x) => x !== null);
 
           if (lyrics)
             return {
               title: targetSong.result.full_title,
               artists: targetSong.result.artist_names,
               thumbnail: targetSong.result.header_image_thumbnail_url,
-              content: lyrics,
+              content: lyricsArray.join("\n"),
             };
         }
       }

@@ -350,18 +350,32 @@ export const lyrics = new Command(
       type: "STRING",
       name: "song",
       description: "Song title or song artist to search",
-      required: true,
+      required: false,
     },
   ],
   8,
   [],
   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
   async (ctx: CommandContext): Promise<boolean> => {
-    if (!ctx.args) return ctx.respond(ctx.locales.WRONG_COMMAND_USAGE);
+    const player = ctx.client.player.listeners.get(ctx.guild.id);
+    let searchQuery = ctx.args.join(" ").trim();
 
-    const searchQuery = ctx.args.join(" ").trim();
+    if (!searchQuery) {
+      if (player?.listening) {
+        searchQuery = player.queue[0].title;
+      } else {
+        ctx.respond(ctx.locales.WRONG_COMMAND_USAGE);
 
-    const songLyrics = await ctx.client.player.getLyrics(searchQuery);
+        return false;
+      }
+    }
+
+    const songLyrics = await ctx.client.player.getLyrics(
+      searchQuery.replace(
+        /[!%&'()*+./;<=>?\\,/:#@\t\r\n"\[\]_\u007B-\u00BF-]/g,
+        ""
+      )
+    );
 
     if (!songLyrics) {
       ctx.respond(ctx.locales.LYRIC_NOT_FOUND);
