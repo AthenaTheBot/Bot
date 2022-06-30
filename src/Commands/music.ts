@@ -1,10 +1,6 @@
 import CommandContext from "../Structures/CommandContext";
 import { MessageEmbed } from "discord.js";
-import {
-  Permissions,
-  SongSearchResultResponse,
-  SongResponse,
-} from "../constants";
+import { Permissions } from "../constants";
 import Command from "../Structures/Command";
 import fetch from "cross-fetch";
 
@@ -363,54 +359,24 @@ export const lyrics = new Command(
   async (ctx: CommandContext): Promise<boolean> => {
     if (!ctx.args) return ctx.respond(ctx.locales.WRONG_COMMAND_USAGE);
 
-    const searchQuery = ctx.args.join(" ").trim().toLowerCase();
+    const searchQuery = ctx.args.join(" ").trim();
 
-    const searchResult: SongSearchResultResponse | null = await fetch(
-      `${ctx.client.config.apis.genius.baseUrl}/search?q=${searchQuery}`,
-      {
-        headers: {
-          Authorization: `Bearer ${ctx.client.config.apis.genius.token}`,
-        },
-      }
-    )
-      .then((res) => {
-        if (res.status === 200) return res.json();
-        else return null;
-      })
-      .catch((err) => null);
+    const songLyrics = await ctx.client.player.getLyrics(searchQuery);
 
-    if (!searchResult) {
+    if (!songLyrics) {
       ctx.respond(ctx.locales.LYRIC_NOT_FOUND);
 
       return false;
     }
 
-    const searchResultSongs = searchResult.response.hits.filter(
-      (x) => x.type === "song"
-    );
+    // TODO: Split embeds if lyric contenet is longer than 2048
+    const lyricsEmbed = new MessageEmbed()
+      .setColor("RANDOM")
+      .setTitle(songLyrics.title)
+      .setThumbnail(songLyrics.thumbnail)
+      .setDescription(`**${songLyrics.content}**`);
 
-    if (searchResultSongs.length === 0) {
-      ctx.respond(ctx.locales.LYRIC_NOT_FOUND);
-
-      return false;
-    }
-
-    const song: SongResponse | null = await fetch(
-      `${ctx.client.config.apis.genius.baseUrl}/songs/${searchResultSongs[0].result.id}`
-    )
-      .then((res) => {
-        if (res.status === 200) return res.json();
-        else return null;
-      })
-      .catch((err) => null);
-
-    if (!song) {
-      ctx.respond(ctx.locales.LYRIC_NOT_FOUND);
-
-      return false;
-    }
-
-    ctx.respond(song.response.song);
+    ctx.respond(lyricsEmbed);
 
     return true;
   }

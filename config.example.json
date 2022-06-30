@@ -28,8 +28,8 @@
   },
   "apis": {
     "genius": {
-      "baseUrl": "https://api.genius.com/",
-      "token": ""
+      "baseUrl": "https://api.genius.com",
+      "key": ""
     }
   },
   "botlists": [

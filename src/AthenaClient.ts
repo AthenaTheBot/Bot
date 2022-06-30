@@ -83,7 +83,7 @@ class AthenaClient extends Client {
     this.cooldownManager = new CooldownManager();
     this.pollManager = new PollManager();
 
-    // Player
+    // Music Related
     this.player = new Player(this);
 
     // Stat Poster

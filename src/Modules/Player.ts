@@ -1,7 +1,7 @@
 import fetch from "cross-fetch";
 const spotify = require("spotify-url-info")(fetch);
 import ytsr from "ytsr";
-import ytdl, { getBasicInfo } from "ytdl-core";
+import { getBasicInfo } from "ytdl-core";
 import playDl from "play-dl";
 import Song from "../Structures/Song";
 import Listener from "../Structures/Listener";
@@ -13,11 +13,13 @@ import {
   createAudioResource,
   getVoiceConnection,
   joinVoiceChannel,
-  StreamType,
   VoiceConnectionStatus,
 } from "@discordjs/voice";
 import Utils from "./Utils";
 import { VoiceChannel } from "discord.js";
+import { SongLyrics, SongSearchResult } from "../constants";
+import cheerio from "cheerio";
+import { AthenaConfig } from "..";
 
 class Player {
   private client: AthenaClient;
@@ -84,6 +86,83 @@ class Player {
       this.client.errorHandler.recordError(err as Error);
       return null;
     }
+  }
+
+  async getLyrics(query: string): Promise<SongLyrics | null> {
+    const songSearchResult: SongSearchResult | null = await fetch(
+      `${AthenaConfig.apis.genius.baseUrl}/search?q=${query}`,
+      {
+        headers: {
+          Authorization: `Bearer ${AthenaConfig.apis.genius.key}`,
+        },
+      }
+    )
+      .then((res) => {
+        if (res.status === 200) return res.json();
+        else return null;
+      })
+      .catch(this.client.errorHandler.handleError);
+
+    if (songSearchResult) {
+      const songs = songSearchResult.response.hits.filter(
+        (x) => x.type === "song"
+      );
+
+      if (songs.length > 0) {
+        const targetSong = songs[0];
+
+        const html = await fetch(targetSong.result.url, {
+          headers: {
+            "User-Agent":
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:101.0) Gecko/20100101 Firefox/101.0",
+          },
+        })
+          .then((res) => {
+            if (res.status === 200) return res.text();
+            else return null;
+          })
+          .catch((err) => null);
+
+        if (html) {
+          const $ = cheerio.load(html);
+          let lyrics = "";
+
+          $("div").each((el) => {
+            const element = $($("div").get(el));
+            const className = element.attr("class");
+            if (className?.startsWith("Lyrics__Container")) {
+              element
+                .children()
+                .children()
+                .each((i) => {
+                  const child = $(element.children().get(i));
+
+                  if (child.attr("class") || child.attr("id")) {
+                    child.html(
+                      child
+                        .html()
+                        ?.replaceAll("<br/>", "\n")
+                        .replaceAll("<br>", "\n") || ""
+                    );
+
+                    lyrics += child.text() + "\n";
+                  }
+                });
+            }
+          });
+
+          if (lyrics)
+            return {
+              title: targetSong.result.full_title,
+              artists: targetSong.result.artist_names,
+              thumbnail: targetSong.result.header_image_thumbnail_url,
+              content: lyrics,
+            };
+        }
+      }
+    }
+
+    return null;
   }
 
   async playSong(

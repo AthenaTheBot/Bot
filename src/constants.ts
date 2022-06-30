@@ -66,41 +66,44 @@ interface UserOpitons {
 
 interface Api {
   baseUrl: string;
-  token: string;
-}
-interface SongSearchResultResponse {
-  meta: {
-    status: number;
-  };
-  response: {
-    hits: SongSearchResultResponseHits[];
-  };
+  key: string;
 }
 
-interface SongSearchResultResponseHits {
-  highlights: any[];
+interface SongSearchResultHit {
+  highlights: any;
   index: string;
   type: string;
   result: {
-    id: number;
     title: string;
     full_title: string;
+    artist_names: string;
+    header_image_thumbnail_url: string;
+    header_image_url: string;
+    id: number;
+    lyrics_state: string;
+    release_date_for_display: string;
+    stats: {
+      hot: boolean;
+      pageviews: number;
+    };
     url: string;
   };
 }
 
-interface SongResponse {
+interface SongSearchResult {
   meta: {
     status: number;
   };
   response: {
-    song: {
-      api_path: string;
-      description: {
-        plain: string;
-      };
-    };
+    hits: SongSearchResultHit[];
   };
+}
+
+interface SongLyrics {
+  title: string;
+  artists: string;
+  thumbnail: string;
+  content: string;
 }
 
 enum LanguageOptions {
@@ -212,7 +215,7 @@ export {
   RolePerms,
   VoicePerms,
   Permissions,
-  SongSearchResultResponse,
-  SongSearchResultResponseHits,
-  SongResponse,
+  Api,
+  SongLyrics,
+  SongSearchResult,
 };

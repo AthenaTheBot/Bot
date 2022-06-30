@@ -2,6 +2,7 @@
 import { writeFileSync, readdirSync, ensureDirSync } from "fs-extra";
 import { join } from "path";
 import { v4 as uuid } from "uuid";
+import { AthenaConfig } from "..";
 
 // Classes
 import Logger from "./Logger";
@@ -75,6 +76,15 @@ class ErrorHandler {
 
     this.logger.warn(`Recorded an error with name ${error.name} (${errorId}).`);
     return true;
+  }
+
+  // Handles arrow function rejection errors, prints error if bot is in debug mode
+  handleError(err: Error): null {
+    if (AthenaConfig.debug) {
+      this.handleError(err);
+    }
+
+    return null;
   }
 }
 
