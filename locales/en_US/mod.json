@@ -3,5 +3,7 @@
   "ACTION_DONE_BY": "Action done by \"$user\".",
   "WARNED_USER": "**$user** has been warned for **$reason**. Current warn count: **$warn_count**",
   "WARN_KICKED_USER": "**$user** has been warned **$times** and kicked from the server.",
-  "WARN_BANNED_USER": "**$user** has been warned **$times** and banned from the server."
+  "WARN_BANNED_USER": "**$user** has been warned **$times** and banned from the server.",
+  "UPDATE_NOT_NEEDED": "Same role has specified, nothing updated.",
+  "ROLE_MANAGED": "That role is managed so Athena can't assign that role to anyone."
 }

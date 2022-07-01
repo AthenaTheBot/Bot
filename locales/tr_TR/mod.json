@@ -3,5 +3,7 @@
   "ACTION_DONE_BY": "İşlem \"$user\" tarafından gerçekleştirildi.",
   "WARNED_USER": "**$user**, **$reason** sebebinden dolayı uyarıldı. Şuan ki uyarı sayısı: **$warn_count**",
   "WARN_KICKED_USER": "**$user** kişisi **times** kere uyarıldı, ve sunucudan atıldı.",
-  "WARN_BANNED_USER": "**$user** kişisi **times** kere uyarıldı, ve sunucudan yasaklandı."
+  "WARN_BANNED_USER": "**$user** kişisi **times** kere uyarıldı, ve sunucudan yasaklandı.",
+  "UPDATE_NOT_NEEDED": "Aynı rol belirtildi, hiçbir şey değiştirilmedi.",
+  "ROLE_MANAGED": "O rol bir yönetilmektedir, Athena o rolü bir üyeye atayamaz."
 }

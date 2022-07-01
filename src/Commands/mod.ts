@@ -417,7 +417,12 @@ export const reswarn = new Command(
   ],
   1,
   [Permissions.KICK_MEMBERS, Permissions.BAN_MEMBERS],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [
+    Permissions.SEND_MESSAGES,
+    Permissions.EMBED_LINKS,
+    Permissions.SEND_MESSAGES,
+    Permissions.EMBED_LINKS,
+  ],
   async (ctx: CommandContext): Promise<boolean> => {
     const targetUser = await ctx.parseUserFromArgs(0);
 
@@ -452,6 +457,83 @@ export const reswarn = new Command(
             ctx.db.guild.modules.moderation?.warnings,
         },
       });
+    }
+
+    ctx.respond(ctx.locales.SUCCESS, true);
+
+    return true;
+  }
+);
+
+export const autorole = new Command(
+  "autorole",
+  ["auto-role"],
+  "Sets auto role.",
+  [
+    {
+      type: "ROLE",
+      name: "role",
+      description: "Role you want to set as auto role.",
+      required: true,
+    },
+  ],
+  1,
+  [Permissions.MANAGE_GUILD, Permissions.MANAGE_ROLES],
+  [
+    Permissions.SEND_MESSAGES,
+    Permissions.EMBED_LINKS,
+    Permissions.MANAGE_ROLES,
+  ],
+  async (ctx: CommandContext): Promise<boolean> => {
+    const targetRole = await ctx.parseRoleFromArgs(0);
+    const highestUserRole = ctx.author?.roles.highest;
+    const highestBotRole = ctx.guild.me?.roles.highest;
+
+    if (!targetRole) {
+      ctx.respond(ctx.locales.WRONG_COMMAND_USAGE, true);
+
+      return false;
+    }
+
+    if (
+      targetRole?.rawPosition >= (highestUserRole?.rawPosition || 0) &&
+      ctx.guild.ownerId !== ctx?.author?.id
+    ) {
+      ctx.respond(ctx.locales.USER_INSUFFICIENT_PERMS, true);
+
+      return false;
+    }
+
+    if (targetRole?.rawPosition >= (highestBotRole?.rawPosition || 0)) {
+      ctx.respond(ctx.locales.BOT_INSUFFICIENT_PERMS, true);
+
+      return false;
+    }
+
+    if (ctx.db.guild.modules.moderation.autoRole === targetRole?.id) {
+      ctx.respond(ctx.locales.UPDATE_NOT_NEEDED, true);
+
+      return false;
+    }
+
+    if (targetRole.managed) {
+      ctx.respond(ctx.locales.ROLE_MANAGED, true);
+
+      return false;
+    }
+
+    const updateSuccess = await ctx.client.dbManager.updateDocument(
+      "guilds",
+      ctx.guild.id,
+      {
+        $set: { "modules.moderation.autoRole": targetRole?.id },
+      }
+    );
+
+    if (!updateSuccess) {
+      ctx.respond(ctx.locales.ERROR, true);
+
+      return false;
     }
 
     ctx.respond(ctx.locales.SUCCESS, true);
