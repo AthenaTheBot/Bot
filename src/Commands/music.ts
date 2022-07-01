@@ -370,7 +370,7 @@ export const lyrics = new Command(
       }
     }
 
-    const songLyrics = await ctx.client.player.getLyrics(
+    const songLyrics = await ctx.client.lyrics.getLyrics(
       searchQuery.replace(
         /[!%&'()*+./;<=>?\\,/:#@\t\r\n"\[\]_\u007B-\u00BF-]/g,
         ""

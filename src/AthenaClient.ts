@@ -23,6 +23,7 @@ import Player from "./Modules/Player";
 import StatPoster from "./Modules/StatPoster";
 import TerminalHandler from "./Modules/TerminalHandler";
 import { Config } from "./constants";
+import Lyrics from "./Modules/Lyrics";
 
 /** Athena base client class
  * @extends Client
@@ -41,8 +42,9 @@ class AthenaClient extends Client {
   cooldownManager: CooldownManager;
   pollManager: PollManager;
 
-  // Player
+  // Music related
   player: Player;
+  lyrics: Lyrics;
 
   // Stats Poster
   statPoster: StatPoster;
@@ -85,6 +87,7 @@ class AthenaClient extends Client {
 
     // Music Related
     this.player = new Player(this);
+    this.lyrics = new Lyrics();
 
     // Stat Poster
     this.statPoster = new StatPoster(this, this.config.bot.statPostInterval);
