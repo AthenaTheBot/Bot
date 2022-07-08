@@ -1,4 +1,3 @@
-import { Interface } from "readline";
 import UserWarning from "./Structures/UserWarning";
 
 interface Config {
@@ -44,6 +43,30 @@ interface Botlist {
   token: string;
 }
 
+interface WelcomerEmbed {
+  author: {
+    name: string;
+    icon: string;
+    url: string;
+  };
+  title: string;
+  description: string;
+  thumbnail: string;
+  image: string;
+  url: string;
+  color: string;
+  footer: {
+    icon: string;
+    text: string;
+  };
+}
+
+interface Welcomer {
+  enabled: boolean;
+  message: { content: string; embed: WelcomerEmbed };
+  channel: string;
+}
+
 interface GuildModules {
   settings: {
     prefix: string;
@@ -54,6 +77,9 @@ interface GuildModules {
     modRole?: string | null;
     warnings?: UserWarning[];
     autoRole: string | null;
+  };
+  welcomer: {
+    messageToChannel: Welcomer | null;
   };
   fun?: {};
   utils?: {};

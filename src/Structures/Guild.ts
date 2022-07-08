@@ -19,6 +19,9 @@ class Guild {
         autoRole: modules?.moderation?.autoRole || null,
         warnings: modules?.moderation?.warnings || [],
       },
+      welcomer: {
+        messageToChannel: modules?.welcomer?.messageToChannel || null,
+      },
 
       fun: {},
       utils: {},
