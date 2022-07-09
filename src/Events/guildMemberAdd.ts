@@ -2,6 +2,8 @@ import { GuildMember, MessageEmbed, Role, TextChannel } from "discord.js";
 import Event from "../Structures/Event";
 import validator from "validator";
 
+import { WelcomerEmbed } from "../constants";
+
 export default new Event(
   "guildMemberAdd",
   async (client, member: GuildMember): Promise<boolean> => {
@@ -20,27 +22,35 @@ export default new Event(
 
     // TODO: Check if the url is valid or not.
     if (welcomeMessage?.enabled && welcomeMessage?.channel) {
-      const embed = new MessageEmbed(
-        JSON.parse(
-          JSON.stringify(welcomeMessage?.message?.embed)
-            ?.replaceAll("$user", member.user.username)
-            ?.replaceAll("$server", member.guild.name)
-        ) as any
-      );
+      const embedData = JSON.parse(
+        JSON.stringify(welcomeMessage?.message?.embed)
+          ?.replaceAll("$user", member.user.username)
+          ?.replaceAll("$server", member.guild.name)
+      ) as WelcomerEmbed;
 
-      if (!validator.isURL(embed?.url || "")) embed.url = "";
+      const embed = new MessageEmbed();
 
-      embed.setAuthor({
-        iconURL: welcomeMessage.message.embed.author.icon,
-        name: welcomeMessage.message.embed.author.name,
-        url: welcomeMessage.message.embed.author.url,
-      });
-      embed.setFooter({
-        iconURL: welcomeMessage.message.embed.footer.icon,
-        text: welcomeMessage.message.embed.footer.text,
-      });
-      embed.setImage(welcomeMessage.message.embed.image);
-      embed.setThumbnail(welcomeMessage.message.embed.thumbnail);
+      if (embedData?.author)
+        embed.setAuthor({
+          iconURL: welcomeMessage.message.embed.author.icon,
+          name: welcomeMessage.message.embed.author.name,
+          url: welcomeMessage.message.embed.author.url,
+        });
+
+      if (embedData?.title) embed.setTitle(embedData?.title);
+
+      if (embedData?.description) embed.setDescription(embedData?.description);
+
+      if (embedData?.thumbnail && validator.isURL(embedData?.thumbnail || ""))
+        embed.setThumbnail(embedData.thumbnail);
+
+      if (embedData?.image && validator.isURL(embedData?.image))
+        embed.setImage(embedData?.image);
+
+      if (embedData?.url && validator.isURL(embedData?.url))
+        embed.setURL(embedData?.url);
+
+      if (embedData?.color) embed.setColor(embedData.color as any);
 
       const channel = member.guild.channels.cache.get(
         welcomeMessage.channel

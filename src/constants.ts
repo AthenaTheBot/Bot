@@ -244,4 +244,5 @@ export {
   Api,
   SongLyrics,
   SongSearchResult,
+  WelcomerEmbed,
 };
