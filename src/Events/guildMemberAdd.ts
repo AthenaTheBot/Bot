@@ -1,5 +1,6 @@
 import { GuildMember, MessageEmbed, Role, TextChannel } from "discord.js";
 import Event from "../Structures/Event";
+import validator from "validator";
 
 export default new Event(
   "guildMemberAdd",
@@ -17,6 +18,7 @@ export default new Event(
       }
     }
 
+    // TODO: Check if the url is valid or not.
     if (welcomeMessage?.enabled && welcomeMessage?.channel) {
       const embed = new MessageEmbed(
         JSON.parse(
@@ -25,6 +27,8 @@ export default new Event(
             ?.replaceAll("$server", member.guild.name)
         ) as any
       );
+
+      if (!validator.isURL(embed?.url || "")) embed.url = "";
 
       embed.setAuthor({
         iconURL: welcomeMessage.message.embed.author.icon,
@@ -47,7 +51,9 @@ export default new Event(
           .send({
             embeds: [embed],
           })
-          .catch(() => {});
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
 
