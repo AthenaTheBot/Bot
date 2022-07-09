@@ -26,7 +26,7 @@ class Lyrics {
         if (res.status === 200) return res.json();
         else return null;
       })
-      .catch(ErrorHandler.handleError);
+      .catch(() => {});
 
     if (songSearchResult) {
       const songs = songSearchResult.response.hits.filter(

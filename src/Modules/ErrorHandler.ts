@@ -79,7 +79,7 @@ class ErrorHandler {
   }
 
   // Handles arrow function rejection errors, prints error if bot is in debug mode
-  static handleError(err: Error): null {
+  handleError(err: Error): null {
     if (AthenaConfig.debug) {
       this.handleError(err);
     }

@@ -1,5 +1,4 @@
 import { GuildMember, MessageEmbed, Role, TextChannel } from "discord.js";
-import ErrorHandler from "../Modules/ErrorHandler";
 import Event from "../Structures/Event";
 
 export default new Event(
@@ -14,7 +13,7 @@ export default new Event(
       const roleClient = member.guild.me?.roles.highest as Role;
 
       if (roleClient?.rawPosition > role?.rawPosition && !role.managed) {
-        member.roles.add(role).catch(ErrorHandler.handleError);
+        member.roles.add(role).catch(() => {});
       }
     }
 
@@ -26,6 +25,19 @@ export default new Event(
             ?.replaceAll("$server", member.guild.name)
         ) as any
       );
+
+      embed.setAuthor({
+        iconURL: welcomeMessage.message.embed.author.icon,
+        name: welcomeMessage.message.embed.author.name,
+        url: welcomeMessage.message.embed.author.url,
+      });
+      embed.setFooter({
+        iconURL: welcomeMessage.message.embed.footer.icon,
+        text: welcomeMessage.message.embed.footer.text,
+      });
+      embed.setImage(welcomeMessage.message.embed.image);
+      embed.setThumbnail(welcomeMessage.message.embed.thumbnail);
+
       const channel = member.guild.channels.cache.get(
         welcomeMessage.channel
       ) as TextChannel;
@@ -35,7 +47,7 @@ export default new Event(
           .send({
             embeds: [embed],
           })
-          .catch(ErrorHandler.handleError);
+          .catch(() => {});
       }
     }
 
