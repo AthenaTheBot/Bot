@@ -20,7 +20,6 @@ export default new Event(
       }
     }
 
-    // TODO: Check if the url is valid or not.
     if (welcomeMessage?.enabled && welcomeMessage?.channel) {
       const embedData = JSON.parse(
         JSON.stringify(welcomeMessage?.message?.embed)
