@@ -1,4 +1,10 @@
-import { GuildMember, MessageEmbed, Role, TextChannel } from "discord.js";
+import {
+  ColorResolvable,
+  GuildMember,
+  MessageEmbed,
+  Role,
+  TextChannel,
+} from "discord.js";
 import Event from "../Structures/Event";
 import validator from "validator";
 
@@ -49,7 +55,8 @@ export default new Event(
       if (embedData?.url && validator.isURL(embedData?.url))
         embed.setURL(embedData?.url);
 
-      if (embedData?.color) embed.setColor(embedData.color as any);
+      if (embedData?.color && validator.isHexColor(embedData?.color))
+        embed.setColor(embedData.color as string as ColorResolvable);
 
       const channel = member.guild.channels.cache.get(
         welcomeMessage.channel
