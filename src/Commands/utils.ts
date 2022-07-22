@@ -1,6 +1,10 @@
 import CommandContext from "../Structures/CommandContext";
 import { Permissions } from "../constants";
-import { MessageEmbed } from "discord.js";
+import {
+  EmbedBuilder,
+  ApplicationCommandOptionType,
+  PermissionFlagsBits,
+} from "discord.js";
 import figlet from "figlet";
 import Command from "../Structures/Command";
 
@@ -13,7 +17,7 @@ export const ping = new Command(
   [],
   1,
   [],
-  [Permissions.SEND_MESSAGES],
+  [Permissions.SendMessages],
   (ctx: CommandContext): boolean => {
     ctx.respond(ctx.locales.PONG);
 
@@ -27,7 +31,7 @@ export const ascii = new Command(
   "Sends the ascii format of the given text.",
   [
     {
-      type: "STRING",
+      type: ApplicationCommandOptionType.String,
       name: "text",
       description: "A text to convert into ascii format",
       required: true,
@@ -35,7 +39,7 @@ export const ascii = new Command(
   ],
   3,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   (ctx: CommandContext): boolean => {
     const text = ctx.args.join(" ");
 
@@ -69,7 +73,7 @@ export const avatar = new Command(
   "Sends the avatar of the given user.",
   [
     {
-      type: "USER",
+      type: ApplicationCommandOptionType.User,
       name: "user",
       description: "User to see avatar from.",
       required: true,
@@ -77,7 +81,7 @@ export const avatar = new Command(
   ],
   2,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     const targetUser = await ctx.parseUserFromArgs(0);
 
@@ -86,7 +90,7 @@ export const avatar = new Command(
       return false;
     }
 
-    const Embed = new MessageEmbed()
+    const Embed = new EmbedBuilder()
       .setColor("#5865F2")
       .setTimestamp()
       .setTitle(
@@ -94,9 +98,9 @@ export const avatar = new Command(
       )
       .setImage(
         targetUser.displayAvatarURL({
-          dynamic: true,
+          forceStatic: true,
           size: 4096,
-          format: "png",
+          extension: "png",
         })
       );
 
@@ -113,7 +117,7 @@ export const invite = new Command(
   [],
   1,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     ctx.respond(ctx.locales.INVITE_LINK, true);
 
@@ -129,12 +133,12 @@ export const help = new Command(
   [],
   1,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
-    const Embed = new MessageEmbed()
+    const Embed = new EmbedBuilder()
       .setThumbnail(
         ctx.client.user?.displayAvatarURL({
-          format: "png",
+          extension: "png",
           size: 4096,
         }) as any
       )
@@ -153,25 +157,21 @@ export const pollCreate = new Command(
   "Create a poll",
   [
     {
-      type: "NUMBER",
+      type: ApplicationCommandOptionType.Number,
       name: "timeout",
       description: "Specify how much time should poll last (in seconds).",
       required: true,
     },
     {
-      type: "STRING",
+      type: ApplicationCommandOptionType.String,
       name: "question",
       description: "Question to be asked",
       required: true,
     },
   ],
   5,
-  [Permissions.MANAGE_GUILD],
-  [
-    Permissions.SEND_MESSAGES,
-    Permissions.EMBED_LINKS,
-    Permissions.ADD_REACTIONS,
-  ],
+  [Permissions.ManageGuild],
+  [Permissions.SendMessages, Permissions.EmbedLinks, Permissions.AddReactions],
   async (ctx: CommandContext): Promise<boolean> => {
     const pollTime = ctx.args[0] as any;
     const question = ctx.args.slice(1).join(" ").trim();
@@ -205,19 +205,15 @@ export const pollEnd = new Command(
   "Ends a poll",
   [
     {
-      type: "STRING",
+      type: ApplicationCommandOptionType.String,
       name: "poll-id",
       description: "Specify the poll that you want to end.",
       required: true,
     },
   ],
   4,
-  [Permissions.MANAGE_GUILD],
-  [
-    Permissions.SEND_MESSAGES,
-    Permissions.EMBED_LINKS,
-    Permissions.ADD_REACTIONS,
-  ],
+  [Permissions.ManageGuild],
+  [Permissions.SendMessages, Permissions.EmbedLinks, Permissions.AddReactions],
   async (ctx: CommandContext): Promise<boolean> => {
     if (!ctx.args[0]) {
       ctx.respond(ctx.locales.WRONG_COMMAND_USAGE), true;

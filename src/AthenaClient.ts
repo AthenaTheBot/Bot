@@ -1,7 +1,7 @@
 // Modules
 import figlet from "figlet";
 import colors from "colors";
-import { Client, Intents } from "discord.js";
+import { Client, GatewayIntentBits as Intents } from "discord.js";
 
 colors.enable();
 
@@ -63,11 +63,11 @@ class AthenaClient extends Client {
   constructor(config: Config) {
     super({
       intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MEMBERS,
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_VOICE_STATES,
-        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        Intents.Guilds,
+        Intents.GuildMembers,
+        Intents.GuildMessages,
+        Intents.GuildVoiceStates,
+        Intents.GuildMessageReactions,
       ],
     });
 
@@ -160,7 +160,6 @@ class AthenaClient extends Client {
     this.presenceManager.setPresence([
       {
         name: this.config.bot.activity,
-        type: "LISTENING",
       },
     ]);
 

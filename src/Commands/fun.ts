@@ -1,5 +1,9 @@
 import CommandContext from "../Structures/CommandContext";
-import { MessageAttachment, MessageEmbed } from "discord.js";
+import {
+  ApplicationCommandOptionType,
+  AttachmentBuilder,
+  EmbedBuilder,
+} from "discord.js";
 import { Permissions } from "../constants";
 import canvacord from "canvacord";
 import axios from "axios";
@@ -14,7 +18,7 @@ export const cat = new Command(
   [],
   4,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.ATTACH_FILES],
+  [Permissions.SendMessages, Permissions.AttachFiles],
   async (ctx: CommandContext): Promise<boolean> => {
     const data = await axios
       .get("https://api.thecatapi.com/v1/images/search")
@@ -25,7 +29,9 @@ export const cat = new Command(
       return false;
     }
 
-    const attachment = new MessageAttachment(data[0].url, "random_cat.png");
+    const attachment = new AttachmentBuilder(data[0].url, {
+      name: "random_cat.png",
+    });
 
     ctx.respond({ files: [attachment] });
 
@@ -40,7 +46,7 @@ export const dog = new Command(
   [],
   4,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.ATTACH_FILES],
+  [Permissions.SendMessages, Permissions.AttachFiles],
   async (ctx: CommandContext): Promise<boolean> => {
     const data = await axios
       .get("https://dog.ceo/api/breeds/image/random")
@@ -51,50 +57,15 @@ export const dog = new Command(
       return false;
     }
 
-    const attachment = new MessageAttachment(data.message, "random_dog.png");
+    const attachment = new AttachmentBuilder(data.message, {
+      name: "random_dog.png",
+    });
 
     ctx.respond({ files: [attachment] });
 
     return true;
   }
 );
-
-// TODO:
-// export const meme = new Command(
-//   "meme",
-//   [],
-//   "Fetches random memes from reddit.",
-//   [],
-//   4,
-//   [],
-//   [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
-//   async (ctx: CommandContext): Promise<boolean> => {
-//     const data = await axios("https://api.ksoft.si/images/random-meme", {
-//       method: "GET",
-//       headers: {
-//         Authorization: `Bearer ${ctx.client.config.apiKeys.KSOFT}`,
-//       },
-//     }).then((res) => res?.data);
-
-//     if (!data) {
-//       ctx.respond(ctx.locales.ERROR, true);
-//       return false;
-//     }
-
-//     const Embed = new MessageEmbed();
-//     Embed.setAuthor({ name: data.author })
-//       .setURL(data.source)
-//       .setTitle(data.title)
-//       .setImage(data.image_url)
-//       .setFooter({
-//         text: `👍 ${data.upvotes} | 👎 ${data.downvotes} | 💬 ${data.comments}`,
-//       });
-
-//     ctx.respond(Embed);
-
-//     return true;
-//   }
-// );
 
 export const coinflip = new Command(
   "coinflip",
@@ -103,7 +74,7 @@ export const coinflip = new Command(
   [],
   4,
   [],
-  [Permissions.SEND_MESSAGES],
+  [Permissions.SendMessages],
   async (ctx: CommandContext): Promise<boolean> => {
     const result = Math.round(Math.random());
 
@@ -123,7 +94,7 @@ export const worsethanhitler = new Command(
   "Worse than hitler",
   [
     {
-      type: "USER",
+      type: ApplicationCommandOptionType.User,
       name: "user",
       description: "The user that you want to use in this meme.",
       required: true,
@@ -131,7 +102,7 @@ export const worsethanhitler = new Command(
   ],
   4,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     const targetUser = await ctx.parseUserFromArgs(0);
 
@@ -141,10 +112,12 @@ export const worsethanhitler = new Command(
     }
 
     const hitler = await canvacord.Canvacord.hitler(
-      targetUser.displayAvatarURL({ format: "png", dynamic: false })
+      targetUser.displayAvatarURL({ extension: "png", forceStatic: false })
     );
 
-    const attachment = new MessageAttachment(hitler, "worseThanHitler.png");
+    const attachment = new AttachmentBuilder(hitler, {
+      name: "worseThanHitler.png",
+    });
 
     ctx.respond({ files: [attachment] });
 
@@ -158,7 +131,7 @@ export const jail = new Command(
   "Put someone in jail.",
   [
     {
-      type: "USER",
+      type: ApplicationCommandOptionType.User,
       name: "User",
       description: "The user that you want to use in this meme.",
       required: true,
@@ -166,7 +139,7 @@ export const jail = new Command(
   ],
   4,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     const targetUser = await ctx.parseUserFromArgs(0);
 
@@ -176,11 +149,11 @@ export const jail = new Command(
     }
 
     const jail = await canvacord.Canvacord.jail(
-      targetUser.displayAvatarURL({ format: "png", dynamic: false }),
+      targetUser.displayAvatarURL({ extension: "png", forceStatic: false }),
       true
     );
 
-    const attachment = new MessageAttachment(jail, "jail.png");
+    const attachment = new AttachmentBuilder(jail, { name: "jail.png" });
 
     ctx.respond({ files: [attachment] });
 
@@ -194,7 +167,7 @@ export const jokeoverhead = new Command(
   "Don't just don't make jokes",
   [
     {
-      type: "USER",
+      type: ApplicationCommandOptionType.User,
       name: "user",
       description: "The user that you want to use in this meme.",
       required: true,
@@ -202,7 +175,7 @@ export const jokeoverhead = new Command(
   ],
   4,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     const targetUser = await ctx.parseUserFromArgs(0);
 
@@ -212,10 +185,12 @@ export const jokeoverhead = new Command(
     }
 
     const jokeOverHead = await canvacord.Canvacord.jokeOverHead(
-      targetUser.displayAvatarURL({ format: "png", dynamic: false })
+      targetUser.displayAvatarURL({ extension: "png", forceStatic: false })
     );
 
-    const attachment = new MessageAttachment(jokeOverHead, "jokeOverHead.png");
+    const attachment = new AttachmentBuilder(jokeOverHead, {
+      name: "jokeOverHead.png",
+    });
 
     ctx.respond({ files: [attachment] });
 
@@ -229,7 +204,7 @@ export const rip = new Command(
   "R.I.P",
   [
     {
-      type: "USER",
+      type: ApplicationCommandOptionType.User,
       name: "user",
       description: "The user that you want to use in this meme.",
       required: true,
@@ -237,7 +212,7 @@ export const rip = new Command(
   ],
   4,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     const targetUser = await ctx.parseUserFromArgs(0);
 
@@ -247,10 +222,10 @@ export const rip = new Command(
     }
 
     const rip = await canvacord.Canvacord.rip(
-      targetUser.displayAvatarURL({ format: "png", dynamic: false })
+      targetUser.displayAvatarURL({ extension: "png", forceStatic: false })
     );
 
-    const attachment = new MessageAttachment(rip, "rip.png");
+    const attachment = new AttachmentBuilder(rip, { name: "rip.png" });
 
     ctx.respond({ files: [attachment] });
 
@@ -264,7 +239,7 @@ export const trash = new Command(
   "Don't be a trash",
   [
     {
-      type: "USER",
+      type: ApplicationCommandOptionType.User,
       name: "user",
       description: "The user that you want to use in this meme.",
       required: true,
@@ -272,7 +247,7 @@ export const trash = new Command(
   ],
   4,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     const targetUser = await ctx.parseUserFromArgs(0);
 
@@ -282,10 +257,10 @@ export const trash = new Command(
     }
 
     const trash = await canvacord.Canvacord.trash(
-      targetUser.displayAvatarURL({ format: "png", dynamic: false })
+      targetUser.displayAvatarURL({ extension: "png", forceStatic: false })
     );
 
-    const attachment = new MessageAttachment(trash, "trash.png");
+    const attachment = new AttachmentBuilder(trash, { name: "trash.png" });
 
     ctx.respond({ files: [attachment] });
 
@@ -299,7 +274,7 @@ export const wanter = new Command(
   "Try it but a sheriff may find you one time",
   [
     {
-      type: "USER",
+      type: ApplicationCommandOptionType.User,
       name: "user",
       description: "The user that you want to use in this meme.",
       required: true,
@@ -307,7 +282,7 @@ export const wanter = new Command(
   ],
   4,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     const targetUser = await ctx.parseUserFromArgs(0);
 
@@ -317,10 +292,10 @@ export const wanter = new Command(
     }
 
     const wanted = await canvacord.Canvacord.wanted(
-      targetUser.displayAvatarURL({ format: "png", dynamic: false })
+      targetUser.displayAvatarURL({ extension: "png", forceStatic: false })
     );
 
-    const attachment = new MessageAttachment(wanted, "wanted.png");
+    const attachment = new AttachmentBuilder(wanted, { name: "wanted.png" });
 
     ctx.respond({ files: [attachment] });
 

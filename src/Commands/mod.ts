@@ -1,5 +1,5 @@
 import CommandContext from "../Structures/CommandContext";
-import { TextChannel } from "discord.js";
+import { TextChannel, ApplicationCommandOptionType } from "discord.js";
 import { Permissions } from "../constants";
 import UserWarning from "../Structures/UserWarning";
 import Command from "../Structures/Command";
@@ -10,19 +10,15 @@ export const kick = new Command(
   "Kicks the specified user from guild.",
   [
     {
-      type: "USER",
+      type: ApplicationCommandOptionType.User,
       name: "user",
       description: "The user that you want to kick from the server.",
       required: true,
     },
   ],
   1,
-  [Permissions.KICK_MEMBERS],
-  [
-    Permissions.SEND_MESSAGES,
-    Permissions.EMBED_LINKS,
-    Permissions.KICK_MEMBERS,
-  ],
+  [Permissions.KickMembers],
+  [Permissions.SendMessages, Permissions.EmbedLinks, Permissions.KickMembers],
   async (ctx: CommandContext): Promise<boolean> => {
     const targetUser = await ctx.parseUserFromArgs(0);
 
@@ -72,15 +68,15 @@ export const ban = new Command(
   "Bans the specified user from guild.",
   [
     {
-      type: "USER",
+      type: ApplicationCommandOptionType.User,
       name: "user",
       description: "The user that you want to ban from the server.",
       required: true,
     },
   ],
   1,
-  [Permissions.BAN_MEMBERS],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS, Permissions.BAN_MEMBERS],
+  [Permissions.BanMembers],
+  [Permissions.SendMessages, Permissions.EmbedLinks, Permissions.BanMembers],
   async (ctx: CommandContext): Promise<boolean> => {
     const targetUser = await ctx.parseUserFromArgs(0);
 
@@ -130,18 +126,18 @@ export const slowmode = new Command(
   "Manages the slowmodes in text channels.",
   [
     {
-      type: "STRING",
+      type: ApplicationCommandOptionType.String,
       name: "timeout",
       description: "Timeout duration for this text channel (ex: 10s).",
       required: true,
     },
   ],
   1,
-  [Permissions.MANAGE_CHANNELS],
+  [Permissions.ManageChannels],
   [
-    Permissions.SEND_MESSAGES,
-    Permissions.EMBED_LINKS,
-    Permissions.MANAGE_CHANNELS,
+    Permissions.SendMessages,
+    Permissions.EmbedLinks,
+    Permissions.ManageChannels,
   ],
   async (ctx: CommandContext): Promise<boolean> => {
     const keywords = [
@@ -231,18 +227,18 @@ export const clear = new Command(
   "Clears the specified amount of message in the text channel.",
   [
     {
-      type: "NUMBER",
+      type: ApplicationCommandOptionType.Number,
       name: "amount",
       description: "Amount of messages to delete in this text channel.",
       required: true,
     },
   ],
   1,
-  [Permissions.MANAGE_MESSAGES],
+  [Permissions.ManageMessages],
   [
-    Permissions.SEND_MESSAGES,
-    Permissions.EMBED_LINKS,
-    Permissions.MANAGE_MESSAGES,
+    Permissions.SendMessages,
+    Permissions.EmbedLinks,
+    Permissions.ManageMessages,
   ],
   async (ctx: CommandContext): Promise<boolean> => {
     if (!ctx.args[0] || isNaN(parseInt(ctx.args[0])) || ctx.args[0] == "0") {
@@ -286,19 +282,19 @@ export const warn = new Command(
   "Warns mentioned user.",
   [
     {
-      type: "USER",
+      type: ApplicationCommandOptionType.User,
       name: "user",
       description: "The user that you want to warn.",
       required: true,
     },
   ],
   1,
-  [Permissions.KICK_MEMBERS, Permissions.BAN_MEMBERS],
+  [Permissions.KickMembers, Permissions.BanMembers],
   [
-    Permissions.SEND_MESSAGES,
-    Permissions.EMBED_LINKS,
-    Permissions.KICK_MEMBERS,
-    Permissions.BAN_MEMBERS,
+    Permissions.SendMessages,
+    Permissions.EmbedLinks,
+    Permissions.KickMembers,
+    Permissions.BanMembers,
   ],
   async (ctx: CommandContext): Promise<boolean> => {
     const targetUser = await ctx.parseUserFromArgs(0);
@@ -409,20 +405,15 @@ export const reswarn = new Command(
   "Resets the warnings of that user.",
   [
     {
-      type: "USER",
+      type: ApplicationCommandOptionType.User,
       name: "user",
       description: "User to reset the warnigs",
       required: true,
     },
   ],
   1,
-  [Permissions.KICK_MEMBERS, Permissions.BAN_MEMBERS],
-  [
-    Permissions.SEND_MESSAGES,
-    Permissions.EMBED_LINKS,
-    Permissions.SEND_MESSAGES,
-    Permissions.EMBED_LINKS,
-  ],
+  [Permissions.KickMembers, Permissions.BanMembers],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     const targetUser = await ctx.parseUserFromArgs(0);
 
@@ -471,23 +462,19 @@ export const autorole = new Command(
   "Sets auto role.",
   [
     {
-      type: "ROLE",
+      type: ApplicationCommandOptionType.Role,
       name: "role",
       description: "Role you want to set as auto role.",
       required: true,
     },
   ],
   1,
-  [Permissions.MANAGE_GUILD, Permissions.MANAGE_ROLES],
-  [
-    Permissions.SEND_MESSAGES,
-    Permissions.EMBED_LINKS,
-    Permissions.MANAGE_ROLES,
-  ],
+  [Permissions.ManageGuild, Permissions.ManageRoles],
+  [Permissions.SendMessages, Permissions.EmbedLinks, Permissions.ManageRoles],
   async (ctx: CommandContext): Promise<boolean> => {
     const targetRole = await ctx.parseRoleFromArgs(0);
     const highestUserRole = ctx.author?.roles.highest;
-    const highestBotRole = ctx.guild.me?.roles.highest;
+    const highestBotRole = ctx.guild.members.me?.roles.highest;
 
     if (!targetRole) {
       ctx.respond(ctx.locales.WRONG_COMMAND_USAGE, true);

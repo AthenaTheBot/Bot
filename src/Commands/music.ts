@@ -1,8 +1,7 @@
 import CommandContext from "../Structures/CommandContext";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder, Colors, ApplicationCommandOptionType } from "discord.js";
 import { Permissions } from "../constants";
 import Command from "../Structures/Command";
-import fetch from "cross-fetch";
 
 export const play = new Command(
   "play",
@@ -10,7 +9,7 @@ export const play = new Command(
   "Play song in a voice channel.",
   [
     {
-      type: "STRING",
+      type: ApplicationCommandOptionType.String,
       name: "song",
       description: "Song title/url",
       required: true,
@@ -19,10 +18,10 @@ export const play = new Command(
   2,
   [],
   [
-    Permissions.SEND_MESSAGES,
-    Permissions.EMBED_LINKS,
-    Permissions.SPEAK,
-    Permissions.CONNECT,
+    Permissions.SendMessages,
+    Permissions.EmbedLinks,
+    Permissions.Speak,
+    Permissions.Connect,
   ],
   async (ctx: CommandContext): Promise<boolean> => {
     const songRequest = ctx.args.join(" ");
@@ -41,7 +40,8 @@ export const play = new Command(
     if (
       serverListener &&
       serverListener?.listening &&
-      ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id
+      ctx.author?.voice?.channel?.id !=
+        ctx.guild?.members?.me?.voice?.channel?.id
     ) {
       ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
@@ -73,14 +73,17 @@ export const disconnect = new Command(
   [],
   2,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
-    if (!ctx?.guild?.me?.voice?.channel) {
+    if (!ctx?.guild?.members?.me?.voice?.channel) {
       ctx.respond(ctx.locales.NOT_IN_VC, true);
       return false;
     }
 
-    if (ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id) {
+    if (
+      ctx.author?.voice?.channel?.id !=
+      ctx.guild?.members?.me?.voice?.channel?.id
+    ) {
       ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
@@ -99,7 +102,7 @@ export const skip = new Command(
   "Skips to another song in the queue.",
   [
     {
-      type: "NUMBER",
+      type: ApplicationCommandOptionType.Number,
       name: "song_amount",
       description: "Songs amount to skip in the queue",
       required: true,
@@ -107,14 +110,17 @@ export const skip = new Command(
   ],
   2,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     if (!ctx.client.player.isPlaying(ctx.guild.id)) {
       ctx.respond(ctx.locales.NOT_PLAYING, true);
       return false;
     }
 
-    if (ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id) {
+    if (
+      ctx.author?.voice?.channel?.id !=
+      ctx.guild?.members?.me?.voice?.channel?.id
+    ) {
       ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
@@ -145,14 +151,17 @@ export const queue = new Command(
   [],
   1,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     if (!ctx.client.player.isPlaying(ctx.guild.id)) {
       ctx.respond(ctx.locales.NOT_PLAYING, true);
       return false;
     }
 
-    if (ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id) {
+    if (
+      ctx.author?.voice?.channel?.id !=
+      ctx.guild?.members?.me?.voice?.channel?.id
+    ) {
       ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
@@ -174,7 +183,7 @@ export const queue = new Command(
       );
     }
 
-    const queueEmbed = new MessageEmbed();
+    const queueEmbed = new EmbedBuilder();
 
     queueEmbed
       .setColor("#5865F2")
@@ -194,14 +203,17 @@ export const pause = new Command(
   [],
   2,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     if (!ctx.client.player.isPlaying(ctx.guild.id)) {
       ctx.respond(ctx.locales.NOT_PLAYING, true);
       return false;
     }
 
-    if (ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id) {
+    if (
+      ctx.author?.voice?.channel?.id !=
+      ctx.guild?.members?.me?.voice?.channel?.id
+    ) {
       ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
@@ -226,14 +238,17 @@ export const resume = new Command(
   [],
   2,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     if (!ctx.client.player.isPlaying(ctx.guild.id)) {
       ctx.respond(ctx.locales.NOT_PLAYING, true);
       return false;
     }
 
-    if (ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id) {
+    if (
+      ctx.author?.voice?.channel?.id !=
+      ctx.guild?.members?.me?.voice?.channel?.id
+    ) {
       ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
@@ -258,14 +273,17 @@ export const loop = new Command(
   [],
   2,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     if (!ctx.client.player.isPlaying(ctx.guild.id)) {
       ctx.respond(ctx.locales.NOT_PLAYING, true);
       return false;
     }
 
-    if (ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id) {
+    if (
+      ctx.author?.voice?.channel?.id !=
+      ctx.guild?.members?.me?.voice?.channel?.id
+    ) {
       ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
@@ -295,7 +313,7 @@ export const delsong = new Command(
   "Deletes a specific song from the song queue.",
   [
     {
-      type: "NUMBER",
+      type: ApplicationCommandOptionType.Number,
       name: "song_id",
       description: "Song that you want to delete",
       required: true,
@@ -303,7 +321,7 @@ export const delsong = new Command(
   ],
   2,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     if (!ctx.args[0] || isNaN(ctx.args[0] as any))
       return ctx.respond(ctx.locales.WRONG_COMMAND_USAGE);
@@ -313,7 +331,10 @@ export const delsong = new Command(
       return false;
     }
 
-    if (ctx.author?.voice?.channel?.id != ctx.guild?.me?.voice?.channel?.id) {
+    if (
+      ctx.author?.voice?.channel?.id !=
+      ctx.guild?.members?.me?.voice?.channel?.id
+    ) {
       ctx.respond(ctx.locales.NOT_SAME_VC, true);
       return false;
     }
@@ -347,7 +368,7 @@ export const lyrics = new Command(
   "Shows the lyrics of the given or currenty listened song.",
   [
     {
-      type: "STRING",
+      type: ApplicationCommandOptionType.String,
       name: "song",
       description: "Song title or song artist to search",
       required: false,
@@ -355,7 +376,7 @@ export const lyrics = new Command(
   ],
   8,
   [],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     const player = ctx.client.player.listeners.get(ctx.guild.id);
     let searchQuery = ctx.args.join(" ").trim();
@@ -384,8 +405,8 @@ export const lyrics = new Command(
     }
 
     // TODO: Split embeds if lyric contenet is longer than 2048
-    const lyricsEmbed = new MessageEmbed()
-      .setColor("RANDOM")
+    const lyricsEmbed = new EmbedBuilder()
+      .setColor(Colors.Blurple)
       .setTitle(songLyrics.title)
       .setThumbnail(songLyrics.thumbnail)
       .setDescription(`**${songLyrics.content}**`);

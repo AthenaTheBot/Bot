@@ -1,7 +1,7 @@
 import {
   ColorResolvable,
   GuildMember,
-  MessageEmbed,
+  EmbedBuilder,
   Role,
   TextChannel,
 } from "discord.js";
@@ -19,7 +19,7 @@ export default new Event(
 
     if (autoRole) {
       const role = member.guild.roles.cache.get(autoRole) as Role;
-      const roleClient = member.guild.me?.roles.highest as Role;
+      const roleClient = member.guild?.members?.me?.roles.highest as Role;
 
       if (roleClient?.rawPosition > role?.rawPosition && !role.managed) {
         member.roles.add(role).catch(() => {});
@@ -33,7 +33,7 @@ export default new Event(
           ?.replaceAll("$server", member.guild.name)
       ) as WelcomerEmbed;
 
-      const embed = new MessageEmbed();
+      const embed = new EmbedBuilder();
 
       if (embedData?.author)
         embed.setAuthor({

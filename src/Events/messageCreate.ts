@@ -37,7 +37,7 @@ export default new Event(
     if (!command) return false;
 
     // Command data
-    const commandData = new CommandContext(command, client, {
+    const commandCtx = new CommandContext(command, client, {
       type: CommandTypes.Message,
       data: msgData,
       db: { user: user, guild: guild },
@@ -56,9 +56,9 @@ export default new Event(
       );
       if (
         !isWarnSent &&
-        !commandData.executeFail?.perms?.includes(Permissions.SEND_MESSAGES)
+        !commandCtx.executeFail?.perms?.includes(Permissions.SendMessages)
       ) {
-        commandData.respond(commandData.locales.COOLDOWN_WARNING);
+        commandCtx.respond(commandCtx.locales.COOLDOWN_WARNING);
         client.cooldownManager.updateWarnSent(
           msgData.author.id,
           command.name,
@@ -68,15 +68,15 @@ export default new Event(
       return false;
     }
 
-    if (!commandData.executeable) {
-      if (commandData.executeFail?.reason == "USER_INSUFFICIENT_PERMS") {
-        commandData.respond(commandData.locales.USER_INSUFFICIENT_PERMS, false);
+    if (!commandCtx.executeable) {
+      if (commandCtx.executeFail?.reason == "USER_INSUFFICIENT_PERMS") {
+        commandCtx.respond(commandCtx.locales.USER_INSUFFICIENT_PERMS, false);
       }
       return false;
     }
 
     // Execute command
-    command?.exec(commandData);
+    command?.exec(commandCtx);
 
     // Add cooldown to user
     client.cooldownManager.addCooldown(
@@ -88,9 +88,9 @@ export default new Event(
     // Crate command usage instance
     const commandUsage = new CommandUsage(
       command.name,
-      commandData.args,
+      commandCtx.args,
       msgData?.author?.id,
-      commandData.guild.id
+      commandCtx.guild.id
     );
 
     // If the bot is in production mode save the command usage to the database.

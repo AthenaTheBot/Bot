@@ -68,7 +68,7 @@ class PermissionResolver {
       this.convertPermsToIndexNums(cp)
     );
 
-    if (currentPerms.all.includes(Permissions.ADMINISTRATOR))
+    if (currentPerms.all.includes(Permissions.Administrator))
       return [true, null];
 
     let passedRequirements = true;

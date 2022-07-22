@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
-import { MessageEmbed, TextChannel } from "discord.js";
+import { EmbedBuilder, TextChannel } from "discord.js";
 import { Athena } from "../index";
 dayjs.extend(localizedFormat);
 
@@ -45,7 +45,7 @@ class CommandUsage {
       ((await Athena.channels.fetch(Athena.config.log.command)) as TextChannel);
 
     if (usageChannel) {
-      const usageEmbed = new MessageEmbed()
+      const usageEmbed = new EmbedBuilder()
         .setColor(Athena.config.colors.default as any)
         .setFields([
           { name: "Command", value: `\`${this.command}\``, inline: true },

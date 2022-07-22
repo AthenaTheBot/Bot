@@ -12,6 +12,10 @@ import {
   ApplicationCommand,
   ApplicationCommandDataResolvable,
   ApplicationCommandOptionData,
+  ApplicationCommandType,
+  APIApplicationCommandOption,
+  PermissionResolvable,
+  PermissionFlagsBits,
 } from "discord.js";
 
 /**
@@ -49,7 +53,7 @@ class CommandManager {
     name: string,
     aliases: string[],
     description: string,
-    options: ApplicationCommandOptionData[],
+    options: APIApplicationCommandOption[],
     cooldown: number,
     requiredPerms: Permissions[],
     requiredBotPerms: Permissions[],
@@ -73,13 +77,14 @@ class CommandManager {
     const commandPayload: ApplicationCommandDataResolvable = {
       name: name,
       description: description,
-      type: "CHAT_INPUT",
+      type: ApplicationCommandType.ChatInput,
       options: options,
-      defaultPermission: requiredPerms.length == 0 ? true : false,
+      defaultMemberPermissions:
+        requiredPerms as unknown as PermissionResolvable,
     };
 
     // Replace special characters and spaces with _ to prevent from api errors.
-    commandPayload.options?.forEach((option) => {
+    commandPayload.options?.forEach((option: ApplicationCommandOptionData) => {
       option.name = option.name.toLowerCase().replaceAll(/[^a-zA-Z0-9]/g, "_");
     });
 

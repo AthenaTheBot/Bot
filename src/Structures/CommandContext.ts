@@ -3,13 +3,15 @@ import {
   Guild as DJSGuild,
   GuildMember,
   Message,
-  MessageEmbed,
+  EmbedBuilder,
   NewsChannel,
   PartialDMChannel,
   TextChannel,
-  ThreadChannel,
   GuildMember as DJSMember,
   Role as DJSRole,
+  PublicThreadChannel,
+  PrivateThreadChannel,
+  VoiceChannel,
 } from "discord.js";
 import { Permissions } from "../constants";
 import AthenaClient from "../AthenaClient";
@@ -32,11 +34,13 @@ class CommandContext {
   author: GuildMember | null;
   guild: DJSGuild;
   channel:
-    | PartialDMChannel
     | DMChannel
-    | TextChannel
+    | PartialDMChannel
     | NewsChannel
-    | ThreadChannel;
+    | TextChannel
+    | PublicThreadChannel
+    | PrivateThreadChannel
+    | VoiceChannel;
 
   db: {
     user: User;
@@ -85,7 +89,7 @@ class CommandContext {
 
       // Get Athena's Perms
       const athenaPerms = this.client.userManager.getAllPerms(
-        this.guild.me as GuildMember,
+        this.guild.members.me as GuildMember,
         this.channel as TextChannel
       );
 
@@ -180,7 +184,7 @@ class CommandContext {
   }
 
   async respond(
-    respondPayload: string | MessageEmbed | MessageEmbed[] | any,
+    respondPayload: string | EmbedBuilder | EmbedBuilder[] | any,
     sendAsEmbed?: boolean
   ): Promise<any> {
     let payload: any;
@@ -189,7 +193,7 @@ class CommandContext {
       if (sendAsEmbed) {
         payload = {
           embeds: [
-            new MessageEmbed()
+            new EmbedBuilder()
               .setColor("#5865F2")
               .setDescription(respondPayload.trim()),
           ],
@@ -197,9 +201,9 @@ class CommandContext {
       } else payload = { content: respondPayload };
     } else if (Array.isArray(respondPayload)) {
       payload = {
-        embeds: [...respondPayload.filter((x) => x instanceof MessageEmbed)],
+        embeds: [...respondPayload.filter((x) => x instanceof EmbedBuilder)],
       };
-    } else if (respondPayload instanceof MessageEmbed) {
+    } else if (respondPayload instanceof EmbedBuilder) {
       payload = { embeds: [respondPayload] };
     } else {
       payload = respondPayload;
@@ -213,6 +217,7 @@ class CommandContext {
         returnData = await this.raw.channel.send(payload);
       }
     } catch (err) {
+      console.log(err);
       returnData = null;
     }
 

@@ -1,4 +1,4 @@
-import { MessageEmbed, TextChannel } from "discord.js";
+import { EmbedBuilder, TextChannel } from "discord.js";
 import Event from "../Structures/Event";
 
 export default new Event(
@@ -15,7 +15,7 @@ export default new Event(
       ((await client.channels.fetch(client.config.log.guild)) as TextChannel);
 
     if (guildLogChannel) {
-      const guildLogEmbed = new MessageEmbed()
+      const guildLogEmbed = new EmbedBuilder()
         .setColor(client.config.colors.success as any)
         .setFields([
           {

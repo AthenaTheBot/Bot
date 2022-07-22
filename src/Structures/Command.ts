@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionData } from "discord.js";
+import { APIApplicationCommandOption } from "discord.js";
 import CommandContext from "./CommandContext";
 import { Permissions } from "../constants";
 import PermissionResolver from "../Modules/PermissionResolver";
@@ -7,7 +7,7 @@ class Command {
   name: string;
   aliases: string[];
   description: string;
-  options: ApplicationCommandOptionData[];
+  options: APIApplicationCommandOption[];
   cooldown: number;
   requiredPerms: PermissionResolver;
   requiredBotPerms: PermissionResolver;
@@ -17,7 +17,7 @@ class Command {
     name: string,
     aliases: string[],
     description: string,
-    options: ApplicationCommandOptionData[],
+    options: APIApplicationCommandOption[],
     cooldown: number,
     requiredPerms: Permissions[],
     requiredBotPerms: Permissions[],

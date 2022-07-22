@@ -1,7 +1,7 @@
 import Poll from "../Structures/Poll";
 import { Athena } from "../index";
 import { v4 as uuid } from "uuid";
-import { MessageEmbed, TextChannel } from "discord.js";
+import { Colors, EmbedBuilder, TextChannel } from "discord.js";
 
 class PollManager {
   polls: Poll[];
@@ -36,8 +36,8 @@ class PollManager {
       .catch((err) => null)) as TextChannel;
 
     if (pollChannel) {
-      const pollEmbed = new MessageEmbed()
-        .setColor("RANDOM")
+      const pollEmbed = new EmbedBuilder()
+        .setColor(Colors.Blurple)
         .setTitle(locales.POLL_STARTED)
         .setFooter({ text: `Id: ${pollId}` })
         .setDescription(
@@ -104,8 +104,8 @@ class PollManager {
           ((await poll.message.reactions.cache.get("👎")?.count) as number) -
             1 || 0;
 
-        const pollEmbed = new MessageEmbed()
-          .setColor("RANDOM")
+        const pollEmbed = new EmbedBuilder()
+          .setColor(Colors.Blurple)
           .setTitle(poll.locales.POLL_ENDED)
           .setFooter({ text: `Id: ${poll.id}` })
           .setDescription(

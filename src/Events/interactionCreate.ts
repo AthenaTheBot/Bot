@@ -33,23 +33,23 @@ export default new Event(
     if (!command) return false;
 
     // Command data
-    const commandData = new CommandContext(command, client, {
+    const commandCtx = new CommandContext(command, client, {
       type: CommandTypes.Interaction,
       data: interactionData,
       db: { user: user, guild: guild },
     });
 
-    if (!commandData.executeable) return false;
+    if (!commandCtx.executeable) return false;
 
     // Execute command
-    command?.exec(commandData);
+    command?.exec(commandCtx);
 
     // Crate command usage instance
     const commandUsage = new CommandUsage(
       command.name,
-      commandData.args,
+      commandCtx.args,
       interactionData?.member?.id,
-      commandData?.guild?.id
+      commandCtx?.guild?.id
     );
 
     // If the bot is in production mode save the command usage to the database.

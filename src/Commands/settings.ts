@@ -1,22 +1,22 @@
 import CommandContext from "../Structures/CommandContext";
 import { Permissions } from "../constants";
 import Command from "../Structures/Command";
-
+import { ApplicationCommandOptionType } from "discord.js";
 export const prefix = new Command(
   "prefix",
   [],
   "Change the prefix of Athena for your server and use the best fit for your server!",
   [
     {
-      type: "STRING",
+      type: ApplicationCommandOptionType.String,
       name: "prefix",
       description: "The prefix that you want to set",
       required: false,
     },
   ],
   5,
-  [Permissions.ADMINISTRATOR],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.Administrator],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     if (ctx.args.length === 0) {
       try {
@@ -55,15 +55,15 @@ export const language = new Command(
   "Changes the language of Athena",
   [
     {
-      type: "STRING",
+      type: ApplicationCommandOptionType.String,
       name: "language",
       description: "The langauge that you want to set",
       required: false,
     },
   ],
   5,
-  [Permissions.ADMINISTRATOR],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.Administrator],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     if (ctx.args.length === 0) {
       try {
@@ -117,15 +117,15 @@ export const adminrole = new Command(
   "Command for setting admin role.",
   [
     {
-      type: "ROLE",
+      type: ApplicationCommandOptionType.Role,
       name: "role",
       description: "The role that you want to set as bot admin.",
       required: true,
     },
   ],
   4,
-  [Permissions.ADMINISTRATOR],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.Administrator],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx): Promise<boolean> => {
     const mentionedRole = await ctx.parseRoleFromArgs(0);
 
@@ -154,15 +154,15 @@ export const modrole = new Command(
   "Command for setting mod role.",
   [
     {
-      type: "ROLE",
+      type: ApplicationCommandOptionType.Role,
       name: "role",
       description: "The role that you want to set as bot mod.",
       required: true,
     },
   ],
   4,
-  [Permissions.ADMINISTRATOR],
-  [Permissions.SEND_MESSAGES, Permissions.EMBED_LINKS],
+  [Permissions.Administrator],
+  [Permissions.SendMessages, Permissions.EmbedLinks],
   async (ctx: CommandContext): Promise<boolean> => {
     const mentionedRole = await ctx.parseRoleFromArgs(0);
 

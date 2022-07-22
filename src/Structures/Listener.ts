@@ -1,5 +1,5 @@
 import { AudioPlayer } from "@discordjs/voice";
-import { MessageEmbed, TextChannel } from "discord.js";
+import { EmbedBuilder, TextChannel } from "discord.js";
 import Song from "./Song";
 import { Athena } from "..";
 
@@ -48,7 +48,7 @@ class GuildQueue {
         message = message.replaceAll(localeVar, localeVariables[localeVar]);
       });
 
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setColor("#5865F2")
         .setDescription(message);
 
