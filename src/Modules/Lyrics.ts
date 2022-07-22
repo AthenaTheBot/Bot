@@ -55,7 +55,7 @@ class Lyrics {
             const element = $($("div").get(el));
             const className = element.attr("class");
             if (className?.startsWith("Lyrics__Container")) {
-              lyrics = element
+              lyrics += element
                 .html(element?.html()?.replaceAll("<br>", "\n") || "")
                 .text();
             }
@@ -80,7 +80,7 @@ class Lyrics {
               title: targetSong.result.full_title,
               artists: targetSong.result.artist_names,
               thumbnail: targetSong.result.header_image_thumbnail_url,
-              content: lyricsArray.join("\n"),
+              content: lyricsArray.join("\n").trim(),
             };
 
             this.cache.set(targetSong.result.id, songLyrics);

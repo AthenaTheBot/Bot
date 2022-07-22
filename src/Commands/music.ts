@@ -409,7 +409,7 @@ export const lyrics = new Command(
       .setColor(Colors.Blurple)
       .setTitle(songLyrics.title)
       .setThumbnail(songLyrics.thumbnail)
-      .setDescription(`**${songLyrics.content}**`);
+      .setDescription(`${songLyrics.content}`);
 
     ctx.respond(lyricsEmbed);
 
