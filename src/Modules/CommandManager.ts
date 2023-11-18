@@ -84,9 +84,13 @@ class CommandManager {
     };
 
     // Replace special characters and spaces with _ to prevent from api errors.
-    commandPayload.options?.forEach((option: ApplicationCommandOptionData) => {
-      option.name = option.name.toLowerCase().replaceAll(/[^a-zA-Z0-9]/g, "_");
-    });
+    (commandPayload as any).options?.forEach(
+      (option: ApplicationCommandOptionData) => {
+        option.name = option.name
+          .toLowerCase()
+          .replaceAll(/[^a-zA-Z0-9]/g, "_");
+      }
+    );
 
     if (this.client.config.debug.enabled) {
       const debugGuild =

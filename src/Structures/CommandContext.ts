@@ -12,6 +12,7 @@ import {
   PublicThreadChannel,
   PrivateThreadChannel,
   VoiceChannel,
+  StageChannel,
 } from "discord.js";
 import { Permissions } from "../constants";
 import AthenaClient from "../AthenaClient";
@@ -40,7 +41,8 @@ class CommandContext {
     | TextChannel
     | PublicThreadChannel
     | PrivateThreadChannel
-    | VoiceChannel;
+    | VoiceChannel
+    | StageChannel;
 
   db: {
     user: User;
